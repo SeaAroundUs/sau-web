@@ -1,8 +1,9 @@
 node_modules
-public
+dist
 .tmp
 .sass-cache
-.idea
-client/bower_components
-dist
-/server/config/local.env.js
+bower_components
+
+*.sublime-project
+
+*.sublime-workspace
