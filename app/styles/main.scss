@@ -16,6 +16,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   background-color: $darkBlue;
   height: 50px;
   color: white;
+  width: 100%;
   @include ghostVerticalAlign;
 }
 
@@ -28,6 +29,8 @@ $darkBlue: rgb(2,32,64);
 .footer {
   @include darkBar;
   height: 80px;
+  position: absolute;
+  bottom: 0px;
 }
 
 .browsehappy {
@@ -35,6 +38,10 @@ $darkBlue: rgb(2,32,64);
   background: #ccc;
   color: #000;
   padding: 0.2em 0;
+}
+
+html, body {
+  height: 100%;
 }
 
 /* Space out content a bit */
