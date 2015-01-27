@@ -14,26 +14,42 @@
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="sauWebApp">
+  <body ng-app="sauWebApp" ng-controller="MainCtrl">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-
     <!-- Add your site or application content here -->
-    <div class="container">
       <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#/">Home</a></li>
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
+        <img src="images/logo_saup_internal.png" alt="Sea Around Us"><br>
+
+        <ul class="nav nav-pills">
+          <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
+            <a>{{t.name}}</a>
+          </li>
         </ul>
-        <h3 class="text-muted">sauWeb</h3>
+      </div>
+
+      <div class="row regions">
+        <span>Show Region:</span>
+        <a class="btn btn-default" href="#/" role="button">EEZ</a>
+        <a class="btn btn-default" href="#/" role="button">LME</a>
+        <a class="btn btn-default" href="#/" role="button">RFMO</a>
+        <a class="btn btn-default" href="#/" role="button">High Sea</a>
+        <a class="btn btn-default" href="#/" role="button">Global</a>
       </div>
 
       <div ng-view=""></div>
 
+      <div class="row content slide-animate-container">
+        <div class="slide-animate" ng-include="template.url"></div>
+      </div>
+
       <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+          <span class="">Copyright Information here. All rights reserved.</span>
+          <a class="" href="#">Privacy Policies</a>
+          <span class="">|</span>
+          <a class="" href="#">Terms and Conditions</a>
+        </div>
       </div>
     </div>
 
@@ -62,7 +78,6 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/about.js"></script>
         <!-- endbuild -->
 </body>
 </html>
