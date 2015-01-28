@@ -3,6 +3,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
 
+@import "compass/layout/sticky-footer";
+@include sticky-footer(54px);
+
 @mixin ghostVerticalAlign(){
   &:before {
     content: '';
@@ -26,7 +29,12 @@ $darkBlue: rgb(2,32,64);
   @include darkBar;
 }
 
-.footer {
+  .angular-leaflet-map {
+  width: 100%;
+  height: 670px;
+}
+
+#footer {
   @include darkBar;
   height: 80px;
   position: absolute;
