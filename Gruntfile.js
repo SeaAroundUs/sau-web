@@ -452,6 +452,12 @@ module.exports = function (grunt) {
     'karma',
   ]);
 
+  grunt.registerTask('deploy', [
+    'test',
+    'build',
+    'aws_s3'
+  ]);
+
   grunt.registerTask('build', [
     'clean:dist',
     'wiredep',

@@ -23,8 +23,10 @@
     <![endif]-->
     <!-- Add your site or application content here -->
       <div class="header">
-        <img src="images/logo_saup_internal.png" alt="Sea Around Us"><br>
-
+        <div id="logos" class="clearfix">
+          <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo"><br>
+          <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo"><br>
+        </div>
         <ul class="nav nav-pills">
           <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
             <a>{{t.name}}</a>
