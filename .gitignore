@@ -9,3 +9,5 @@ bower_components
 *.sublime-workspace
 
 *.log
+
+aws-keys.json

@@ -1,10 +1,13 @@
 {
   "name": "sauweb",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "wiredep": "^2.2.2"
+  },
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
+    "grunt-aws-s3": "^0.11.0",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-compass": "^0.7.2",

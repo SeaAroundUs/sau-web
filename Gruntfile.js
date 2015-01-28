@@ -385,7 +385,47 @@ module.exports = function (grunt) {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+    aws: grunt.file.readJSON('aws-keys.json'), // Read the file
+
+    aws_s3: {
+      options: {
+        accessKeyId: '<%= aws.key %>', // Use the variables
+        secretAccessKey: '<%= aws.secret %>', // You can also use env variables
+        region: 'us-west-2',
+        uploadConcurrency: 5, // 5 simultaneous uploads
+        downloadConcurrency: 5 // 5 simultaneous downloads
+      },
+      // staging: {
+      //   options: {
+      //     bucket: 'my-wonderful-staging-bucket',
+      //     differential: true // Only uploads the files that have changed
+      //   },
+      //   files: [
+      //     {dest: 'app/', cwd: 'backup/staging/', action: 'download'},
+      //     {src: 'app/', cwd: 'copy/', action: 'copy'},
+      //     {expand: true, cwd: 'dist/staging/scripts/', src: ['**'], dest: 'app/scripts/'},
+      //     {expand: true, cwd: 'dist/staging/styles/', src: ['**'], dest: 'app/styles/'},
+      //     {dest: 'src/app', action: 'delete'},
+      //   ]
+      // },
+      production: {
+        options: {
+          bucket: '<%= aws.bucket %>',
+          params: {
+            ContentEncoding: 'gzip' // applies to all the files!
+          },
+          // mime: {
+          //   'dist/assets/production/LICENCE': 'text/plain'
+          // }
+        },
+        files: [
+          {expand: true, cwd: 'dist/', src: ['**'], dest: '/', params: {CacheControl: '31536000'}},
+        ]
+      },
     }
+
   });
 
 
@@ -404,17 +444,12 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
-  });
-
   grunt.registerTask('test', [
     'clean:server',
     'concurrent:test',
     'autoprefixer',
     'connect:test',
-    'karma'
+    'karma',
   ]);
 
   grunt.registerTask('build', [

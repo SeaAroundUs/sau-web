@@ -1,6 +1,6 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
-@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
 
 @mixin ghostVerticalAlign(){
@@ -82,7 +82,6 @@ body {
   width: 100%;
   padding: 0px;
 }
-
 
 .row {
   margin: 0px;
