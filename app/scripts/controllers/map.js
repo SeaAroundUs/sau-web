@@ -8,23 +8,22 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', ['$scope', '$http', 'leafletData', function ($scope, $http, leafletData) {
+  .controller('MapCtrl', ['$scope', '$http', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, leafletData, leafletBoundsHelpers) {
 
-    $scope.$on("leafletDirectiveMap.geojsonMouseover", function(ev, feature, leafletEvent) {
+    $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
         layer.setStyle(highlightStyle);
         layer.bringToFront();
         $scope.$parent.$parent.hoverRegion = feature;
     });
 
-    $scope.$on("leafletDirectiveMap.geojsonMouseout", function(ev, feature, leafletEvent) {
+    $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on("leafletDirectiveMap.geojsonClick", function(ev, featureSelected, leafletEvent) {
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, featureSelected, leafletEvent) {
         // regionClick(featureSelected, leafletEvent);
     });
-
 
     var highlightStyle = {
         fillColor: '#00f',
@@ -40,10 +39,10 @@ angular.module('sauWebApp')
       lineCap: 'round'
     };
 
-    var maxBounds = [
-      [-89, -180],
-      [89, 180]
-    ];
+    var maxBounds = leafletBoundsHelpers.createBoundsFromArray([
+      [-85, -180],
+      [85, 180]
+    ]);
 
     angular.extend($scope, {
 
@@ -53,8 +52,9 @@ angular.module('sauWebApp')
         zoom: 3
       },
 
+      maxbounds: maxBounds,
+
       defaults: {
-        maxBounds: maxBounds,
         tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
         tileLayerOptions: {
           noWrap: true,
@@ -91,5 +91,5 @@ angular.module('sauWebApp')
       });
     };
 
-    // $scope.searchIP('');
+    $scope.searchIP('');
   }]);
