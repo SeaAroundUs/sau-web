@@ -42,7 +42,7 @@
         <a class="btn btn-default" href="#/" role="button">RFMO</a>
         <a class="btn btn-default" href="#/" role="button">High Sea</a>
         <a class="btn btn-default" href="#/" role="button">Global</a>
-        <span>{{hoverRegion.properties.title}}</span>
+        <span ng-bind="hoverRegion.properties.title"></span>
       </div>
 
       <div ng-view=""></div>
@@ -85,6 +85,7 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/map.js"></script>
         <!-- endbuild -->
 </body>
 </html>
