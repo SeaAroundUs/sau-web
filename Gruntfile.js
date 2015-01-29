@@ -24,6 +24,27 @@ module.exports = function (grunt) {
   // Define the configuration for all the tasks
   grunt.initConfig({
 
+    ngconstant: {
+      options: {
+        deps: false,
+        dest: '.tmp/scripts/config.js',
+        name: 'sauWebApp',
+      },
+      development: {
+        constants: {
+          SAU_CONFIG: {
+            api_url: 'http://localhost:8000/api/v1/',
+          }
+        }
+      },
+      production: {
+        constants: {
+          SAU_CONFIG: {
+            api_url: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
+          }
+        }
+      }
+    },
     // Project settings
     yeoman: appConfig,
 
@@ -397,31 +418,19 @@ module.exports = function (grunt) {
         uploadConcurrency: 5, // 5 simultaneous uploads
         downloadConcurrency: 5 // 5 simultaneous downloads
       },
-      // staging: {
-      //   options: {
-      //     bucket: 'my-wonderful-staging-bucket',
-      //     differential: true // Only uploads the files that have changed
-      //   },
-      //   files: [
-      //     {dest: 'app/', cwd: 'backup/staging/', action: 'download'},
-      //     {src: 'app/', cwd: 'copy/', action: 'copy'},
-      //     {expand: true, cwd: 'dist/staging/scripts/', src: ['**'], dest: 'app/scripts/'},
-      //     {expand: true, cwd: 'dist/staging/styles/', src: ['**'], dest: 'app/styles/'},
-      //     {dest: 'src/app', action: 'delete'},
-      //   ]
-      // },
       production: {
         options: {
           bucket: '<%= aws.bucket %>',
-          params: {
-            ContentEncoding: 'gzip' // applies to all the files!
-          },
+          // gzip is breaking browsers.  investigate doing our own gzip or having AWS do it.
+          // params: {
+          //   ContentEncoding: 'gzip' // applies to all the files!
+          // },
           // mime: {
           //   'dist/assets/production/LICENCE': 'text/plain'
           // }
         },
         files: [
-          {expand: true, cwd: 'dist/', src: ['**'], dest: '/', params: {CacheControl: '31536000'}},
+          {differential: false, expand: true, cwd: 'dist/', src: ['**'], dest: '/', params: {CacheControl: '60'}},
         ]
       },
     }
@@ -435,7 +444,10 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'newer:jshint',
+      'test',
       'clean:server',
+      'ngconstant:development',
       'wiredep',
       'concurrent:server',
       'autoprefixer',
@@ -453,13 +465,15 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('deploy', [
-    'test',
+    // 'newer:jshint',
+    // 'test',
     'build',
     'aws_s3'
   ]);
 
   grunt.registerTask('build', [
     'clean:dist',
+    'ngconstant:production',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
@@ -472,7 +486,7 @@ module.exports = function (grunt) {
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    // 'htmlmin' //breaks index.html.  https://github.com/ericclemmons/grunt-angular-templates/issues/82
   ]);
 
   grunt.registerTask('default', [

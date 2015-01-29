@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', ['$scope', '$http', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', ['$scope', '$http', 'SAU_CONFIG', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
@@ -17,11 +17,11 @@ angular.module('sauWebApp')
         $scope.$parent.$parent.hoverRegion = feature;
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
+    $scope.$on('leafletDirectiveMap.geojsonMouseout', function( /* ev, feature, leafletEvent */) {
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, featureSelected, leafletEvent) {
+    $scope.$on('leafletDirectiveMap.geojsonClick', function( /* ev, featureSelected, leafletEvent */) {
         // regionClick(featureSelected, leafletEvent);
     });
 
@@ -65,9 +65,10 @@ angular.module('sauWebApp')
     });
 
     // get regions
-    var url = 'http://localhost:8000/api/v1/eez/';
+    var url = SAU_CONFIG.api_url;
+    url = url + 'eez/';
     $http.get(url, {cache: true})
-      .success(function(data, status) {
+      .success(function(data) {
         angular.extend($scope, {
           geojson: {
             data: data.data,
