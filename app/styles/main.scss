@@ -29,11 +29,6 @@ $darkBlue: rgb(2,32,64);
   @include darkBar;
 }
 
-  .angular-leaflet-map {
-  width: 100%;
-  height: 670px;
-}
-
 #footer {
   @include darkBar;
   height: 80px;
