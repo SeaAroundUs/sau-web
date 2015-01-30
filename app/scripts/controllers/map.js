@@ -66,8 +66,18 @@ angular.module('sauWebApp')
 
     // get regions
     var url = SAU_CONFIG.api_url;
-    url = url + 'eez/';
-    $http.get(url, {cache: true})
+    // var headers = {};
+    // if (SAU_CONFIG.auth_b64) {
+    //   headers = {'Authorization': 'Basic ' + SAU_CONFIG.auth_b64};
+    // }
+    var req = {
+      method:'GET',
+      url: url + 'eez/',
+      // headers: headers,
+      cache: true
+    };
+
+    $http(req)
       .success(function(data) {
         angular.extend($scope, {
           geojson: {

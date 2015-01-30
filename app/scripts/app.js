@@ -18,7 +18,7 @@ angular
     'ngTouch',
     'leaflet-directive'
   ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -30,4 +30,10 @@ angular
       .otherwise({
         redirectTo: '/'
       });
+      $httpProvider.defaults.useXDomain = true;
+  })
+  .run(function ($http, SAU_CONFIG) {
+    if (SAU_CONFIG.auth_b64) {
+      $http.defaults.headers.common.Authorization = 'Basic ' + SAU_CONFIG.auth_b64;
+    }
   });

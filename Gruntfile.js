@@ -33,7 +33,9 @@ module.exports = function (grunt) {
       development: {
         constants: {
           SAU_CONFIG: {
-            api_url: 'http://localhost:8000/api/v1/',
+            // api_url: 'http://localhost:8000/api/v1/',
+            api_url: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
+            auth_b64: 'c2F1OkFuaTdFaXRo'
           }
         }
       },
@@ -41,6 +43,7 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             api_url: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
+            auth_b64: 'c2F1OkFuaTdFaXRo'
           }
         }
       }
@@ -421,7 +424,7 @@ module.exports = function (grunt) {
       production: {
         options: {
           bucket: '<%= aws.bucket %>',
-          // gzip is breaking browsers.  investigate doing our own gzip or having AWS do it.
+          // FIXME: gzip is breaking browsers.  investigate doing our own gzip or having AWS do it.
           // params: {
           //   ContentEncoding: 'gzip' // applies to all the files!
           // },
