@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', ['$scope', '$http', 'SAU_CONFIG', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', ['$scope', '$http', '$location', 'SAU_CONFIG', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, $location, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
@@ -66,7 +66,9 @@ angular.module('sauWebApp')
 
     // get regions
     var url = SAU_CONFIG.api_url;
-    url = url + 'eez/';
+    // move the prefixed '/' to postfix for the API
+    var region = $location.$$path.slice(1) + '/';
+    url = url + region;
     $http.get(url, {cache: true})
       .success(function(data) {
         angular.extend($scope, {
@@ -92,5 +94,5 @@ angular.module('sauWebApp')
       });
     };
 
-    $scope.searchIP('');
+    // $scope.searchIP('');
   }]);

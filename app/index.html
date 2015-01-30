@@ -25,8 +25,10 @@
     <!-- Add your site or application content here -->
       <div class="header">
         <div id="logos" class="clearfix">
-          <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo"><br>
-          <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo"><br>
+          <a href="#/">
+            <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo">
+          </a>
+          <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo">
         </div>
         <ul class="nav nav-pills">
           <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
@@ -37,11 +39,11 @@
 
       <div class="row regions">
         <span>Show Region:</span>
-        <a class="btn btn-default" href="#/" role="button">EEZ</a>
-        <a class="btn btn-default" href="#/" role="button">LME</a>
-        <a class="btn btn-default" href="#/" role="button">RFMO</a>
-        <a class="btn btn-default" href="#/" role="button">High Sea</a>
-        <a class="btn btn-default" href="#/" role="button">Global</a>
+        <a ng-class="{ active: isActive('/eez')}" class="btn btn-default" href="#/eez" role="button">EEZ</a>
+        <a ng-class="{ active: isActive('/lme')}" class="btn btn-default" href="#/lme" role="button">LME</a>
+        <a ng-class="{ active: isActive('/rfmo')}" class="btn btn-default" href="#/rfmo" role="button">RFMO</a>
+        <a ng-class="{ active: isActive('/fao')}" class="btn btn-default" href="#/fao" role="button">High Seas</a>
+        <a ng-class="{ active: isActive('/global')}" class="btn btn-default" href="#/global" role="button">Global</a>
         <span ng-bind="hoverRegion.properties.title"></span>
       </div>
 

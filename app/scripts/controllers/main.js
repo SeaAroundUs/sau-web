@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MainCtrl', ['$scope', function ($scope) {
+  .controller('MainCtrl', ['$scope', '$location', function ($scope, $location) {
 
     var templateDir = 'views/';
     $scope.templates = [
@@ -29,4 +29,9 @@ angular.module('sauWebApp')
     $scope.updateInclude = function(t) {
       $scope.template = t;
     };
+
+    $scope.isActive = function (viewLocation) {
+      return viewLocation === $location.path();
+    };
+
   }]);

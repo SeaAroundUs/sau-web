@@ -24,9 +24,27 @@ angular
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html'
+      .when('/eez', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
       })
+      .when('/lme', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+      })
+      .when('/rfmo', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+      })
+      .when('/fao', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl'
+      })
+      .when('/global', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl'
+      })
+
       .otherwise({
         redirectTo: '/'
       });
