@@ -6,6 +6,9 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 @import "compass/layout/sticky-footer";
 @include sticky-footer(54px);
 
+// recommended by ui-bootstrap
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 @mixin ghostVerticalAlign(){
   &:before {
     content: '';

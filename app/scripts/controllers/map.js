@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', ['$scope', '$http', '$location', 'SAU_CONFIG', 'leafletData', 'leafletBoundsHelpers', function ($scope, $http, $location, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope, $http, $location, $modal, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
@@ -21,8 +21,26 @@ angular.module('sauWebApp')
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function( /* ev, featureSelected, leafletEvent */) {
-        // regionClick(featureSelected, leafletEvent);
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature, leafletEvent) {
+        console.log(feature, leafletEvent);
+
+        var modalInstance = $modal.open({
+          templateUrl: 'views/region-detail/main.html',
+          controller: 'ModalInstanceCtrl',
+          size: 'lg',
+          resolve: {
+            feature: function () {
+              return feature;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+        }, function () {
+          console.log('Modal dismissed at: ' + new Date());
+        });
+
     });
 
     var highlightStyle = {
@@ -95,4 +113,4 @@ angular.module('sauWebApp')
     };
 
     // $scope.searchIP('');
-  }]);
+  });

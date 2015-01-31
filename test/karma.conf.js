@@ -27,6 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+      'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
       'app/scripts/**/*.js',
       // 'test/mock/**/*.js',
       'test/spec/**/*.js'

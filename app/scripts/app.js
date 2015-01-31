@@ -16,7 +16,8 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'leaflet-directive'
+    'leaflet-directive',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -28,6 +29,11 @@ angular
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
       })
+      // .when('/eez/:id', {
+      //   templateUrl: 'views/region-detail/main.html',
+      //   // reloadOnSearch: false,
+      //   controller: 'RegionDetailCtrl',
+      // })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
