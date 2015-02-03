@@ -9,7 +9,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl', function ($scope, $mo
 
   var removePathId = function(path) {
     var to = path.lastIndexOf('/');
-    to = to == -1 ? path.length : to + 1;
+    to = to === -1 ? path.length : to + 1;
     return path.substring(0, to);
   };
 

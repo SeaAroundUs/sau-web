@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MainCtrl', ['$scope', '$location', function ($scope, $location) {
+  .controller('RootCtrl', ['$scope', '$location', function ($scope, $location) {
 
     var templateDir = 'views/';
     $scope.templates = [
