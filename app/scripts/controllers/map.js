@@ -10,27 +10,30 @@
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    var openModal = function(feature) {
+    var openModal = function(options) {
       return $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
                 size: 'lg',
                 resolve: {
-                  feature: function () {
-                    return feature;
-                  },
-                  region_id: {
-                    feature: function() {
-                      return $scope.region_id;
-                    }
+                  options: function () {
+                    return options;
                   }
                 }
       });
     };
 
+    // move the prefixed '/' to postfix for the API
+    var region = '';
+    var path = $location.$$path.slice(1);
     if ($routeParams.id) {
-      var feature = {region_id: $routeParams.id}; // FIXME: get feature from controller
-      openModal(feature);
+      region = sauService.removePathId(path);
+    } else {
+      region = path + '/';
+    }
+
+    if ($routeParams.id) {
+      openModal({region: region.slice(0,-1), region_id: $routeParams.id});
     }
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
@@ -89,16 +92,7 @@ angular.module('sauWebApp')
     });
 
     // get regions
-    var url = SAU_CONFIG.api_url;
-    // move the prefixed '/' to postfix for the API
-    var region = '';
-    var path = $location.$$path.slice(1);
-    if ($routeParams.id) {
-      region = sauService.removePathId(path);
-    } else {
-      region = path + '/';
-    }
-    url = url + region;
+    var url = SAU_CONFIG.api_url + region;
     $http.get(url, {cache: true})
       .success(function(data) {
         angular.extend($scope, {

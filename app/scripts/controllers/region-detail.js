@@ -1,14 +1,12 @@
 'use strict';
 
-angular.module('sauWebApp').controller('RegionDetailCtrl', function ($scope, $modalInstance, $location, sauService, feature) {
+angular.module('sauWebApp').controller('RegionDetailCtrl', function ($scope, $modalInstance, $location, sauService, options) {
 
-  $scope.feature = feature;
-  $scope.selected = {
-    feature: $scope.feature
-  };
+
+  $scope.feature = sauService.Region.get(options).data;
 
   $scope.ok = function () {
-    $modalInstance.close($scope.selected.feature);
+    $modalInstance.close($scope.feature);
     var newPath = sauService.removePathId($location.path());
     $location.path(newPath);
   };
