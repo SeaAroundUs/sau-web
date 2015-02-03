@@ -29,11 +29,10 @@ angular
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
       })
-      // .when('/eez/:id', {
-      //   templateUrl: 'views/region-detail/main.html',
-      //   // reloadOnSearch: false,
-      //   controller: 'RegionDetailCtrl',
-      // })
+      .when('/eez/:id', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

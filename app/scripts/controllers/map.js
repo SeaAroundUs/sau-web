@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $http, $location, $modal, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
@@ -21,19 +21,34 @@ angular.module('sauWebApp')
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature, leafletEvent) {
-        console.log(feature, leafletEvent);
+    var openModal = function(feature) {
+      return $modal.open({
+                templateUrl: 'views/region-detail/main.html',
+                controller: 'RegionDetailCtrl',
+                size: 'lg',
+                resolve: {
+                  feature: function () {
+                    return feature;
+                  },
+                  region_id: {
+                    feature: function() {
+                      return $scope.region_id;
+                    }
+                  }
+                }
+      });
+    };
 
-        var modalInstance = $modal.open({
-          templateUrl: 'views/region-detail/main.html',
-          controller: 'ModalInstanceCtrl',
-          size: 'lg',
-          resolve: {
-            feature: function () {
-              return feature;
-            }
-          }
-        });
+    $scope.region_id = $routeParams.id;
+
+    if ($scope.region_id) {
+      var feature = {region_id: $scope.region_id}; // FIXME: get feature from controller
+      openModal(feature);
+    }
+
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature, leafletEvent) {
+
+        var modalInstance = openModal(feature);
 
         modalInstance.result.then(function (selectedItem) {
           $scope.selected = selectedItem;
