@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $http, $location, $modal, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         var layer = leafletEvent.target;
@@ -21,19 +21,34 @@ angular.module('sauWebApp')
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature, leafletEvent) {
-        console.log(feature, leafletEvent);
+    var openModal = function(feature) {
+      return $modal.open({
+                templateUrl: 'views/region-detail/main.html',
+                controller: 'RegionDetailCtrl',
+                size: 'lg',
+                resolve: {
+                  feature: function () {
+                    return feature;
+                  },
+                  region_id: {
+                    feature: function() {
+                      return $scope.region_id;
+                    }
+                  }
+                }
+      });
+    };
 
-        var modalInstance = $modal.open({
-          templateUrl: 'views/region-detail/main.html',
-          controller: 'ModalInstanceCtrl',
-          size: 'lg',
-          resolve: {
-            feature: function () {
-              return feature;
-            }
-          }
-        });
+    if ($routeParams.id) {
+      var feature = {region_id: $routeParams.id}; // FIXME: get feature from controller
+      openModal(feature);
+    }
+
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature, leafletEvent) {
+
+        console.debug(leafletEvent);
+
+        var modalInstance = openModal(feature);
 
         modalInstance.result.then(function (selectedItem) {
           $scope.selected = selectedItem;
@@ -82,10 +97,23 @@ angular.module('sauWebApp')
       }
     });
 
+    // FIXME: duplicated from region-detail.js
+    var removePathId = function(path) {
+      var to = path.lastIndexOf('/');
+      to = to === -1 ? path.length : to + 1;
+      return path.substring(0, to);
+    };
+
     // get regions
     var url = SAU_CONFIG.api_url;
     // move the prefixed '/' to postfix for the API
-    var region = $location.$$path.slice(1) + '/';
+    var region = '';
+    var path = $location.$$path.slice(1);
+    if ($routeParams.id) {
+      region = removePathId(path) + '/';
+    } else {
+      region = path + '/';
+    }
     url = url + region;
     $http.get(url, {cache: true})
       .success(function(data) {

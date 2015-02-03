@@ -18,12 +18,8 @@
     <!-- endbuild -->
 
   </head>
-  <body ng-app="sauWebApp" ng-controller="MainCtrl">
+  <body ng-app="sauWebApp" ng-controller="RootCtrl">
     <div id="root">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <!-- Add your site or application content here -->
       <div class="header">
         <div id="logos" class="clearfix">
           <a href="#/">
@@ -89,6 +85,7 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/config.js"></script>
+        <script src="scripts/controllers/root.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/map.js"></script>
         <script src="scripts/controllers/region-detail.js"></script>

@@ -5,13 +5,13 @@ describe('Controller: MainCtrl', function () {
   // load the controller's module
   beforeEach(module('sauWebApp'));
 
-  var MainCtrl,
+  var RootCtrl,
     scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainCtrl = $controller('MainCtrl', {
+    RootCtrl = $controller('RootCtrl', {
       $scope: scope
     });
   }));
