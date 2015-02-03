@@ -94,7 +94,7 @@ angular.module('sauWebApp')
     var region = '';
     var path = $location.$$path.slice(1);
     if ($routeParams.id) {
-      region = sauService.removePathId(path) + '/';
+      region = sauService.removePathId(path);
     } else {
       region = path + '/';
     }
