@@ -37,11 +37,23 @@ angular
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
       })
+      .when('/lme/:id', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+      })
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
       })
+      .when('/rfmo/:id', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+      })
       .when('/fao', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl'
+      })
+      .when('/fao/:id', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl'
       })
