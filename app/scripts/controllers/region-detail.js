@@ -1,5 +1,7 @@
 'use strict';
 
+/* global d3 */ /* for jshint */
+
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $modalInstance, $location, sauService, options) {
 
@@ -59,7 +61,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
            ]);
 
          color.domain(keys);
-         var parseDate = d3.time.format("%Y").parse;
 
          var groups = color.domain().map(function (label) {
            var years = d3.keys(data.data[label]);

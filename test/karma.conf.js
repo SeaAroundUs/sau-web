@@ -28,6 +28,9 @@ module.exports = function(config) {
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'bower_components/angular-ui-bootstrap-bower/ui-bootstrap-tpls.js',
+      'bower_components/d3/d3.js',
+      'bower_components/nvd3-community/build/nv.d3.js',
+      'bower_components/angular-nvd3/dist/angular-nvd3.min.js',
       'app/scripts/**/*.js',
       // 'test/mock/**/*.js',
       'test/spec/**/*.js'
