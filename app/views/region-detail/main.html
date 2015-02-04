@@ -1,10 +1,45 @@
-<div class="modal-header">
-    <h3 class="modal-title">MODAL TITLE</h3>
-</div>
-<div class="modal-body">
-    <p>feature: {{feature}}</p>
-</div>
-<div class="modal-footer">
-    MODAL FOOTER
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
+<div class="container modal-body">
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="modal-title pull-left">{{feature.data.title}}</h3>
+            <button class="btn btn-primary x-button pull-right" ng-click="ok()">X</button>
+            <button class="btn btn-primary x-button pull-right" ng-click="ok()">Download Data</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <img src="http://placekitten.com/g/1200/400" />
+        </div>
+    </div>
+
+    <div class="row">
+        <h3 class="modal-title">{{feature.data.title}}</h3>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="row">
+                <img src="http://placekitten.com/g/400/350" />
+            </div>
+            <div class="row">
+                <img src="http://placekitten.com/g/400/290" />
+            </div>
+            <div class="row">
+                <img src="http://placekitten.com/g/400/280" />
+            </div>
+        </div>
+
+        <div class="col-sm-7">
+            <tabset>
+              <tab heading="Catch Info">Static content</tab>
+              <tab heading="Biodiversity"><img src="http://placekitten.com/g/400/350" /></tab>
+              <tab heading="Ecosystems"><img src="http://placekitten.com/g/400/351" /></tab>
+              <tab heading="Governance"><img src="http://placekitten.com/g/400/352" /></tab>
+              <tab heading="Indicators"><img src="http://placekitten.com/g/400/349" /></tab>
+              <tab heading="Feedback"><img src="http://placekitten.com/g/400/348" /></tab>
+            </tabset>
+        </div>
+    </div>
+
 </div>
