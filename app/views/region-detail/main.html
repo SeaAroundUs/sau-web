@@ -10,11 +10,9 @@
     <div class="row">
         <div class="content col-sm-12">
             <label for="dimension">Dimensions</label>
-            <select ng-model="dimension" ng-options="opt as opt.label for opt in dimensions"></select>
-            <select ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
-            <select ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
-
-
+            <select ng-change="updateData()" ng-model="dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+            <select ng-change="updateData()" ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
+            <select ng-change="updateData()" ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
 
             <img src="http://placekitten.com/g/1200/400" />
         </div>
