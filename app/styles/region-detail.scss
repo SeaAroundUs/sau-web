@@ -1,9 +1,33 @@
 .modal-content {
     background-color: black;
     color: white;
-    div.row > div {
+    div.row {
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    div.content {
         background-color: white;
         color: black;
+    }
+    button.x-button {
+        margin-left: 20px;
+        background-color: black;
+        border: 3px solid white;
+        border-radius: 20px;
+    }
+    .tabset {
+        padding-left: 0px;
+        padding-right: 0px;
+        ul.nav-tabs {
+            background-color: black;
+
+            li {
+                background-color:white;
+                color: black;
+                margin-left: 5px;
+                font-weight: bolder;
+            }
+        }
     }
 }
 .modal-lg {
