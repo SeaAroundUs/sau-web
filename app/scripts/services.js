@@ -10,8 +10,14 @@ angular.module('sauWebApp')
 
     var Region = $resource(SAU_CONFIG.api_url + ':region/:region_id');
 
+    var Data = $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/');
+
+    var CSVData = $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/?format=csv');
+
     return {
       removePathId: removePathId,
-      Region: Region
+      Region: Region,
+      Data: Data,
+      CSVData: CSVData
     };
   });

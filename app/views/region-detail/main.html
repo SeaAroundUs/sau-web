@@ -3,12 +3,19 @@
         <div class="col-sm-12">
             <h3 class="modal-title pull-left">{{feature.data.title}}</h3>
             <button class="btn btn-primary x-button pull-right" ng-click="ok()">X</button>
-            <button class="btn btn-primary x-button pull-right" ng-click="ok()">Download Data</button>
+            <button class="btn btn-primary x-button pull-right" ng-click="download()">Download Data</button>
         </div>
     </div>
 
     <div class="row">
         <div class="content col-sm-12">
+            <label for="dimension">Dimensions</label>
+            <select ng-model="dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+            <select ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
+            <select ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
+
+
+
             <img src="http://placekitten.com/g/1200/400" />
         </div>
     </div>
