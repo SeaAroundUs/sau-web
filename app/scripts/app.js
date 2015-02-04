@@ -17,7 +17,8 @@ angular
     'ngSanitize',
     'ngTouch',
     'leaflet-directive',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'nvd3'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs

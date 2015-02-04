@@ -14,7 +14,7 @@
             <select ng-change="updateData()" ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
             <select ng-change="updateData()" ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
 
-            <img src="http://placekitten.com/g/1200/400" />
+            <nvd3 options='options' data='data'></nvd3>
         </div>
     </div>
 

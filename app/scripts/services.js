@@ -10,7 +10,7 @@ angular.module('sauWebApp')
 
     var Region = $resource(SAU_CONFIG.api_url + ':region/:region_id');
 
-    var Data = $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/');
+    var Data = $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/', {}, {get: {method: 'GET', cache: true}});
 
     var CSVData = $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/?format=csv');
 
