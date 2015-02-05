@@ -18,6 +18,7 @@ angular.module('sauWebApp')
       removePathId: removePathId,
       Region: Region,
       Data: Data,
-      CSVData: CSVData
+      CSVData: CSVData,
+      api_url: SAU_CONFIG.api_url
     };
   });

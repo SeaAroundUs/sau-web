@@ -3,7 +3,7 @@
 /* global d3 */ /* for jshint */
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $modalInstance, $location, sauService, options) {
+  function ($scope, $modalInstance, $location, $window, sauService, options) {
 
     $scope.dimensions = [
       {label: 'taxon', value: 'taxon'},
@@ -34,6 +34,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.feature = sauService.Region.get(options);
 
+    var data_options = options;
+
     $scope.ok = function () {
       $modalInstance.close($scope.feature);
       var newPath = sauService.removePathId($location.path());
@@ -41,13 +43,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.download = function() {
-      // FIXME: the request is working fine, but how to get the
-      // file downloaded?
-      // sauService.CSVData.get(data_options);
+      // construct url manually, I don't know how to get it out of the $resource
+      var url = sauService.api_url + options.region + '/'
+        + $scope.measure.value + '/'
+        + $scope.dimension.value
+        + '/?format=csv&limit=' + $scope.limit.value
+        + '&region_id=' + options.region_id;
+      $window.open(url, '_blank');
     };
 
     $scope.updateData = function() {
-      var data_options = options;
       data_options.dimension = $scope.dimension.value;
       data_options.measure = $scope.measure.value;
       data_options.limit = $scope.limit.value;
