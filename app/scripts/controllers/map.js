@@ -23,7 +23,7 @@ angular.module('sauWebApp')
       });
     };
 
-    $scope.region = region;
+    $scope.$parent.region = region;
 
     if ($routeParams.id) {
       openModal({region: region, region_id: $routeParams.id});
@@ -32,7 +32,7 @@ angular.module('sauWebApp')
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         $scope.$parent.hoverRegion = feature;
         var layer = leafletEvent.target;
-        layer.setStyle(highlightStyle);
+        layer.setStyle(sauService.mapConfig.highlightStyle);
         layer.bringToFront();
     });
 
@@ -42,27 +42,9 @@ angular.module('sauWebApp')
 
     $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature) {
         var newPath = $location.path() + '/' + feature.properties.region_id;
-        $location.path(newPath);
+        $location.path(newPath, false);
+        openModal({region: $scope.region, region_id: feature.properties.region_id});
     });
-
-    var highlightStyle = {
-        fillColor: '#00f',
-    };
-
-    var defaultStyle = {
-      color: 'black',
-      stroke: true,
-      weight: 1,
-      opacity: 1.0,
-      fillColor: 'black',
-      fillOpacity: 0.3,
-      lineCap: 'round'
-    };
-
-    var maxBounds = leafletBoundsHelpers.createBoundsFromArray([
-      [-85, -180],
-      [85, 180]
-    ]);
 
     angular.extend($scope, {
 
@@ -71,8 +53,6 @@ angular.module('sauWebApp')
         lng: 0,
         zoom: 3
       },
-
-      maxbounds: maxBounds,
 
       defaults: {
         tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
@@ -83,18 +63,6 @@ angular.module('sauWebApp')
         },
       }
     });
-
-    // get regions
-    sauService.Regions.get({region:region})
-      .$promise.then(function(data) {
-        angular.extend($scope, {
-          geojson: {
-            data: data.data,
-            style: defaultStyle,
-            resetStyleOnMouseout: true
-          }
-        });
-      });
 
     $scope.searchIP = function(ip) {
       var url = 'http://freegeoip.net/json/' + ip;

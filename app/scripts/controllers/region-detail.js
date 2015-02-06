@@ -46,6 +46,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.close = function () {
       $modalInstance.close($scope.feature);
+      $location.path('/'+region_options.region, false);
     };
 
     $scope.download = function() {

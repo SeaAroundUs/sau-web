@@ -31,9 +31,11 @@ module.exports = function(config) {
       'bower_components/d3/d3.js',
       'bower_components/nvd3-community/build/nv.d3.js',
       'bower_components/angular-nvd3/dist/angular-nvd3.min.js',
+      'bower_components/angular-cache/dist/angular-cache.js',
       'app/scripts/**/*.js',
       // 'test/mock/**/*.js',
-      'test/spec/**/*.js'
+      'test/spec/**/*.js',
+      '.tmp/scripts/config.js'
     ],
 
     // list of files / patterns to exclude
