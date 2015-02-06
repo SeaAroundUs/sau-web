@@ -4,7 +4,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $modalInstance, $location, $window, sauService, options) {
+  function ($scope, $modalInstance, $location, $window, sauService, region_options) {
 
     $scope.dimensions = [
       {label: 'taxon', value: 'taxon'},
@@ -29,15 +29,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     ];
 
     $scope.colors = colorbrewer;
-    $scope.color = $scope.colors.Set1;
+
+    $scope.colors.SAU= {
+      11: ['#f00','#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#000',
+            '#08f', '#0f8', '#f80', '#8f0', '#80f', '#f08'
+          ]
+    };
+
+    $scope.color = $scope.colors.SAU;
 
     $scope.dimension = $scope.dimensions[0];
     $scope.measure = $scope.measures[0];
     $scope.limit = $scope.limits[1];
 
-    $scope.feature = sauService.Region.get(options);
-
-    var data_options = options;
+    $scope.feature = sauService.Region.get(region_options);
 
     $scope.ok = function () {
       $modalInstance.close($scope.feature);
@@ -64,15 +69,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.updateData = function() {
+      var data_options = region_options;
       data_options.dimension = $scope.dimension.value;
       data_options.measure = $scope.measure.value;
       data_options.limit = $scope.limit.value;
-      data_options.geo_id = options.region_id;
       var data = sauService.Data.get(data_options, function() {
          $scope.data = data.data;
        });
     };
-
 
     $scope.updateColor = function() {
       if ($scope.color[11]){
@@ -83,33 +87,28 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.options = {
-        chart: {
-            type: 'stackedAreaChart',
-            height: 450,
-            margin : {
-                top: 20,
-                right: 20,
-                bottom: 60,
-                left: 55
-            },
-            x: function(d){return d[0];},
-            y: function(d){return d[1];},
-            useVoronoi: false,
-            transitionDuration: 500,
-            useInteractiveGuideline: true,
-            xAxis: {
-                showMaxMin: false,
-                tickValues: [1950,1960,1970,1980,1990,2000],
-                tickFormat: function(d) {
-                    return d;
-                }
-            },
-            yAxis: {
-                tickFormat: function(d){
-                    return d3.format(',.2f')(d);
-                }
+      chart: {
+          type: 'stackedAreaChart',
+          height: 450,
+          margin : {
+              top: 20,
+              right: 20,
+              bottom: 60,
+              left: 55
+          },
+          x: function(d){return d[0];},
+          y: function(d){return d[1];},
+          transitionDuration: 250,
+          useInteractiveGuideline: true,
+          xAxis: {
+              showMaxMin: false,
+              tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+          },
+          yAxis: {
+            tickFormat: function(d){
+              return d3.format(',.1s')(d);
             }
-
+          }
         }
       };
 

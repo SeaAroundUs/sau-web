@@ -10,14 +10,14 @@
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    var openModal = function(options) {
+    var openModal = function(region_options) {
       return $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
                 size: 'lg',
                 resolve: {
-                  options: function () {
-                    return options;
+                  region_options: function () {
+                    return region_options;
                   }
                 }
       });
