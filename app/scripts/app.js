@@ -18,12 +18,22 @@ angular
     'ngTouch',
     'leaflet-directive',
     'ui.bootstrap',
-    'nvd3'
+    'nvd3',
+    'angular-data.DSCacheFactory'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }])
+  .run(function($http, DSCacheFactory) {
+
+      var cache = new DSCacheFactory('defaultCache', {
+          deleteOnExpire: 'aggressive',
+          storageMode: 'localStorage'
+      });
+
+      $http.defaults.cache = cache.get('defaultCache');
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -33,10 +43,12 @@ angular
       .when('/eez', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
+        resolve: {region: function() {return 'eez';}}
       })
       .when('/eez/:id', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
+        resolve: {region: function() {return 'eez';}}
       })
       .when('/lme', {
         templateUrl: 'views/map.html',

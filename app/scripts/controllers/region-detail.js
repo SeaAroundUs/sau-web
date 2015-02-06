@@ -44,10 +44,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.feature = sauService.Region.get(region_options);
 
-    $scope.ok = function () {
+    $scope.close = function () {
       $modalInstance.close($scope.feature);
-      var newPath = sauService.removePathId($location.path());
-      $location.path(newPath);
     };
 
     $scope.download = function() {
@@ -55,7 +53,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       // This should probably be in a service or something too.
       var url = ['',
         sauService.api_url,
-        options.region,
+        region_options.region,
         '/',
         $scope.measure.value,
         '/',
@@ -63,7 +61,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         '/?format=csv&limit=',
         $scope.limit.value,
         '&region_id=',
-        options.region_id,
+        region_options.region_id,
       ].join('');
       $window.open(url, '_blank');
     };

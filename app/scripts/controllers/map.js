@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
 
     var openModal = function(region_options) {
       return $modal.open({
@@ -23,17 +23,10 @@ angular.module('sauWebApp')
       });
     };
 
-    // move the prefixed '/' to postfix for the API
-    var region = '';
-    var path = $location.$$path.slice(1);
-    if ($routeParams.id) {
-      region = sauService.removePathId(path);
-    } else {
-      region = path + '/';
-    }
+    $scope.region = region;
 
     if ($routeParams.id) {
-      openModal({region: region.slice(0,-1), region_id: $routeParams.id});
+      openModal({region: region, region_id: $routeParams.id});
     }
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
@@ -92,9 +85,8 @@ angular.module('sauWebApp')
     });
 
     // get regions
-    var url = SAU_CONFIG.api_url + region;
-    $http.get(url, {cache: true})
-      .success(function(data) {
+    sauService.Regions.get({region:region})
+      .$promise.then(function(data) {
         angular.extend($scope, {
           geojson: {
             data: data.data,

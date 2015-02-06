@@ -2,7 +2,6 @@
     background-color: black;
     color: white;
     div.row {
-        padding: 10px;
         margin-bottom: 10px;
     }
     div.content {
@@ -28,6 +27,9 @@
                 font-weight: bolder;
             }
         }
+    }
+    .map-cells {
+        padding: 0px;
     }
 }
 .modal-lg {
