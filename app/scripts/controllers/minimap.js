@@ -15,8 +15,8 @@ angular.module('sauWebApp')
       },
 
     });
-    $scope.$parent.feature.$promise.then(function() {
-      var bounds = L.geoJson($scope.$parent.feature.data.geojson).getBounds();
+    $scope.feature.$promise.then(function() {
+      var bounds = L.geoJson($scope.feature.data.geojson).getBounds();
       leafletData.getMap().then(function(map) {
         map.fitBounds(bounds);
 
@@ -24,7 +24,7 @@ angular.module('sauWebApp')
 
       angular.extend($scope, {
         geojson: {
-          data: $scope.$parent.feature.data.geojson,
+          data: $scope.feature.data.geojson,
           style: sauService.mapConfig.defaultStyle,
           resetStyleOnMouseout: true
         },

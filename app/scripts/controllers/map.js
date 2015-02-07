@@ -10,23 +10,24 @@
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
 
-    var openModal = function(region_options) {
+    $scope.$parent.region = region;
+
+    var openModal = function(region_id) {
       return $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
+                scope: $scope,
                 size: 'lg',
                 resolve: {
-                  region_options: function () {
-                    return region_options;
+                  region_id: function () {
+                    return region_id;
                   }
                 }
       });
     };
 
-    $scope.$parent.region = region;
-
     if ($routeParams.id) {
-      openModal({region: region, region_id: $routeParams.id});
+      openModal($routeParams.id);
     }
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
@@ -43,7 +44,7 @@ angular.module('sauWebApp')
     $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature) {
         var newPath = $location.path() + '/' + feature.properties.region_id;
         $location.path(newPath, false);
-        openModal({region: $scope.region, region_id: feature.properties.region_id});
+        openModal(feature.properties.region_id);
     });
 
     angular.extend($scope, {
@@ -64,19 +65,6 @@ angular.module('sauWebApp')
       }
     });
 
-    $scope.searchIP = function(ip) {
-      var url = 'http://freegeoip.net/json/' + ip;
-      $http.defaults.headers.common = {};
-      $http.get(url).success(function(res) {
-        $scope.center = {
-          lat: res.latitude,
-          lng: res.longitude,
-          zoom: 3
-        };
-        $scope.ip = res.ip;
-        console.log(res);
-      });
-    };
+    $scope.getFeatures();
 
-    // $scope.searchIP('');
   });

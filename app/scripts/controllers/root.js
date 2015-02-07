@@ -52,6 +52,5 @@ angular.module('sauWebApp')
         });
       };
 
-    $scope.getFeatures();
 
   });
