@@ -15,11 +15,13 @@
             <select ng-change="updateData()" ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
             <label for="limit">Limit: </label>
             <select ng-change="updateData()" ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
-            <div class="nvd3-container">
+
+            <div ng-controller="CatchChartCtrl" class="nvd3-container">
+                <label for="color">Color scheme: </label>
+                <select ng-model="color" ng-options="c for (c,value) in colors"></select>
                 <nvd3 options='options' data='data'></nvd3>
             </div>
-            <label for="color">Color scheme: </label>
-            <select ng-change="updateColor()" ng-model="color" ng-options="c for (c,value) in colors"></select>
+
         </div>
     </div>
 
