@@ -23,43 +23,44 @@
 
   </head>
   <body ng-app="sauWebApp" ng-controller="RootCtrl">
-    <div id="root">
-      <div class="header">
-        <div id="logos" class="clearfix">
-          <a href="#/">
-            <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo">
-          </a>
-          <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo">
+    <div id="container">
+        <div id="root">
+          <div class="header">
+            <div id="logos" class="clearfix">
+              <a href="#/">
+                <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo">
+              </a>
+              <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo">
+            </div>
+            <ul class="nav nav-pills">
+              <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
+                <a>{{t.name}}</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="row regions">
+            <span>Show Region:</span>
+            <a ng-class="{ active: region=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
+            <a ng-class="{ active: region=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
+            <a ng-class="{ active: region=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
+            <a ng-class="{ active: region=='fao'}" class="btn btn-default" ng-click="changeRegion('fao')" role="button">High Seas</a>
+            <a ng-class="{ active: region=='global'}" class="btn btn-default" ng-click="changeRegion('global')" role="button">Global</a>
+            <span ng-bind="hoverRegion.properties.title"></span>
+          </div>
+
+          <div ng-view=""></div>
+
+          <div id="root_footer" class="row content" ng-include="template.url"></div>
+
         </div>
-        <ul class="nav nav-pills">
-          <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
-            <a>{{t.name}}</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="row regions">
-        <span>Show Region:</span>
-        <a ng-class="{ active: region=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
-        <a ng-class="{ active: region=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
-        <a ng-class="{ active: region=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
-        <a ng-class="{ active: region=='fao'}" class="btn btn-default" ng-click="changeRegion('fao')" role="button">High Seas</a>
-        <a ng-class="{ active: region=='global'}" class="btn btn-default" ng-click="changeRegion('global')" role="button">Global</a>
-        <span ng-bind="hoverRegion.properties.title"></span>
-      </div>
-
-      <div ng-view=""></div>
-
-      <div id="root_footer" class="row content" ng-include="template.url"></div>
-
+        <div id="footer">
+          <span class="">Copyright Information here. All rights reserved.</span>
+          <a class="" href="#">Privacy Policies</a>
+          <span class="">|</span>
+          <a class="" href="#">Terms and Conditions</a>
+        </div>
     </div>
-    <div id="footer">
-      <span class="">Copyright Information here. All rights reserved.</span>
-      <a class="" href="#">Privacy Policies</a>
-      <span class="">|</span>
-      <a class="" href="#">Terms and Conditions</a>
-    </div>
-
 
     <!-- build:js(.) scripts/oldieshim.js -->
     <!--[if lt IE 9]>
