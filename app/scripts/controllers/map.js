@@ -8,12 +8,12 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
+  .controller('MapCtrl', function ($scope, $q, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region, detailView) {
 
     $scope.$parent.region = region;
 
     var openModal = function(region_id) {
-      return $modal.open({
+      $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
                 scope: $scope,
@@ -23,8 +23,9 @@ angular.module('sauWebApp')
                     return region_id;
                   }
                 }
-      });
+        });
     };
+
 
     if ($routeParams.id) {
       openModal($routeParams.id);
@@ -42,9 +43,12 @@ angular.module('sauWebApp')
     });
 
     $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature) {
-        var newPath = $location.path() + '/' + feature.properties.region_id;
-        $location.path(newPath, false);
-        openModal(feature.properties.region_id);
+        // unless modal is open
+        if (! detailView) {
+          var newPath = $scope.region + '/' + feature.properties.region_id;
+          openModal(feature.properties.region_id);
+          $location.path(newPath, false);
+        }
     });
 
     angular.extend($scope, {
@@ -54,17 +58,10 @@ angular.module('sauWebApp')
         lng: 0,
         zoom: 3
       },
+      defaults: sauService.mapConfig.defaults
 
-      defaults: {
-        tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
-        tileLayerOptions: {
-          noWrap: true,
-          detectRetina: true, // no idea what this does
-          reuseTiles: true // nor this
-        },
-      }
     });
 
-    $scope.getFeatures();
+    $scope.getRegions();
 
   });

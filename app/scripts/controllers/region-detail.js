@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $modalInstance, $location, $window, sauService, region_id) {
+  function ($scope, $location, $modalInstance, $window, sauService, region_id) {
 
     $scope.dimensions = [
       {label: 'taxon', value: 'taxon'},
@@ -30,9 +30,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.limit = $scope.limits[1];
 
     $scope.feature = sauService.Region.get({region: $scope.region, region_id: region_id});
+    $scope.modal = $modalInstance;
 
     $scope.close = function () {
-      $modalInstance.close($scope.feature);
+      $modalInstance.close();
       $location.path('/'+$scope.region, false);
     };
 

@@ -23,11 +23,12 @@ angular.module('sauWebApp')
     $scope.hoverRegion = {};
 
     $scope.region = 'eez';
+    $scope.modal = null;
 
     $scope.changeRegion = function(region) {
       $location.path(region, false);
       $scope.region = region;
-      $scope.getFeatures();
+      $scope.getRegions();
     };
 
     $scope.updateInclude = function(t) {
@@ -38,16 +39,17 @@ angular.module('sauWebApp')
       return viewLocation === $location.path();
     };
 
-    $scope.getFeatures = function() {
+    $scope.getRegions = function() {
 
-      sauService.Regions.get({region:$scope.region})
+      $scope.regions = sauService.Regions.get({region:$scope.region})
         .$promise.then(function(data) {
-          angular.extend($scope, {
-            geojson: {
+          $scope.regions = {
               data: data.data,
               style: sauService.mapConfig.defaultStyle,
               resetStyleOnMouseout: true
-            }
+          };
+          angular.extend($scope, {
+            geojson: $scope.regions
           });
         });
       };
