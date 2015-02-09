@@ -446,6 +446,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'newer:jshint',
       'test',
+      'clean:dist',
       'clean:server',
       'ngconstant:development',
       'wiredep',

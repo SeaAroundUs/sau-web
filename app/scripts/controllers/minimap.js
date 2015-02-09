@@ -6,7 +6,7 @@ angular.module('sauWebApp')
   .controller('MiniMapCtrl', function ($scope, sauService, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
-      defaults: sauService.mapConfig.defaults,
+      defaults: sauService.mapConfig.miniMapDefaults,
     });
 
     $scope.feature.$promise.then(function() {

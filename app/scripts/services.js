@@ -31,6 +31,13 @@ angular.module('sauWebApp')
           // detectRetina: true, // no idea what this does
           // reuseTiles: true // nor this
         }
+      },
+      miniMapDefaults: {
+        tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false,
+        zoomControl: false
       }
     };
 

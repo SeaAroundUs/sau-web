@@ -8,6 +8,15 @@
         background-color: white;
         color: black;
     }
+    .padded {
+        padding: 20px;
+    }
+    table.metrics {
+        width: 100%;
+        td {
+            padding: 2px;
+        }
+    }
     button.x-button {
         margin-left: 20px;
         background-color: black;

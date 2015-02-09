@@ -34,11 +34,13 @@
             <div class="minimap content row" ng-controller="MiniMapCtrl">
                 <leaflet id="minimap" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>
             </div>
-            <div class="content row">
-                <img src="http://placekitten.com/g/400/290" />
-            </div>
-            <div class="content row">
-                <img src="http://placekitten.com/g/400/295" />
+            <div class="padded content row">
+                <table class="metrics">
+                    <tr ng-repeat="metric in feature.data.metrics">
+                        <td><a>{{metric.title}}</a></td>
+                        <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
+                    </tr>
+                </table>
             </div>
         </div>
 
