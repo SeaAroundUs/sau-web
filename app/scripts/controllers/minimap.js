@@ -13,6 +13,7 @@ angular.module('sauWebApp')
       var bounds = L.geoJson($scope.feature.data.geojson).getBounds();
       leafletData.getMap().then(function(map) {
         map.fitBounds(bounds);
+        map.invalidateSize(false); // fix drawing bug
       });
 
       angular.extend($scope, {
