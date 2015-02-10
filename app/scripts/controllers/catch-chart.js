@@ -9,7 +9,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     $scope.options = {
       chart: {
           type: 'stackedAreaChart',
-          height: 400,
+          height: 350,
           margin : {
               top: 20,
               right: 20,

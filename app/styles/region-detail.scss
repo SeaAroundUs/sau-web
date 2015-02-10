@@ -23,9 +23,10 @@
         border: 3px solid white;
         border-radius: 20px;
     }
-    .tabset {
-        padding-left: 0px;
+    .tabset.content {
+        padding-left: 10px;
         padding-right: 0px;
+        background-color: black;
         ul.nav-tabs {
             background-color: black;
 
@@ -35,6 +36,14 @@
                 margin-left: 5px;
                 font-weight: bolder;
             }
+            :first-child {
+                margin-left: 0px;
+            }
+        }
+
+        .container-fluid {
+            padding-top: 40px;
+            background-color: white;
         }
     }
     .map-cells {
@@ -47,6 +56,6 @@
     margin-top:0px;
 }
 .nvd3-container {
-    height: 400px;
+    height: 350px;
 }
 

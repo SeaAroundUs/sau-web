@@ -4,19 +4,19 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $modalInstance, $location, $window, sauService, region_id) {
 
     $scope.dimensions = [
-      {label: 'taxon', value: 'taxon'},
-      {label: 'commercial group', value: 'commercialgroup'},
-      {label: 'functional group', value: 'functionalgroup'},
-      {label: 'country', value: 'country'},
-      {label: 'gear', value: 'gear'},
-      {label: 'sector', value: 'sector'},
-      {label: 'catchtype', value: 'catchtype'},
+      {label: 'Taxon', value: 'taxon'},
+      {label: 'Commercial Group', value: 'commercialgroup'},
+      {label: 'Functional Group', value: 'functionalgroup'},
+      {label: 'Country', value: 'country'},
+      {label: 'Gear', value: 'gear'},
+      {label: 'Sector', value: 'sector'},
+      {label: 'Catch Type', value: 'catchtype'},
     ];
 
-    $scope.measures = [
-      {label: 'tonnage', value: 'tonnage'},
-      {label: 'value', value: 'value'}
-    ];
+    $scope.measures = {
+      'tonnage': {label: 'Tonnage', value: 'tonnage'},
+      'value': {label: 'Value', value: 'value'}
+    };
 
     $scope.limits = [
       {label: '20', value: '20'},
@@ -25,9 +25,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       {label: '1', value: '1'},
     ];
 
-    $scope.dimension = $scope.dimensions[0];
-    $scope.measure = $scope.measures[0];
-    $scope.limit = $scope.limits[1];
+    $scope.formModel = {
+      dimension: $scope.dimensions[0],
+      measure: $scope.measures.tonnage,
+      limit : $scope.limits[1]
+    };
 
     $scope.feature = sauService.Region.get({region: $scope.region, region_id: region_id});
 
@@ -56,14 +58,19 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateData = function() {
       var data_options = {region: $scope.region, region_id: region_id};
-      data_options.dimension = $scope.dimension.value;
-      data_options.measure = $scope.measure.value;
-      data_options.limit = $scope.limit.value;
+      data_options.dimension = $scope.formModel.dimension.value;
+      data_options.measure = $scope.formModel.measure.value;
+      data_options.limit = $scope.formModel.limit.value;
       var data = sauService.Data.get(data_options, function() {
          $scope.data = data.data;
        });
     };
 
-    $scope.updateData();
+    $scope.clickFormLink = function(dim, measure) {
+      $scope.formModel.dimension = dim;
+      $scope.formModel.measure = $scope.measures[measure];
+    };
+
+    $scope.$watch('formModel', $scope.updateData, true);
 
 });

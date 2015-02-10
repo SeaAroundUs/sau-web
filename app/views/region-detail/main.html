@@ -10,11 +10,11 @@
     <div class="row">
         <div class="content col-sm-12">
             <label for="dimension">Dimension: </label>
-            <select ng-change="updateData()" ng-model="dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+            <select ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
             <label for="measure">Measure: </label>
-            <select ng-change="updateData()" ng-model="measure" ng-options="opt as opt.label for opt in measures"></select>
+            <select ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"></select>
             <label for="limit">Limit: </label>
-            <select ng-change="updateData()" ng-model="limit" ng-options="opt as opt.label for opt in limits"></select>
+            <select ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
 
             <div ng-controller="CatchChartCtrl" class="nvd3-container">
                 <label for="color">Color scheme: </label>
@@ -29,7 +29,7 @@
         <h3 class="modal-title">{{feature.data.title}}</h3>
     </div>
 
-    <div class="row">
+    <div class="two-columns row">
         <div class="map-cells col-sm-5">
             <div class="minimap content row" ng-controller="MiniMapCtrl">
                 <leaflet id="minimap" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>
@@ -46,7 +46,7 @@
 
         <div class="tabset content col-sm-7">
             <tabset>
-              <tab heading="Catch Info">Static content</tab>
+              <tab heading="Catch Info"><div ng-include="'views/region-detail/catch.html'"></div></tab>
               <tab heading="Biodiversity"><div ng-include="'views/region-detail/biodiversity.html'"></div></tab>
               <tab heading="Ecosystems"><div ng-include="'views/region-detail/ecosystems.html'"></div></tab>
               <tab heading="Governance"><div ng-include="'views/region-detail/governance.html'"></div></tab>
