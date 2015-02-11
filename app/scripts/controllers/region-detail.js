@@ -3,6 +3,8 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $modalInstance, $location, $window, sauService, region_id) {
 
+    $scope.region_id = region_id;
+
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
       {label: 'Commercial Group', value: 'commercialgroup'},

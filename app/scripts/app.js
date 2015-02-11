@@ -53,6 +53,11 @@ angular
         controller: 'MapCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

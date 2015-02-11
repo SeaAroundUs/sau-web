@@ -35,7 +35,7 @@ $darkBlue: rgb(2,32,64);
 #footer {
   @include darkBar;
   height: 80px;
-  position: absolute;
+  // position: absolute;
   bottom: 0px;
 }
 
