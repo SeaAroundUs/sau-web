@@ -12,8 +12,6 @@ angular.module('sauWebApp')
             });
         });
 
-    $scope.test = 'foo';
-
     $scope.trophic_options = {
       chart: {
           type: 'lineChart',
@@ -43,5 +41,6 @@ angular.module('sauWebApp')
       };
 
       $scope.fib_options = angular.copy($scope.trophic_options);
+      $scope.fib_options.chart.yAxis.axisLabel = 'fib index';
 
   });

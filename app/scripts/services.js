@@ -13,6 +13,8 @@ angular.module('sauWebApp')
 
     var MarineTrophicIndexData = $resource(SAU_CONFIG.api_url + ':region/marine-trophic-index/', {}, {get: {method: 'GET'}});
 
+    var StockStatusData = $resource(SAU_CONFIG.api_url + ':region/stock-status/', {}, {get: {method: 'GET'}});
+
     var mapConfig = {
       highlightStyle: {
         fillColor: '#00f',
@@ -48,6 +50,7 @@ angular.module('sauWebApp')
       Regions: Regions,
       Data: Data,
       MarineTrophicIndexData: MarineTrophicIndexData,
+      StockStatusData: StockStatusData,
       CSVData: CSVData,
       api_url: SAU_CONFIG.api_url,
       mapConfig: mapConfig

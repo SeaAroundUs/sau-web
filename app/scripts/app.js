@@ -58,6 +58,11 @@ angular
         controller: 'MarineTrophicIndexCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
