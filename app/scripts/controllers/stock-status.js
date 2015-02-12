@@ -6,7 +6,7 @@
 angular.module('sauWebApp')
   .controller('StockStatusCtrl', function ($scope, $routeParams, sauService, region) {
     $scope.data = {};
-    $scope.region = sauService.Region.get({region: $scope.region, region_id: $routeParams.id});
+    $scope.region = sauService.Region.get({region: region, region_id: $routeParams.id});
 
     var data = sauService.StockStatusData.get({region: region, region_id: $routeParams.id}, function() {
         angular.forEach(data.data, function(data_set, key) {
@@ -24,6 +24,8 @@ angular.module('sauWebApp')
               bottom: 60,
               left: 65
           },
+          showControls: false,
+          style: 'expand',
           x: function(d){return d[0];},
           y: function(d){return d[1];},
           useInteractiveGuideline: true,

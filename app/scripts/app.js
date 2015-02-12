@@ -39,10 +39,7 @@ angular
       .when('/', {
         redirectTo: '/eez'
       })
-      // .when('/', {
-      //   templateUrl: 'views/main.html',
-      //   controller: 'MainCtrl'
-      // })
+
       .when('/eez', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -63,6 +60,7 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -73,6 +71,17 @@ angular
         controller: 'MapCtrl',
         resolve: {region: function() {return 'lme';}}
       })
+      .when('/lme/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'lme';}}
+      })
+      .when('/lme/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'lme';}}
+      })
+
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -93,6 +102,17 @@ angular
         controller: 'MapCtrl',
         resolve: {region: function() {return 'fao';}}
       })
+      .when('/fao/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'fao';}}
+      })
+      .when('/fao/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'fao';}}
+      })
+
       .when('/global', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
