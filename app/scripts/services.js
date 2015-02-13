@@ -15,6 +15,8 @@ angular.module('sauWebApp')
 
     var StockStatusData = $resource(SAU_CONFIG.api_url + ':region/stock-status/', {}, {get: {method: 'GET'}});
 
+    var MultinationalFootprintData = $resource(SAU_CONFIG.api_url + ':region/multinational-footprint/', {}, {get: {method: 'GET'}});
+
     var mapConfig = {
       highlightStyle: {
         fillColor: '#00f',
@@ -51,6 +53,7 @@ angular.module('sauWebApp')
       Data: Data,
       MarineTrophicIndexData: MarineTrophicIndexData,
       StockStatusData: StockStatusData,
+      MultinationalFootprintData: MultinationalFootprintData,
       CSVData: CSVData,
       api_url: SAU_CONFIG.api_url,
       mapConfig: mapConfig

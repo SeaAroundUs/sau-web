@@ -60,6 +60,11 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/multinational-footprint', {
+        templateUrl: 'views/multinational-footprint.html',
+        controller: 'MultinationalFootprintCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
 
       .when('/lme', {
         templateUrl: 'views/map.html',
