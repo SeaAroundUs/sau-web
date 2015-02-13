@@ -10,7 +10,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       {label: 'Commercial Group', value: 'commercialgroup'},
       {label: 'Functional Group', value: 'functionalgroup'},
       {label: 'Country', value: 'country'},
-      {label: 'Gear', value: 'gear'},
+      // {label: 'Gear', value: 'gear'},
       {label: 'Sector', value: 'sector'},
       {label: 'Catch Type', value: 'catchtype'},
     ];

@@ -14,7 +14,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               top: 20,
               right: 20,
               bottom: 60,
-              left: 55
+              left: 85
           },
           x: function(d){return d[0];},
           y: function(d){return d[1];},
@@ -25,9 +25,11 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
           },
           yAxis: {
+            showMaxMin: false,
             tickFormat: function(d){
               return d3.format(',.1s')(d);
-            }
+            },
+            axisLabel: 'Measure'
           }
         }
       };
