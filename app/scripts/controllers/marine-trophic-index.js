@@ -1,17 +1,13 @@
 'use strict';
 
 /* global angular */
-/* global d3 */
-/* global ss */
 
 angular.module('sauWebApp')
   .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauService, region) {
 
     $scope.years = [];
 
-    $scope.index = function(index) {return data[index];};
-
-    $scope.thisIndex = "";
+    $scope.region = sauService.Region.get({region: region, region_id: $routeParams.id});
 
     var data = sauService.MarineTrophicIndexData.get({region: region, region_id: $routeParams.id}, function() {
 
@@ -24,8 +20,9 @@ angular.module('sauWebApp')
           if (xy[1]) {
             $scope.years.push(xy[0]);
           }
-        });
+        })
 
     });
+
 
   });
