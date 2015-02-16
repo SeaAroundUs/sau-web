@@ -20,6 +20,7 @@ angular.module('sauWebApp')
               bottom: 60,
               left: 85
           },
+          color: ['#00f', '#f00'],
           x: function(d){
             if (d){
               return d[0];
@@ -94,15 +95,18 @@ angular.module('sauWebApp')
       var y1 = regression.line()($scope.model.startYear);
       var y2 = regression.line()($scope.model.endYear);
 
-      var line = [
-        [x1, y1],
-        [x2, y2]
-      ];
+      var line = {
+        key: 'Regression Line',
+        values:
+        [
+          [x1, y1],
+          [x2, y2]
+        ]};
 
       if ($scope.chartdata.length == 1 ){
-        $scope.chartdata.push({key:'reg 1', values: line});
+        $scope.chartdata.push(line);
       } else {
-        $scope.chartdata[1] = {key:'reg 1', values: line};
+        $scope.chartdata[1] = line;
       }
 
     };

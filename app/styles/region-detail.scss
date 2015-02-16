@@ -57,6 +57,12 @@
 }
 .chart-container {
     height: 350px;
+    /* make points visible */
+    .nvd3.nv-line .nv-point
+    {
+        fill-opacity: 1 !important;
+    }
+
 }
 .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 1.0;
