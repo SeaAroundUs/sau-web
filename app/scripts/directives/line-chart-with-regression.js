@@ -28,7 +28,7 @@ angular.module('sauWebApp')
           },
           y: function(d){return d[1];},
           transitionDuration: 225,
-          // useInteractiveGuideline: true,
+          useInteractiveGuideline: false,
           showLegend: false,
           xAxis: {
               showMaxMin: false,
@@ -41,8 +41,13 @@ angular.module('sauWebApp')
                   return d3.format(',.2s')(d);
               },
               axisLabel: $scope.ylabel
-          }
-        }
+          },
+          tooltipContent:function(key, x, y, e, graph){
+            var data = $scope.chartdata[0].values;
+            var index = $scope.years.indexOf(x);
+            return x + ':' + $scope.chartdata[0].values[index][1];
+          },
+        },
       };
 
     $scope.$watch('years', function() {
