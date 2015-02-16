@@ -8,15 +8,9 @@ angular.module('sauWebApp')
   .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauService, region) {
 
     $scope.years = [];
-    $scope.model = {};
-    $scope.regressionModel = {};
-
-    $scope.showMaximizer = false;
-    $scope.showRegression = true;
 
     $scope.index = function(index) {return data[index];};
 
-    window.scope = $scope;
     $scope.thisIndex = "";
 
     var data = sauService.MarineTrophicIndexData.get({region: region, region_id: $routeParams.id}, function() {
@@ -31,17 +25,7 @@ angular.module('sauWebApp')
             $scope.years.push(xy[0]);
           }
         });
-        $scope.fullRange = {
-          startYear: $scope.years[0],
-          endYear: $scope.years[$scope.years.length-1]
-        };
-        $scope.model = angular.copy($scope.fullRange);
-        $scope.startYears = $scope.years;
-        $scope.endYears = $scope.years;
-        $scope.model.startYear = $scope.startYears[0];
-        $scope.model.endYear = $scope.endYears[$scope.endYears.length-1];
 
-        // $scope.computeRegression();
     });
 
     $scope.options = {
@@ -78,52 +62,6 @@ angular.module('sauWebApp')
         }
       };
 
-      // $scope.fib_options = angular.copy($scope.trophic_options);
-      // $scope.fib_options.chart.yAxis.axisLabel = 'fib index';
 
-      $scope.maximizeRange = function() {
-        $scope.model = angular.copy($scope.fullRange);
-        $scope.changeRange();
-      };
-
-      $scope.changeRange = function() {
-
-        $scope.showMaximizer = ! angular.equals($scope.model, $scope.fullRange);
-        var startIndex = $scope.years.indexOf($scope.model.startYear);
-        var endIndex = $scope.years.indexOf($scope.model.endYear);
-
-        $scope.startYears = $scope.years.slice(0,endIndex);
-        $scope.endYears = $scope.years.slice(startIndex);
-
-        angular.forEach($scope.data, function(time_series) {
-
-            var newSeries = {key: time_series.key, values: time_series.values.slice(startIndex,endIndex+1)};
-            $scope[time_series.key] = [newSeries];
-        });
-
-        $scope.computeRegression();
-      };
-
-      $scope.computeRegression = function() {
-        $scope.showRegression = false;
-        var regression = ss.linear_regression();
-        regression.data($scope.mean_trophic_level[0].values);
-        $scope.regressionModel.slope = regression.m();
-        $scope.regressionModel.intercept = regression.b();
-        $scope.regressionModel.r2 = ss.r_squared($scope.mean_trophic_level[0].values, regression.line());
-
-        var x1 = $scope.model.startYear;
-        var x2 = $scope.model.endYear;
-        var y1 = regression.line()($scope.model.startYear);
-        var y2 = regression.line()($scope.model.endYear);
-
-        var line = [
-          [x1, y1],
-          [x2, y2]
-        ];
-
-        $scope.mean_trophic_level.push({key:'reg 1', values: line});
-
-      };
 
   });
