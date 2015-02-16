@@ -20,7 +20,7 @@ angular.module('sauWebApp')
           if (xy[1]) {
             $scope.years.push(xy[0]);
           }
-        })
+        });
 
     });
 

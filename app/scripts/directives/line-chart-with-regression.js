@@ -1,5 +1,8 @@
 'use strict';
 
+/* global d3 */
+/* global ss */
+
 angular.module('sauWebApp')
 .directive('lineChartWithRegression', function() {
 
@@ -42,8 +45,7 @@ angular.module('sauWebApp')
               },
               axisLabel: $scope.ylabel
           },
-          tooltipContent:function(key, x, y, e, graph){
-            var data = $scope.chartdata[0].values;
+          tooltipContent:function(key, x){
             var index = $scope.years.indexOf(x);
             return x + ':' + $scope.chartdata[0].values[index][1];
           },
@@ -108,7 +110,7 @@ angular.module('sauWebApp')
           [x2, y2]
         ]};
 
-      if ($scope.chartdata.length == 1 ){
+      if ($scope.chartdata.length === 1 ){
         $scope.chartdata.push(line);
       } else {
         $scope.chartdata[1] = line;
