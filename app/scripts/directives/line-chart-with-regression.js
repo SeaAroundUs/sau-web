@@ -10,6 +10,40 @@ angular.module('sauWebApp')
     $scope.showMaximizer = false;
     $scope.showRegression = true;
 
+    $scope.options = {
+      chart: {
+          type: 'lineChart',
+          height: 250,
+          margin : {
+              top: 20,
+              right: 20,
+              bottom: 60,
+              left: 85
+          },
+          x: function(d){
+            if (d){
+              return d[0];
+            }
+          },
+          y: function(d){return d[1];},
+          transitionDuration: 225,
+          // useInteractiveGuideline: true,
+          showLegend: false,
+          xAxis: {
+              showMaxMin: false,
+              tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+              axisLabel: 'Year'
+          },
+          yAxis: {
+              showMaxMin: false,
+              tickFormat: function(d){
+                  return d3.format(',.2s')(d);
+              },
+              axisLabel: $scope.ylabel
+          }
+        }
+      };
+
     $scope.$watch('years', function() {
       $scope.fullRange = {
         startYear: $scope.years[0],
@@ -22,10 +56,7 @@ angular.module('sauWebApp')
       $scope.model.startYear = $scope.startYears[0];
       $scope.model.endYear = $scope.endYears[$scope.endYears.length-1];
 
-      $scope.fullChartdata = angular.copy($scope.chartdata);
-
     }, true);
-
 
     $scope.maximizeRange = function() {
       $scope.model = angular.copy($scope.fullRange);
@@ -41,20 +72,22 @@ angular.module('sauWebApp')
       $scope.startYears = $scope.years.slice(0,endIndex);
       $scope.endYears = $scope.years.slice(startIndex);
 
-
-      var newSeries = {key: $scope.fullChartdata[0].key, values: $scope.fullChartdata[0].values.slice(startIndex,endIndex+1)};
-      $scope.chartdata = [newSeries];
-
       $scope.computeRegression();
     };
 
     $scope.computeRegression = function() {
       $scope.showRegression = false;
       var regression = ss.linear_regression();
-      regression.data($scope.chartdata[0].values);
+
+      var startIndex = $scope.years.indexOf($scope.model.startYear);
+      var endIndex = $scope.years.indexOf($scope.model.endYear);
+
+      var newSeries = $scope.chartdata[0].values.slice(startIndex,endIndex+1);
+
+      regression.data(newSeries);
       $scope.regressionModel.slope = regression.m();
       $scope.regressionModel.intercept = regression.b();
-      $scope.regressionModel.r2 = ss.r_squared($scope.chartdata[0].values, regression.line());
+      $scope.regressionModel.r2 = ss.r_squared(newSeries, regression.line());
 
       var x1 = $scope.model.startYear;
       var x2 = $scope.model.endYear;
@@ -66,7 +99,11 @@ angular.module('sauWebApp')
         [x2, y2]
       ];
 
-      $scope.chartdata.push({key:'reg 1', values: line});
+      if ($scope.chartdata.length == 1 ){
+        $scope.chartdata.push({key:'reg 1', values: line});
+      } else {
+        $scope.chartdata[1] = {key:'reg 1', values: line};
+      }
 
     };
   };
@@ -77,7 +114,7 @@ angular.module('sauWebApp')
     scope: {
       years:'=',
       chartdata: '=chartdata',
-      options: '=options',
+      ylabel: '@ylabel'
     },
     controller: controller
   };
