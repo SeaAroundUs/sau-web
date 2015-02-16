@@ -14,35 +14,37 @@ angular.module('sauWebApp')
     $scope.showMaximizer = false;
     $scope.showRegression = true;
 
+    $scope.index = function(index) {return data[index];};
+
     window.scope = $scope;
+    $scope.thisIndex = "";
 
     var data = sauService.MarineTrophicIndexData.get({region: region, region_id: $routeParams.id}, function() {
 
-
-            $scope.data = data.data;
-            angular.forEach($scope.data, function(time_series) {
-                $scope[time_series.key] = [time_series];
-            });
-
-            angular.forEach($scope.data[0].values, function(xy) {
-              if (xy[1]) {
-                $scope.years.push(xy[0]);
-              }
-            });
-            $scope.fullRange = {
-              startYear: $scope.years[0],
-              endYear: $scope.years[$scope.years.length-1]
-            };
-            $scope.model = angular.copy($scope.fullRange);
-            $scope.startYears = $scope.years;
-            $scope.endYears = $scope.years;
-            $scope.model.startYear = $scope.startYears[0];
-            $scope.model.endYear = $scope.endYears[$scope.endYears.length-1];
-
-            // $scope.computeRegression();
+        $scope.data = data.data;
+        angular.forEach($scope.data, function(time_series) {
+            $scope[time_series.key] = [time_series];
         });
 
-    $scope.trophic_options = {
+        angular.forEach($scope.data[0].values, function(xy) {
+          if (xy[1]) {
+            $scope.years.push(xy[0]);
+          }
+        });
+        $scope.fullRange = {
+          startYear: $scope.years[0],
+          endYear: $scope.years[$scope.years.length-1]
+        };
+        $scope.model = angular.copy($scope.fullRange);
+        $scope.startYears = $scope.years;
+        $scope.endYears = $scope.years;
+        $scope.model.startYear = $scope.startYears[0];
+        $scope.model.endYear = $scope.endYears[$scope.endYears.length-1];
+
+        // $scope.computeRegression();
+    });
+
+    $scope.options = {
       chart: {
           type: 'lineChart',
           height: 250,
@@ -59,7 +61,7 @@ angular.module('sauWebApp')
           },
           y: function(d){return d[1];},
           transitionDuration: 225,
-          useInteractiveGuideline: true,
+          // useInteractiveGuideline: true,
           showLegend: false,
           xAxis: {
               showMaxMin: false,
@@ -76,15 +78,15 @@ angular.module('sauWebApp')
         }
       };
 
-      $scope.fib_options = angular.copy($scope.trophic_options);
-      $scope.fib_options.chart.yAxis.axisLabel = 'fib index';
+      // $scope.fib_options = angular.copy($scope.trophic_options);
+      // $scope.fib_options.chart.yAxis.axisLabel = 'fib index';
 
       $scope.maximizeRange = function() {
         $scope.model = angular.copy($scope.fullRange);
         $scope.changeRange();
       };
 
-      $scope.changeRange = function(newVal, oldVal) {
+      $scope.changeRange = function() {
 
         $scope.showMaximizer = ! angular.equals($scope.model, $scope.fullRange);
         var startIndex = $scope.years.indexOf($scope.model.startYear);
@@ -112,8 +114,8 @@ angular.module('sauWebApp')
 
         var x1 = $scope.model.startYear;
         var x2 = $scope.model.endYear;
-        var y1 = $scope.regressionModel.slope * $scope.model.startYear + $scope.regressionModel.intercept;
-        var y2 = $scope.regressionModel.slope * $scope.model.endYear + $scope.regressionModel.intercept;
+        var y1 = regression.line()($scope.model.startYear);
+        var y2 = regression.line()($scope.model.endYear);
 
         var line = [
           [x1, y1],
