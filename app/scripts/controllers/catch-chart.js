@@ -10,12 +10,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       chart: {
           type: 'stackedAreaChart',
           height: 350,
-          margin : {
-              top: 20,
-              right: 20,
-              bottom: 60,
-              left: 85
-          },
+          // margin : {
+          //     top: 20,
+          //     right: 20,
+          //     bottom: 60,
+          //     left: 85
+          // },
           x: function(d){return d[0];},
           y: function(d){return d[1];},
           transitionDuration: 250,
@@ -26,17 +26,18 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           },
           yAxis: {
             showMaxMin: false,
+            foo: 'bar',
             tickFormat: function(d){
               return d3.format(',.1s')(d);
             },
-            axisLabel: 'Measure'
+            axisLabel: $scope.formModel.measure.chartlabel
           }
         }
       };
 
     $scope.colors = colorbrewer;
 
-    $scope.colors.SAU= {
+    $scope.colors.SAU = {
       11: ['#f00','#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#000',
             '#08f', '#0f8', '#f80', '#8f0', '#80f', '#f08'
           ]
@@ -51,7 +52,15 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.options.chart.color = $scope.color[9];
       }
     };
-
     $scope.$watch('color', $scope.updateColor);
+
+    $scope.updateYlabel = function() {
+      /* not sure why options is not updating on $scope.formModel change */
+      $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
+      $scope.options.chart.yAxis.tickFormat = function(d) {
+        return d3.format(',.00002f')(d);
+      };
+    };
+    $scope.$watch('formModel', $scope.updateYlabel, true);
 
   });

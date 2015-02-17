@@ -19,7 +19,7 @@
             <div ng-controller="CatchChartCtrl" class="chart-container">
                 <label for="color">Color scheme: </label>
                 <select ng-model="color" ng-options="c for (c,value) in colors"></select>
-                <nvd3 options='options' data='data'></nvd3>
+                <nvd3 options="options" data="data" api="api"></nvd3>
             </div>
 
         </div>
