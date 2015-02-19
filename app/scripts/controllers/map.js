@@ -1,12 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc function
- * @name sauWebApp.controller:MainCtrl
- * @description
- * # MainCtrl
- * Controller of the sauWebApp
- */
+/* global leafletPip */
+
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
 
@@ -30,6 +25,28 @@ angular.module('sauWebApp')
       openModal($routeParams.id);
     }
 
+    leafletData.getMap('mainmap').then(function(map) {
+      $scope.map = map;
+    });
+
+    var geojsonClick = function(latlng) {
+      /* handle clicks on overlapping layers. pointInLayer can't be cheap.. */
+      var layers = leafletPip.pointInLayer(latlng, $scope.map);
+      var featureLayers = layers.filter(function(l) {return l.feature;});
+
+      if (featureLayers.length > 1) {
+        var content = 'Area disputed by (';
+        content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
+        content += ')';
+        $scope.map.openPopup(content, latlng);
+      } else {
+        var feature = featureLayers[0].feature;
+        var newPath = $location.path() + '/' + feature.properties.region_id;
+        $location.path(newPath, false);
+        openModal(feature.properties.region_id);
+      }
+    };
+
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         $scope.$parent.hoverRegion = feature;
         var layer = leafletEvent.target;
@@ -41,11 +58,10 @@ angular.module('sauWebApp')
         $scope.$parent.$parent.hoverRegion = {};
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(ev, feature) {
-        var newPath = $location.path() + '/' + feature.properties.region_id;
-        $location.path(newPath, false);
-        openModal(feature.properties.region_id);
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
+        geojsonClick(leafletClickEvent.latlng);
     });
+
 
     angular.extend($scope, {
 
