@@ -22,7 +22,7 @@ angular.module('sauWebApp')
     };
 
     if ($routeParams.id || $location.path() === '/global') {
-      openModal($routeParams.id);
+      openModal($routeParams.id || 1);
     }
 
     leafletData.getMap('mainmap').then(function(map) {
