@@ -21,7 +21,7 @@ angular.module('sauWebApp')
       });
     };
 
-    if ($routeParams.id) {
+    if ($routeParams.id || $location.path() === '/global') {
       openModal($routeParams.id);
     }
 

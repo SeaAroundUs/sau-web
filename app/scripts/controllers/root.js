@@ -30,6 +30,12 @@ angular.module('sauWebApp')
       $scope.getFeatures();
     };
 
+    $scope.changeRegionGlobal = function() {
+      var region = 'global';
+      $location.path(region, true);
+      $scope.region = region;
+    };
+
     $scope.updateInclude = function(t) {
       $scope.template = t;
     };
