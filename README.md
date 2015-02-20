@@ -15,3 +15,12 @@ After you clone this project...
 1. Type `bower update`. Wait for that to finish.
 
 That's all. To see the website in your browser, you need to run it via a grunt server. In the terminal, make sure you're working directory is sau-web, then do `grunt serve`.
+
+By default, the application will be served on http://0.0.0.0:9000.
+
+The application will attempt to use http://localhost:8000 as the API server.  If you'd like to connect to a different host on port 8000, start the server with the apihost argument.  To connect to a different host and port, specify it as apihostport.  For instance, to connect to the deployed API server:
+
+<code>grunt serve --apihostport=sau-web-mt-env.elasticbeanstalk.com</code>
+
+
+

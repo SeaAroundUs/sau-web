@@ -22,6 +22,10 @@ module.exports = function (grunt) {
   };
 
   var apiHost = grunt.option('apihost') || 'localhost';
+  var apiHostPort = grunt.option('apihostport');
+  if (!apiHostPort) {
+    apiHostPort = apiHost + ':8000';
+  }
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -34,7 +38,7 @@ module.exports = function (grunt) {
       development: {
         constants: {
           SAU_CONFIG: {
-            api_url: 'http://' + apiHost + ':8000/api/v1/',
+            api_url: 'http://' + apiHostPort + '/api/v1/',
           }
         }
       },
