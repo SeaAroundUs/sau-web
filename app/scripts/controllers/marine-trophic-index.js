@@ -7,22 +7,26 @@ angular.module('sauWebApp')
 
     $scope.years = [];
 
-    $scope.region = sauService.Region.get({region: region, region_id: $routeParams.id});
+    var id = $scope.region_id || $routeParams.id;
 
-    var data = sauService.MarineTrophicIndexData.get({region: region, region_id: $routeParams.id}, function() {
+    $scope.region = sauService.Region.get({region: region, region_id: id});
 
-        $scope.data = data.data;
-        angular.forEach($scope.data, function(time_series) {
-            $scope[time_series.key] = [time_series];
-        });
+    var data = sauService.MarineTrophicIndexData.get({region: region, region_id: id}, function() {
 
-        angular.forEach($scope.data[0].values, function(xy) {
-          if (xy[1]) {
-            $scope.years.push(xy[0]);
-          }
-        });
+      $scope.data = data.data;
+      angular.forEach($scope.data, function(time_series) {
+          var nullFilteredData = time_series.values.filter(function(x) {
+            return x[1];
+          });
+          time_series.values = nullFilteredData;
+          $scope[time_series.key] = [time_series];
+      });
+
+      angular.forEach($scope.data[0].values, function(xy) {
+        if (xy[1]) {
+          $scope.years.push(xy[0]);
+        }
+      });
 
     });
-
-
   });
