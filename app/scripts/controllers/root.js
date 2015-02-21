@@ -51,7 +51,6 @@ angular.module('sauWebApp')
             geojson: {
               data: data.data,
               style: sauService.mapConfig.defaultStyle,
-              resetStyleOnMouseout: true
             }
           });
         });

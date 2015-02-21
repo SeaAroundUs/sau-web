@@ -28,6 +28,7 @@ angular.module('sauWebApp')
           // closed another way
           // modal needs to disable geojson clicks, reenable it=
           $scope.handleGeojsonClick();
+          $scope.handleGeojsonMouseout();
           $location.path('/' + $scope.region, false);
         }
       };
@@ -63,14 +64,24 @@ angular.module('sauWebApp')
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         $rootScope.hoverRegion = feature;
-        var layer = leafletEvent.target;
+        var layer = leafletEvent.layer;
         layer.setStyle(sauService.mapConfig.highlightStyle);
-        layer.bringToFront();
     });
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseout', function( /* ev, feature, leafletEvent */) {
-        $rootScope.hoverRegion = {};
-    });
+    $scope.handleGeojsonMouseout = function() {
+      $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
+          $rootScope.hoverRegion = {};
+          if (leafletEvent && leafletEvent.target) {
+            var layer = leafletEvent.target;
+            layer.setStyle(sauService.mapConfig.defaultStyle);
+          }
+          if (feature && feature.target) {
+            var layer = feature.target;
+            layer.setStyle(sauService.mapConfig.defaultStyle);
+          }
+      });
+    };
+    $scope.handleGeojsonMouseout();
 
     $scope.handleGeojsonClick = function() {
       $scope.geojsonClick = $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {

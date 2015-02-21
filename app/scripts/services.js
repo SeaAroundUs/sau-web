@@ -18,6 +18,9 @@ angular.module('sauWebApp')
     var MultinationalFootprintData = $resource(SAU_CONFIG.api_url + ':region/multinational-footprint/', {}, {get: {method: 'GET'}});
 
     var mapConfig = {
+      selectedStyle: {
+        fillColor: '#fff',
+      },
       highlightStyle: {
         fillColor: '#00f',
       },
@@ -33,17 +36,10 @@ angular.module('sauWebApp')
       defaults: {
         tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
         tileLayerOptions: {
-          // noWrap: true,
-          // detectRetina: true, // no idea what this does
-          // reuseTiles: true // nor this
         }
       },
       miniMapDefaults: {
         tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
-        dragging: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false,
-        zoomControl: false
       }
     };
 

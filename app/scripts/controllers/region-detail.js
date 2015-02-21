@@ -3,9 +3,8 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $modalInstance, $location, $window, sauService, region_id) {
 
-    $scope.region_id = region_id;
-
     $scope.modal = $modalInstance;
+    $scope.feature = null;
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
@@ -32,10 +31,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.formModel = {
       dimension: $scope.dimensions[0],
       measure: $scope.measures.tonnage,
-      limit : $scope.limits[1]
+      limit : $scope.limits[1],
+      region_id: region_id
     };
 
-    $scope.feature = sauService.Region.get({region: $scope.region, region_id: region_id});
+    $scope.updateRegion = function() {
+      $scope.feature = sauService.Region.get({region: $scope.region, region_id: $scope.formModel.region_id});
+    };
 
     $scope.hoverRegion = $scope.feature;
 
@@ -56,13 +58,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         '/?format=csv&limit=',
         $scope.limit.value,
         '&region_id=',
-        region_id,
+        $scope.formModel.region_id,
       ].join('');
       $window.open(url, '_blank');
     };
 
     $scope.updateData = function() {
-      var data_options = {region: $scope.region, region_id: region_id};
+      var data_options = {region: $scope.region, region_id: $scope.formModel.region_id};
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
@@ -77,5 +79,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.$watch('formModel', $scope.updateData, true);
+    $scope.$watch('formModel.region_id', $scope.updateRegion);
 
 });
