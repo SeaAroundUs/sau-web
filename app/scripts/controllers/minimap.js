@@ -13,9 +13,26 @@ angular.module('sauWebApp')
     $scope.geojsonClick();
     $scope.geojsonMouseout();
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature) {
-      $scope.formModel.region_id = feature.properties.region_id;
-      $location.path('/' + $scope.region + '/' + feature.properties.region_id, false);
+    var geojsonClick = function(feature, latlng) {
+      /* handle clicks on overlapping layers */
+      var layers = leafletPip.pointInLayer(latlng, $scope.map);
+      var featureLayers = layers.filter(function(l) {return l.feature;});
+
+      if (featureLayers.length > 1) {
+        var content = 'Area disputed by (';
+        content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
+        content += ')';
+        leafletData.getMap().then(function(map) {
+          map.openPopup(content, latlng);
+        });
+      } else {
+        // $scope.geojsonClick(leafletClickEvent.latlng);
+        $scope.formModel.region_id = feature.properties.region_id;
+        $location.path('/' + $scope.region + '/' + feature.properties.region_id, false);
+      }
+    };
+    $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
+      geojsonClick(feature, leafletClickEvent.latlng);
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature) {
@@ -29,6 +46,7 @@ angular.module('sauWebApp')
     });
 
     $scope.$watch('feature', function() {
+
       $scope.feature.$promise.then(function() {
 
         var feature = L.geoJson($scope.feature.data.geojson, {
