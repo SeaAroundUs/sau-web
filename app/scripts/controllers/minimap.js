@@ -1,6 +1,7 @@
 'use strict';
 
 /* global L */
+/* global leafletPip */
 
 angular.module('sauWebApp')
   .controller('MiniMapCtrl', function ($scope, $rootScope, $location, sauService, leafletBoundsHelpers, leafletData) {
