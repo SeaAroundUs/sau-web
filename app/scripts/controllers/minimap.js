@@ -3,7 +3,7 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $location, sauService, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, $location, sauService, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
       defaults: sauService.mapConfig.miniMapDefaults,
@@ -19,6 +19,7 @@ angular.module('sauWebApp')
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature) {
+        $rootScope.hoverRegion = {};
         var layer = feature.layer;
         if(feature.target.feature.properties.region_id === $scope.feature.data.id) {
           layer.setStyle(sauService.mapConfig.selectedStyle);
