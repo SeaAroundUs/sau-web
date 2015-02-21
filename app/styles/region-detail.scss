@@ -54,6 +54,9 @@
     width: 100%;
     min-width: 1200px;
     margin-top:0px;
+    .modal-title {
+        min-height: 40px;
+    }
 }
 .chart-container {
     height: 350px;

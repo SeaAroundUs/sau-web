@@ -5,6 +5,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.region_id = region_id;
 
+    $scope.modal = $modalInstance;
+
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
       {label: 'Commercial Group', value: 'commercialgroup'},
@@ -35,9 +37,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.feature = sauService.Region.get({region: $scope.region, region_id: region_id});
 
+    $scope.hoverRegion = $scope.feature;
+
     $scope.close = function () {
-      $modalInstance.close($scope.feature);
-      $location.path('/'+$scope.region, false);
+      $modalInstance.close();
     };
 
     $scope.download = function() {
