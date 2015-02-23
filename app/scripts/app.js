@@ -21,10 +21,12 @@ angular
 
       var cache = new DSCacheFactory('defaultCache', {
           deleteOnExpire: 'aggressive',
-          storageMode: 'localStorage'
+          maxAge: 1000*60*60, // 1hr, value in ms
+          capacity: Math.pow(2,20) * 128, // 128MB of memory storage
+          storageMode: 'memory' // or 'localStorage', but size is limited
       });
 
-      $http.defaults.cache = cache.get('defaultCache');
+      $http.defaults.cache = cache;
   })
   .config(function ($routeProvider) {
     $routeProvider
