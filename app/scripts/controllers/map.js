@@ -3,12 +3,12 @@
 /* global leafletPip */
 
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
+  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
 
     $scope.$parent.region = region;
 
     var openModal = function(region_id) {
-      return $modal.open({
+      var modalInstance = $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
                 scope: $scope,
@@ -19,6 +19,21 @@ angular.module('sauWebApp')
                   }
                 }
       });
+
+      var closedModal = function (selectedFeature) {
+        if ( ((selectedFeature || {}).properties || {}).region_id  ) {
+          // clicked feature
+          $location.path('/' + $scope.region + '/' + selectedFeature.properties.region_id);
+        } else {
+          // closed another way
+          // modal needs to disable geojson clicks, reenable it=
+          $scope.handleGeojsonClick();
+          $scope.handleGeojsonMouseout();
+          $location.path('/' + $scope.region, false);
+        }
+      };
+
+      modalInstance.result.then(closedModal, closedModal);
     };
 
     if ($routeParams.id || $location.path() === '/global') {
@@ -30,7 +45,7 @@ angular.module('sauWebApp')
     });
 
     var geojsonClick = function(latlng) {
-      /* handle clicks on overlapping layers. pointInLayer can't be cheap.. */
+      /* handle clicks on overlapping layers */
       var layers = leafletPip.pointInLayer(latlng, $scope.map);
       var featureLayers = layers.filter(function(l) {return l.feature;});
 
@@ -47,21 +62,34 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
-        $scope.$parent.hoverRegion = feature;
-        var layer = leafletEvent.target;
+    $scope.handleGeojsonMouseover = function() {
+      $scope.geojsonMouseover = $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
+        $rootScope.hoverRegion = feature;
+        var layer = leafletEvent.layer;
         layer.setStyle(sauService.mapConfig.highlightStyle);
-        layer.bringToFront();
-    });
+      });
+    };
+    $scope.handleGeojsonMouseover();
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseout', function( /* ev, feature, leafletEvent */) {
-        $scope.$parent.$parent.hoverRegion = {};
-    });
+    $scope.handleGeojsonMouseout = function() {
+      $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
+          $rootScope.hoverRegion = {};
+          if (leafletEvent && leafletEvent.target) {
+            leafletEvent.target.setStyle(sauService.mapConfig.defaultStyle);
+          }
+          if (feature && feature.target) {
+            feature.target.setStyle(sauService.mapConfig.defaultStyle);
+          }
+      });
+    };
+    $scope.handleGeojsonMouseout();
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
-        geojsonClick(leafletClickEvent.latlng);
-    });
-
+    $scope.handleGeojsonClick = function() {
+      $scope.geojsonClick = $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
+          geojsonClick(leafletClickEvent.latlng);
+      });
+    };
+    $scope.handleGeojsonClick();
 
     angular.extend($scope, {
 

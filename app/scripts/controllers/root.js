@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('RootCtrl', function ($scope, $location, sauService) {
+  .controller('RootCtrl', function ($scope, $rootScope, $location, sauService) {
 
     var templateDir = 'views/';
     $scope.templates = [
@@ -20,7 +20,6 @@ angular.module('sauWebApp')
       {'name': 'About Us', 'url': templateDir+'about.html'},
     ];
     $scope.template = $scope.templates[0];
-    $scope.hoverRegion = {};
 
     $scope.region = 'eez';
 
@@ -46,17 +45,15 @@ angular.module('sauWebApp')
 
     $scope.getFeatures = function() {
 
-      sauService.Regions.get({region:$scope.region})
-        .$promise.then(function(data) {
+      $scope.features = sauService.Regions.get({region:$scope.region});
+      $scope.features.$promise.then(function(data) {
           angular.extend($scope, {
             geojson: {
               data: data.data,
               style: sauService.mapConfig.defaultStyle,
-              resetStyleOnMouseout: true
             }
           });
         });
       };
-
 
   });
