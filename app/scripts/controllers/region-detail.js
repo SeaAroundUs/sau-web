@@ -37,7 +37,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       $scope.feature = sauService.Region.get({region: $scope.region, region_id: $scope.formModel.region_id});
-      $location.path('/' + $scope.region + '/' + $scope.formModel.region_id, false);
+      if ($scope.region === 'global') {
+        $location.path('/' + $scope.region, false);
+      } else {
+        $location.path('/' + $scope.region + '/' + $scope.formModel.region_id, false);
+      }
     };
 
     $scope.hoverRegion = $scope.feature;
