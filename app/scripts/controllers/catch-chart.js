@@ -31,6 +31,20 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               return d3.format(',.1s')(d);
             },
             axisLabel: $scope.formModel.measure.chartlabel
+          },
+          legend: {
+            radioButtonMode: false,
+            dispatch: {
+              /* When the user clicks on a species (taxon) in the legend, take them to the "Key Information on Species" page.*/
+              legendClick: function() {
+                if ($scope.formModel.dimension.value === 'Taxon') {
+                  //Route user to "key information on species page"
+
+                }
+                var chart = $scope.api.getScope().chart;
+                chart.legend.dispatch.on('legendClick', null);
+              }
+            }
           }
         }
       };
