@@ -45,8 +45,8 @@ angular.module('sauWebApp')
 
     $scope.getFeatures = function() {
 
-      sauService.Regions.get({region:$scope.region})
-        .$promise.then(function(data) {
+      $scope.features = sauService.Regions.get({region:$scope.region});
+      $scope.features.$promise.then(function(data) {
           angular.extend($scope, {
             geojson: {
               data: data.data,
@@ -55,6 +55,5 @@ angular.module('sauWebApp')
           });
         });
       };
-
 
   });

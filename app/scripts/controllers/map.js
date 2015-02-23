@@ -62,11 +62,14 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
+    $scope.handleGeojsonMouseover = function() {
+      $scope.geojsonMouseover = $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         $rootScope.hoverRegion = feature;
         var layer = leafletEvent.layer;
         layer.setStyle(sauService.mapConfig.highlightStyle);
-    });
+      });
+    };
+    $scope.handleGeojsonMouseover();
 
     $scope.handleGeojsonMouseout = function() {
       $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
