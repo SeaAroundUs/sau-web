@@ -44,7 +44,6 @@ angular.module('sauWebApp')
     leafletData.getMap('mainmap').then(function(map) {
       $scope.map = map;
       L.esri.basemapLayer('Oceans').addTo(map);
-
     });
 
     var geojsonClick = function(latlng) {
@@ -102,7 +101,10 @@ angular.module('sauWebApp')
         lng: 0,
         zoom: 3
       },
-      defaults: sauService.mapConfig.defaults
+      defaults: sauService.mapConfig.defaults,
+      layers: {
+        baselayers: {}
+      }
     });
 
     $scope.getFeatures();

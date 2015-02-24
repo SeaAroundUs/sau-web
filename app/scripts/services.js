@@ -36,7 +36,6 @@ angular.module('sauWebApp')
       },
       defaults: {
         minZoom: 2,
-        tileLayer: null,
         tileLayerOptions: {
           noWrap: true,
           detectRetina: true,
