@@ -24,6 +24,8 @@ angular.module('sauWebApp')
         if ( ((selectedFeature || {}).properties || {}).region_id  ) {
           // clicked feature
           $location.path('/' + $scope.region + '/' + selectedFeature.properties.region_id);
+        } else if (selectedFeature && selectedFeature.location) {
+          $location.path(selectedFeature.location);
         } else {
           // closed another way
           // modal needs to disable geojson clicks, reenable it=
@@ -56,8 +58,6 @@ angular.module('sauWebApp')
         $scope.map.openPopup(content, latlng);
       } else {
         var feature = featureLayers[0].feature;
-        var newPath = $location.path() + '/' + feature.properties.region_id;
-        $location.path(newPath, false);
         openModal(feature.properties.region_id);
       }
     };
