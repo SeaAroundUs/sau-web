@@ -1,6 +1,7 @@
 'use strict';
 
 /* global leafletPip */
+/* global L */
 
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
@@ -42,6 +43,8 @@ angular.module('sauWebApp')
 
     leafletData.getMap('mainmap').then(function(map) {
       $scope.map = map;
+      L.esri.basemapLayer('Oceans').addTo(map);
+
     });
 
     var geojsonClick = function(latlng) {
@@ -91,22 +94,15 @@ angular.module('sauWebApp')
     };
     $scope.handleGeojsonClick();
 
-    angular.extend($scope, {
+    $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -180],[89, 180]]);
 
+    angular.extend($scope, {
       center: {
         lat: 0,
         lng: 0,
         zoom: 3
       },
-
-      defaults: {
-        tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
-        tileLayerOptions: {
-          noWrap: true,
-          detectRetina: true, // no idea what this does
-          reuseTiles: true // nor this
-        },
-      }
+      defaults: sauService.mapConfig.defaults
     });
 
     $scope.getFeatures();

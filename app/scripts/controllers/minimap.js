@@ -7,7 +7,7 @@ angular.module('sauWebApp')
   .controller('MiniMapCtrl', function ($scope, $rootScope, $location, sauService, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
-      defaults: sauService.mapConfig.miniMapDefaults,
+      defaults: sauService.mapConfig.defaults,
     });
 
     // remove parent scope listener and add our own
@@ -70,8 +70,8 @@ angular.module('sauWebApp')
           }
         }
       });
+      L.esri.basemapLayer('Oceans').addTo(map);
     });
-
 
     $scope.$watch('feature', function() {
       leafletData.getMap('minimap')
