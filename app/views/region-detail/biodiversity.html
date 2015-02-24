@@ -1,43 +1,41 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-6">
-            <img src="images/fblogo_new.gif" alt="fishbase logo"/>
-            <ul>
-                <li ng-repeat="habitat in [
-                    {label: 'Reef', value: 'reef'},
-                    {label: 'Fresh', value: 'fresh'},
-                    {label: 'Marine', value: 'saltwater'},
-                    {label: 'Pelagic', value: 'pelagic'},
-                    {label: 'Deep water', value: 'deepwater'},
-                ]">
-                    <a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat={{habitat.value}}&csub_code=">{{habitat.label}}</a>
-                </li>
+<div class="row">
+    <div class="col-sm-6">
+        <img src="images/fblogo_new.gif" alt="fishbase logo"/>
+        <ul>
+            <li ng-repeat="habitat in [
+                {label: 'Reef', value: 'reef'},
+                {label: 'Fresh', value: 'fresh'},
+                {label: 'Marine', value: 'saltwater'},
+                {label: 'Pelagic', value: 'pelagic'},
+                {label: 'Deep water', value: 'deepwater'},
+            ]">
+                <a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat={{habitat.value}}&csub_code=">{{habitat.label}}</a>
+            </li>
 
-                <li><a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group=nonfishvertebrates&c_code={{feature.data.fishbase_id}}&action=list">Non-fish vertebrates</a></li>
+            <li><a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group=nonfishvertebrates&c_code={{feature.data.fishbase_id}}&action=list">Non-fish vertebrates</a></li>
 
-            </ul>
-        </div>
-        <div class="col-sm-6">
-            <ul>
-                <li><a target="_blank" ng-href="">Exploited organisms</a></li>
-            </ul>
-            <h3>Threat'd organisms</h3>
-            <ul>
-                <li><a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Fish</a></li>
-                <li><a target="_blank" ng-href="http://www.sealifebase.org/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Non-fish</a></li>
-            </ul>
-            <h3>Marine invertebrates</h3>
-            <ul>
-                <li ng-repeat="group in [
-                    {label: 'Crustaceans', value: 'crustaceans'},
-                    {label: 'Mollusks', value: 'mollusks'},
-                    {label: 'Echinoderms', value: 'echinoderms'},
-                    {label: 'Coelenterates', value: 'coelenterates'},
-                ]">
-                    <a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group={{group.value}}&c_code={{feature.data.fishbase_id}}&action=list">{{group.label}}</a>
-                </li>
+        </ul>
+    </div>
+    <div class="col-sm-6">
+        <ul>
+            <li><a target="_blank" ng-href="">Exploited organisms</a></li>
+        </ul>
+        <h3>Threat'd organisms</h3>
+        <ul>
+            <li><a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Fish</a></li>
+            <li><a target="_blank" ng-href="http://www.sealifebase.org/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Non-fish</a></li>
+        </ul>
+        <h3>Marine invertebrates</h3>
+        <ul>
+            <li ng-repeat="group in [
+                {label: 'Crustaceans', value: 'crustaceans'},
+                {label: 'Mollusks', value: 'mollusks'},
+                {label: 'Echinoderms', value: 'echinoderms'},
+                {label: 'Coelenterates', value: 'coelenterates'},
+            ]">
+                <a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group={{group.value}}&c_code={{feature.data.fishbase_id}}&action=list">{{group.label}}</a>
+            </li>
 
-            </ul>
-        </div>
+        </ul>
     </div>
 </div>

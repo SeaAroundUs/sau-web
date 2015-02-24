@@ -20,6 +20,7 @@ angular.module('sauWebApp')
     var mapConfig = {
       selectedStyle: {
         fillColor: '#fff',
+        fillOpacity: .6
       },
       highlightStyle: {
         fillColor: '#00f',

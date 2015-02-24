@@ -1,23 +1,21 @@
-<div class="container-fluid">
-    <div class="row">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper ipsum dolor, sed ornare est dictum id. Suspendisse elit orci, blandit non egestas ac, tincidunt at enim. Quisque non eleifend arcu, quis varius ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam nulla tellus, consequat id lectus ac, suscipit dictum sapien. Quisque quis ornare est, eget luctus metus. Nulla ut cursus odio. Mauris mattis lectus id nisl rhoncus facilisis. Morbi varius ex lacus, sollicitudin aliquam turpis semper in.</p>
+<div class="row">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ullamcorper ipsum dolor, sed ornare est dictum id. Suspendisse elit orci, blandit non egestas ac, tincidunt at enim. Quisque non eleifend arcu, quis varius ante. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nam nulla tellus, consequat id lectus ac, suscipit dictum sapien. Quisque quis ornare est, eget luctus metus. Nulla ut cursus odio. Mauris mattis lectus id nisl rhoncus facilisis. Morbi varius ex lacus, sollicitudin aliquam turpis semper in.</p>
 
-        <div class="col-sm-7">
-            <h3>Tonnage by</h3>
-            <p ng-repeat="dim in dimensions">
-                <a ng-click="clickFormLink(dim, 'tonnage')">{{dim.label}}</a>
-            </p>
+    <div class="col-sm-7">
+        <h3>Tonnage by</h3>
+        <p ng-repeat="dim in dimensions">
+            <a ng-click="clickFormLink(dim, 'tonnage')">{{dim.label}}</a>
+        </p>
 
-            <h3>Values by</h3>
-            <p ng-repeat="dim in dimensions">
-                <a ng-click="clickFormLink(dim, 'value')">{{dim.label}}</a>
-            </p>
+        <h3>Values by</h3>
+        <p ng-repeat="dim in dimensions">
+            <a ng-click="clickFormLink(dim, 'value')">{{dim.label}}</a>
+        </p>
 
-        </div>
-        <div class="col-sm-5">
-            <h3>Reconstruction Reference</h3>
-            <p><a href="">Link</a></p>
-            <p><a href="">Download PDF</a></p>
-        </div>
+    </div>
+    <div class="col-sm-5">
+        <h3>Reconstruction Reference</h3>
+        <p><a href="">Link</a></p>
+        <p><a href="">Download PDF</a></p>
     </div>
 </div>

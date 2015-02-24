@@ -38,9 +38,6 @@ angular.module('sauWebApp')
           l.setStyle(sauService.mapConfig.defaultStyle);
         }
       });
-      leafletData.getMap('minimap').then(function(map) {
-        map.invalidateSize(true); // fix drawing bug
-      });
     };
 
     $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
