@@ -20,6 +20,7 @@ angular.module('sauWebApp')
     var mapConfig = {
       selectedStyle: {
         fillColor: '#fff',
+        fillOpacity: 0.6
       },
       highlightStyle: {
         fillColor: '#00f',
@@ -35,13 +36,12 @@ angular.module('sauWebApp')
       },
       defaults: {
         minZoom: 2,
-        // tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
+        tileLayer: null,
         tileLayerOptions: {
+          noWrap: true,
+          detectRetina: true,
+          reuseTiles: true
         }
-      },
-      miniMapDefaults: {
-        // tileLayer: 'http://{s}.tiles.mapbox.com/v3/examples.map-i87786ca/{z}/{x}/{y}.png',
-        minZoom: 2
       }
     };
 

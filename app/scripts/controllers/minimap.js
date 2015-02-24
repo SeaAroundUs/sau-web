@@ -7,13 +7,22 @@ angular.module('sauWebApp')
   .controller('MiniMapCtrl', function ($scope, $rootScope, $location, sauService, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
-      defaults: sauService.mapConfig.miniMapDefaults,
+      defaults: sauService.mapConfig.defaults,
     });
 
     // remove parent scope listener and add our own
     $scope.geojsonClick();
     $scope.geojsonMouseout();
     $scope.geojsonMouseover();
+
+    var styleLayer = function(feature, layer, style) {
+      style = style || sauService.mapConfig.defaultStyle;
+      if(feature.properties.region_id === $scope.formModel.region_id) {
+        layer.setStyle(sauService.mapConfig.selectedStyle);
+      } else {
+        layer.setStyle(style);
+      }
+    };
 
     var geojsonClick = function(feature, latlng) {
       /* handle clicks on overlapping layers */
@@ -32,14 +41,7 @@ angular.module('sauWebApp')
       }
 
       $scope.eachFeatureLayer(function(l) {
-        if(l.feature.properties.region_id === $scope.formModel.region_id) {
-          l.setStyle(sauService.mapConfig.selectedStyle);
-        } else {
-          l.setStyle(sauService.mapConfig.defaultStyle);
-        }
-      });
-      leafletData.getMap('minimap').then(function(map) {
-        map.invalidateSize(true); // fix drawing bug
+        styleLayer(l.feature, l);
       });
     };
 
@@ -50,21 +52,13 @@ angular.module('sauWebApp')
     $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature) {
         $rootScope.hoverRegion = {};
         var layer = feature.layer;
-        if(feature.target.feature.properties.region_id === $scope.formModel.region_id) {
-          layer.setStyle(sauService.mapConfig.selectedStyle);
-        } else {
-          layer.setStyle(sauService.mapConfig.defaultStyle);
-        }
+        styleLayer(feature.target.feature, layer);
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
       $rootScope.hoverRegion = feature;
       var layer = leafletEvent.layer;
-      if(feature.properties.region_id === $scope.formModel.region_id) {
-        layer.setStyle(sauService.mapConfig.selectedStyle);
-      } else {
-        layer.setStyle(sauService.mapConfig.highlightStyle);
-      }
+      styleLayer(feature, layer, sauService.mapConfig.highlightStyle);
     });
 
     leafletData.getMap('minimap').then(function(map) {
@@ -76,8 +70,8 @@ angular.module('sauWebApp')
           }
         }
       });
+      L.esri.basemapLayer('Oceans').addTo(map);
     });
-
 
     $scope.$watch('feature', function() {
       leafletData.getMap('minimap')
@@ -105,12 +99,7 @@ angular.module('sauWebApp')
     $scope.styleSelectedFeature = function () {
       $scope.features.$promise.then(function() {
         $scope.eachFeatureLayer(function(l) {
-          l.setStyle(sauService.mapConfig.defaultStyle);
-          if (l.feature.properties.region_id === $scope.formModel.region_id) {
-            l.setStyle(sauService.mapConfig.selectedStyle);
-          } else {
-            l.setStyle(sauService.mapConfig.defaultStyle);
-          }
+          styleLayer(l.feature, l);
         });
       }, true);
     };

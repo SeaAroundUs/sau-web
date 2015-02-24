@@ -1,10 +1,16 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $modalInstance, $location, $window, sauService, region_id) {
+  function ($scope, $q, $modalInstance, $location, $window, sauService, region_id) {
 
     $scope.modal = $modalInstance;
     $scope.feature = null;
+
+    $scope.viewContentLoaded = $q.defer();
+
+    $modalInstance.opened.then(function() {
+      $scope.viewContentLoaded.resolve();
+    });
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
@@ -32,7 +38,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       dimension: $scope.dimensions[0],
       measure: $scope.measures.tonnage,
       limit : $scope.limits[1],
-      region_id: region_id
+      region_id: parseInt(region_id)
     };
 
     $scope.updateRegion = function() {
@@ -68,14 +74,17 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $window.open(url, '_blank');
     };
 
+
     $scope.updateData = function() {
       var data_options = {region: $scope.region, region_id: $scope.formModel.region_id};
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauService.Data.get(data_options, function() {
-         $scope.data = data.data;
-       });
+        $scope.viewContentLoaded.promise.then(function() {
+          $scope.data = data.data;
+        });
+      });
     };
 
     $scope.clickFormLink = function(dim, measure) {
@@ -83,7 +92,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.formModel.measure = $scope.measures[measure];
     };
 
-    $scope.$watch('formModel', $scope.updateData, true);
     $scope.$watch('formModel.region_id', $scope.updateRegion);
+    $scope.$watch('formModel', $scope.updateData, true);
 
 });
