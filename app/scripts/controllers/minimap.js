@@ -52,8 +52,7 @@ angular.module('sauWebApp')
     $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature) {
         $rootScope.hoverRegion = {};
         var layer = feature.layer;
-        var feature = feature.target.feature;
-        styleLayer(feature, layer);
+        styleLayer(feature.target.feature, layer);
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
