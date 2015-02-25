@@ -25,21 +25,24 @@
   <body ng-app="sauWebApp" ng-controller="RootCtrl">
     <div id="container">
         <div id="root">
-          <div class="header">
+          <div id="header">
+
             <div id="logos" class="clearfix">
               <a href="#/">
                 <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo">
               </a>
               <img class="pull-right" src="images/Vulcan_logo_sm.gif" alt="Vulcan logo">
             </div>
-            <ul class="nav nav-pills">
+
+            <ul class="nav nav-pills nav-justified">
               <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
-                <a>{{t.name}}</a>
+                <a ng-bind="t.name"></a>
               </li>
             </ul>
+
           </div>
 
-          <div ng-view=""></div>
+          <div id="main_view" ng-view=""></div>
 
           <div id="root_footer" class="row content" ng-include="template.url"></div>
 

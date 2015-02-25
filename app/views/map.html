@@ -1,10 +1,9 @@
-<div class="row regions">
-  <span>Show Region:</span>
-  <a ng-class="{ active: region=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
-  <a ng-class="{ active: region=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
-  <a ng-class="{ active: region=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
-  <a ng-class="{ active: region=='fao'}" class="btn btn-default" ng-click="changeRegion('fao')" role="button">High Seas</a>
-  <a ng-class="{ active: region=='global'}" class="btn btn-default" ng-click="changeRegionGlobal()" role="button">Global</a>
-  <span ng-bind="$root.hoverRegion.properties.title"></span>
+<div class="topics row">
+    <div class="tabset content">
+        <tabset>
+          <tab heading="Search by Area"><div class="search-container" ng-include="'views/main-map/search.html'"></div></tab>
+          <tab heading="Information by Topics"><div class="" ng-include="'views/main-map/information.html'"></div></tab>
+          <tab heading="Partners and Sub-Projects"><div class="" ng-include="'views/main-map/partners.html'"></div></tab>
+        </tabset>
+    </div>
 </div>
-<leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>

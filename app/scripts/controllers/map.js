@@ -4,11 +4,9 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
+  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    $scope.$parent.region = region;
-
-    var openModal = function(region_id) {
+    $scope.openModal = function(region_id) {
       var modalInstance = $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
@@ -40,13 +38,12 @@ angular.module('sauWebApp')
     };
 
     if ($routeParams.id || $location.path() === '/global') {
-      openModal($routeParams.id || 1);
+      $scope.openModal($routeParams.id || 1);
     }
 
     leafletData.getMap('mainmap').then(function(map) {
       $scope.map = map;
       L.esri.basemapLayer('Oceans').addTo(map);
-
     });
 
     var geojsonClick = function(latlng) {
@@ -61,7 +58,7 @@ angular.module('sauWebApp')
         $scope.map.openPopup(content, latlng);
       } else {
         var feature = featureLayers[0].feature;
-        openModal(feature.properties.region_id);
+        $scope.openModal(feature.properties.region_id);
       }
     };
 
@@ -94,7 +91,7 @@ angular.module('sauWebApp')
     };
     $scope.handleGeojsonClick();
 
-    $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -180],[89, 180]]);
+    $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -200],[89, 200]]);
 
     angular.extend($scope, {
       center: {
@@ -102,9 +99,10 @@ angular.module('sauWebApp')
         lng: 0,
         zoom: 3
       },
-      defaults: sauService.mapConfig.defaults
+      defaults: sauService.mapConfig.defaults,
+      layers: {
+        baselayers: {}
+      }
     });
-
-    $scope.getFeatures();
 
   });

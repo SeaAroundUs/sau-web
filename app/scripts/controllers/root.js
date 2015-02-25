@@ -43,6 +43,7 @@ angular.module('sauWebApp')
       return viewLocation === $location.path();
     };
 
+    $scope.geojson = {};
     $scope.getFeatures = function() {
 
       $scope.features = sauService.Regions.get({region:$scope.region});
@@ -54,6 +55,7 @@ angular.module('sauWebApp')
             }
           });
         });
-      };
+    };
+    $scope.getFeatures();
 
   });
