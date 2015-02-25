@@ -3,8 +3,8 @@
 /* global d3 */ /* for jshint */
 /* global colorbrewer */ /* for jshint */
 
-angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope', '$location',
-  function ($scope, $location) {
+angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
+  function ($scope) {
 
     $scope.options = {
       chart: {
