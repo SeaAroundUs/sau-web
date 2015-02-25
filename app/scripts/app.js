@@ -118,6 +118,11 @@ angular
         resolve: {region: function() {return 'global';}}
       })
 
+      .when('/species/:taxon', {
+        templateUrl: 'views/key-info-on-species.html',
+        controller: 'KeyInfoOnSpeciesCtrl'
+      })
+
       .otherwise({
         redirectTo: '/'
       });

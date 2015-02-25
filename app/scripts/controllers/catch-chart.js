@@ -3,8 +3,8 @@
 /* global d3 */ /* for jshint */
 /* global colorbrewer */ /* for jshint */
 
-angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope) {
+angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope', '$location',
+  function ($scope, $location) {
 
     $scope.options = {
       chart: {
@@ -31,6 +31,18 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               return d3.format(',.1s')(d);
             },
             axisLabel: $scope.formModel.measure.chartlabel
+          },
+          legend: {
+            updateState: false,
+            dispatch: {
+              /* When the user clicks on a species (taxon) in the legend, take them to the "Key Information on Species" page.*/
+              legendClick: function(taxon) {
+                if ($scope.formModel.dimension.value === 'taxon') {
+                  //Route user to "key information on species page" via the modal close event.
+                  $scope.modal.close({location: '/species/' + taxon.key});
+                }
+              }
+            }
           }
         }
       };
@@ -62,5 +74,5 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);
-
-  });
+    
+    }]);
