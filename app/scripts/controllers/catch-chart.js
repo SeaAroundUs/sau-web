@@ -4,7 +4,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope', '$location',
-  function ($scope, $location) {
+  function ($scope) {
 
     $scope.options = {
       chart: {
@@ -74,5 +74,5 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope', '$location'
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);
-    
+
     }]);
