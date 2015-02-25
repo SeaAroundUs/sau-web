@@ -16,7 +16,7 @@ angular.module('sauWebApp')
 
     $scope.searchSelected = function($item) {
       openModal($item.region_id);
-    }
+    };
 
     var openModal = function(region_id) {
       var modalInstance = $modal.open({
