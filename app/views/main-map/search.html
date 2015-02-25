@@ -11,9 +11,12 @@
     <input type="text"
         ng-model="customSelected"
         placeholder="Type or select item from list"
-        typeahead="term.title for term in searchTerms | filter:{title:$viewValue} | limitTo:25"
+        typeahead="feature.properties.title
+            for feature in geojson.data.features
+            | filter:{properties:{title:$viewValue}}
+            | limitTo:25"
         typeahead-editable="false"
-        typeahead-on-select="searchSelected($item)"
+        typeahead-on-select="openModal($item.properties.region_id)"
         typeahead-min-length="1"
     >
 </div>

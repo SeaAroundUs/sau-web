@@ -6,19 +6,7 @@
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    $scope.searchTerms = [];
-
-    $scope.features.$promise.then(function() {
-      for (var i=0; i<$scope.geojson.data.features.length; i++) {
-        $scope.searchTerms.push($scope.geojson.data.features[i].properties);
-      }
-    });
-
-    $scope.searchSelected = function($item) {
-      openModal($item.region_id);
-    };
-
-    var openModal = function(region_id) {
+    $scope.openModal = function(region_id) {
       var modalInstance = $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
@@ -50,7 +38,7 @@ angular.module('sauWebApp')
     };
 
     if ($routeParams.id || $location.path() === '/global') {
-      openModal($routeParams.id || 1);
+      $scope.openModal($routeParams.id || 1);
     }
 
     leafletData.getMap('mainmap').then(function(map) {
@@ -70,7 +58,7 @@ angular.module('sauWebApp')
         $scope.map.openPopup(content, latlng);
       } else {
         var feature = featureLayers[0].feature;
-        openModal(feature.properties.region_id);
+        $scope.openModal(feature.properties.region_id);
       }
     };
 
