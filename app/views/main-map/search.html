@@ -8,14 +8,14 @@
     <!-- <span ng-bind="$root.hoverRegion.properties.title"></span> -->
 </div>
 <div id="search">
-    <input ng-model="search.value">
-    <div class="results">
-        <ul>
-            <li ng-repeat="term in searchTerms | filter:search.value">
-                <a ng-href="#/{{region}}/{{term.region_id}}" ng-bind="term.title"></a>
-            </li>
-        </ul>
-    </div>
+    <input type="text"
+        ng-model="customSelected"
+        placeholder="Type or select item from list"
+        typeahead="term.title for term in searchTerms | filter:{title:$viewValue} | limitTo:25"
+        typeahead-editable="false"
+        typeahead-on-select="searchSelected($item)"
+        typeahead-min-length="1"
+    >
 </div>
 
 <leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>

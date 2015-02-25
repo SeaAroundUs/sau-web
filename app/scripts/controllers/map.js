@@ -6,9 +6,6 @@
 angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    $scope.search = {
-      value: 'Type or select item from list'
-    };
     $scope.searchTerms = [];
 
     $scope.features.$promise.then(function() {
@@ -16,6 +13,10 @@ angular.module('sauWebApp')
         $scope.searchTerms.push($scope.geojson.data.features[i].properties);
       }
     });
+
+    $scope.searchSelected = function($item) {
+      openModal($item.region_id);
+    }
 
     var openModal = function(region_id) {
       var modalInstance = $modal.open({
