@@ -1,0 +1,21 @@
+<div class="regions row">
+    <span> Show Search Region: </span>
+    <a ng-class="{ active: region=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
+    <a ng-class="{ active: region=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
+    <a ng-class="{ active: region=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
+    <a ng-class="{ active: region=='fao'}" class="btn btn-default" ng-click="changeRegion('fao')" role="button">High Seas</a>
+    <a ng-class="{ active: region=='global'}" class="btn btn-default" ng-click="changeRegionGlobal()" role="button">Global</a>
+    <!-- <span ng-bind="$root.hoverRegion.properties.title"></span> -->
+</div>
+<div id="search">
+    <input ng-model="search.value">
+    <div class="results">
+        <ul>
+            <li ng-repeat="term in searchTerms | filter:search.value">
+                <a ng-href="#/{{region}}/{{term.region_id}}" ng-bind="term.title"></a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>

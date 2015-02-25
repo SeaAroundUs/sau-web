@@ -4,9 +4,18 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers, region) {
+  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
 
-    $scope.$parent.region = region;
+    $scope.search = {
+      value: 'Type or select item from list'
+    };
+    $scope.searchTerms = [];
+
+    $scope.features.$promise.then(function() {
+      for (var i=0; i<$scope.geojson.data.features.length; i++) {
+        $scope.searchTerms.push($scope.geojson.data.features[i].properties);
+      }
+    });
 
     var openModal = function(region_id) {
       var modalInstance = $modal.open({
@@ -93,7 +102,7 @@ angular.module('sauWebApp')
     };
     $scope.handleGeojsonClick();
 
-    $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -180],[89, 180]]);
+    $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -200],[89, 200]]);
 
     angular.extend($scope, {
       center: {
@@ -106,7 +115,5 @@ angular.module('sauWebApp')
         baselayers: {}
       }
     });
-
-    $scope.getFeatures();
 
   });
