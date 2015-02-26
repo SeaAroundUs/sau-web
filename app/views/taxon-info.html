@@ -1,0 +1,45 @@
+<div ng-show="taxon">
+	<h3>Key Information on {{taxon.name}}</h3>
+	<table class="table">
+		<tr ng-show="taxon.commercialGroup">
+			<td class="table-key">Commercial group:</td>
+			<td class="table-value">{{taxon.commercialGroup}}</td>
+		</tr>
+		<tr ng-show="taxon.functionalGroup">
+			<td class="table-key">Functional group:</td>
+			<td class="table-value">{{taxon.functionalGroup}}</td>
+		</tr>
+		<tr ng-show="taxon.maximumLength">
+			<td class="table-key">Maximum length:</td>
+			<td class="table-value">{{taxon.maximumLength}}</td>
+		</tr>
+		<tr ng-show="taxon.trophicLevel">
+			<td class="table-key">Trophic level:</td>
+			<td class="table-value">{{taxon.trophicLevel}}</td>
+		</tr>
+		<tr ng-show="taxon.latitudeRange">
+			<td class="table-key">Latitude range:</td>
+			<td class="table-value">{{taxon.latitudeRange}}</td>
+		</tr>
+		<tr ng-show="taxon.bottomDepthRange">
+			<td class="table-key">Bottom depth range:</td>
+			<td class="table-value">{{taxon.bottomDepthRange}}</td>
+		</tr>
+		<tr ng-show="taxon.growthParameters">
+			<td class="table-key">Growth parameters:</td>
+			<td class="table-value">{{taxon.growthParameters}}</td>
+		</tr>
+		<tr ng-show="taxon.additionalUrl">
+			<td class="table-key">Additional URL:</td>
+			<td class="table-value">{{taxon.additionalUrl}}</td>
+		</tr>
+		<tr ng-show="taxon.distributionMap">
+			<td class="table-key">Distribution map:</td>
+			<td class="table-value">{{taxon.distributionMap}}</td>
+		</tr>
+		<tr ng-show="taxon.habitatAssociationIndexes">
+			<td class="table-key">Habitat association indexes:</td>
+			<td class="table-value">{{taxon.habitatAssociationIndexes}}</td>
+		</tr>
+	</table>
+</div>

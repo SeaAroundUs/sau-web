@@ -1,6 +1,9 @@
 'use strict';
 
-angular.module('sauWebApp').controller('KeyInfoOnSpeciesCtrl', [ '$scope', '$routeParams',
-  function ($scope, $routeParams) {
-    $scope.taxonId = $routeParams.taxon;
-  }]);
+angular.module('sauWebApp').controller('KeyInfoOnSpeciesCtrl',
+  function ($scope) {
+  	//TODO This is hard-coded. Replace with taxon service request.
+  	$scope.taxon = {
+  		commercialGroup: 'Herring-likes'
+  	};
+  });
