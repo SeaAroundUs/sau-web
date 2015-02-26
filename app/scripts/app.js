@@ -11,7 +11,8 @@ angular
     'leaflet-directive',
     'ui.bootstrap',
     'nvd3',
-    'angular-data.DSCacheFactory'
+    'angular-data.DSCacheFactory',
+    'ui.grid'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs
@@ -54,12 +55,16 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/exploited-organisms', {
+        templateUrl: 'views/exploited-organisms.html',
+        controller: 'ExploitedOrganismsCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/eez/:id/multinational-footprint', {
         templateUrl: 'views/multinational-footprint.html',
         controller: 'MultinationalFootprintCtrl',
         resolve: {region: function() {return 'eez';}}
       })
-
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
     <link rel="stylesheet" href="bower_components/nvd3-community/build/nv.d3.css" />
     <link rel="stylesheet" href="bower_components/colorbrewer2/colorbrewer.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -26,7 +27,6 @@
     <div id="container">
         <div id="root">
           <div id="header">
-
             <div id="logos" class="clearfix">
               <a href="#/">
                 <img class="pull-left" src="images/logo_saup_internal.png" alt="Sea Around Us logo">
@@ -35,7 +35,7 @@
             </div>
 
             <ul class="nav nav-pills nav-justified">
-              <li role="presentation" ng-repeat="t in templates" ng-click="updateInclude(t)">
+              <li role="presentation" ng-repeat="t in templates">
                 <a ng-bind="t.name"></a>
               </li>
             </ul>
@@ -44,8 +44,7 @@
 
           <div id="main_view" ng-view=""></div>
 
-          <div id="root_footer" class="row content" ng-include="template.url"></div>
-
+          <div id="root_footer"></div>
         </div>
         <div id="footer">
           <span class="">Copyright Information here. All rights reserved.</span>
@@ -85,6 +84,7 @@
     <script src="bower_components/simple-statistics/src/simple_statistics.js"></script>
     <script src="bower_components/leaflet-pip/leaflet-pip.js"></script>
     <script src="bower_components/esri-leaflet/dist/esri-leaflet.js"></script>
+    <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -103,6 +103,9 @@
     <script src="scripts/controllers/multinational-footprint.js"></script>
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/controllers/key-info-on-species.js"></script>
+    <script src="scripts/controllers/exploited-organisms.js"></script>
+    <script src="scripts/services/values.js"></script>
+    <script src="scripts/services/sau-api.js"></script>
     <!-- endbuild -->
 </body>
 </html>

@@ -4,10 +4,10 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, $location, sauService, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, $location, mapConfig, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
-      defaults: sauService.mapConfig.defaults,
+      defaults: mapConfig.defaults,
     });
 
     // remove parent scope listener and add our own
@@ -16,9 +16,9 @@ angular.module('sauWebApp')
     $scope.geojsonMouseover();
 
     var styleLayer = function(feature, layer, style) {
-      style = style || sauService.mapConfig.defaultStyle;
+      style = style || mapConfig.defaultStyle;
       if(feature.properties.region_id === $scope.formModel.region_id) {
-        layer.setStyle(sauService.mapConfig.selectedStyle);
+        layer.setStyle(mapConfig.selectedStyle);
       } else {
         layer.setStyle(style);
       }
@@ -58,14 +58,14 @@ angular.module('sauWebApp')
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
       $rootScope.hoverRegion = feature;
       var layer = leafletEvent.layer;
-      styleLayer(feature, layer, sauService.mapConfig.highlightStyle);
+      styleLayer(feature, layer, mapConfig.highlightStyle);
     });
 
     leafletData.getMap('minimap').then(function(map) {
       map.on('layeradd', function(ev) {
         if(ev.layer.feature) {
           if (parseInt(ev.layer.feature.properties.region_id) === parseInt($scope.formModel.region_id)) {
-            ev.layer.setStyle(sauService.mapConfig.selectedStyle);
+            ev.layer.setStyle(mapConfig.selectedStyle);
             map.invalidateSize(true); // fix drawing bug
           }
         }

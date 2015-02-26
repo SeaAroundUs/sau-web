@@ -32,7 +32,7 @@ $orange: #F4BC59;
 #footer {
   @include darkBar;
   height: 80px;
-  // position: absolute;
+  position: absolute;
   bottom: 0px;
 }
 
@@ -121,7 +121,7 @@ body {
     }
   }
   .row.topics {
-    background-color: #E8E0D8;
+    // background-color: #E8E0D8;
     .nav-tabs {
       background-color: #E8E0D8;
       border-bottom: 0px;
@@ -142,25 +142,23 @@ body {
   }
 }
 
-#main_view .search-container #search {
-  margin-left: auto;
-  margin-right: auto;
-  width: 500px;
-  background-color: $darkBlue;
-  height: 55px;
-  padding: 10px;
+#main_view .search-container {
   position: relative;
-  input {
-    width: 100%;
-  }
-  .results {
+  #search {
     position: absolute;
     z-index: 1;
-    background-color: $darkBlue;
-    color: white;
-    width: 500px;
-    top: 55px;
-    left: 0px;
+    left: 50%;
+    div {
+      width: 500px;
+      background-color: $darkBlue;
+      height: 55px;
+      padding: 10px;
+      position: relative;
+      left: -50%;
+      input {
+        width: 100%;
+      }
+    }
   }
 }
 
@@ -182,19 +180,12 @@ body {
   background-color: rgb(236,186,32);
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    // max-width: 730px;
+#exploited-organisms {
+  .eo-grid {
+    width: 500px;
+    height: 250px;
   }
-
-
-  /* Space out the masthead */
-  .header {
-    margin-bottom: 30px;
-  }
-  /* Remove the bottom border on the jumbotron for visual effect */
-  .jumbotron {
-    border-bottom: 0;
-  }
+}
+.content-container {
+  padding: 30px;
 }

@@ -17,33 +17,6 @@ angular.module('sauWebApp')
 
     var MultinationalFootprintData = $resource(SAU_CONFIG.api_url + ':region/multinational-footprint/', {}, {get: {method: 'GET', cache: true}});
 
-    var mapConfig = {
-      selectedStyle: {
-        fillColor: '#fff',
-        fillOpacity: 0.6
-      },
-      highlightStyle: {
-        fillColor: '#00f',
-      },
-      defaultStyle : {
-        color: 'black',
-        stroke: true,
-        weight: 1,
-        opacity: 1.0,
-        fillColor: 'black',
-        fillOpacity: 0.3,
-        lineCap: 'round'
-      },
-      defaults: {
-        minZoom: 2,
-        tileLayerOptions: {
-          noWrap: true,
-          detectRetina: true,
-          reuseTiles: true
-        }
-      }
-    };
-
     return {
       Region: Region,
       Regions: Regions,
@@ -52,7 +25,6 @@ angular.module('sauWebApp')
       StockStatusData: StockStatusData,
       MultinationalFootprintData: MultinationalFootprintData,
       CSVData: CSVData,
-      api_url: SAU_CONFIG.api_url,
-      mapConfig: mapConfig
+      api_url: SAU_CONFIG.api_url
     };
   });

@@ -4,7 +4,7 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, sauService, SAU_CONFIG, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, mapConfig, leafletData, leafletBoundsHelpers) {
 
     $scope.openModal = function(region_id) {
       var modalInstance = $modal.open({
@@ -66,7 +66,7 @@ angular.module('sauWebApp')
       $scope.geojsonMouseover = $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
         $rootScope.hoverRegion = feature;
         var layer = leafletEvent.layer;
-        layer.setStyle(sauService.mapConfig.highlightStyle);
+        layer.setStyle(mapConfig.highlightStyle);
       });
     };
     $scope.handleGeojsonMouseover();
@@ -75,10 +75,10 @@ angular.module('sauWebApp')
       $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
           $rootScope.hoverRegion = {};
           if (leafletEvent && leafletEvent.target) {
-            leafletEvent.target.setStyle(sauService.mapConfig.defaultStyle);
+            leafletEvent.target.setStyle(mapConfig.defaultStyle);
           }
           if (feature && feature.target) {
-            feature.target.setStyle(sauService.mapConfig.defaultStyle);
+            feature.target.setStyle(mapConfig.defaultStyle);
           }
       });
     };
@@ -99,7 +99,7 @@ angular.module('sauWebApp')
         lng: 0,
         zoom: 3
       },
-      defaults: sauService.mapConfig.defaults,
+      defaults: mapConfig.defaults,
       layers: {
         baselayers: {}
       }
