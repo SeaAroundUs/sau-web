@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $q, $modalInstance, $location, $window, sauService, region_id) {
+  function ($scope, $q, $modalInstance, $location, $window, sauAPI, region_id) {
 
     $scope.modal = $modalInstance;
     $scope.feature = null;
@@ -42,7 +42,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.updateRegion = function() {
-      $scope.feature = sauService.Region.get({region: $scope.region, region_id: $scope.formModel.region_id});
+      $scope.feature = sauAPI.Region.get({region: $scope.region, region_id: $scope.formModel.region_id});
       if ($scope.region === 'global') {
         $location.path('/' + $scope.region, false);
       } else {
@@ -60,7 +60,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       // FIXME: constructing url manually, I don't know how to get it out of the $resource
       // This should probably be in a service or something too.
       var url = ['',
-        sauService.api_url,
+        sauAPI.api_url,
         $scope.region,
         '/',
         $scope.measure.value,
@@ -80,7 +80,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
-      var data = sauService.Data.get(data_options, function() {
+      var data = sauAPI.Data.get(data_options, function() {
         $scope.viewContentLoaded.promise.then(function() {
           $scope.data = data.data;
         });

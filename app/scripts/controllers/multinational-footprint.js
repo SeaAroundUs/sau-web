@@ -4,8 +4,8 @@
 /* global d3 */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauService, region) {
-    var data = sauService.MultinationalFootprintData.get({region: region, region_id: $routeParams.id}, function() {
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, region) {
+    var data = sauAPI.MultinationalFootprintData.get({region: region, region_id: $routeParams.id}, function() {
             $scope.data = data.data;
         });
 

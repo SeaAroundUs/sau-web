@@ -3,15 +3,15 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauService, region) {
+  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauAPI, region) {
 
     $scope.years = [];
 
     var id = $scope.region_id || $routeParams.id;
 
-    $scope.region = sauService.Region.get({region: region, region_id: id});
+    $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
-    var data = sauService.MarineTrophicIndexData.get({region: region, region_id: id}, function() {
+    var data = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id}, function() {
 
       $scope.data = data.data;
       angular.forEach($scope.data, function(time_series) {

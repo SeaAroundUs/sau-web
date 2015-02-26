@@ -8,7 +8,7 @@
  * Controller of the sauWebApp
  */
 angular.module('sauWebApp')
-  .controller('RootCtrl', function ($scope, $rootScope, $location, sauService, mapConfig) {
+  .controller('RootCtrl', function ($scope, $rootScope, $location, sauAPI, mapConfig) {
 
     var templateDir = 'views/';
     $scope.templates = [
@@ -42,7 +42,7 @@ angular.module('sauWebApp')
     $scope.geojson = {};
     $scope.getFeatures = function() {
 
-      $scope.features = sauService.Regions.get({region:$scope.region});
+      $scope.features = sauAPI.Regions.get({region:$scope.region});
       $scope.features.$promise.then(function(data) {
           angular.extend($scope, {
             geojson: {
