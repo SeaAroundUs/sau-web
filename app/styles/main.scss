@@ -181,14 +181,26 @@ body {
 }
 
 #exploited-organisms {
+  width: 70%;
+  min-width: 500px;
+  margin: 0 auto;
+
+  #controls {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
   .eo-grid {
-    margin-left:auto;
-    margin-right:auto;
     width: 800px;
     height: 250px;
-    .ui-grid-cell:hover {
+    .ui-grid-cell {
       cursor: pointer;
+      background-color: transparent;
     }
+    .ui-grid-canvas .ui-grid-row:hover {
+      // row
+      background-color: #fa4 !important;
+    }
+
   }
 }
 .content-container {

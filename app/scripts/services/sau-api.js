@@ -5,18 +5,24 @@
 angular.module('sauWebApp')
   .factory('sauAPI', function ($resource, SAU_CONFIG) {
 
+    var resourceFactory = function(apiPath) {
+      return $resource(SAU_CONFIG.api_url + apiPath, {}, {get: {method: 'GET', cache: true}});
+    };
+
     var methods = {
 
-      Region: $resource(SAU_CONFIG.api_url + ':region/:region_id', {}, {get: {method: 'GET', cache: true}}),
-      Regions: $resource(SAU_CONFIG.api_url + ':region/', {}, {get: {method: 'GET', cache: true}}),
-      Data: $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/', {}, {get: {method: 'GET', cache: true}}),
-      CSVData: $resource(SAU_CONFIG.api_url + ':region/:measure/:dimension/?format=csv'),
-      MarineTrophicIndexData: $resource(SAU_CONFIG.api_url + ':region/marine-trophic-index/', {}, {get: {method: 'GET', cache: true}}),
-      StockStatusData: $resource(SAU_CONFIG.api_url + ':region/stock-status/', {}, {get: {method: 'GET'}}),
-      MultinationalFootprintData: $resource(SAU_CONFIG.api_url + ':region/multinational-footprint/', {}, {get: {method: 'GET', cache: true}}),
-      ExploitedOrganismsData: $resource(SAU_CONFIG.api_url + ':region/exploited-organisms/', {}, {get: {method: 'GET', cache: true}}),
-      TaxonLevels: $resource(SAU_CONFIG.api_url + 'taxon-level/', {}, {get: {method: 'GET', cache: true}}),
-      TaxonGroups: $resource(SAU_CONFIG.api_url + 'taxon-group/', {}, {get: {method: 'GET', cache: true}}),
+      Region: resourceFactory(':region/:region_id'),
+      Regions: resourceFactory(':region/'),
+      Data: resourceFactory(':region/:measure/:dimension/'),
+      CSVData: resourceFactory(':region/:measure/:dimension/?format=csv'),
+      MarineTrophicIndexData: resourceFactory(':region/marine-trophic-index/'),
+      StockStatusData: resourceFactory(':region/stock-status/'),
+      MultinationalFootprintData: resourceFactory(':region/multinational-footprint/'),
+      ExploitedOrganismsData: resourceFactory(':region/exploited-organisms/'),
+      Taxon: resourceFactory('taxa/:taxon_key'),
+      TaxonLevels: resourceFactory('taxon-level/'),
+      TaxonGroups: resourceFactory('taxon-group/'),
+
       api_url: SAU_CONFIG.api_url
     };
 
