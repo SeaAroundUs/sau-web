@@ -15,6 +15,8 @@ angular.module('sauWebApp')
       StockStatusData: $resource(SAU_CONFIG.api_url + ':region/stock-status/', {}, {get: {method: 'GET'}}),
       MultinationalFootprintData: $resource(SAU_CONFIG.api_url + ':region/multinational-footprint/', {}, {get: {method: 'GET', cache: true}}),
       ExploitedOrganismsData: $resource(SAU_CONFIG.api_url + ':region/exploited-organisms/', {}, {get: {method: 'GET', cache: true}}),
+      TaxonLevels: $resource(SAU_CONFIG.api_url + 'taxon-level/', {}, {get: {method: 'GET', cache: true}}),
+      TaxonGroups: $resource(SAU_CONFIG.api_url + 'taxon-group/', {}, {get: {method: 'GET', cache: true}}),
       api_url: SAU_CONFIG.api_url
     };
 

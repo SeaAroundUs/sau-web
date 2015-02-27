@@ -182,9 +182,13 @@ body {
 
 #exploited-organisms {
   .eo-grid {
-
+    margin-left:auto;
+    margin-right:auto;
     width: 800px;
-    height: 350px;
+    height: 250px;
+    .ui-grid-cell:hover {
+      cursor: pointer;
+    }
   }
 }
 .content-container {
