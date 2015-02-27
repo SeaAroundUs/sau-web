@@ -1,6 +1,10 @@
-<div ng-show="taxon">
+<div ng-show="taxon" class="taxon-info">
 	<h3>Key Information on {{taxon.name}}</h3>
-	<table class="table">
+	<table class="table-bordered" >
+		<colgroup>
+			<col class="table-key col-xs-3" />
+			<col class="row-key" />
+		</colgroup>
 		<tr ng-show="taxon.commercialGroup">
 			<td class="table-key">Commercial group:</td>
 			<td class="table-value">{{taxon.commercialGroup}}</td>
