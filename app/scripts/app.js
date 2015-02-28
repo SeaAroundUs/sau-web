@@ -85,7 +85,11 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'lme';}}
       })
-
+      .when('/lme/:id/exploited-organisms', {
+        templateUrl: 'views/exploited-organisms.html',
+        controller: 'ExploitedOrganismsCtrl',
+        resolve: {region: function() {return 'lme';}}
+      })
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
