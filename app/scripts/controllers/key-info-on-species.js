@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp').controller('KeyInfoOnSpeciesCtrl',
-  function ($scope) {
-  	//TODO This is hard-coded. Replace with taxon service request.
-  	$scope.taxon = {
-  		commercialGroup: 'Herring-likes'
-  	};
+  function ($scope, sauAPI, $routeParams) {
+  	sauAPI.Taxon.get({taxon_key: $routeParams.taxon}, function(result) {
+        $scope.taxon = result.data;
+    });
   });
