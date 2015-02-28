@@ -1,41 +1,52 @@
 <div ng-show="taxon" class="taxon-info">
-	<h3>Key Information on {{taxon.name}}</h3>
+	<h3>Key Information on {{taxon.common_name}}</h3>
 	<table class="table-bordered" >
 		<colgroup>
 			<col class="table-key col-xs-3" />
 			<col class="row-key" />
 		</colgroup>
-		<tr ng-show="taxon.commercialGroup">
+		<tr ng-show="taxon.commercial_group">
 			<td class="table-key">Commercial group:</td>
-			<td class="table-value">{{taxon.commercialGroup}}</td>
+			<td class="table-value">{{taxon.commercial_group}}</td>
 		</tr>
-		<tr ng-show="taxon.functionalGroup">
+		<tr ng-show="taxon.functional_group">
 			<td class="table-key">Functional group:</td>
-			<td class="table-value">{{taxon.functionalGroup}}</td>
+			<td class="table-value">{{taxon.functional_group}}</td>
 		</tr>
 		<tr ng-show="taxon.maximumLength">
 			<td class="table-key">Maximum length:</td>
-			<td class="table-value">{{taxon.maximumLength}}</td>
+			<td class="table-value">{{taxon.sl_max_cm}}</td>
 		</tr>
-		<tr ng-show="taxon.trophicLevel">
+		<tr ng-show="taxon.trophic_level">
 			<td class="table-key">Trophic level:</td>
-			<td class="table-value">{{taxon.trophicLevel}}</td>
+			<td class="table-value">{{taxon.tl}}</td>
 		</tr>
-		<tr ng-show="taxon.latitudeRange">
+		<tr ng-show="taxon.lat_north">
 			<td class="table-key">Latitude range:</td>
-			<td class="table-value">{{taxon.latitudeRange}}</td>
+			<td class="table-value">Northern limit: {{taxon.lat_north}}&deg;; Southern limit: {{taxon.lat_south}}&deg;</td>
 		</tr>
-		<tr ng-show="taxon.bottomDepthRange">
+		<tr ng-show="taxon.max_depth">
 			<td class="table-key">Bottom depth range:</td>
-			<td class="table-value">{{taxon.bottomDepthRange}}</td>
+			<td class="table-value">Min. depth: {{taxon.min_depth}}m; Max depth: {{taxon.max_depth}}m</td>
 		</tr>
-		<tr ng-show="taxon.growthParameters">
+		<tr ng-show="taxon.loo">
 			<td class="table-key">Growth parameters:</td>
-			<td class="table-value">{{taxon.growthParameters}}</td>
+			<td class="table-value">
+				L<sub>∞</sub> = {{taxon.loo}};
+				W<sub>∞</sub> = {{taxon.woo}};
+				K = {{taxon.k}};
+			</td>
 		</tr>
-		<tr ng-show="taxon.additionalUrl">
-			<td class="table-key">Additional URL:</td>
-			<td class="table-value">{{taxon.additionalUrl}}</td>
+		<tr ng-show="taxon.scientific_name">
+			<td class="table-key">Additional URLs:</td>
+			<td class="table-value">
+				<a ng-show="taxon.scientific_name" target="_blank"
+				    ng-href="http://www.fishbase.de/Summary/SpeciesSummary.cfm?genusname={{taxon.scientific_name|splitIndex: ' ':0}}&SpeciesName={{taxon.scientific_name|splitIndex: ' ':1}}">FishBase Species</a>;
+				<a target="_blank" ng-href="http://www.google.com/search?q={{taxon.scientific_name}}">Google</a>;
+				<a target="_blank" ng-href="http://scholar.google.com/scholar?q={{taxon.scientific_name}}">Scholar</a>;
+				<a target="_blank" ng-href="http://ispecies.org/?q={{taxon.scientific_name}}">iSpecies</a>
+
+			</td>
 		</tr>
 		<tr ng-show="taxon.distributionMap">
 			<td class="table-key">Distribution map:</td>
