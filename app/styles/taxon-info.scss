@@ -11,6 +11,11 @@
 			background-color: #eeeeee;
 			font-weight: 700;
 		}
+
+		//Lists of links have a margin of 10px by default because of Bootstrap. We don't want this.
+		.list-inline {
+			margin-bottom: 0;
+		}
 	}
 	
 	td { padding: 12px; }

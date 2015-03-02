@@ -40,12 +40,12 @@
 		<tr ng-show="taxon.scientific_name">
 			<td class="table-key">Additional URLs:</td>
 			<td class="table-value">
-				<a ng-show="taxon.scientific_name" target="_blank"
-				    ng-href="http://www.fishbase.de/Summary/SpeciesSummary.cfm?genusname={{taxon.scientific_name|splitIndex: ' ':0}}&SpeciesName={{taxon.scientific_name|splitIndex: ' ':1}}">FishBase Species</a>;
-				<a target="_blank" ng-href="http://www.google.com/search?q={{taxon.scientific_name}}">Google</a>;
-				<a target="_blank" ng-href="http://scholar.google.com/scholar?q={{taxon.scientific_name}}">Scholar</a>;
-				<a target="_blank" ng-href="http://ispecies.org/?q={{taxon.scientific_name}}">iSpecies</a>
-
+				<ul class="list-inline">
+					<li><a ng-show="fishBaseUrl" target="_blank" ng-href="{{fishBaseUrl}}">FishBase</a></li>
+					<li><a target="_blank" ng-href="http://www.google.com/search?q={{taxon.scientific_name}}">Google</a></li>
+					<li><a target="_blank" ng-href="http://scholar.google.com/scholar?q={{taxon.scientific_name}}">Scholar</a></li>
+					<li><a target="_blank" ng-href="http://ispecies.org/?q={{taxon.scientific_name}}">iSpecies</a></li>
+				</ul>
 			</td>
 		</tr>
 		<tr ng-show="taxon.distributionMap">
