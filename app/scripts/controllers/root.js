@@ -54,4 +54,14 @@ angular.module('sauWebApp')
     };
     $scope.getFeatures();
 
+    if ($rootScope.modalInstance) {
+      $rootScope.modalInstance.close();
+    }
+
+    $scope.$on('backButtonClick', function() {
+      if ($rootScope.modalInstance && $location.path() === ('/' + $scope.region)) {
+        $rootScope.modalInstance.close();
+      }
+    });
+
   });

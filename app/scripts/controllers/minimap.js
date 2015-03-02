@@ -66,7 +66,7 @@ angular.module('sauWebApp')
         if(ev.layer.feature) {
           if (parseInt(ev.layer.feature.properties.region_id) === parseInt($scope.formModel.region_id)) {
             ev.layer.setStyle(mapConfig.selectedStyle);
-            map.invalidateSize(true); // fix drawing bug
+            // map.invalidateSize(true); // fix drawing bug
           }
         }
       });
@@ -80,7 +80,7 @@ angular.module('sauWebApp')
             var f = L.geoJson($scope.feature.data.geojson);
             var bounds = f.getBounds();
             map.fitBounds(bounds);
-            map.invalidateSize(true); // fix drawing bug
+            // map.invalidateSize(true); // fix drawing bug
           });
         });
 

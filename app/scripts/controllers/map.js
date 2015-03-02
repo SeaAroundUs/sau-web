@@ -7,7 +7,12 @@ angular.module('sauWebApp')
   .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, mapConfig, leafletData, leafletBoundsHelpers) {
 
     $scope.openModal = function(region_id) {
-      var modalInstance = $modal.open({
+      if ($rootScope.modalInstance) {
+        // clean house
+        $rootScope.modalInstance.close();
+      }
+
+      $rootScope.modalInstance = $modal.open({
                 templateUrl: 'views/region-detail/main.html',
                 controller: 'RegionDetailCtrl',
                 scope: $scope,
@@ -34,7 +39,7 @@ angular.module('sauWebApp')
         }
       };
 
-      modalInstance.result.then(closedModal, closedModal);
+      $rootScope.modalInstance.result.then(closedModal, closedModal);
     };
 
     if ($routeParams.id || $location.path() === '/global') {

@@ -18,6 +18,19 @@ angular
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }])
+  .run(function($rootScope, $route, $location){
+
+    // detect back button click, and $broadcast a 'backButtonClick' event
+    $rootScope.$on('$locationChangeSuccess', function() {
+      $rootScope.actualLocation = $location.path();
+    });
+
+    $rootScope.$watch(function () {return $location.path();}, function (newLocation) {
+      if($rootScope.actualLocation === newLocation) {
+        $rootScope.$broadcast('backButtonClick');
+      }
+    });
+  })
   .run(function($http, DSCacheFactory) {
 
       var cache = new DSCacheFactory('defaultCache', {
