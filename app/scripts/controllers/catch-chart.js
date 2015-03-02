@@ -35,11 +35,11 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
           legend: {
             updateState: false,
             dispatch: {
-              /* When the user clicks on a species (taxon) in the legend, take them to the "Key Information on Species" page.*/
+              /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
               legendClick: function(taxon) {
                 if ($scope.formModel.dimension.value === 'taxon') {
-                  //Route user to "key information on species page" via the modal close event.
-                  $scope.modal.close({location: '/species/' + taxon.key});
+                  //Route user to "key information on taxon page" via the modal close event.
+                  $scope.modal.close({location: '/taxa/' + taxon.key});
                 }
               }
             }
