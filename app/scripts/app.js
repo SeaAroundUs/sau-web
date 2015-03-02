@@ -127,9 +127,9 @@ angular
         resolve: {region: function() {return 'global';}}
       })
 
-      .when('/species/:taxon', {
-        templateUrl: 'views/key-info-on-species.html',
-        controller: 'KeyInfoOnSpeciesCtrl'
+      .when('/taxa/:taxon', {
+        templateUrl: 'views/key-info-on-taxon.html',
+        controller: 'KeyInfoOnTaxonCtrl'
       })
 
       .otherwise({
