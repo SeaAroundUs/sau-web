@@ -29,6 +29,7 @@ angular.module('sauWebApp')
                 controller: 'RegionDetailCtrl',
                 scope: $scope,
                 size: 'lg',
+                background: false,
                 resolve: {
                   region_id: function () {
                     return region_id;
@@ -36,12 +37,9 @@ angular.module('sauWebApp')
                 }
       });
 
-      var closedModal = function (selectedFeature) {
-        if ( ((selectedFeature || {}).properties || {}).region_id  ) {
-          // clicked feature
-          $location.path('/' + region + '/' + selectedFeature.properties.region_id);
-        } else if (selectedFeature && selectedFeature.location) {
-          $location.path(selectedFeature.location);
+      var closedModal = function (result) {
+        if (result && result.location) {
+          $location.path(result.location);
         } else {
           // closed another way
           // modal needs to disable geojson clicks, reenable it=
@@ -62,6 +60,7 @@ angular.module('sauWebApp')
     leafletData.getMap('mainmap').then(function(map) {
       $scope.map = map;
       L.esri.basemapLayer('Oceans').addTo(map);
+      L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
     var geojsonClick = function(latlng) {
@@ -119,7 +118,7 @@ angular.module('sauWebApp')
       },
       defaults: mapConfig.defaults,
       layers: {
-        baselayers: {}
+        baselayers: mapConfig.baseLayers
       }
     });
 
@@ -138,7 +137,5 @@ angular.module('sauWebApp')
     };
 
     $scope.$watch('region', $scope.getFeatures, true);
-
-
 
   });

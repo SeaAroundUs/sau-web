@@ -4,10 +4,13 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, $location, mapConfig, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, mapConfig, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
+      layers: {
+        baselayers: mapConfig.baseLayers
+      }
     });
 
     // remove parent scope listener and add our own
@@ -71,6 +74,7 @@ angular.module('sauWebApp')
         }
       });
       L.esri.basemapLayer('Oceans').addTo(map);
+      L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
     $scope.$watch('feature', function() {
