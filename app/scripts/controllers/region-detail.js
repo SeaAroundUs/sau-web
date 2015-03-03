@@ -3,7 +3,6 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $q, $modalInstance, $location, $window, sauAPI, region_id) {
 
-    $scope.modal = $modalInstance;
     $scope.feature = null;
 
     $scope.viewContentLoaded = $q.defer();

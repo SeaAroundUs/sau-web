@@ -3,8 +3,7 @@
 /* global d3 */ /* for jshint */
 /* global colorbrewer */ /* for jshint */
 
-angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
-  function ($scope) {
+angular.module('sauWebApp').controller('CatchChartCtrl', function ($scope, $rootScope) {
 
     $scope.options = {
       chart: {
@@ -26,7 +25,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
           },
           yAxis: {
             showMaxMin: false,
-            foo: 'bar',
             tickFormat: function(d){
               return d3.format(',.1s')(d);
             },
@@ -39,7 +37,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
               legendClick: function(taxon) {
                 if ($scope.formModel.dimension.value === 'taxon') {
                   //Route user to "key information on taxon page" via the modal close event.
-                  $scope.modal.close({location: '/taxa/' + taxon.key});
+                  $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
                 }
               }
             }
@@ -74,5 +72,5 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);
-    
-    }]);
+
+    });
