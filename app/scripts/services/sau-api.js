@@ -6,7 +6,7 @@ angular.module('sauWebApp')
   .factory('sauAPI', function ($resource, SAU_CONFIG) {
 
     var resourceFactory = function(apiPath) {
-      return $resource(SAU_CONFIG.api_url + apiPath, {}, {get: {method: 'GET', cache: true}});
+      return $resource(SAU_CONFIG.apiURL + apiPath, {}, {get: {method: 'GET', cache: true}});
     };
 
     var methods = {
@@ -23,7 +23,7 @@ angular.module('sauWebApp')
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),
 
-      api_url: SAU_CONFIG.api_url
+      apiURL: SAU_CONFIG.apiURL
     };
 
     return methods;

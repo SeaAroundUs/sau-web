@@ -26,6 +26,17 @@ module.exports = function (grunt) {
   if (!apiHostPort) {
     apiHostPort = apiHost + ':8000';
   }
+
+  // get current commit
+  var buildNumber = '';
+  grunt.util.spawn({
+    cmd: 'git',
+    args: ['rev-parse', 'HEAD'],
+  }, function done(error, result) {
+    grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
+  });
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
@@ -38,15 +49,17 @@ module.exports = function (grunt) {
       development: {
         constants: {
           SAU_CONFIG: {
-            api_url: 'http://' + apiHostPort + '/api/v1/',
+            apiURL: 'http://' + apiHostPort + '/api/v1/',
+            buildNumber: buildNumber
           }
         }
       },
       production: {
         constants: {
           SAU_CONFIG: {
-            api_url: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
-          }
+            apiURL: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
+            buildNumber: buildNumber
+          },
         }
       }
     },
@@ -364,21 +377,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Run some tasks in parallel to speed up the build process
-    concurrent: {
-      server: [
-        'compass:server'
-      ],
-      test: [
-        'compass'
-      ],
-      dist: [
-        'compass:dist',
-        'imagemin',
-        'svgmin'
-      ]
-    },
-
     // Test settings
     karma: {
       unit: {
@@ -429,7 +427,7 @@ module.exports = function (grunt) {
       'clean:server',
       'ngconstant:development',
       'wiredep',
-      'concurrent:server',
+      'compass:server',
       'autoprefixer',
       'connect:livereload',
       'watch'
@@ -438,7 +436,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
     'clean:server',
-    'concurrent:test',
+    'compass',
     'autoprefixer',
     'connect:test',
     'ngconstant:production',
@@ -454,10 +452,11 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'ngconstant:production',
     'wiredep',
     'useminPrepare',
-    'concurrent:dist',
+    'compass:dist',
+    'ngconstant:production',
+    // 'imagemin',
     'autoprefixer',
     'concat',
     'ngAnnotate',

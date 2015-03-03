@@ -42,12 +42,14 @@ angular
 
       $http.defaults.cache = cache;
   })
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, SAU_CONFIG) {
     $routeProvider
       .when('/', {
         redirectTo: '/eez'
       })
-
+      .when('/build', {
+        template: SAU_CONFIG.buildNumber
+      })
       .when('/eez', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

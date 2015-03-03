@@ -60,7 +60,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       // FIXME: constructing url manually, I don't know how to get it out of the $resource
       // This should probably be in a service or something too.
       var url = ['',
-        sauAPI.api_url,
+        sauAPI.apiURL,
         $scope.region,
         '/',
         $scope.measure.value,
