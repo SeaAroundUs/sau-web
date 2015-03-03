@@ -9,6 +9,7 @@ angular.module('sauWebApp')
                                     $http,
                                     $location,
                                     $modal,
+                                    $route,
                                     $routeParams,
                                     sauAPI,
                                     mapConfig,
@@ -40,6 +41,7 @@ angular.module('sauWebApp')
       var closedModal = function (result) {
         if (result && result.location) {
           $location.path(result.location);
+          $route.reload();
         } else {
           // closed another way
           // modal needs to disable geojson clicks, reenable it=
