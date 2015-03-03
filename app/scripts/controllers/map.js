@@ -4,7 +4,19 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MapCtrl', function ($scope, $rootScope, $http, $location, $modal, $routeParams, mapConfig, leafletData, leafletBoundsHelpers) {
+  .controller('MapCtrl', function ($scope,
+                                    $rootScope,
+                                    $http,
+                                    $location,
+                                    $modal,
+                                    $routeParams,
+                                    sauAPI,
+                                    mapConfig,
+                                    leafletData,
+                                    leafletBoundsHelpers,
+                                    region) {
+
+    $scope.region.name = region;
 
     $scope.openModal = function(region_id) {
       if ($rootScope.modalInstance) {
@@ -27,7 +39,7 @@ angular.module('sauWebApp')
       var closedModal = function (selectedFeature) {
         if ( ((selectedFeature || {}).properties || {}).region_id  ) {
           // clicked feature
-          $location.path('/' + $scope.region + '/' + selectedFeature.properties.region_id);
+          $location.path('/' + region + '/' + selectedFeature.properties.region_id);
         } else if (selectedFeature && selectedFeature.location) {
           $location.path(selectedFeature.location);
         } else {
@@ -35,7 +47,8 @@ angular.module('sauWebApp')
           // modal needs to disable geojson clicks, reenable it=
           $scope.handleGeojsonClick();
           $scope.handleGeojsonMouseout();
-          $location.path('/' + $scope.region, false);
+          $scope.handleGeojsonMouseover();
+          $location.path('/' + region, false);
         }
       };
 
@@ -109,5 +122,23 @@ angular.module('sauWebApp')
         baselayers: {}
       }
     });
+
+    $scope.geojson = {};
+    $scope.getFeatures = function() {
+
+      $scope.features = sauAPI.Regions.get({region:$scope.region.name});
+      $scope.features.$promise.then(function(data) {
+          angular.extend($scope, {
+            geojson: {
+              data: data.data,
+              style: mapConfig.defaultStyle,
+            }
+          });
+        });
+    };
+
+    $scope.$watch('region', $scope.getFeatures, true);
+
+
 
   });

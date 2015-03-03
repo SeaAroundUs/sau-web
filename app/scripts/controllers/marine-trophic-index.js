@@ -7,7 +7,7 @@ angular.module('sauWebApp')
 
     $scope.years = [];
 
-    var id = $scope.region_id || $routeParams.id;
+    var id = $scope.region.name_id || $routeParams.id;
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 

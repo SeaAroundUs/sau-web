@@ -42,11 +42,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.updateRegion = function() {
-      $scope.feature = sauAPI.Region.get({region: $scope.region, region_id: $scope.formModel.region_id});
-      if ($scope.region === 'global') {
-        $location.path('/' + $scope.region, false);
+      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      if ($scope.region.name === 'global') {
+        $location.path('/' + $scope.region.name, false);
       } else {
-        $location.path('/' + $scope.region + '/' + $scope.formModel.region_id, false);
+        $location.path('/' + $scope.region.name + '/' + $scope.formModel.region_id, false);
       }
     };
 
@@ -61,13 +61,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       // This should probably be in a service or something too.
       var url = ['',
         sauAPI.apiURL,
-        $scope.region,
+        $scope.region.name,
         '/',
-        $scope.measure.value,
+        $scope.formModel.measure.value,
         '/',
-        $scope.dimension.value,
+        $scope.formModel.dimension.value,
         '/?format=csv&limit=',
-        $scope.limit.value,
+        $scope.formModel.limit.value,
         '&region_id=',
         $scope.formModel.region_id,
       ].join('');
@@ -76,7 +76,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
 
     $scope.updateData = function() {
-      var data_options = {region: $scope.region, region_id: $scope.formModel.region_id};
+      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
