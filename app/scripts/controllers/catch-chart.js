@@ -3,8 +3,8 @@
 /* global d3 */ /* for jshint */
 /* global colorbrewer */ /* for jshint */
 
-angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
-  function ($scope) {
+angular.module('sauWebApp').controller('CatchChartCtrl',
+  function ($scope, $filter) {
 
     $scope.options = {
       chart: {
@@ -26,11 +26,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
           },
           yAxis: {
             showMaxMin: false,
-            foo: 'bar',
-            tickFormat: function(d){
-              return d3.format(',.1s')(d);
-            },
             axisLabel: $scope.formModel.measure.chartlabel
+          },
+          yAxisTickFormat: function(d) {
+            return $filter('significantDigits')(d, 3);
           },
           legend: {
             updateState: false,
@@ -69,10 +68,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl', [ '$scope',
     $scope.updateYlabel = function() {
       /* not sure why options is not updating on $scope.formModel change */
       $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
-      $scope.options.chart.yAxis.tickFormat = function(d) {
-        return d3.format(',.00002f')(d);
+      $scope.options.chart.yAxisTickFormat = function(d) {
+        return $filter('significantDigits')(d, 3);
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);
     
-    }]);
+    });
