@@ -7,20 +7,36 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.viewContentLoaded = $q.defer();
 
+    $scope.chartTemplate = 'views/region-detail/catch-chart.html';
+
+    $scope.chartChange = function(type) {
+      $scope.chartTemplate = 'views/region-detail/' + type + '.html';
+    };
+
     $rootScope.modalInstance.opened.then(function() {
       $scope.viewContentLoaded.resolve();
     });
 
-    $scope.tabs = [
-      {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-      {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-      {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-      {title: 'Governance',   template: 'views/region-detail/governance.html'},
-      {title: 'Indicators',   template: 'views/region-detail/indicators.html'},
-      {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
-    ];
-
     $scope.viewContentLoaded.promise.then(function() {
+
+      if ($scope.region.name === 'global') {
+        $scope.tabs = [
+          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
+          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
+          {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'},
+          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+        ];
+      } else {
+        $scope.tabs = [
+          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
+          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
+          {title: 'Governance',   template: 'views/region-detail/governance.html'},
+          {title: 'Indicators',   template: 'views/region-detail/indicators.html'},
+          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+        ];
+      }
 
       for (var i=0; i<$scope.tabs.length; i++) {
         $scope.tabs[i].active = false;
@@ -36,7 +52,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         $scope.tabs[0].active = true;
       }
     });
-
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
@@ -100,23 +115,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $window.open(url, '_blank');
     };
 
-
-    $scope.updateData = function() {
-      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
-      data_options.dimension = $scope.formModel.dimension.value;
-      data_options.measure = $scope.formModel.measure.value;
-      data_options.limit = $scope.formModel.limit.value;
-      var data = sauAPI.Data.get(data_options, function() {
-          $scope.data = data.data;
-      });
-    };
-
     $scope.clickFormLink = function(dim, measure) {
       $scope.formModel.dimension = dim;
       $scope.formModel.measure = $scope.measures[measure];
     };
 
     $scope.$watch('formModel.region_id', $scope.updateRegion);
-    $scope.$watch('formModel', $scope.updateData, true);
 
 });

@@ -3,7 +3,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter) {
+  function ($scope, $rootScope, $filter, sauAPI) {
 
     $scope.options = {
       chart: {
@@ -72,5 +72,16 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);
-    
+
+    $scope.updateData = function() {
+      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
+      data_options.dimension = $scope.formModel.dimension.value;
+      data_options.measure = $scope.formModel.measure.value;
+      data_options.limit = $scope.formModel.limit.value;
+      var data = sauAPI.Data.get(data_options, function() {
+          $scope.data = data.data;
+      });
+    };
+    $scope.$watch('formModel', $scope.updateData, true);
+
     });

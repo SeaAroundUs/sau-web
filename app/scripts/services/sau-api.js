@@ -19,6 +19,7 @@ angular.module('sauWebApp')
       StockStatusData: resourceFactory(':region/stock-status/'),
       MultinationalFootprintData: resourceFactory(':region/multinational-footprint/'),
       ExploitedOrganismsData: resourceFactory(':region/exploited-organisms/'),
+      EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),

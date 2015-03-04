@@ -22,7 +22,7 @@ angular.module('sauWebApp')
       lineCap: 'round'
     },
     defaults: {
-      minZoom: 2,
+      minZoom: 1,
       tileLayerOptions: {
         noWrap: true,
         detectRetina: true,
@@ -44,7 +44,8 @@ angular.module('sauWebApp')
   })
   .value('externalURLs',
     {
-      docsMethods: 'http://www.seaaroundus.org/doc/methods/'
+      docsMethods: 'http://www.seaaroundus.org/doc/methods/',
+      docs: 'http://www.seaaroundus.org/doc/'
     });
 
 

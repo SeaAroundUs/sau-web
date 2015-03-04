@@ -29,9 +29,8 @@ angular.module('sauWebApp')
     };
 
     $scope.changeRegionGlobal = function() {
-      var region = 'global';
-      $location.path(region, true);
-      $scope.region.name = region;
+      $scope.region.name = 'global';
+      $location.path($scope.region.name, true);
     };
 
     $scope.isActive = function (viewLocation) {
