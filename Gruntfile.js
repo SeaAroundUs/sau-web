@@ -456,7 +456,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'compass:dist',
     'ngconstant:production',
-    // 'imagemin',
+    'imagemin',
     'autoprefixer',
     'concat',
     'ngAnnotate',
