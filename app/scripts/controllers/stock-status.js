@@ -40,12 +40,12 @@ angular.module('sauWebApp')
               tickFormat: function(d){
                   return d3.format(',.1s')(d);
               },
-              axisLabel: 'Catch by stock status(%)'
+              axisLabel: 'Catch by stock status'
           },
           color: ['#B42626', '#FF8E05', '#F5DFB4','#9CCE36', '#056705' ]
         }
       };
 
       $scope.nss_options = angular.copy($scope.css_options);
-      $scope.nss_options.chart.yAxis.axisLabel = 'Number of stocks by status (%)';
+      $scope.nss_options.chart.yAxis.axisLabel = 'Number of stocks by status';
   });
