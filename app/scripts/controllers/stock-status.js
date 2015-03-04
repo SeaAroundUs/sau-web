@@ -4,9 +4,11 @@
 /* global d3 */
 
 angular.module('sauWebApp')
-  .controller('StockStatusCtrl', function ($scope, $routeParams, sauAPI, region) {
+  .controller('StockStatusCtrl', function ($scope, $routeParams, sauAPI, externalURLs, region) {
     $scope.data = {};
+    $scope.regionName = region;
     $scope.region = sauAPI.Region.get({region: region, region_id: $routeParams.id});
+    $scope.docsMethodsURL = externalURLs.docsMethods;
 
     var data = sauAPI.StockStatusData.get({region: region, region_id: $routeParams.id}, function() {
         angular.forEach(data.data, function(data_set, key) {

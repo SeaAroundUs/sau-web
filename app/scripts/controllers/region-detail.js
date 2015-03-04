@@ -1,15 +1,42 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $q, $modalInstance, $location, $window, sauAPI, region_id) {
+  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id) {
 
     $scope.feature = null;
 
     $scope.viewContentLoaded = $q.defer();
 
-    $modalInstance.opened.then(function() {
+    $rootScope.modalInstance.opened.then(function() {
       $scope.viewContentLoaded.resolve();
     });
+
+    $scope.tabs = [
+      {title: 'Catch Info',   template:'views/region-detail/catch.html'},
+      {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+      {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
+      {title: 'Governance',   template: 'views/region-detail/governance.html'},
+      {title: 'Indicators',   template: 'views/region-detail/indicators.html'},
+      {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+    ];
+
+    $scope.viewContentLoaded.promise.then(function() {
+
+      for (var i=0; i<$scope.tabs.length; i++) {
+        $scope.tabs[i].active = false;
+      }
+      if ($routeParams.tab) {
+        // allow ?tab=N to select the Nth tab on load. Until we can
+        // fully support tabs changing this query parameter,
+        // just immediately drop the parameter from the search
+        // args to avoid confusion with the URL.  --jls
+        $scope.tabs[$routeParams.tab].active = true;
+        $location.search('tab', null);
+      } else {
+        $scope.tabs[0].active = true;
+      }
+    });
+
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
@@ -52,7 +79,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.hoverRegion = $scope.feature;
 
     $scope.close = function () {
-      $modalInstance.close();
+      $rootScope.modalInstance.close();
     };
 
     $scope.download = function() {
@@ -80,9 +107,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
-        $scope.viewContentLoaded.promise.then(function() {
           $scope.data = data.data;
-        });
       });
     };
 

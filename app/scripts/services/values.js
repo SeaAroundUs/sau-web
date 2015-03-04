@@ -41,7 +41,11 @@ angular.module('sauWebApp')
         }
       }
     }
-  });
+  })
+  .value('externalURLs',
+    {
+      docsMethods: 'http://www.seaaroundus.org/doc/methods/'
+    });
 
 
 })();
