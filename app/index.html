@@ -5,7 +5,7 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:100,400,700,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
@@ -45,13 +45,16 @@
 
           <div id="main_view" ng-view=""></div>
 
-          <div id="root_footer"></div>
-        </div>
-        <div id="footer">
-          <span class="">Copyright Information here. All rights reserved.</span>
-          <a class="" href="#">Privacy Policies</a>
-          <span class="">|</span>
-          <a class="" href="#">Terms and Conditions</a>
+          <div id="footer" class="clearfix">
+            <div id="copyright" class="pull-left">
+              Copyright Information here. All rights reserved.
+            </div>
+            <div id="legal" class="pull-right">
+              <a class="" href="#">Privacy Policies</a>
+              <span class="separator">|</span>
+              <a class="" href="#">Terms and Conditions</a>
+            </div>
+          </div>
         </div>
     </div>
 
