@@ -17,6 +17,7 @@ angular.module('sauWebApp')
       CSVData: resourceFactory(':region/:measure/:dimension/?format=csv'),
       MarineTrophicIndexData: resourceFactory(':region/marine-trophic-index/'),
       StockStatusData: resourceFactory(':region/stock-status/'),
+      EstuariesData: resourceFactory(':region/estuaries/'),
       MultinationalFootprintData: resourceFactory(':region/multinational-footprint/'),
       ExploitedOrganismsData: resourceFactory(':region/exploited-organisms/'),
       EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),

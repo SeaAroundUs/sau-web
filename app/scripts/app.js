@@ -67,6 +67,11 @@ angular
         controller: 'MultinationalFootprintCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/estuaries', {
+        templateUrl: 'views/estuaries.html',
+        controller: 'EstuariesCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
