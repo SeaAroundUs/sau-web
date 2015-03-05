@@ -19,7 +19,7 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 }
 
 @mixin darkBar() {
-  background-color: $darkBlue;
+  background-color: #0071cf;
   height: 50px;
   color: white;
   width: 100%;
@@ -28,12 +28,28 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 $darkBlue: rgb(2,32,64);
 $orange: #F4BC59;
+$footerHeight: 80px;
 
 #footer {
-  @include darkBar;
-  height: 80px;
-  // position: absolute;
-  bottom: 0px;
+  background-color: #0071cf;
+  width: 100%;
+  height: $footerHeight;
+  padding: 0 40px;
+  color: #fff;
+  line-height: $footerHeight;
+
+  a {
+    color: #fff;
+  }
+
+  #copyright {
+    
+  }
+
+  .separator {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 }
 
 .browsehappy {
@@ -45,14 +61,15 @@ $orange: #F4BC59;
 
 html, body {
   height: 100%;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
   font-weight: 400; /* or 400 */
 }
 
 /* Space out content a bit */
 body {
-  padding-top: 20px;
+  padding-top: 0px;
   padding-bottom: 20px;
+  background: #f0f0f0;
   /* prevent half-pixel blur */
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -62,6 +79,7 @@ body {
 /* Custom page header */
 #header {
   border-bottom: 1px solid #e5e5e5;
+  padding-top: 20px;
 
   /* Make the masthead heading the same height as the navigation */
   h3 {
@@ -87,6 +105,12 @@ body {
       }
     }
   }
+}
+
+#root {
+  margin: 0 auto;
+  max-width: 1180px;
+  background-color: #fff;
 }
 
 #main_view {
@@ -181,16 +205,16 @@ body {
 }
 
 #exploited-organisms {
-  width: 70%;
   min-width: 500px;
   margin: 0 auto;
+  padding-left: 84px;
 
   #controls {
     margin-top: 20px;
     margin-bottom: 20px;
   }
   .eo-grid {
-    width: 800px;
+    width: 768px;
     height: 250px;
     .ui-grid-cell {
       cursor: pointer;
@@ -200,7 +224,9 @@ body {
       // row
       background-color: #fa4 !important;
     }
-
+    .ui-grid-header-cell {
+      background-color: #eeeeee;
+    }
   }
 }
 #stock-status {
@@ -210,8 +236,5 @@ body {
   }
 }
 .content-container {
-  padding-left: 100px;
-  padding-right: 100px;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding: 16px;
 }
