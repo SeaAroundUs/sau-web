@@ -102,6 +102,10 @@ angular
         controller: 'MapCtrl',
         resolve: {region: function() {return 'rfmo';}}
       })
+      .when('/rfmo/:id/procedures-and-outcomes', {
+        templateUrl: 'views/procedures-and-outcomes.html',
+        controller: 'ProceduresAndOutcomesCtrl',
+      })
       .when('/fao', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

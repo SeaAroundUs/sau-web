@@ -27,6 +27,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'},
           {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
         ];
+      } else if ($scope.region.name === 'rfmo') {
+        $scope.tabs = [
+          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
+          {title: 'Governance',   template: 'views/region-detail/governance-rfmo.html'},
+          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+        ];
       } else {
         $scope.tabs = [
           {title: 'Catch Info',   template:'views/region-detail/catch.html'},
