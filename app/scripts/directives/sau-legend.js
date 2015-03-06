@@ -4,15 +4,15 @@
  * @ngdoc directive
  * @name sauWebApp.directive:sauLegend
  * @description
- * # sauLegend
+ * # A directive to represent the legends that appear below the inset map on the region detail screens.
  */
 angular.module('sauWebApp')
   .directive('sauLegend', function () {
     return {
-      template: '<div></div>',
+      templateUrl: 'views/sau-legend.html',
       restrict: 'E',
-      link: function postLink(scope, element, attrs) {
-        element.text('this is the sauLegend directive');
+      scope: {
+      	legendKeys: '='
       }
     };
   });

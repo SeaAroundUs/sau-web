@@ -1,0 +1,9 @@
+<div id="legend" ng-show='legendKeys.length > 0'>
+	<h3>Legend</h3>
+	<ul class="list-inline">
+		<li ng-repeat="key in legendKeys" class="legend-key">
+				<img class="legend-key-box" ng-src="{{key.pattern}}"></img>
+				<span class="legend-key-label">{{key.label}}</span>
+		</li>
+	</ul>
+</div>

@@ -1,10 +1,10 @@
 <div class="container modal-body">
     <div class="row">
         <div class="col-sm-12">
-            <h3 class="modal-title pull-left">
+            <h1 class="modal-title pull-left">
                 {{feature.data.title}}
                 <span ng-show="feature.data.long_title">: {{feature.data.long_title}}</span>
-            </h3>
+            </h1>
             <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
             <button class="btn btn-primary x-button pull-right" ng-click="download()">Download Data</button>
         </div>
@@ -15,18 +15,24 @@
     </div>
 
     <div class="row">
-        <h3 class="modal-title">
+        <h1 class="modal-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
                 : <span ng-bind="$root.hoverRegion.properties.long_title">
             </span>
-        </h3>
+        </h1>
     </div>
 
     <div class="two-columns row">
         <div class="map-cells col-sm-5">
             <div class="minimap content row" ng-controller="MiniMapCtrl">
                 <leaflet id="minimap" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>
+            </div>
+            <div class="padded content row">
+                <sau-legend legend-keys="legendKeys"></sau-legend>
+                <p class="disclaimer">
+                    <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime boundaries (see <a href="http://www.seaaroundus.org/doc/saup_manual.htm#15" target="_blank">Methods</a>).
+                </p>
             </div>
             <div class="padded content row">
                 <table class="metrics">
