@@ -26,9 +26,14 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
   @include ghostVerticalAlign;
 }
 
+@mixin header() {
+  font-family: 'Roboto', san-serif;
+}
+
 $darkBlue: rgb(2,32,64);
 $orange: #F4BC59;
 $footerHeight: 80px;
+$bodyFontFamily: 'Roboto', san-serif;
 
 #footer {
   background-color: #0071cf;
@@ -61,8 +66,9 @@ $footerHeight: 80px;
 
 html, body {
   height: 100%;
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: $bodyFontFamily;
   font-weight: 400; /* or 400 */
+  font-size: 14px;
 }
 
 /* Space out content a bit */
@@ -74,6 +80,30 @@ body {
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-style: preserve-3d;
+}
+
+/* Global header defaults */
+h1 {
+  @include header;
+  font-weight: 500px;
+  font-size: 25px;
+}
+
+h2 {
+  @include header;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+h3 {
+  @include header;
+  font-weight: 700;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+small {
+  font-size: 12px;
 }
 
 /* Custom page header */
@@ -235,9 +265,11 @@ body {
     margin-bottom: 40px;
   }
 }
+
 .content-container {
   padding: 16px;
 }
+
 #estuaries {
 
   #map-container {
@@ -253,4 +285,13 @@ body {
       }
     }
   }
+}
+
+.disclaimer {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.modal-title {
+  text-transform: uppercase;
 }
