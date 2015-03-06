@@ -111,25 +111,25 @@ angular
         templateUrl: 'views/procedures-and-outcomes.html',
         controller: 'ProceduresAndOutcomesCtrl',
       })
-      .when('/fao', {
+      .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
-        resolve: {region: function() {return 'fao';}}
+        resolve: {region: function() {return 'highseas';}}
       })
-      .when('/fao/:id', {
+      .when('/highseas/:id', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
-        resolve: {region: function() {return 'fao';}}
+        resolve: {region: function() {return 'highseas';}}
       })
-      .when('/fao/:id/marine-trophic-index', {
+      .when('/highseas/:id/marine-trophic-index', {
         templateUrl: 'views/marine-trophic-index.html',
         controller: 'MarineTrophicIndexCtrl',
-        resolve: {region: function() {return 'fao';}}
+        resolve: {region: function() {return 'highseas';}}
       })
-      .when('/fao/:id/stock-status', {
+      .when('/highseas/:id/stock-status', {
         templateUrl: 'views/stock-status.html',
         controller: 'StockStatusCtrl',
-        resolve: {region: function() {return 'fao';}}
+        resolve: {region: function() {return 'highseas';}}
       })
 
       .when('/global', {
