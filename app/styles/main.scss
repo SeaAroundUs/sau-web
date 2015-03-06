@@ -238,3 +238,19 @@ body {
 .content-container {
   padding: 16px;
 }
+#estuaries {
+
+  #map-container {
+    background-color: #eee;
+    #estuariesmap {
+      width: 100%;
+      height: 470px;
+    }
+    #estuary-detail {
+      padding: 30px;
+      table {
+        width: 100%;
+      }
+    }
+  }
+}
