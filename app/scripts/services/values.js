@@ -9,6 +9,12 @@ angular.module('sauWebApp')
       fillColor: '#fff',
       fillOpacity: 0.6
     },
+    ifaStyle: {
+      color: '#f00',
+      fillColor: '#d00',
+      fillOpacity: 0.4,
+      weight: 1.0
+    },
     highlightStyle: {
       fillColor: '#00f',
     },

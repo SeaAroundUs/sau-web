@@ -4,7 +4,7 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, mapConfig, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -12,6 +12,19 @@ angular.module('sauWebApp')
         baselayers: mapConfig.baseLayers
       }
     });
+
+    // add IFA boundaries
+    var getIFA = function() {
+      $scope.ifa = sauAPI.IFA.get({region_id: $scope.formModel.region_id}, function() {
+        leafletData.getMap('minimap').then(function(map) {
+          if($scope.ifaLayer) {
+            map.removeLayer($scope.ifaLayer);
+          }
+          $scope.ifaLayer = L.geoJson($scope.ifa.data.geojson).addTo(map);
+          $scope.ifaLayer.setStyle(mapConfig.ifaStyle);
+        });
+      });
+    };
 
     // remove parent scope listener and add our own
     $scope.geojsonClick();
@@ -110,5 +123,6 @@ angular.module('sauWebApp')
 
     $scope.$watch('formModel.region_id', function() {
       $scope.styleSelectedFeature();
+      getIFA();
   });
 });
