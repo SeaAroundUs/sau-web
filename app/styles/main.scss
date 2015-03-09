@@ -48,7 +48,7 @@ $bodyFontFamily: 'Roboto', san-serif;
   }
 
   #copyright {
-    
+
   }
 
   .separator {
@@ -294,4 +294,16 @@ small {
 
 .modal-title {
   text-transform: uppercase;
+}
+
+.content-container#country-profile {
+  span.title {
+    font-weight: bolder;
+  }
+  p {
+    margin-bottom: 30px;
+  }
+  p#links {
+    margin-top: 60px;
+  }
 }

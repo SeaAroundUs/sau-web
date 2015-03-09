@@ -131,18 +131,19 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'highseas';}}
       })
-
       .when('/global', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
         resolve: {region: function() {return 'global';}}
       })
-
       .when('/taxa/:taxon', {
         templateUrl: 'views/key-info-on-taxon.html',
         controller: 'KeyInfoOnTaxonCtrl'
       })
-
+      .when('/country/:id', {
+        templateUrl: 'views/country-profile.html',
+        controller: 'CountryProfileCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
