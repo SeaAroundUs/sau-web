@@ -9,17 +9,32 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.chartTemplate = 'views/region-detail/catch-chart.html';
 
-    //TODO When we are ready to show the legend, enable this and add more objects to add keys to the legend.
-    $scope.legendKeys = [];/*[
+    $scope.legendKeys = [
       {
-        pattern: 'http://placehold.it/16/16',
+        pattern: 'images/legend/eez.png',
         label: 'EEZ'
       },
       {
-        pattern: 'http://placehold.it/16/16',
-        label: 'Country'
+        pattern: 'images/legend/disputed_eez.png',
+        label: 'Disputed/shared'
+      },
+      {
+        pattern: 'images/legend/other_eez.png',
+        label: 'Other EEZ'
+      },
+      {
+        pattern: 'images/legend/fao.png',
+        label: 'FAO area'
+      },
+      {
+        pattern: 'images/legend/high_seas.png',
+        label: 'High seas'
+      },
+      {
+        pattern: 'images/legend/ifa.png',
+        label: 'IFA Boundary'
       }
-    ];*/
+    ];
 
     $scope.chartChange = function(type) {
       $scope.chartTemplate = 'views/region-detail/' + type + '.html';
