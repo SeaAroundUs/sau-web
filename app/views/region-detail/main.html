@@ -2,8 +2,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h1 class="modal-title pull-left">
-                {{feature.data.title}}
-                <span ng-show="feature.data.long_title">: {{feature.data.long_title}}</span>
+                {{formModel.measure.titleLabel}} by {{formModel.dimension.label}} in the waters of {{feature.data.title}}
             </h1>
             <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
             <button class="btn btn-primary x-button pull-right" ng-click="download()">Download Data</button>
