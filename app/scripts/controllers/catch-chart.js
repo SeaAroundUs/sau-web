@@ -9,12 +9,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       chart: {
           type: 'stackedAreaChart',
           height: 350,
-          // margin : {
-          //     top: 20,
-          //     right: 20,
-          //     bottom: 60,
-          //     left: 85
-          // },
+          /*margin : {
+              top: 20,
+              right: 20,
+              bottom: 60,
+              left: 85
+          },*/
           x: function(d){return d[0];},
           y: function(d){return d[1];},
           transitionDuration: 250,
@@ -28,7 +28,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             axisLabel: $scope.formModel.measure.chartlabel
           },
           yAxisTickFormat: function(d) {
-            return $filter('significantDigits')(d, 3);
+            //Make values "in thousands" or "in millions" depending on the measure.
+            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+            return $filter('significantDigits')(d, magnitude);
           },
           legend: {
             updateState: false,
@@ -68,7 +70,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       /* not sure why options is not updating on $scope.formModel change */
       $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
       $scope.options.chart.yAxisTickFormat = function(d) {
-        return $filter('significantDigits')(d, 3);
+        //Make values "in thousands" or "in millions" depending on the measure.
+        var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+        return $filter('significantDigits')(d, magnitude);
       };
     };
     $scope.$watch('formModel', $scope.updateYlabel, true);

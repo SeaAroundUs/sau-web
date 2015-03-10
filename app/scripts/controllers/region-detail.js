@@ -97,8 +97,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     ];
 
     $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (tonnes)'},
-      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Landed value (U.S. $)'}
+      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)'},
+      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Landed value (U.S. millions)'}
     };
 
     $scope.limits = [
