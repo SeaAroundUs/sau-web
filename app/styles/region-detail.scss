@@ -83,6 +83,12 @@
         margin-right: 6px;
     }
 
+    #header-links {
+        span {
+            padding-left: 16px;
+        }
+    }
+
 }
 .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 1.0;
