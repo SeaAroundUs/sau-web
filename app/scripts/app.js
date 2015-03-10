@@ -144,6 +144,10 @@ angular
         templateUrl: 'views/country-profile.html',
         controller: 'CountryProfileCtrl'
       })
+      .when('/topic/biodiversity', {
+        templateUrl: 'views/topic-biodiversity.html',
+        controller: 'TopicBiodiversityCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

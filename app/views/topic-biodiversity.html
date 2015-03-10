@@ -1,0 +1,23 @@
+<div class="content-container" id="topic-biodiversity">
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris consequat consequat elementum. Sed nisi lorem, pellentesque in leo sit amet, hendrerit posuere ipsum. Suspendisse in nunc vehicula, eleifend risus nec, hendrerit purus. Ut tortor eros, consectetur quis scelerisque non, tempor condimentum mi. Morbi ac facilisis ex. Duis porta aliquet sem, ornare scelerisque lorem laoreet vitae. Integer auctor diam non maximus dignissim.</p>
+
+    <h3>Biodiversity Information by</h3>
+
+    <div id="region-selector">
+        <select ng-model="selectedRegion" ng-options="region.title for region in regions"></select>
+        for
+        <select ng-model="selectedSubregion" ng-options="region.title for region in subregions | orderBy: 'title'"></select>
+
+        <button type="button" ng-click="changeRoute()" class="btn btn-primary">
+            Submit
+        </button>
+    </div>
+
+    <h3>Information by Taxon</h3>
+
+    <sau-taxon-grid region-name="regionName" region-id="regionId"></sau-taxon-grid>
+
+    <sau-taxon-info taxon="taxon"></sau-taxon-info>
+
+</div>

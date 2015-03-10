@@ -1,21 +1,21 @@
 .taxon-info {
-	width: 768px;
-	color: #001f3f;
+    width: 768px;
+    color: #001f3f;
 
-	table {
-		border-color: #9a9a9a;
-		width: 100%; 
-		
-		.table-key {
-			background-color: #eeeeee;
-			font-weight: 700;
-		}
+    table {
+        border-color: #9a9a9a;
+        width: 100%;
 
-		//Lists of links have a margin of 10px by default because of Bootstrap. We don't want this.
-		.list-inline {
-			margin-bottom: 0;
-		}
-	}
-	
-	td { padding: 12px; }
+        .table-key {
+            background-color: #eeeeee;
+            font-weight: 700;
+        }
+
+        //Lists of links have a margin of 10px by default because of Bootstrap. We don't want this.
+        .list-inline {
+            margin-bottom: 0;
+        }
+    }
+
+    td { padding: 12px; }
 }

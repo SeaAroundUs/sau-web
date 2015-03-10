@@ -42,8 +42,13 @@ angular.module('sauWebApp')
     }
 
     $scope.$on('backButtonClick', function() {
-      if ($rootScope.modalInstance && $location.path() === ('/' + $scope.region.name)) {
-        $rootScope.modalInstance.close();
+      if ($rootScope.modalInstance &&
+            (
+              $location.path() === ('/' + $scope.region.name) ||
+              $location.path() === ('/topic/biodiversity') // should be whitelisting modal-to-modal paths instead of this..
+            )
+          ) {
+        $rootScope.modalInstance.close({location: $location.path()});
       }
     });
 

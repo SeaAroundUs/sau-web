@@ -1,0 +1,8 @@
+<div id="controls">
+    Taxon Level:
+    <select ng-model="model.taxon_level" ng-change="taxonChange()" ng-options="l.name for l in taxon_levels.data"></select>
+    Taxon Group:
+    <select ng-model="model.taxon_group" ng-change="taxonChange()" ng-options="g.name for g in taxon_groups.data"></select>
+</div>
+
+<div ui-grid='gridOptions' class='eo-grid'></div>
