@@ -1,12 +1,21 @@
-<label for="dimension">Dimension: </label>
-<select ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
-<label for="measure">Measure: </label>
-<select ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"></select>
-<label for="limit">Limit: </label>
-<select ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
-
-<div ng-controller="CatchChartCtrl" class="chart-container">
-    <label for="color">Color scheme: </label>
-    <select ng-model="color" ng-options="c for (c,value) in colors"></select>
-    <nvd3 options="options" data="data" api="api"></nvd3>
+<div ng-controller="CatchChartCtrl" class="chart-container form-inline">
+	<div class="form-group">
+		<label for="dimension">Dimension</label>
+		<select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+	</div>
+	<div class="form-group">
+		<label for="measure">Measure</label>
+		<select class="form-control" ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"></select>
+	</div>
+	<div class="form-group">
+		<label for="limit">Limit</label>
+		<select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
+	</div>
+	<div class="form-group">
+		<label for="color">Color scheme</label>
+    	<select class="form-control" ng-model="color" ng-options="c for (c,value) in colors"></select>
+	</div>
+	<div>
+		<nvd3 options="options" data="data" api="api"></nvd3>
+	</div>
 </div>
