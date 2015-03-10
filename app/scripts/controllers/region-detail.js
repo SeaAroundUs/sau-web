@@ -32,7 +32,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       },
       {
         pattern: 'images/legend/ifa.png',
-        label: 'IFA Boundary'
+        label: 'IFA boundary'
       }
     ];
 
