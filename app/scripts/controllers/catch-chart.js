@@ -86,4 +86,14 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     };
     $scope.$watch('formModel', $scope.updateData, true);
 
+    $scope.toggleTaxonNames = function() {
+      //Swapping each datum's key between scientific name and common name.
+      for (var i = 0; i < $scope.data.length; i++) {
+        var temp = $scope.data[i].key;
+        $scope.data[i].key = $scope.data[i].scientific_name;
+        $scope.data[i].scientific_name = temp;
+      }
+      $scope.useScientificNames = !$scope.useScientificNames;
+    };
+
     });
