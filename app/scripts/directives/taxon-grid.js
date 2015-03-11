@@ -28,8 +28,20 @@
           // want these, but they're not showing
           enableVerticalScrollbars: uiGridConstants.scrollbars.ALWAYS,
           columnDefs: [
-            {field: 'common_name'},
-            {field: 'scientific_name'},
+            {
+              field: 'common_name',
+              filter: {
+                condition: uiGridConstants.filter.CONTAINS,
+                placeholder: ''
+              },
+            },
+            {
+              field: 'scientific_name',
+              filter: {
+                condition: uiGridConstants.filter.CONTAINS,
+                placeholder: ''
+              },
+            },
           ],
         };
 
