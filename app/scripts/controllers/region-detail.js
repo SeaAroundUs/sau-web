@@ -1,40 +1,13 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id) {
+  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData) {
 
     $scope.feature = null;
 
     $scope.viewContentLoaded = $q.defer();
 
     $scope.chartTemplate = 'views/region-detail/catch-chart.html';
-
-    $scope.legendKeys = [
-      {
-        pattern: 'images/legend/eez.png',
-        label: 'EEZ'
-      },
-      {
-        pattern: 'images/legend/disputed_eez.png',
-        label: 'Disputed/shared'
-      },
-      {
-        pattern: 'images/legend/other_eez.png',
-        label: 'Other EEZ'
-      },
-      {
-        pattern: 'images/legend/fao.png',
-        label: 'FAO area'
-      },
-      {
-        pattern: 'images/legend/high_seas.png',
-        label: 'High seas'
-      },
-      {
-        pattern: 'images/legend/ifa.png',
-        label: 'IFA boundary'
-      }
-    ];
 
     $scope.chartChange = function(type) {
       $scope.chartTemplate = 'views/region-detail/' + type + '.html';
@@ -45,6 +18,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     });
 
     $scope.viewContentLoaded.promise.then(function() {
+      //Build the legend out based on the region type.
+      $scope.legendKeys = insetMapLegendData[$scope.region.name];
 
       if ($scope.region.name === 'global') {
         $scope.tabs = [
@@ -97,8 +72,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     ];
 
     $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (tonnes)'},
-      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Landed value (U.S. $)'}
+      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings by'},
+      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$)'}
     };
 
     $scope.limits = [
