@@ -273,18 +273,45 @@ small {
   padding: 16px;
 }
 
-#estuaries {
+.content-container#estuaries {
 
   #map-container {
     background-color: #eee;
+    font-size: 14pt;
+    #control-box {
+      padding: 5px 50px 10px 30px;
+      height: 50px;
+      .typeahead {
+        padding: 3px;
+        font-size: 16pt;
+      }
+      span {
+        margin-top: 10px;
+      }
+    }
+
     #estuariesmap {
       width: 100%;
-      height: 470px;
+      height: 380px;
     }
+
     #estuary-detail {
       padding: 30px;
       table {
-        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 90%;
+        col:nth-child(1) {
+          width: 25%;
+        }
+        col:nth-child(2) {
+          width: 35%;
+        }
+        col:nth-child(3) {
+          width: 20%;
+        }
+        .content {
+        }
       }
     }
   }
@@ -316,4 +343,6 @@ small {
     margin-bottom: 30px;
   }
 }
-
+.disabled {
+  color: grey;
+}

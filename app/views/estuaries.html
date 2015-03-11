@@ -1,11 +1,21 @@
 <div class="content-container" id="estuaries">
     <h3>Major Estuaries of <span ng-bind="region.data.title"></span></h3>
     <div id="map-container">
-        <div id="controls">
-            <select class="pull-left"
+        <div id="control-box">
+
+            <input class="typeahead pull-left"
+                type="text"
                 ng-model="selected"
-                ng-options="f as f.properties.title for f in geojson.data.features | orderBy:'properties.title'">
-            </select>
+                placeholder="Type or select item from list"
+                typeahead="feature as feature.properties.title
+                    for feature in geojson.data.features
+                    | filter:{properties:{title:$viewValue}}
+                    | orderBy:'properties.title'"
+                typeahead-editable="true"
+                typeahead-on-select=""
+                typeahead-min-length="0"
+            >
+
             <span class="pull-right">
                 No. of estuaries:
                 <span ng-bind="geojson.data.features.length"></span>
@@ -14,24 +24,30 @@
         <leaflet id="estuariesmap" layers="layers" geojson="geojson" center="center" defaults="defaults"></leaflet>
         <div id="estuary-detail">
             <table>
-            <tr>
-                <td>Estuary: </td>
-                <td ng-bind="selected.properties.title"></td>
-                <td>Period: </td>
-                <td>
-                    <span ng-bind="selected.properties.year_start"></span>
-                    -
-                    <span ng-bind="selected.properties.year_end"></span>
-                </td>
-            </tr>
-            <tr>
-                <td>River system(s): </td>
-                <td ng-bind="selected.properties.river_system"></td>
-            </tr>
-            <tr>
-                <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>day<sup>-1</sup>): </td>
-                <td ng-bind="selected.properties.discharge"></td>
-            </tr>
+            <col>
+            <col>
+            <col>
+            <col>
+                <tbody>
+                    <tr>
+                        <td>Estuary: </td>
+                        <td class="content" ng-bind="selected.properties.title"></td>
+                        <td>Period: </td>
+                        <td class="content">
+                            <span ng-bind="selected.properties.year_start"></span>
+                            -
+                            <span ng-bind="selected.properties.year_end"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>River system(s): </td>
+                        <td ng-bind="selected.properties.river_system"></td>
+                    </tr>
+                    <tr>
+                        <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>day<sup>-1</sup>): </td>
+                        <td ng-bind="selected.properties.discharge"></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

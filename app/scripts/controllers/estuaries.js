@@ -12,17 +12,12 @@
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
-    leafletData.getMap('estuariesmap').then(function(map) {
-      L.esri.basemapLayer('Oceans').addTo(map);
-      L.esri.basemapLayer('OceansLabels').addTo(map);
-    });
-
     $scope.selected = {};
 
-    var data = sauAPI.EstuariesData.get({region: region, region_id: id}, function() {
+    var estuariesData = sauAPI.EstuariesData.get({region: region, region_id: id}, function() {
       angular.extend($scope, {
         geojson: {
-          data: data.data,
+          data: estuariesData.data,
           pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
               fillColor: feature.fillColor,
@@ -37,14 +32,41 @@
         }
       });
 
-      $scope.selected = data.data.features[0];
+      $scope.selected = estuariesData.data.features[0];
 
+    });
+
+    var regions = sauAPI.Regions.get({region: region}, function() {
+      $scope.regions = regions.data;
       leafletData.getMap('estuariesmap')
       .then(function(map) {
-        var f = L.geoJson(data.data);
-        var bounds = f.getBounds();
-        map.fitBounds(bounds);
+        // draw EEZ regions on map
+        var f = L.geoJson(regions.data);
+        f.setStyle(mapConfig.defaultStyle);
+        f.addTo(map);
+        // now highlight EEZ regions specified in the estuaries response,
+        // fit map to those bounds to filter out scattered data
+        estuariesData.$promise.then(function() {
+          var bounds = null;
+          map.eachLayer(function(l) {
+            if(l.feature && estuariesData.data.region_ids.indexOf(l.feature.properties.region_id) >= 0) {
+              l.setStyle(mapConfig.highlightStyle);
+              if (bounds) {
+                bounds.extend(l.getBounds());
+              } else {
+                bounds = l.getBounds();
+              }
+              map.fitBounds(bounds);
+              map.setView(bounds.getCenter());
+            }
+          });
+        });
       });
+    });
+
+    leafletData.getMap('estuariesmap').then(function(map) {
+      L.esri.basemapLayer('Oceans').addTo(map);
+      L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(geojsonClickEvent, feature) {
@@ -52,7 +74,7 @@
     });
 
     $scope.$watch('selected', function() {
-      if (!$scope.geojson) {
+      if (!$scope.geojson || !$scope.selected.properties) {
         return;
       }
       for (var i=0; i < $scope.geojson.data.features.length; i++){

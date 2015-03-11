@@ -117,6 +117,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
       } else {
