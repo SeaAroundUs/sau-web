@@ -27,10 +27,17 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/ifa.png', label: 'IFA boundary' }
     ];
 
+    var highseas = [
+      { pattern: 'images/legend/eez.png', label: 'High seas' },
+      { pattern: 'images/legend/other_eez.png', label: 'Other high seas' },
+      { pattern: 'images/legend/fao.png', label: 'FAO area' },
+      { pattern: 'images/legend/high_seas.png', label: 'EEZ' }
+    ];
+
     return {
       eez: eez,
       lme: lme,
-      highseas: eez,
+      highseas: highseas,
       global: null,
       rfmo: null
     };
