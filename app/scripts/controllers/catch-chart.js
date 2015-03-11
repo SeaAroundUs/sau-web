@@ -82,6 +82,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
           $scope.data = data.data;
+          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
       });
     };
     $scope.$watch('formModel', $scope.updateData, true);
