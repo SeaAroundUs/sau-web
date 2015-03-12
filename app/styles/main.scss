@@ -111,37 +111,6 @@ label {
   font-weight: inherit;
 }
 
-/* Custom page header */
-#header {
-  border-bottom: 1px solid #e5e5e5;
-  padding-top: 20px;
-
-  /* Make the masthead heading the same height as the navigation */
-  h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    line-height: 40px;
-    padding-bottom: 19px;
-  }
-  .nav {
-    background-color: #007ABB;
-    height: 55px;
-    margin-top: 20px;
-    padding-top: 8px;
-    &:hover {
-      cursor: pointer;
-    }
-    a {
-      color: white;
-      text-transform: uppercase;
-      &:hover {
-        background-color: $orange !important;
-        color: black;
-      }
-    }
-  }
-}
-
 #root {
   margin: 0 auto;
   max-width: 1180px;

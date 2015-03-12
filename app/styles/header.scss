@@ -1,0 +1,58 @@
+/* Custom page header */
+#header {
+  border-bottom: 1px solid #e5e5e5;
+  padding-top: 20px;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+
+  #logos {
+    img {
+      padding: 0 2.3em;
+    }
+  }
+
+  .nav.top-header {
+    background-color: #002040;
+    margin-top: 20px;
+    padding: 4px 55px;
+    text-align: center;
+    cursor: default;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+
+    li {
+      padding: 12px 1.14em 12px 0;
+      display: inline-block;
+      float: none;
+
+      a {
+        color: rgb(222, 222, 222);
+        text-transform: uppercase;
+        font-family: 'Source Sans Pro', Arial, sans-serif;
+        font-size: 1em;
+        font-weight: bold;
+        padding: 0 5px;
+        -webkit-transition: color 0.2s ease;
+        transition: color 0.2s ease;
+        border-radius: 0;
+        line-height: 24px;
+        cursor: pointer;
+
+        &:hover {
+          color: #fff;
+          background-color: inherit;
+        }
+
+        &.selected {
+          color: #000;
+          background-color: #f3bd4d;
+        }
+      }
+    }
+  }
+}
