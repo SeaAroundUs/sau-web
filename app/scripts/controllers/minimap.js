@@ -31,6 +31,9 @@ angular.module('sauWebApp')
     $scope.geojsonMouseover();
 
     var styleLayer = function(feature, layer, style) {
+      if (!layer) {
+        return;
+      }
       style = style || mapConfig.defaultStyle;
       if(feature.properties.region_id === $scope.formModel.region_id) {
         layer.setStyle(mapConfig.selectedStyle);
