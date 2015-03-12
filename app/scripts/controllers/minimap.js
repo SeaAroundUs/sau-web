@@ -53,6 +53,7 @@ angular.module('sauWebApp')
         });
       } else {
         $scope.formModel.region_id = feature.properties.region_id;
+        $scope.styleSelectedFeature();
       }
 
     };
@@ -98,6 +99,9 @@ angular.module('sauWebApp')
       $scope.eachFeatureLayer(function(l) {
         styleLayer(l.feature, l);
       });
+      if ($scope.region.name === 'eez') {
+        getIFA();
+      }
     };
 
     $scope.features.$promise.then(function() {
@@ -109,19 +113,13 @@ angular.module('sauWebApp')
             layer.on({
               click: function(e) {
                 geojsonClick(feature, e.latlng);
-                // I think this is getting around
-                // dblclick handling in leaflet?
-                e.stopPropagation();
               },
               mouseover: function(e) {geojsonMouseover(e, feature);},
               mouseout: function(e) {geojsonMouseout(e, feature); }
             });
           }
         }).addTo(map);
-        $scope.$watch('formModel', function() {
-            $scope.styleSelectedFeature();
-            getIFA();
-        }, true);
+      $scope.styleSelectedFeature();
       });
     });
 });

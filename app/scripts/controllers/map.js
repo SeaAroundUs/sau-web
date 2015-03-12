@@ -124,7 +124,23 @@ angular.module('sauWebApp')
       }
     });
 
+    $scope.changeRegion = function(region) {
+      $location.path(region, false);
+      $scope.region.name = region;
+      $scope.getFeatures();
+    };
+
+    $scope.changeRegionGlobal = function() {
+      $scope.region.name = 'global';
+      $location.path($scope.region.name, true);
+    };
+
+    $scope.isActive = function (viewLocation) {
+      return viewLocation === $location.path();
+    };
+
     $scope.geojson = {};
+
     $scope.getFeatures = function() {
 
       $scope.features = sauAPI.Regions.get({region:$scope.region.name});
@@ -138,6 +154,6 @@ angular.module('sauWebApp')
         });
     };
 
-    $scope.$watch('region', $scope.getFeatures, true);
+    $scope.getFeatures();
 
   });
