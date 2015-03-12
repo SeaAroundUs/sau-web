@@ -25,8 +25,10 @@
       $scope.$on('backButtonClick', function() {
         if ($rootScope.modalInstance &&
               (
+                // should be whitelisting modal-to-modal paths instead of this..
                 $location.path() === ('/' + $scope.region.name) ||
-                $location.path() === ('/topic/biodiversity') // should be whitelisting modal-to-modal paths instead of this..
+                $location.path() === ('/topic/biodiversity'),
+                $location.path().slice(0,5) === ('/taxa')
               )
             ) {
           $rootScope.modalInstance.close({location: $location.path()});
