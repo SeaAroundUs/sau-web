@@ -26,14 +26,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           {title: 'Catch Info',   template:'views/region-detail/catch.html'},
           {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
           {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'},
-          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'}
+          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
         ];
       } else if ($scope.region.name === 'rfmo') {
         $scope.tabs = [
           {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Governance',   template: 'views/region-detail/governance-rfmo.html'},
-          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          {title: 'Governance',   template: 'views/region-detail/governance-rfmo.html'}
+          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
         ];
       } else {
         $scope.tabs = [
@@ -41,8 +41,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
           {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
           {title: 'Governance',   template: 'views/region-detail/governance.html'},
-          {title: 'Indicators',   template: 'views/region-detail/indicators.html'},
-          {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          {title: 'Indicators',   template: 'views/region-detail/indicators.html'}
+          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
         ];
       }
 
