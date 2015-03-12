@@ -20,8 +20,7 @@ angular.module('sauWebApp')
           if($scope.ifaLayer) {
             map.removeLayer($scope.ifaLayer);
           }
-          $scope.ifaLayer = L.geoJson($scope.ifa.data.geojson).addTo(map);
-          $scope.ifaLayer.setStyle(mapConfig.ifaStyle);
+          $scope.ifaLayer = L.geoJson($scope.ifa.data.geojson, {style: mapConfig.ifaStyle}).addTo(map);
         });
       });
     };
@@ -56,36 +55,19 @@ angular.module('sauWebApp')
         $scope.formModel.region_id = feature.properties.region_id;
       }
 
-      $scope.eachFeatureLayer(function(l) {
-        styleLayer(l.feature, l);
-      });
     };
 
-    $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
-      geojsonClick(feature, leafletClickEvent.latlng);
-    });
+    var geojsonMouseout = function(ev, feature) {
+      $rootScope.hoverRegion = {};
+      styleLayer(feature, ev.layer);
+    };
 
-    $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature) {
-        $rootScope.hoverRegion = {};
-        var layer = feature.layer;
-        styleLayer(feature.target.feature, layer);
-    });
-
-    $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
+    var geojsonMouseover = function(ev, feature) {
       $rootScope.hoverRegion = feature;
-      var layer = leafletEvent.layer;
-      styleLayer(feature, layer, mapConfig.highlightStyle);
-    });
+      styleLayer(feature, ev.layer, mapConfig.highlightStyle);
+    };
 
     leafletData.getMap('minimap').then(function(map) {
-      map.on('layeradd', function(ev) {
-        if(ev.layer.feature) {
-          if (parseInt(ev.layer.feature.properties.region_id) === parseInt($scope.formModel.region_id)) {
-            ev.layer.setStyle(mapConfig.selectedStyle);
-            // map.invalidateSize(true); // fix drawing bug
-          }
-        }
-      });
       L.esri.basemapLayer('Oceans').addTo(map);
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
@@ -97,14 +79,13 @@ angular.module('sauWebApp')
             var f = L.geoJson($scope.feature.data.geojson);
             var bounds = f.getBounds();
             map.fitBounds(bounds);
-            // map.invalidateSize(true); // fix drawing bug
           });
         });
-
     });
 
     $scope.eachFeatureLayer = function(cb) {
-      leafletData.getMap('minimap').then(function(map) {
+      leafletData.getMap('minimap')
+      .then(function(map) {
         map.eachLayer(function(l){
           if (l.feature) {
             cb(l);
@@ -114,15 +95,33 @@ angular.module('sauWebApp')
     };
 
     $scope.styleSelectedFeature = function () {
-      $scope.features.$promise.then(function() {
-        $scope.eachFeatureLayer(function(l) {
-          styleLayer(l.feature, l);
-        });
-      }, true);
+      $scope.eachFeatureLayer(function(l) {
+        styleLayer(l.feature, l);
+      });
     };
 
-    $scope.$watch('formModel.region_id', function() {
-      $scope.styleSelectedFeature();
-      getIFA();
-  });
+    $scope.features.$promise.then(function() {
+      // add features layer when loaded, then load IFA so IFA gets painted on top
+      leafletData.getMap('minimap').then(function(map) {
+        L.geoJson($scope.features.data.features, {
+          style: mapConfig.defaultStyle,
+          onEachFeature: function(feature, layer) {
+            layer.on({
+              click: function(e) {
+                geojsonClick(feature, e.latlng);
+                // I think this is getting around
+                // dblclick handling in leaflet?
+                e.stopPropagation();
+              },
+              mouseover: function(e) {geojsonMouseover(e, feature);},
+              mouseout: function(e) {geojsonMouseout(e, feature); }
+            });
+          }
+        }).addTo(map);
+        $scope.$watch('formModel', function() {
+            $scope.styleSelectedFeature();
+            getIFA();
+        }, true);
+      });
+    });
 });
