@@ -1,4 +1,5 @@
-$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+@import 'global';
+
 // bower:scss
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
@@ -8,32 +9,6 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 
 // recommended by ui-bootstrap
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-@mixin ghostVerticalAlign(){
-  &:before {
-    content: '';
-    display: inline-block;
-    vertical-align: middle;
-    height: 100%; width: .1px;
-  }
-}
-
-@mixin darkBar() {
-  background-color: #0071cf;
-  height: 50px;
-  color: white;
-  width: 100%;
-  @include ghostVerticalAlign;
-}
-
-@mixin header() {
-  font-family: 'Roboto', san-serif;
-}
-
-$darkBlue: rgb(2,32,64);
-$orange: #F4BC59;
-$footerHeight: 80px;
-$bodyFontFamily: 'Roboto', san-serif;
 
 #footer {
   background-color: #0071cf;
