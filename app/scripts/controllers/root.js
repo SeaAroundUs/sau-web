@@ -7,12 +7,12 @@
 
       var templateDir = 'views/';
       $scope.templates = [
-        {'name': 'Analyses and Visualization', 'url': templateDir+'data.html'},
-        {'name': 'News', 'url': templateDir+'news.html'},
+        {'name': 'Analyses & Visualization', 'url': templateDir+'data.html', 'class': 'selected'},
         {'name': 'Publications', 'url': templateDir+'publications.html'},
-        {'name': 'People', 'url': templateDir+'people.html'},
+        {'name': 'News & About', 'url': templateDir+'news.html'},
         {'name': 'Collaborations', 'url': templateDir+'collaborations.html'},
-        {'name': 'About Us', 'url': templateDir+'about.html'},
+        // {'name': 'People', 'url': templateDir+'people.html'},
+        {'name': 'Contact Us', 'url': templateDir+'about.html'},
       ];
       $scope.template = $scope.templates[0];
 
