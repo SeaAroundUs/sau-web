@@ -94,30 +94,33 @@ label {
 
 #main_view {
   .row.regions {
-    @include darkBar;
-    height: 55px;
-    display: flex;
-    justify-content: center;
+    background: $headerBackgroundColor;
+    text-align: center;
+
     * {
       margin-left: 20px;
       margin-right: 20px;
     }
+
     span {
       margin-top: 16px;
+      color: white;
     }
+
     .btn {
       height: 40px;
       margin-top: 7px;
-      padding-right: 10px;
-      padding-left: 10px;
+      padding-right: 20px;
+      padding-left: 20px;
       background-color: rgba(0,0,0,0);
       // border-radius: 2px;
       padding-top: 10px;
-      border: 0px;
+      border: 0;
       color: white;
-      font-weight: heavier;
-      &.active,
-      &:hover {
+      font-weight: bold;
+      border-radius: 0;
+
+      &.active, &:hover {
         color: black;
         background-color: $orange;
       }
@@ -127,20 +130,28 @@ label {
     // background-color: #E8E0D8;
     .nav-tabs {
       background-color: #E8E0D8;
-      border-bottom: 0px;
-      height: 55px;
-      margin-top:10px;
+      text-align: center;
+      border-bottom: 0;
+
       li {
         background-color: #E8E0D8;
         margin-top:12px;
-      }
-      li.active {
+        display: inline-block;
+        float: none;
+        padding: 0 30px;
+
         a {
+          text-transform: uppercase;
+          color: $darkBlue;
+        }
+
+        &.active a {
           background-color: $darkBlue;
           color: white;
+          border: 0;
+          border-radius: 0;
         }
       }
-
     }
   }
 }
@@ -154,12 +165,12 @@ label {
     div {
       width: 500px;
       background-color: $darkBlue;
-      height: 55px;
-      padding: 10px;
+      padding: 10px 10px 15px;
       position: relative;
       left: -50%;
       input {
         width: 100%;
+        padding: 5px 15px;
       }
     }
   }
