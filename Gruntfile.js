@@ -54,6 +54,14 @@ module.exports = function (grunt) {
           }
         }
       },
+      qa: {
+        constants: {
+          SAU_CONFIG: {
+            apiURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/api/v1/',
+            buildNumber: buildNumber
+          }
+        }
+      },
       production: {
         constants: {
           SAU_CONFIG: {
@@ -411,6 +419,14 @@ module.exports = function (grunt) {
           {differential: false, expand: true, cwd: 'dist/', src: ['**'], dest: '/', params: {CacheControl: '60'}},
         ]
       },
+      qa: {
+        options: {
+          bucket: '<%= aws.qaBucket %>',
+        },
+        files: [
+          {differential: false, expand: true, cwd: 'dist/', src: ['**'], dest: '/', params: {CacheControl: '60'}},
+        ]
+      },
     }
 
   });
@@ -448,7 +464,12 @@ module.exports = function (grunt) {
     // 'newer:jshint',
     // 'test',
     'build',
-    'aws_s3'
+    'aws_s3:production'
+  ]);
+
+  grunt.registerTask('deploy:qa', [
+    'build:qa',
+    'aws_s3:qa'
   ]);
 
   grunt.registerTask('build', [
@@ -468,6 +489,23 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     // 'htmlmin' //breaks index.html.  https://github.com/ericclemmons/grunt-angular-templates/issues/82
+  ]);
+
+  grunt.registerTask('build:qa', [
+    'clean:dist',
+    'wiredep',
+    'useminPrepare',
+    'compass:dist',
+    'ngconstant:qa',
+    'imagemin',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin'
   ]);
 
   grunt.registerTask('default', [

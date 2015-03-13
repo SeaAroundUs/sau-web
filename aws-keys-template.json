@@ -2,4 +2,5 @@
     "key": "KEY HERE",
     "secret": "SECRET HERE",
     "bucket": "sau-web"
+    "qaBucket": "sau-web-qa"
 }
