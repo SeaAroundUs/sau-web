@@ -92,6 +92,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+
+      if ($scope.region.name === 'eez') {
+        $scope.feature.$promise.then(function() {
+          $scope.faos = $scope.feature.data.intersecting_fao_area_id;
+          $scope.selectedFAO = $scope.faos[0];
+        });
+      }
+
       $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
@@ -148,5 +156,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       }
     }, true);
+
 
 });

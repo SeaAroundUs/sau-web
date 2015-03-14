@@ -28,6 +28,11 @@
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
             <div class="padded content row">
+                <div ng-show="selectedFAO">
+                    <h3>Select FAO area</h3>
+                    <a ng-click="">All</a> |
+                    <span ng-repeat="fao in faos"> | <a ng-click="">{{fao}}</a></span>
+                </div>
                 <sau-legend legend-keys="legendKeys"></sau-legend>
                 <p class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime boundaries (see <a href="http://www.seaaroundus.org/doc/saup_manual.htm#15" target="_blank">Methods</a>).
