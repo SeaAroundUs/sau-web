@@ -101,7 +101,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     ];
 
     $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings by'},
+      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings'},
       'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$)'}
     };
 
