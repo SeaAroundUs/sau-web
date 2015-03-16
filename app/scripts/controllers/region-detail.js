@@ -3,6 +3,17 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData) {
 
+    var tabs = {
+      catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
+      biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+      ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
+      ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
+      governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
+      indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
+      otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
+      feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
+    };
+
     $scope.feature = null;
 
     $scope.viewContentLoaded = $q.defer();
@@ -23,26 +34,34 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
       if ($scope.region.name === 'global') {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystems,
+          tabs.otherTopics
+          // tabs.feedback
         ];
       } else if ($scope.region.name === 'rfmo') {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Governance',   template: 'views/region-detail/governance-rfmo.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.governance
+          // tabs.feedback
+        ];
+      } else if ($scope.region.name === 'lme') {
+        $scope.tabs = [
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystemsLME,
+          tabs.indicators
+          // tabs.feedback
         ];
       } else {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Governance',   template: 'views/region-detail/governance.html'},
-          {title: 'Indicators',   template: 'views/region-detail/indicators.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystems,
+          tabs.governance,
+          tabs.indicators
+          // tabs.feedback
         ];
       }
 
