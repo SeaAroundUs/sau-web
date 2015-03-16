@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData) {
+  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
 
     var tabs = {
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
@@ -14,6 +14,15 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
     };
 
+    $scope.mapLayers = {
+      selectedFAO: 0,
+    };
+
+    $scope.selectFAO = function(fao) {
+      $scope.mapLayers.selectedFAO = fao;
+    };
+
+    $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
     $scope.feature = null;
 
     $scope.viewContentLoaded = $q.defer();
@@ -118,13 +127,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.faos = $scope.feature.data.intersecting_fao_area_id;
         });
       }
-
-      $scope.selectedFAO = 0;
-      $scope.selectFAO = function(fao) {
-        $scope.selectedFAO = fao;
-      };
-
-
 
       $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       if ($scope.region.name === 'global') {

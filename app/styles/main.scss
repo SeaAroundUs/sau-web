@@ -277,6 +277,11 @@ label {
   font-size: 12px;
   line-height: 16px;
 }
+.external-links {
+  a:nth-child(2) {
+    margin-left:20px;
+  }
+}
 
 .modal-title {
   text-transform: uppercase;

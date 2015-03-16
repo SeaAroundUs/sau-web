@@ -121,7 +121,7 @@ angular.module('sauWebApp')
         $scope.faoLayer = L.geoJson(fao.data, {
           style: faoStyle,
           onEachFeature: function(feature, layer) {
-            if(feature.properties.id === $scope.selectedFAO) {
+            if(feature.properties.region_id === $scope.mapLayers.selectedFAO) {
               layer.setStyle(mapConfig.selectedFaoStyle);
             }
           }
@@ -138,8 +138,11 @@ angular.module('sauWebApp')
       });
     };
 
-    $scope.$watch('selectedFAO', function(){
-      if ($scope.selectedFAO < 1) {
+    $scope.$watch('mapLayers.selectedFAO', function(){
+      // set selectedFAO to 0 to remove.  This will likely change when additional FAO data
+      // comes in from the API
+      if ($scope.mapLayers.selectedFAO < 1) {
+        $scope.removeFAO();
         return;
       }
       leafletData.getMap('minimap').then(function(map) {
