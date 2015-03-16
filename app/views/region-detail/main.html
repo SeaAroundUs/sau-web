@@ -17,7 +17,7 @@
         <h1 class="modal-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
-                : <span ng-bind="$root.hoverRegion.properties.long_title">
+                : <span ng-bind="$root.hoverRegion.properties.long_title"></span>
             </span>
         </h1>
     </div>
@@ -48,7 +48,7 @@
             </div>
         </div>
 
-        <div class="tabset content col-sm-7">
+        <div class="tabset content col-sm-7 region-detail-tabs">
             <tabset>
               <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
                 <div class="container" ng-include="tab.template"></div>

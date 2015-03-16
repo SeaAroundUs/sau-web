@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row biodiversity">
     <div class="col-sm-6">
-        <img src="images/fblogo_new.gif" alt="fishbase logo"/>
-        <ul>
+        <ul class="organisms">
+            <li><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms">Exploited organisms</a></li>
             <li ng-repeat="habitat in [
                 {label: 'Reef', value: 'reef'},
                 {label: 'Fresh', value: 'fresh'},
@@ -17,10 +17,7 @@
         </ul>
     </div>
     <div class="col-sm-6">
-        <ul>
-            <li><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms">Exploited organisms</a></li>
-        </ul>
-        <h3>Threat'd organisms</h3>
+        <h3>Threatened organisms</h3>
         <ul>
             <li><a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Fish</a></li>
             <li><a target="_blank" ng-href="http://www.sealifebase.org/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Non-fish</a></li>
