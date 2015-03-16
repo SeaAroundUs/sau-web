@@ -307,3 +307,7 @@ label {
 .disabled {
   color: grey;
 }
+
+a:not([href]) {
+  cursor: pointer;
+}
