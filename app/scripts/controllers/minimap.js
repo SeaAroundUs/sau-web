@@ -107,8 +107,6 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.selectedFAO = 0;
-
     var drawFAO = function(map) {
       var stripes = new L.StripePattern(mapConfig.hatchStyle);
       stripes.addTo(map);
@@ -116,7 +114,11 @@ angular.module('sauWebApp')
       faoStyle.fillPattern = stripes;
 
       var fao = sauAPI.Regions.get({region: 'fao'}, function() {
-        L.geoJson(fao.data, {
+
+        if($scope.faoLayer) {
+          map.removeLayer($scope.faoLayer);
+        }
+        $scope.faoLayer = L.geoJson(fao.data, {
           style: faoStyle,
           onEachFeature: function(feature, layer) {
             if(feature.properties.id === $scope.selectedFAO) {
@@ -126,6 +128,26 @@ angular.module('sauWebApp')
         }).addTo(map);
       });
     };
+
+    $scope.removeFAO = function() {
+      console.debug('removing FAO');
+      leafletData.getMap('minimap').then(function(map) {
+        if($scope.faoLayer) {
+          map.removeLayer($scope.faoLayer);
+        }
+      });
+    };
+
+    $scope.$watch('selectedFAO', function(){
+      if ($scope.selectedFAO < 1) {
+        return;
+      }
+      leafletData.getMap('minimap').then(function(map) {
+        $scope.features.$promise.then(function() {
+          drawFAO(map);
+        });
+      });
+    });
 
     $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA so IFA gets painted on top
@@ -144,10 +166,6 @@ angular.module('sauWebApp')
           }
         }).addTo(map);
         $scope.styleSelectedFeature();
-
-        // drew features and IFA, now draw FAO if applicable
-        drawFAO(map);
-
       });
     });
 });

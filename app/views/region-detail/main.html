@@ -28,10 +28,10 @@
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
             <div class="padded content row">
-                <div ng-show="selectedFAO">
+                <div ng-show="faos">
                     <h3>Select FAO area</h3>
-                    <a ng-click="">All</a> |
-                    <span ng-repeat="fao in faos"> | <a ng-click="">{{fao}}</a></span>
+                    <a href="" ng-click="removeFAO()">All</a> |
+                    <span ng-repeat="fao in faos"> | <a href="" ng-click="selectFAO(fao)">{{fao}}</a></span>
                 </div>
                 <sau-legend legend-keys="legendKeys"></sau-legend>
                 <p class="disclaimer">
