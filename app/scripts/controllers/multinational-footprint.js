@@ -3,10 +3,16 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, region) {
-    var data = sauAPI.MultinationalFootprintData.get({region: region, region_id: $routeParams.id}, function() {
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
+    var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $routeParams.id}, function() {
             $scope.data = data.data;
         });
+
+    $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
+
+    $scope.feature.$promise.then(function() {
+      $scope.updateChartTitle('Primary Production Required for catches in the waters of ' + $scope.feature.data.title);
+    });
 
     $scope.options = {
       chart: {
@@ -14,9 +20,8 @@ angular.module('sauWebApp')
           height: 350,
           margin : {
               top: 20,
-              right: 20,
+              right: 0,
               bottom: 60,
-              left: 75
           },
           x: function(d){return d[0];},
           y: function(d){return d[1];},

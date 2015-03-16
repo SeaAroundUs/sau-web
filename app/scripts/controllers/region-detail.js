@@ -5,12 +5,21 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.feature = null;
 
+    $scope.chartTitle = null;
+
     $scope.viewContentLoaded = $q.defer();
 
-    $scope.chartTemplate = 'views/region-detail/catch-chart.html';
+    var chartName = 'catch-chart';
+    $scope.chartTemplate = 'views/region-detail/' + chartName + '.html';
 
-    $scope.chartChange = function(type) {
-      $scope.chartTemplate = 'views/region-detail/' + type + '.html';
+
+    $scope.chartChange = function(chart) {
+      chartName = chart;
+      $scope.chartTemplate = 'views/region-detail/' + chartName + '.html';
+    };
+
+    $scope.updateChartTitle = function(title) {
+      $scope.chartTitle = title;
     };
 
     $rootScope.modalInstance.opened.then(function() {
@@ -26,7 +35,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           {title: 'Catch Info',   template:'views/region-detail/catch.html'},
           {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
           {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Other Topics',   template: 'views/region-detail/other-topics.html'}
+          {title: 'Other Topics', template: 'views/region-detail/other-topics.html'}
           // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
         ];
       } else if ($scope.region.name === 'rfmo') {
@@ -73,7 +82,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.measures = {
       'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings by'},
-      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$)'}
+      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$) by'}
     };
 
     $scope.limits = [
@@ -125,6 +134,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.clickFormLink = function(dim, measure) {
+      if (chartName !== 'catch-chart') { $scope.chartChange('catch-chart'); }
       $scope.formModel.dimension = dim;
       $scope.formModel.measure = $scope.measures[measure];
     };

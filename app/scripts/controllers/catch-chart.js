@@ -5,6 +5,11 @@
 angular.module('sauWebApp').controller('CatchChartCtrl',
   function ($scope, $rootScope, $filter, sauAPI) {
 
+    function init() {
+      $scope.$watch('formModel', onFormModelChange, true);
+      $scope.$watch('color', $scope.updateColor);
+    }
+
     $scope.options = {
       chart: {
           type: 'stackedAreaChart',
@@ -62,30 +67,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.options.chart.color = $scope.color[9];
       }
     };
-    $scope.$watch('color', $scope.updateColor);
-
-    $scope.updateYlabel = function() {
-      /* not sure why options is not updating on $scope.formModel change */
-      $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
-      $scope.options.chart.yAxisTickFormat = function(d) {
-        //Make values "in thousands" or "in millions" depending on the measure.
-        var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-        return $filter('significantDigits')(d, magnitude);
-      };
-    };
-    $scope.$watch('formModel', $scope.updateYlabel, true);
-
-    $scope.updateData = function() {
-      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
-      data_options.dimension = $scope.formModel.dimension.value;
-      data_options.measure = $scope.formModel.measure.value;
-      data_options.limit = $scope.formModel.limit.value;
-      var data = sauAPI.Data.get(data_options, function() {
-          $scope.data = data.data;
-          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
-      });
-    };
-    $scope.$watch('formModel', $scope.updateData, true);
+   
 
     $scope.toggleTaxonNames = function() {
       //Swapping each datum's key between scientific name and common name.
@@ -97,4 +79,39 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.useScientificNames = !$scope.useScientificNames;
     };
 
-    });
+    function onFormModelChange() {
+      updateData();
+      updateYLabel();
+      updateChartTitle();
+    }
+
+    function updateData() {
+      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
+      data_options.dimension = $scope.formModel.dimension.value;
+      data_options.measure = $scope.formModel.measure.value;
+      data_options.limit = $scope.formModel.limit.value;
+      var data = sauAPI.Data.get(data_options, function() {
+          $scope.data = data.data;
+          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
+      });
+    }
+
+    function updateYLabel() {
+      /* not sure why options is not updating on $scope.formModel change */
+      $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
+      $scope.options.chart.yAxisTickFormat = function(d) {
+        //Make values "in thousands" or "in millions" depending on the measure.
+        var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+        return $filter('significantDigits')(d, magnitude);
+      };
+    }
+
+    function updateChartTitle() {
+      $scope.feature.$promise.then(function() {
+        $scope.updateChartTitle($scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the waters of ' + $scope.feature.data.title);
+      });
+    }
+
+    init();
+
+  });
