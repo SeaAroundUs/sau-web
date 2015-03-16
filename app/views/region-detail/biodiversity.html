@@ -3,11 +3,11 @@
         <ul class="organisms">
             <li><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms">Exploited organisms</a></li>
             <li ng-repeat="habitat in [
-                {label: 'Reef', value: 'reef'},
-                {label: 'Fresh', value: 'fresh'},
-                {label: 'Marine', value: 'saltwater'},
-                {label: 'Pelagic', value: 'pelagic'},
-                {label: 'Deep water', value: 'deepwater'},
+                {label: 'Reef fishes', value: 'reef'},
+                {label: 'Fresh water fishes', value: 'fresh'},
+                {label: 'Marine fishes', value: 'saltwater'},
+                {label: 'Pelagic fishes', value: 'pelagic'},
+                {label: 'Deep water fishes', value: 'deepwater'},
             ]">
                 <a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat={{habitat.value}}&csub_code=">{{habitat.label}}</a>
             </li>
