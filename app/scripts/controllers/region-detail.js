@@ -82,12 +82,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
-      {label: 'Commercial Group', value: 'commercialgroup'},
-      {label: 'Functional Group', value: 'functionalgroup'},
-      {label: 'Country', value: 'country'},
+      {label: 'Commercial Groups', value: 'commercialgroup'},
+      {label: 'Functional Groups', value: 'functionalgroup'},
+      {label: 'Fishing Country', value: 'country'},
       // {label: 'Gear', value: 'gear'},
-      {label: 'Sector', value: 'sector'},
+      {label: 'Fishing Sector', value: 'sector'},
       {label: 'Catch Type', value: 'catchtype'},
+      {label: 'Reporting Status', value: 'reporting-status'}
     ];
 
     $scope.measures = {
