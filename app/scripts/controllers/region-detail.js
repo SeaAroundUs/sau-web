@@ -96,7 +96,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($scope.region.name === 'eez') {
         $scope.feature.$promise.then(function() {
           $scope.faos = $scope.feature.data.intersecting_fao_area_id;
-          $scope.selectedFAO = $scope.faos[0];
+          $scope.selectedFAO = $scope.faos[0]; //TODO faos !== undefined
         });
       }
 
