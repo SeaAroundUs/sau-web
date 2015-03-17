@@ -2,11 +2,11 @@
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
-	
+
 	function init() {
       $scope.chartChange('catch-chart');
     }
-	
+
 	var chartName;
 
     var tabs = {
