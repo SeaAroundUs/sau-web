@@ -1,0 +1,22 @@
+<div class="regions row">
+    <span>MARICULTURE PRODUCTION IN</span>
+</div>
+
+<div id="search">
+    <div>
+        <input type="text"
+            ng-model="customSelected"
+            placeholder="Type or select item from list"
+            typeahead="feature.properties.title
+                for feature in geojson.data.features
+                | filter:{properties:{title:$viewValue}}
+                | orderBy:'properties.title'
+                | limitTo:25"
+            typeahead-editable="false"
+            typeahead-on-select="openModal($item.properties.region_id)"
+            typeahead-min-length="0"
+        >
+    </div>
+</div>
+
+<leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>

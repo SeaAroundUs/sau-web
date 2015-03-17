@@ -15,7 +15,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           },
           x: function(d){return d[0];},
           y: function(d){return d[1];},
-          transitionDuration: 250,
+          transitionDuration: 0,
           useInteractiveGuideline: true,
           xAxis: {
               showMaxMin: false,
