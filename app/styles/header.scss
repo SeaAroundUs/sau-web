@@ -1,3 +1,5 @@
+@import 'global';
+
 /* Custom page header */
 #header {
   border-bottom: 1px solid #e5e5e5;
@@ -18,7 +20,7 @@
   }
 
   .nav.top-header {
-    background-color: #002040;
+    background-color: $headerBackgroundColor;
     margin-top: 20px;
     padding: 4px 55px;
     text-align: center;
@@ -33,7 +35,7 @@
       a {
         color: rgb(222, 222, 222);
         text-transform: uppercase;
-        font-family: 'Source Sans Pro', Arial, sans-serif;
+        font-family: $headerFontFamily;
         font-size: 1em;
         font-weight: bold;
         padding: 0 5px;

@@ -4,8 +4,8 @@
             <h1 class="modal-title pull-left">
                 {{chartTitle}}
             </h1>
-            <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
-            <a class="btn btn-primary x-button pull-right" ng-href="{{downloadUrl}}">Download Data</a>
+          <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
+          <a class="btn btn-primary x-button pull-right" ng-href="{{downloadUrl}}">Download Data</a>
         </div>
     </div>
 
@@ -17,7 +17,7 @@
         <h1 class="modal-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
-                : <span ng-bind="$root.hoverRegion.properties.long_title">
+                : <span ng-bind="$root.hoverRegion.properties.long_title"></span>
             </span>
         </h1>
     </div>
@@ -28,9 +28,18 @@
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
             <div class="padded content row">
+                <div ng-show="faos">
+                    <h3>Select FAO area</h3>
+                    <a href="" ng-click="selectFAO(0)">All</a> |
+                    <span ng-repeat="fao in faos"> | <a href="" ng-click="selectFAO(fao)">{{fao}}</a></span>
+                </div>
                 <sau-legend legend-keys="legendKeys"></sau-legend>
                 <p class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime boundaries (see <a href="http://www.seaaroundus.org/doc/saup_manual.htm#15" target="_blank">Methods</a>).
+                </p>
+                <p class="external-links">
+                    <a target="_blank" href="http://www.seaaroundus.org/eez/FAOarea.htm">FAO Areas</a>
+                    <a target="_blank" ng-href="{{eezManualURL}}">EEZ Boundary explanation</a>
                 </p>
             </div>
             <div class="padded content row">
@@ -43,7 +52,7 @@
             </div>
         </div>
 
-        <div class="tabset content col-sm-7">
+        <div class="tabset content col-sm-7 region-detail-tabs">
             <tabset>
               <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
                 <div class="container" ng-include="tab.template"></div>

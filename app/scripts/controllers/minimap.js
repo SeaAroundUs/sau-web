@@ -76,7 +76,7 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
-    $scope.$watch('feature', function() {
+    $scope.$watch('formModel', function() {
       leafletData.getMap('minimap')
         .then(function(map) {
           $scope.feature.$promise.then(function() {
@@ -85,7 +85,7 @@ angular.module('sauWebApp')
             map.fitBounds(bounds);
           });
         });
-    });
+    }, true);
 
     $scope.eachFeatureLayer = function(cb) {
       leafletData.getMap('minimap')
@@ -107,9 +107,55 @@ angular.module('sauWebApp')
       }
     };
 
+    var drawFAO = function(map) {
+      var stripes = new L.StripePattern(mapConfig.hatchStyle);
+      stripes.addTo(map);
+      var faoStyle = mapConfig.faoStyle;
+      faoStyle.fillPattern = stripes;
+
+      var fao = sauAPI.Regions.get({region: 'fao'}, function() {
+
+        if($scope.faoLayer) {
+          map.removeLayer($scope.faoLayer);
+        }
+        $scope.faoLayer = L.geoJson(fao.data, {
+          style: faoStyle,
+          onEachFeature: function(feature, layer) {
+            if(feature.properties.region_id === $scope.mapLayers.selectedFAO) {
+              layer.setStyle(mapConfig.selectedFaoStyle);
+            }
+          }
+        }).addTo(map);
+      });
+    };
+
+    $scope.removeFAO = function() {
+      console.debug('removing FAO');
+      leafletData.getMap('minimap').then(function(map) {
+        if($scope.faoLayer) {
+          map.removeLayer($scope.faoLayer);
+        }
+      });
+    };
+
+    $scope.$watch('mapLayers.selectedFAO', function(){
+      // set selectedFAO to 0 to remove.  This will likely change when additional FAO data
+      // comes in from the API
+      if ($scope.mapLayers.selectedFAO < 1) {
+        $scope.removeFAO();
+        return;
+      }
+      leafletData.getMap('minimap').then(function(map) {
+        $scope.features.$promise.then(function() {
+          drawFAO(map);
+        });
+      });
+    });
+
     $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA so IFA gets painted on top
       leafletData.getMap('minimap').then(function(map) {
+
         L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {
@@ -122,7 +168,7 @@ angular.module('sauWebApp')
             });
           }
         }).addTo(map);
-      $scope.styleSelectedFeature();
+        $scope.styleSelectedFeature();
       });
     });
 });

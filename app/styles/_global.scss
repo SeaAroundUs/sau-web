@@ -1,0 +1,30 @@
+@mixin ghostVerticalAlign(){
+  &:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    height: 100%; width: .1px;
+  }
+}
+
+@mixin darkBar() {
+  background-color: #0071cf;
+  height: 50px;
+  color: white;
+  width: 100%;
+  @include ghostVerticalAlign;
+}
+
+@mixin header() {
+  font-family: 'Roboto', san-serif;
+}
+
+$darkBlue: rgb(2,32,64);
+$orange: #F4BC59;
+$footerHeight: 80px;
+$bodyFontFamily: 'Roboto', san-serif;
+$headerFontFamily: 'Source Sans Pro', Arial, sans-serif;
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+$headerBackgroundColor: #002040;
+$textColor: rgb(85, 85, 85);
+$lightGray: #eeeeee;

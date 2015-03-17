@@ -5,11 +5,13 @@
 angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
 
-    var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $routeParams.id}, function() {
-      $scope.data = data.data;
-    });
-    
     $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
+
+    $scope.$watch('formModel.region_id', function() {
+      var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+        $scope.data = data.data;
+      });
+    });
 
     $scope.feature.$promise.then(function() {
       $scope.updateChartTitle('Primary Production Required for catches in the waters of ' + $scope.feature.data.title);

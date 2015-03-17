@@ -1,3 +1,5 @@
+@import 'global';
+
 .modal-content {
     padding: 20px;
     background-color: black;
@@ -116,3 +118,32 @@
   width: 100%;
 }
 
+.region-detail-tabs {
+  .nav-tabs > li > a {
+    color: $textColor;
+    background-color: $lightGray;
+    margin-right: 0;
+  }
+
+  .nav-tabs > li.active > a,
+  .nav-tabs > li.active > a:hover,
+  .nav-tabs > li.active > a:focus {
+    border-color: transparent;
+    background: white;
+  }
+
+  .row.catch h3.values-by {
+    margin-top: 35px;
+  }
+
+  .row.biodiversity {
+    ul.organisms {
+      list-style-type: none;
+      padding-left: 5px;
+    }
+  }
+}
+
+i.fa.red {
+  color: red;
+}

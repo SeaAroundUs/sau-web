@@ -1,13 +1,34 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData) {
-
-    function init() {
+  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
+	
+	function init() {
       $scope.chartChange('catch-chart');
     }
-    
-    var chartName;
+	
+	var chartName;
+
+    var tabs = {
+      catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
+      biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+      ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
+      ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
+      governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
+      indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
+      otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
+      feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
+    };
+
+    $scope.mapLayers = {
+      selectedFAO: 0,
+    };
+
+    $scope.selectFAO = function(fao) {
+      $scope.mapLayers.selectedFAO = fao;
+    };
+
+    $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
     $scope.feature = null;
     $scope.chartTitle = null;
     $scope.viewContentLoaded = $q.defer();
@@ -23,7 +44,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateDataDownloadUrl = function(url) {
       $scope.downloadUrl = url;
-    }
+    };
 
     $rootScope.modalInstance.opened.then(function() {
       $scope.viewContentLoaded.resolve();
@@ -35,26 +56,34 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
       if ($scope.region.name === 'global') {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Other Topics', template: 'views/region-detail/other-topics.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystems,
+          tabs.otherTopics
+          // tabs.feedback
         ];
       } else if ($scope.region.name === 'rfmo') {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Governance',   template: 'views/region-detail/governance-rfmo.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.governance
+          // tabs.feedback
+        ];
+      } else if ($scope.region.name === 'lme') {
+        $scope.tabs = [
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystemsLME,
+          tabs.indicators
+          // tabs.feedback
         ];
       } else {
         $scope.tabs = [
-          {title: 'Catch Info',   template:'views/region-detail/catch.html'},
-          {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-          {title: 'Ecosystems',   template: 'views/region-detail/ecosystems.html'},
-          {title: 'Governance',   template: 'views/region-detail/governance.html'},
-          {title: 'Indicators',   template: 'views/region-detail/indicators.html'}
-          // {title: 'Feedback',     template: 'views/region-detail/feedback.html'}
+          tabs.catchInfo,
+          tabs.biodiversity,
+          tabs.ecosystems,
+          tabs.governance,
+          tabs.indicators
+          // tabs.feedback
         ];
       }
 
@@ -75,12 +104,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
-      {label: 'Commercial Group', value: 'commercialgroup'},
-      {label: 'Functional Group', value: 'functionalgroup'},
-      {label: 'Country', value: 'country'},
+      {label: 'Commercial Groups', value: 'commercialgroup'},
+      {label: 'Functional Groups', value: 'functionalgroup'},
+      {label: 'Fishing Country', value: 'country'},
       // {label: 'Gear', value: 'gear'},
-      {label: 'Sector', value: 'sector'},
+      {label: 'Fishing Sector', value: 'sector'},
       {label: 'Catch Type', value: 'catchtype'},
+      {label: 'Reporting Status', value: 'reporting-status'}
     ];
 
     $scope.measures = {
@@ -89,10 +119,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.limits = [
-      {label: '20', value: '20'},
-      {label: '10', value: '10'},
       {label: '5', value: '5'},
-      {label: '1', value: '1'},
+      {label: '10', value: '10'},
+      {label: '15', value: '15'},
+      {label: '20', value: '20'}
     ];
 
     $scope.formModel = {
@@ -104,6 +134,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+
+      if ($scope.region.name === 'eez') {
+        $scope.feature.$promise.then(function() {
+          $scope.faos = $scope.feature.data.intersecting_fao_area_id;
+        });
+      }
+
       $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
@@ -127,12 +164,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
     $scope.ecopathURL = null;
-    $scope.$watch('feature', function() {
-      if($scope.feature.data) {
+    $scope.$watch('formModel', function() {
         if ($scope.region.name === 'eez') {
-          $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
-            $scope.feature.data.fishbase_id +
-            '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+          $scope.feature.$promise.then(function() {
+            $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
+              $scope.feature.data.fishbase_id +
+              '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+          });
         } else if ($scope.region.name === 'lme') {
           $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME='+
             $scope.formModel.region_id +
@@ -141,7 +179,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.ecopathURL = 'http://www.ecopath.org/index.php?name=Models&sub=Models&m_FAO='+
             $scope.formModel.region_id;
         }
-      }
     }, true);
 
     init();
