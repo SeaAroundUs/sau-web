@@ -3,6 +3,12 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
 
+	function init() {
+      $scope.chartChange('catch-chart');
+    }
+
+	var chartName;
+
     var tabs = {
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
       biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
@@ -24,13 +30,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
     $scope.feature = null;
-
+    $scope.chartTitle = null;
     $scope.viewContentLoaded = $q.defer();
 
-    $scope.chartTemplate = 'views/region-detail/catch-chart.html';
+    $scope.chartChange = function(templateUrl) {
+      chartName = templateUrl;
+      $scope.chartTemplateUrl = 'views/region-detail/' + templateUrl + '.html';
+    };
 
-    $scope.chartChange = function(type) {
-      $scope.chartTemplate = 'views/region-detail/' + type + '.html';
+    $scope.updateChartTitle = function(title) {
+      $scope.chartTitle = title;
+    };
+
+    $scope.updateDataDownloadUrl = function(url) {
+      $scope.downloadUrl = url;
     };
 
     $rootScope.modalInstance.opened.then(function() {
@@ -101,8 +114,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     ];
 
     $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings'},
-      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$)'}
+      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings by'},
+      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$) by'}
     };
 
     $scope.limits = [
@@ -142,25 +155,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $rootScope.modalInstance.close();
     };
 
-    $scope.download = function() {
-      // FIXME: constructing url manually, I don't know how to get it out of the $resource
-      // This should probably be in a service or something too.
-      var url = ['',
-        sauAPI.apiURL,
-        $scope.region.name,
-        '/',
-        $scope.formModel.measure.value,
-        '/',
-        $scope.formModel.dimension.value,
-        '/?format=csv&limit=',
-        $scope.formModel.limit.value,
-        '&region_id=',
-        $scope.formModel.region_id,
-      ].join('');
-      $window.open(url, '_blank');
-    };
-
     $scope.clickFormLink = function(dim, measure) {
+      if (chartName !== 'catch-chart') { $scope.chartChange('catch-chart'); }
       $scope.formModel.dimension = dim;
       $scope.formModel.measure = $scope.measures[measure];
     };
@@ -185,5 +181,5 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
     }, true);
 
-
+    init();
 });

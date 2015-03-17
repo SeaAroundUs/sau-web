@@ -3,10 +3,20 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, region) {
-    var data = sauAPI.MultinationalFootprintData.get({region: region, region_id: $routeParams.id}, function() {
-            $scope.data = data.data;
-        });
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
+
+    $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
+
+    $scope.$watch('formModel.region_id', function() {
+      var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+        $scope.data = data.data;
+      });
+    });
+
+    $scope.feature.$promise.then(function() {
+      $scope.updateChartTitle('Primary Production Required for catches in the waters of ' + $scope.feature.data.title);
+      updateDataDownloadUrl();
+    });
 
     $scope.options = {
       chart: {
@@ -14,9 +24,8 @@ angular.module('sauWebApp')
           height: 350,
           margin : {
               top: 20,
-              right: 20,
+              right: 0,
               bottom: 60,
-              left: 75
           },
           x: function(d){return d[0];},
           y: function(d){return d[1];},
@@ -35,4 +44,17 @@ angular.module('sauWebApp')
           }
         }
       };
+
+      function updateDataDownloadUrl() {
+        var url = ['',
+          sauAPI.apiURL,
+          $scope.region.name,
+          '/multinational-footprint/?region_id=',
+          $scope.formModel.region_id,
+          '&format=csv'
+        ].join('');
+        $scope.updateDataDownloadUrl(url);
+      }
+
+      updateDataDownloadUrl();
   });

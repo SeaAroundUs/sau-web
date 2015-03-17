@@ -5,6 +5,10 @@
 angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
   function ($scope, sauAPI, externalURLs) {
 
+    function init() {
+      $scope.updateDataDownloadUrl(sauAPI.apiURL + '/global/eez-vs-high-seas?format=csv');
+    }
+
     window.scope = $scope;
     $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
 
@@ -32,5 +36,7 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
         }
       }
     };
+
+    init();
   });
 })();

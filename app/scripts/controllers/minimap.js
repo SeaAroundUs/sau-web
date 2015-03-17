@@ -107,33 +107,42 @@ angular.module('sauWebApp')
       }
     };
 
+    $scope.faoLayers = [];
+
     var drawFAO = function(map) {
       var stripes = new L.StripePattern(mapConfig.hatchStyle);
       stripes.addTo(map);
       var faoStyle = mapConfig.faoStyle;
       faoStyle.fillPattern = stripes;
 
+      $scope.removeFAO();
+
+      var addFAOLayer = function(layer, style) {
+        layer.setStyle(style);
+        layer.addTo(map);
+        $scope.faoLayers.push(layer);
+      };
+
       var fao = sauAPI.Regions.get({region: 'fao'}, function() {
 
-        if($scope.faoLayer) {
-          map.removeLayer($scope.faoLayer);
-        }
         $scope.faoLayer = L.geoJson(fao.data, {
-          style: faoStyle,
           onEachFeature: function(feature, layer) {
             if(feature.properties.region_id === $scope.mapLayers.selectedFAO) {
-              layer.setStyle(mapConfig.selectedFaoStyle);
+              addFAOLayer(layer, mapConfig.selectedFaoStyle);
+            }
+            else if($scope.faos.indexOf(feature.properties.region_id) >= 0) {
+              addFAOLayer(layer, faoStyle);
             }
           }
-        }).addTo(map);
+        });
       });
     };
 
     $scope.removeFAO = function() {
       console.debug('removing FAO');
       leafletData.getMap('minimap').then(function(map) {
-        if($scope.faoLayer) {
-          map.removeLayer($scope.faoLayer);
+        for(var i=0; i<$scope.faoLayers.length; i++) {
+          map.removeLayer($scope.faoLayers[i]);
         }
       });
     };

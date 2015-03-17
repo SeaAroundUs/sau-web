@@ -62,11 +62,6 @@ angular
         controller: 'ExploitedOrganismsCtrl',
         resolve: {region: function() {return 'eez';}}
       })
-      .when('/eez/:id/multinational-footprint', {
-        templateUrl: 'views/multinational-footprint.html',
-        controller: 'MultinationalFootprintCtrl',
-        resolve: {region: function() {return 'eez';}}
-      })
       .when('/eez/:id/estuaries', {
         templateUrl: 'views/estuaries.html',
         controller: 'EstuariesCtrl',
