@@ -3,24 +3,27 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData) {
 
+    function init() {
+      $scope.chartChange('catch-chart');
+    }
+    
+    var chartName;
     $scope.feature = null;
-
     $scope.chartTitle = null;
-
     $scope.viewContentLoaded = $q.defer();
 
-    var chartName = 'catch-chart';
-    $scope.chartTemplate = 'views/region-detail/' + chartName + '.html';
-
-
-    $scope.chartChange = function(chart) {
-      chartName = chart;
-      $scope.chartTemplate = 'views/region-detail/' + chartName + '.html';
+    $scope.chartChange = function(templateUrl) {
+      chartName = templateUrl;
+      $scope.chartTemplateUrl = 'views/region-detail/' + templateUrl + '.html';
     };
 
     $scope.updateChartTitle = function(title) {
       $scope.chartTitle = title;
     };
+
+    $scope.updateDataDownloadUrl = function(url) {
+      $scope.downloadUrl = url;
+    }
 
     $rootScope.modalInstance.opened.then(function() {
       $scope.viewContentLoaded.resolve();
@@ -115,24 +118,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $rootScope.modalInstance.close();
     };
 
-    $scope.download = function() {
-      // FIXME: constructing url manually, I don't know how to get it out of the $resource
-      // This should probably be in a service or something too.
-      var url = ['',
-        sauAPI.apiURL,
-        $scope.region.name,
-        '/',
-        $scope.formModel.measure.value,
-        '/',
-        $scope.formModel.dimension.value,
-        '/?format=csv&limit=',
-        $scope.formModel.limit.value,
-        '&region_id=',
-        $scope.formModel.region_id,
-      ].join('');
-      $window.open(url, '_blank');
-    };
-
     $scope.clickFormLink = function(dim, measure) {
       if (chartName !== 'catch-chart') { $scope.chartChange('catch-chart'); }
       $scope.formModel.dimension = dim;
@@ -159,4 +144,5 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
     }, true);
 
+    init();
 });

@@ -5,12 +5,12 @@
                 {{chartTitle}}
             </h1>
             <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
-            <button class="btn btn-primary x-button pull-right" ng-click="download()">Download Data</button>
+            <a class="btn btn-primary x-button pull-right" ng-href="{{downloadUrl}}">Download Data</a>
         </div>
     </div>
 
     <div class="row">
-        <div class="padded content col-sm-12" ng-include="chartTemplate"></div>
+        <div class="padded content col-sm-12" ng-include="chartTemplateUrl"></div>
     </div>
 
     <div class="row">

@@ -4,14 +4,16 @@
 
 angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
-    var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $routeParams.id}, function() {
-            $scope.data = data.data;
-        });
 
+    var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $routeParams.id}, function() {
+      $scope.data = data.data;
+    });
+    
     $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
 
     $scope.feature.$promise.then(function() {
       $scope.updateChartTitle('Primary Production Required for catches in the waters of ' + $scope.feature.data.title);
+      updateDataDownloadUrl();
     });
 
     $scope.options = {
@@ -40,4 +42,17 @@ angular.module('sauWebApp')
           }
         }
       };
+
+      function updateDataDownloadUrl() {
+        var url = ['',
+          sauAPI.apiURL,
+          $scope.region.name,
+          '/multinational-footprint/?region_id=',
+          $scope.formModel.region_id,
+          '&format=csv'
+        ].join('');
+        $scope.updateDataDownloadUrl(url);
+      }
+
+      updateDataDownloadUrl();
   });

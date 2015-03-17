@@ -8,6 +8,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     function init() {
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
+      updateDataDownloadUrl();
     }
 
     $scope.options = {
@@ -83,6 +84,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       updateData();
       updateYLabel();
       updateChartTitle();
+      updateDataDownloadUrl();
     }
 
     function updateData() {
@@ -108,8 +110,31 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     function updateChartTitle() {
       $scope.feature.$promise.then(function() {
-        $scope.updateChartTitle($scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the waters of ' + $scope.feature.data.title);
+        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the ';
+        if ($scope.region.name === 'global') {
+          chartTitle += 'global ocean';
+        } else {
+          chartTitle += 'waters of ' + $scope.feature.data.title;
+        }
+        $scope.updateChartTitle(chartTitle);
       });
+    }
+
+    function updateDataDownloadUrl() {
+      var url = ['',
+        sauAPI.apiURL,
+        $scope.region.name,
+        '/',
+        $scope.formModel.measure.value,
+        '/',
+        $scope.formModel.dimension.value,
+        '/?format=csv&limit=',
+        $scope.formModel.limit.value,
+        '&region_id=',
+        $scope.formModel.region_id,
+      ].join('');
+
+      $scope.updateDataDownloadUrl(url);
     }
 
     init();
