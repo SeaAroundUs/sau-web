@@ -7,8 +7,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     var region_id = $routeParams.id;
 
-    function init() {
-      $scope.chartChange('catch-chart');
+	function init() {
+      if ($scope.region.name === 'mariculture') {
+        $scope.chartChange('mariculture-chart');
+      } else {
+        $scope.chartChange('catch-chart');
+      }
     }
 
     $scope.getFeatures = function() {
