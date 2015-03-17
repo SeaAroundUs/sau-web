@@ -168,12 +168,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
     $scope.ecopathURL = null;
-    $scope.$watch('feature', function() {
-      if($scope.feature.data) {
+    $scope.$watch('formModel', function() {
         if ($scope.region.name === 'eez') {
-          $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
-            $scope.feature.data.fishbase_id +
-            '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+          $scope.feature.$promise.then(function() {
+            $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
+              $scope.feature.data.fishbase_id +
+              '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+          });
         } else if ($scope.region.name === 'lme') {
           $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME='+
             $scope.formModel.region_id +
@@ -182,7 +183,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.ecopathURL = 'http://www.ecopath.org/index.php?name=Models&sub=Models&m_FAO='+
             $scope.formModel.region_id;
         }
-      }
     }, true);
 
 

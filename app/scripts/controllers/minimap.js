@@ -76,7 +76,7 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
-    $scope.$watch('feature', function() {
+    $scope.$watch('formModel', function() {
       leafletData.getMap('minimap')
         .then(function(map) {
           $scope.feature.$promise.then(function() {
@@ -85,7 +85,7 @@ angular.module('sauWebApp')
             map.fitBounds(bounds);
           });
         });
-    });
+    }, true);
 
     $scope.eachFeatureLayer = function(cb) {
       leafletData.getMap('minimap')
