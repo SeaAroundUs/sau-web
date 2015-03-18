@@ -4,7 +4,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
 
 	function init() {
-      $scope.chartChange('catch-chart');
+      if ($scope.region.name == 'mariculture') {
+        console.debug('put in mariculture chart here');
+      } else {
+        $scope.chartChange('catch-chart');
+      }
     }
 
 	var chartName;
@@ -16,6 +20,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
       governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
       indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
+      productionInfo: {title: 'Production Info', template: 'views/region-detail/production-info.html'},
       otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
     };
@@ -60,6 +65,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           tabs.biodiversity,
           tabs.ecosystems,
           tabs.otherTopics
+          // tabs.feedback
+        ];
+      } else if ($scope.region.name === 'rfmo') {
+        $scope.tabs = [
+          tabs.catchInfo,
+          tabs.governance
           // tabs.feedback
         ];
       } else if ($scope.region.name === 'rfmo') {
@@ -129,19 +140,23 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       dimension: $scope.dimensions[0],
       measure: $scope.measures.tonnage,
       limit : $scope.limits[1],
-      region_id: parseInt(region_id)
+      region_id: region_id
     };
 
     $scope.updateRegion = function() {
-      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      if($scope.region.name === 'mariculture') {
+        $scope.feature = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
+      } else {
+        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      }
 
       if ($scope.region.name === 'eez') {
         $scope.feature.$promise.then(function() {
           $scope.faos = $scope.feature.data.intersecting_fao_area_id;
         });
+        $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       }
 
-      $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
       } else {

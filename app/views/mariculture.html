@@ -1,22 +1,17 @@
-<div class="regions row">
-    <span>MARICULTURE PRODUCTION IN</span>
-</div>
-
-<div id="search">
-    <div>
-        <input type="text"
-            ng-model="customSelected"
-            placeholder="Type or select item from list"
-            typeahead="feature.properties.title
-                for feature in geojson.data.features
-                | filter:{properties:{title:$viewValue}}
-                | orderBy:'properties.title'
-                | limitTo:25"
-            typeahead-editable="false"
-            typeahead-on-select="openModal($item.properties.region_id)"
-            typeahead-min-length="0"
-        >
-    </div>
+<div class="mariculture regions row">
+    <span>MARICULTURE PRODUCTION IN: </span>
+    <input type="text"
+        ng-model="selectedRegion"
+        placeholder="Type or select item from list"
+        typeahead="feature.properties.name
+            for feature in geojson.data.features
+            | filter:{properties:{name:$viewValue}}
+            | orderBy:'properties.name'
+            "
+        typeahead-editable="false"
+        typeahead-on-select="selected($item.properties)"
+        typeahead-min-length="0"
+    >
 </div>
 
 <leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>

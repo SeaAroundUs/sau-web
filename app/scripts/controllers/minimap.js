@@ -76,10 +76,13 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
-    $scope.$watch('formModel', function() {
+    $scope.$watch('formModel.region_id', function() {
       leafletData.getMap('minimap')
         .then(function(map) {
           $scope.feature.$promise.then(function() {
+            if (! $scope.feature.data) {
+              return;
+            }
             var f = L.geoJson($scope.feature.data.geojson);
             var bounds = f.getBounds();
             map.fitBounds(bounds);
@@ -162,9 +165,11 @@ angular.module('sauWebApp')
     });
 
     $scope.features.$promise.then(function() {
+      if (! $scope.features.data) {
+        return;
+      }
       // add features layer when loaded, then load IFA so IFA gets painted on top
       leafletData.getMap('minimap').then(function(map) {
-
         L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {

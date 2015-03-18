@@ -139,6 +139,15 @@ angular
         templateUrl: 'views/country-profile.html',
         controller: 'CountryProfileCtrl'
       })
+      .when('/mariculture', {
+        templateUrl: 'views/mariculture.html',
+        controller: 'MaricultureCtrl'
+      })
+      .when('/mariculture/:id', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+        resolve: {region: function() {return 'mariculture';}}
+      })
       .when('/topic/biodiversity', {
         templateUrl: 'views/topic-biodiversity.html',
         controller: 'TopicBiodiversityCtrl'

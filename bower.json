@@ -22,7 +22,8 @@
     "simple-statistics": "~0.9.0",
     "leaflet-pip": "~0.1.0",
     "esri-leaflet": "~1.0.0-rc.5",
-    "angular-ui-grid": "~3.0.0-rc.20"
+    "angular-ui-grid": "~3.0.0-rc.20",
+    "geo-boundaries-world-110m": "https://github.com/datasets/geo-boundaries-world-110m.git"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",

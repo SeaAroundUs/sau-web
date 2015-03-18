@@ -15,6 +15,12 @@ angular.module('sauWebApp')
       fillOpacity: 0.4,
       weight: 1.0
     },
+    countryStyle: {
+      color: '#000',
+      fillColor: '#000',
+      fillOpacity: 0.1,
+      weight: 1.0
+    },
     faoStyle: {
       color: '#ff0819',
       fillColor: '#d00',
