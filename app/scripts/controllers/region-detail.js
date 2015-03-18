@@ -31,7 +31,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
     $scope.feature = null;
     $scope.chartTitle = null;
-    $scope.viewContentLoaded = $q.defer();
 
     $scope.chartChange = function(templateUrl) {
       chartName = templateUrl;
@@ -46,69 +45,62 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.downloadUrl = url;
     };
 
-    $rootScope.modalInstance.opened.then(function() {
-      $scope.viewContentLoaded.resolve();
-    });
+    $scope.legendKeys = insetMapLegendData[$scope.region.name];
 
-    $scope.viewContentLoaded.promise.then(function() {
-      //Build the legend out based on the region type.
-      $scope.legendKeys = insetMapLegendData[$scope.region.name];
+    if ($scope.region.name === 'global') {
+      $scope.tabs = [
+        tabs.catchInfo,
+        tabs.biodiversity,
+        tabs.ecosystems,
+        tabs.otherTopics
+        // tabs.feedback
+      ];
+    } else if ($scope.region.name === 'rfmo') {
+      $scope.tabs = [
+        tabs.catchInfo,
+        tabs.governance
+        // tabs.feedback
+      ];
+    } else if ($scope.region.name === 'lme') {
+      $scope.tabs = [
+        tabs.catchInfo,
+        tabs.biodiversity,
+        tabs.ecosystemsLME,
+        tabs.indicators
+        // tabs.feedback
+      ];
+    } else if ($scope.region.name === 'highseas') {
+      $scope.tabs = [
+        tabs.catchInfo,
+        tabs.ecosystems,
+        tabs.governance,
+        tabs.indicators
+        // tabs.feedback
+      ];
+    } else {
+      $scope.tabs = [
+        tabs.catchInfo,
+        tabs.biodiversity,
+        tabs.ecosystems,
+        tabs.governance,
+        tabs.indicators
+        // tabs.feedback
+      ];
+    }
 
-      if ($scope.region.name === 'global') {
-        $scope.tabs = [
-          tabs.catchInfo,
-          tabs.biodiversity,
-          tabs.ecosystems,
-          tabs.otherTopics
-          // tabs.feedback
-        ];
-      } else if ($scope.region.name === 'rfmo') {
-        $scope.tabs = [
-          tabs.catchInfo,
-          tabs.governance
-          // tabs.feedback
-        ];
-      } else if ($scope.region.name === 'lme') {
-        $scope.tabs = [
-          tabs.catchInfo,
-          tabs.biodiversity,
-          tabs.ecosystemsLME,
-          tabs.indicators
-          // tabs.feedback
-        ];
-      } else if ($scope.region.name === 'highseas') {
-        $scope.tabs = [
-          tabs.catchInfo,
-          tabs.ecosystems,
-          tabs.governance,
-          tabs.indicators
-          // tabs.feedback
-        ];
-      } else {
-        $scope.tabs = [
-          tabs.catchInfo,
-          tabs.biodiversity,
-          tabs.ecosystems,
-          tabs.governance,
-          tabs.indicators
-          // tabs.feedback
-        ];
-      }
-
-      for (var i=0; i<$scope.tabs.length; i++) {
-        $scope.tabs[i].active = false;
-      }
-      if ($routeParams.tab) {
-        // allow ?tab=N to select the Nth tab on load. Until we can
-        // fully support tabs changing this query parameter,
-        // just immediately drop the parameter from the search
-        // args to avoid confusion with the URL.  --jls
-        $scope.tabs[$routeParams.tab].active = true;
-        $location.search('tab', null);
-      } else {
-        $scope.tabs[0].active = true;
-      }
-    });
+    for (var i=0; i<$scope.tabs.length; i++) {
+      $scope.tabs[i].active = false;
+    }
+    if ($routeParams.tab) {
+      // allow ?tab=N to select the Nth tab on load. Until we can
+      // fully support tabs changing this query parameter,
+      // just immediately drop the parameter from the search
+      // args to avoid confusion with the URL.  --jls
+      $scope.tabs[$routeParams.tab].active = true;
+      $location.search('tab', null);
+    } else {
+      $scope.tabs[0].active = true;
+    }
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
