@@ -36,6 +36,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
             return $filter('significantDigits')(d, magnitude);
           },
+          cData: ['Stacked','Stream','Expanded'],
           legend: {
             updateState: false,
             dispatch: {
@@ -53,13 +54,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     $scope.colors = colorbrewer;
 
-    $scope.colors.SAU = {
+    $scope.colors.Bold = {
       11: ['#f00','#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#000',
             '#08f', '#0f8', '#f80', '#8f0', '#80f', '#f08'
           ]
     };
 
-    $scope.color = $scope.colors.SAU;
+    $scope.color = $scope.colors.Spectral;
 
     $scope.updateColor = function() {
       if ($scope.color[11]){
