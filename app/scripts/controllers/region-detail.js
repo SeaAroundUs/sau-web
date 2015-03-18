@@ -87,6 +87,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           tabs.indicators
           // tabs.feedback
         ];
+      } else if ($scope.region.name === 'highseas') {
+        $scope.tabs = [
+          tabs.catchInfo,
+          tabs.ecosystems,
+          tabs.governance,
+          tabs.indicators
+          // tabs.feedback
+        ];
       } else {
         $scope.tabs = [
           tabs.catchInfo,

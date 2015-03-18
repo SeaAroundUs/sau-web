@@ -6,7 +6,7 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
   function ($scope, sauAPI, externalURLs) {
 
     function init() {
-      $scope.updateDataDownloadUrl(sauAPI.apiURL + '/global/eez-vs-high-seas?format=csv');
+      $scope.updateDataDownloadUrl(sauAPI.apiURL + '/global/eez-vs-high-seas/?format=csv');
     }
 
     window.scope = $scope;
