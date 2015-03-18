@@ -48,6 +48,14 @@
                         <td><a>{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
+                    <tr ng-if="region.name === 'eez'">
+                        <td><a>Other EEZs accessed</a> by {{feature.data.title}}</td>
+                        <td>{{feature.data.year_allowed_to_fish_other_eezs}}</td>
+                    </tr>
+                    <tr ng-if="region.name === 'eez'">
+                        <td><a>High seas accessed</a> by {{feature.data.title}}</td>
+                        <td>{{feature.data.year_allowed_to_fish_high_seas}}</td>
+                    </tr>
                 </table>
             </div>
         </div>
