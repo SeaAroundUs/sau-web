@@ -153,7 +153,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       if($scope.region.name === 'mariculture') {
-        $scope.feature = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
+        $scope.features = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
+        $scope.feature = $scope.features;
       } else {
         $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       }
