@@ -70,6 +70,8 @@
 }
 .chart-container {
     height: 350px;
+    position: relative;
+
     /* make points visible */
     .nvd3.nv-line .nv-point
     {
@@ -92,6 +94,34 @@
         }
     }
 
+    .fa.loading {
+      display: none;
+    }
+
+    &:before {
+        position: absolute;
+        text-align: center;
+        color: #333333;
+        font-size: 1.75em;
+        background-color: rgba(255,255,255,0);
+        width: 100%;
+        height: 100%;
+        padding-top: 170px;
+    }
+
+    &.loading {
+      .fa.loading {
+        z-index: 1;
+        display: inline-block;
+        position: absolute;
+        left: 48%;
+        top: 40%;
+      }
+
+      &:before {
+        background-color: white;
+      }
+    }
 }
 .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 1.0;
