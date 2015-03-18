@@ -14,6 +14,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/disputed_eez.png', label: 'Disputed/shared' },
       { pattern: 'images/legend/other_eez.png', label: 'Other EEZ' },
       { pattern: 'images/legend/fao.png', label: 'FAO area' },
+      { pattern: 'images/legend/fao_not_included.png', label: 'Not included'},
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
       { pattern: 'images/legend/ifa.png', label: 'IFA boundary' }
     ];
@@ -23,6 +24,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/disputed_lme.png', label: 'Disputed' },
       { pattern: 'images/legend/other_lme.png', label: 'Other LME' },
       { pattern: 'images/legend/fao.png', label: 'FAO area' },
+      { pattern: 'images/legend/fao_not_included.png', label: 'Not included'},
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
       { pattern: 'images/legend/ifa.png', label: 'IFA boundary' }
     ];
@@ -31,6 +33,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/eez.png', label: 'High seas' },
       { pattern: 'images/legend/other_eez.png', label: 'Other high seas' },
       { pattern: 'images/legend/fao.png', label: 'FAO area' },
+      { pattern: 'images/legend/fao_not_included.png', label: 'Not included'},
       { pattern: 'images/legend/high_seas.png', label: 'EEZ' }
     ];
 
