@@ -1,5 +1,6 @@
-<div ng-controller="CatchChartCtrl" class="chart-container form-inline">
-	<div class="form-group">
+<div ng-controller="CatchChartCtrl" class="chart-container form-inline" spinner>
+  <i class="fa fa-spinner fa-spin loading fa-5x"></i>
+  <div class="form-group">
 		<label for="dimension">Dimension</label>
 		<select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
 	</div>

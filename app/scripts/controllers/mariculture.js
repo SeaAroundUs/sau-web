@@ -40,7 +40,7 @@
     $scope.geojsonMouseover = function() {};
 
     $scope.features = $resource('bower_components/geo-boundaries-world-110m/countries.geojson', {}, {get: {method: 'GET', cache: true}})
-      .get({region_id: $scope.formModel.region_id});
+      .get();
     $scope.features.$promise.then(function(data) {
         var filteredData = data.features.filter(function(f) {
                     if($scope.un_mapping[f.properties.iso_a3]){
@@ -49,7 +49,7 @@
                       return false;
                     }
         });
-        $scope.features.data = filteredData;
+        // $scope.features.data = filteredData;
         angular.extend($scope, {
           features: {
             data: filteredData
