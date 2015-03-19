@@ -376,6 +376,11 @@ module.exports = function (grunt) {
           cwd: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/',
           src: '*',
           dest: '<%= yeoman.dist %>/fonts'
+        }, {
+          expand: true,
+          cwd: 'bower_components/font-awesome/fonts/',
+          src: '*',
+          dest: '<%= yeoman.dist %>/fonts'
         }]
       },
       styles: {
