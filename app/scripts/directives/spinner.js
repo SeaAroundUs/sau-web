@@ -7,7 +7,7 @@
           if(loading) {
             ele.addClass('loading');
           } else {
-           ele.removeClass('loading');
+            ele.removeClass('loading');
           }
         });
       },
