@@ -83,7 +83,12 @@ angular.module('sauWebApp')
             if (! $scope.feature.data) {
               return;
             }
-            var f = L.geoJson($scope.feature.data.geojson);
+            var f = null;
+            if ($scope.feature.data.geojson) {
+              f = L.geoJson($scope.feature.data.geojson);
+            } else {
+              f = L.geoJson($scope.feature.data[0].geojson);
+            }
             var bounds = f.getBounds();
             map.fitBounds(bounds);
           });
@@ -165,10 +170,10 @@ angular.module('sauWebApp')
     });
 
     $scope.features.$promise.then(function() {
+      // add features layer when loaded, then load IFA so IFA gets painted on top
       if (! $scope.features.data) {
         return;
       }
-      // add features layer when loaded, then load IFA so IFA gets painted on top
       leafletData.getMap('minimap').then(function(map) {
         L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,

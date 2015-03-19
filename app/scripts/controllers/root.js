@@ -28,6 +28,7 @@
                 // should be whitelisting modal-to-modal paths instead of this..
                 $location.path() === ('/' + $scope.region.name) ||
                 $location.path() === ('/topic/biodiversity'),
+                $location.path() === ('/mariculture'),
                 $location.path().slice(0,5) === ('/taxa')
               )
             ) {

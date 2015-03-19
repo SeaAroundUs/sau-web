@@ -4,7 +4,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
 
 	function init() {
-      if ($scope.region.name == 'mariculture') {
+      if ($scope.region.name === 'mariculture') {
         console.debug('put in mariculture chart here');
       } else {
         $scope.chartChange('catch-chart');
@@ -153,8 +153,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
       if($scope.region.name === 'mariculture') {
-        $scope.features = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
-        $scope.feature = $scope.features;
+        $scope.feature = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
       } else {
         $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
       }
