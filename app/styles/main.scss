@@ -311,3 +311,7 @@ label {
 a:not([href]) {
   cursor: pointer;
 }
+
+.taxon .nvd3 .nv-legend g.nv-series:last-child {
+  cursor: default;
+}

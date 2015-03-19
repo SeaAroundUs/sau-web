@@ -42,7 +42,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             dispatch: {
               /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
               legendClick: function(taxon) {
-                if ($scope.formModel.dimension.value === 'taxon') {
+                if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
                   //Route user to "key information on taxon page" via the modal close event.
                   $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
                 }
@@ -97,6 +97,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
           spinnerState.loading = false;
+          console.log(data);
       });
       spinnerState.loading = true;
     }
