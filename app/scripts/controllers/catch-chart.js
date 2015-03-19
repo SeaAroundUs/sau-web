@@ -97,7 +97,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
           spinnerState.loading = false;
-          console.log(data);
       });
       spinnerState.loading = true;
     }
