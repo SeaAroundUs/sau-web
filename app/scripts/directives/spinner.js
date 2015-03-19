@@ -4,7 +4,11 @@
     return {
       link: function(scope, ele) {
         scope.$watch(function() { return spinnerState.loading; }, function(loading) {
-          loading ? ele.addClass('loading') : ele.removeClass('loading');
+          if(loading) {
+            ele.addClass('loading');
+          } else {
+            ele.removeClass('loading');
+          }
         });
       },
       restrict: 'A'
