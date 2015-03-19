@@ -82,6 +82,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         tabs.indicators
         // tabs.feedback
       ];
+    } else if ($scope.region.name === 'mariculture') {
+      $scope.tabs = [
+        tabs.productionInfo,
+        // tabs.feedback
+      ];
     } else {
       $scope.tabs = [
         tabs.catchInfo,

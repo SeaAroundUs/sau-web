@@ -4,7 +4,7 @@
 
   'use strict';
 
-  angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $resource, mapConfig, sauAPI, leafletData, leafletBoundsHelpers, openModal) {
+  angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $resource, $location, mapConfig, sauAPI, leafletData, leafletBoundsHelpers) {
 
     $scope.region = {name: 'mariculture'};
 
@@ -28,9 +28,7 @@
     });
 
     $scope.selected = function(feature) {
-      console.log(feature);
-      var region_id = feature.c_number;
-      openModal.open(region_id, $scope);
+      $location.path('/mariculture/' + feature.c_number);
     };
 
     // these functions are required to exist by
