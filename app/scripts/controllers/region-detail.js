@@ -5,7 +5,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
 	function init() {
       if ($scope.region.name === 'mariculture') {
-        console.debug('put in mariculture chart here');
+        $scope.chartChange('mariculture-chart');
       } else {
         $scope.chartChange('catch-chart');
       }

@@ -144,16 +144,20 @@ angular.module('sauWebApp')
     $scope.geojson = {};
 
     $scope.getFeatures = function() {
+      if($scope.region.name === 'mariculture') {
 
-      $scope.features = sauAPI.Regions.get({region:$scope.region.name});
-      $scope.features.$promise.then(function(data) {
-          angular.extend($scope, {
-            geojson: {
-              data: data.data,
-              style: mapConfig.defaultStyle,
-            }
+      } else {
+
+        $scope.features = sauAPI.Regions.get({region:$scope.region.name});
+        $scope.features.$promise.then(function(data) {
+            angular.extend($scope, {
+              geojson: {
+                data: data.data,
+                style: mapConfig.defaultStyle,
+              }
+            });
           });
-        });
+      }
     };
 
     $scope.getFeatures();
