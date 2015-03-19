@@ -35,6 +35,7 @@ module.exports = function (grunt) {
   }, function done(error, result) {
     grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.beta.constants.SAU_CONFIG.buildNumber = result.stdout;
   });
 
   // Define the configuration for all the tasks
@@ -58,6 +59,14 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/api/v1/',
+            buildNumber: buildNumber
+          }
+        }
+      },
+      beta: {
+        constants: {
+          SAU_CONFIG: {
+            apiURL: 'http://sau-web-lb-p-922647076.us-west-2.elb.amazonaws.com/api/v1/',
             buildNumber: buildNumber
           }
         }
@@ -483,6 +492,25 @@ module.exports = function (grunt) {
     'useminPrepare',
     'compass:dist',
     'ngconstant:production',
+    'imagemin',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    // 'cdnify',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    // 'htmlmin' //breaks index.html.  https://github.com/ericclemmons/grunt-angular-templates/issues/82
+  ]);
+
+  grunt.registerTask('build:beta', [
+    'clean:dist',
+    'wiredep',
+    'useminPrepare',
+    'compass:dist',
+    'ngconstant:beta',
     'imagemin',
     'autoprefixer',
     'concat',
