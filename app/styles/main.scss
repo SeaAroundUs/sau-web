@@ -162,15 +162,17 @@ label {
     position: absolute;
     z-index: 1;
     left: 50%;
-    div {
+    div#search-inner {
       width: 500px;
       background-color: $darkBlue;
       padding: 10px 10px 15px;
       position: relative;
       left: -50%;
-      input {
+      div.ui-select-container {
         width: 100%;
         padding: 5px 15px;
+        background-color:none;
+        color: black;
       }
     }
   }
@@ -235,13 +237,14 @@ label {
     background-color: #eee;
     font-size: 14pt;
     #control-box {
-      padding: 5px 50px 10px 30px;
+      padding: 5px 50px 10px 50px;
       height: 50px;
-      .typeahead {
+      .search {
         padding: 3px;
         font-size: 16pt;
+        width: 500px;
       }
-      span {
+      .number-estuaries {
         margin-top: 10px;
       }
     }

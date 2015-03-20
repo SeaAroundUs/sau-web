@@ -12,7 +12,9 @@ angular
     'ui.bootstrap',
     'nvd3',
     'angular-data.DSCacheFactory',
-    'ui.grid'
+    'ui.grid',
+    'ui.select',
+    'ngSanitize'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs

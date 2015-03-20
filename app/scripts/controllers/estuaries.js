@@ -12,8 +12,6 @@
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
-    $scope.selected = {};
-
     var estuariesData = sauAPI.EstuariesData.get({region: region, region_id: id}, function() {
       angular.extend($scope, {
         geojson: {
@@ -32,9 +30,13 @@
         }
       });
 
-      $scope.selected = estuariesData.data.features[0];
+      $scope.selectedFeature = estuariesData.data.features[0];
 
     });
+
+    $scope.onSelect = function(f) {
+      $scope.selectedFeature = f;
+    };
 
     var regions = sauAPI.Regions.get({region: region}, function() {
       $scope.regions = regions.data;
@@ -70,15 +72,15 @@
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(geojsonClickEvent, feature) {
-      $scope.selected = feature;
+      $scope.selectedFeature = feature;
     });
 
-    $scope.$watch('selected', function() {
-      if (!$scope.geojson || !$scope.selected.properties) {
+    $scope.$watch('selectedFeature.properties.title', function() {
+      if (!$scope.geojson || !$scope.selectedFeature.properties) {
         return;
       }
       for (var i=0; i < $scope.geojson.data.features.length; i++){
-        if ($scope.selected.properties.title === $scope.geojson.data.features[i].properties.title) {
+        if ($scope.selectedFeature.properties.title === $scope.geojson.data.features[i].properties.title) {
           $scope.geojson.data.features[i].fillColor = '#f00';
         } else {
           $scope.geojson.data.features[i].fillColor = '#0f0';
