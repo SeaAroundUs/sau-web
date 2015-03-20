@@ -6,6 +6,7 @@ angular.module('sauWebApp')
   .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauAPI, region) {
 
     $scope.years = [];
+    $scope.regionType = region;
 
     var id = $scope.region.name_id || $routeParams.id;
 
