@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope, $rootScope, $location) {
+    .controller('RootCtrl', function ($scope) {
 
       var templateDir = 'views/';
       $scope.templates = [
