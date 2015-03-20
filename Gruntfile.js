@@ -31,7 +31,7 @@ module.exports = function (grunt) {
   var buildNumber = '';
   grunt.util.spawn({
     cmd: 'git',
-    args: ['rev-parse', 'HEAD'],
+    args: ['log', '-n', '1', '--no-color'],
   }, function done(error, result) {
     grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
