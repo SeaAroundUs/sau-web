@@ -1,11 +1,34 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, $location, $window, sauAPI, region_id, insetMapLegendData, externalURLs) {
+  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs) {
+
+  var region_id = $routeParams.id;
 
 	function init() {
       $scope.chartChange('catch-chart');
     }
+
+    $scope.getFeatures = function() {
+
+      $scope.features = sauAPI.Regions.get({region:$scope.region.name});
+      $scope.features.$promise.then(function(data) {
+          angular.extend($scope, {
+            geojson: {
+              data: data.data,
+              style: mapConfig.defaultStyle,
+            }
+          });
+        });
+    };
+
+    $scope.getFeatures();
+
+    $scope.center = {
+      lat: 0,
+      lng: 0,
+      zoom: 3
+    };
 
 	var chartName;
 
@@ -146,15 +169,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
       } else {
-        $location.path('/' + $scope.region.name + '/' + $scope.formModel.region_id, false);
+        var newPath = '/' + $scope.region.name + '/' + $scope.formModel.region_id;
+        if (newPath !== $location.path()) {
+          $location.path(newPath, false);
+        }
       }
     };
 
     $scope.hoverRegion = $scope.feature;
-
-    $scope.close = function () {
-      $rootScope.modalInstance.close();
-    };
 
     $scope.clickFormLink = function(dim, measure) {
       if (chartName !== 'catch-chart') { $scope.chartChange('catch-chart'); }

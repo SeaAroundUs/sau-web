@@ -8,7 +8,6 @@ angular.module('sauWebApp')
                                     $rootScope,
                                     $http,
                                     $location,
-                                    $modal,
                                     $route,
                                     $routeParams,
                                     $timeout,
@@ -21,44 +20,8 @@ angular.module('sauWebApp')
 
     $scope.region.name = region;
 
-    $scope.openModal = function(region_id) {
-      if ($rootScope.modalInstance) {
-        // clean house
-        $rootScope.modalInstance.close();
-      }
-
-      $rootScope.modalInstance = $modal.open({
-                templateUrl: 'views/region-detail/main.html',
-                controller: 'RegionDetailCtrl',
-                scope: $scope,
-                size: 'lg',
-                background: false,
-                resolve: {
-                  region_id: function () {
-                    return region_id;
-                  }
-                }
-      });
-
-      var closedModal = function (result) {
-        if (result && result.location) {
-          $location.path(result.location);
-          $route.reload();
-        } else {
-          // closed another way
-          // modal needs to disable geojson clicks, reenable it=
-          $scope.handleGeojsonClick();
-          $scope.handleGeojsonMouseout();
-          $scope.handleGeojsonMouseover();
-          $location.path('/' + region, false);
-        }
-      };
-
-      $rootScope.modalInstance.result.then(closedModal, closedModal);
-    };
-
     if ($routeParams.id || $location.path() === '/global') {
-      $scope.openModal($routeParams.id || 1);
+      $scope.regionSelect(($routeParams.id || 1));
     }
 
     leafletData.getMap('mainmap').then(function(map) {
@@ -66,6 +29,10 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('Oceans').addTo(map);
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
+
+    $scope.regionSelect = function(region_id) {
+      $location.path('/' + $scope.region.name + '/' + region_id);
+    };
 
     var geojsonClick = function(latlng) {
       /* handle clicks on overlapping layers */
@@ -79,7 +46,7 @@ angular.module('sauWebApp')
         $scope.map.openPopup(content, latlng);
       } else {
         var feature = featureLayers[0].feature;
-        $scope.openModal(feature.properties.region_id);
+        $scope.regionSelect(feature.properties.region_id);
       }
     };
 
@@ -129,14 +96,14 @@ angular.module('sauWebApp')
     });
 
     $scope.changeRegion = function(region) {
-      $location.path(region, false);
       $scope.region.name = region;
+      $location.path('/' + $scope.region.name, false);
       $scope.getFeatures();
     };
 
     $scope.changeRegionGlobal = function() {
       $scope.region.name = 'global';
-      $location.path($scope.region.name, true);
+      $location.path('/' + $scope.region.name, true);
     };
 
     $scope.isActive = function (viewLocation) {
