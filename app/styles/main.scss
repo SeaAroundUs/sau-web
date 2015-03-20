@@ -311,6 +311,7 @@ label {
 a:not([href]) {
   cursor: pointer;
 }
+
 .mariculture.regions.row {
   span {
     margin-right: 20px;
@@ -324,4 +325,8 @@ a:not([href]) {
   }
   height: 50px;
   padding-top: 12px;
+}
+
+.taxon .nvd3 .nv-legend g.nv-series:last-child {
+  cursor: default;
 }
