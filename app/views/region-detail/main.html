@@ -1,7 +1,7 @@
-<div class="container modal-body">
+<div class="container region-detail">
     <div class="row">
         <div class="col-sm-12">
-            <h1 class="modal-title pull-left">
+            <h1 class="region-title pull-left">
                 {{chartTitle}}
             </h1>
           <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="row">
-        <h1 class="modal-title">
+        <h1 class="region-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
                 : <span ng-bind="$root.hoverRegion.properties.long_title"></span>

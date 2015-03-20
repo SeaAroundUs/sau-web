@@ -18,7 +18,7 @@
                 | orderBy:'properties.title'
                 | limitTo:25"
             typeahead-editable="false"
-            typeahead-on-select="openModal($item.properties.region_id)"
+            typeahead-on-select="regionSelect($item.properties.region_id)"
             typeahead-min-length="0"
         >
     </div>

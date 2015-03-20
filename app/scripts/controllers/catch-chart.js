@@ -3,7 +3,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $filter, $location, sauAPI, spinnerState) {
 
     function init() {
       $scope.$watch('formModel', onFormModelChange, true);
@@ -43,8 +43,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
               legendClick: function(taxon) {
                 if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
-                  //Route user to "key information on taxon page" via the modal close event.
-                  $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
+                  $location.path('/taxa/' + taxon.entity_id);
+                  $scope.$apply();
                 }
               }
             }
@@ -69,7 +69,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.options.chart.color = $scope.color[9];
       }
     };
-   
+
 
     $scope.toggleTaxonNames = function() {
       //Swapping each datum's key between scientific name and common name.

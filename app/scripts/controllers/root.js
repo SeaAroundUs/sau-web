@@ -16,24 +16,7 @@
       ];
       $scope.template = $scope.templates[0];
 
-      if ($rootScope.modalInstance) {
-        $rootScope.modalInstance.close();
-      }
-
       $scope.region = {name: 'eez'};
-
-      $scope.$on('backButtonClick', function() {
-        if ($rootScope.modalInstance &&
-              (
-                // should be whitelisting modal-to-modal paths instead of this..
-                $location.path() === ('/' + $scope.region.name) ||
-                $location.path() === ('/topic/biodiversity'),
-                $location.path().slice(0,5) === ('/taxa')
-              )
-            ) {
-          $rootScope.modalInstance.close({location: $location.path()});
-        }
-      });
 
     });
 })();
