@@ -1,6 +1,6 @@
 {
     "key": "KEY HERE",
     "secret": "SECRET HERE",
-    "bucket": "sau-web"
+    "bucket": "sau-web",
     "qaBucket": "sau-web-qa"
 }

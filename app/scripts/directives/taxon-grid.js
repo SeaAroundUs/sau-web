@@ -34,6 +34,7 @@
                 condition: uiGridConstants.filter.CONTAINS,
                 placeholder: ''
               },
+              enableColumnMenu: false
             },
             {
               field: 'scientific_name',
@@ -41,6 +42,7 @@
                 condition: uiGridConstants.filter.CONTAINS,
                 placeholder: ''
               },
+              enableColumnMenu: false
             },
           ],
         };

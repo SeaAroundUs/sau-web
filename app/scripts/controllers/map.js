@@ -10,11 +10,13 @@ angular.module('sauWebApp')
                                     $location,
                                     $route,
                                     $routeParams,
+                                    $timeout,
                                     sauAPI,
                                     mapConfig,
                                     leafletData,
                                     leafletBoundsHelpers,
-                                    region) {
+                                    region,
+                                    spinnerState) {
 
     $scope.region.name = region;
 
@@ -111,7 +113,7 @@ angular.module('sauWebApp')
     $scope.geojson = {};
 
     $scope.getFeatures = function() {
-
+      spinnerState.loading = true;
       $scope.features = sauAPI.Regions.get({region:$scope.region.name});
       $scope.features.$promise.then(function(data) {
           angular.extend($scope, {
@@ -120,6 +122,7 @@ angular.module('sauWebApp')
               style: mapConfig.defaultStyle,
             }
           });
+        $timeout(function() { spinnerState.loading = false; });
         });
     };
 

@@ -37,8 +37,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
       ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
       ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
+      ecosystemsHighSeas: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-highseas.html'},
       governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
       indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
+      indicatorsHighSeas: {title: 'Indicators', template: 'views/region-detail/indicators-highseas.html'},
       otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
     };
@@ -95,9 +97,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     } else if ($scope.region.name === 'highseas') {
       $scope.tabs = [
         tabs.catchInfo,
-        tabs.ecosystems,
-        tabs.governance,
-        tabs.indicators
+        tabs.ecosystemsHighSeas,
+        tabs.indicatorsHighSeas
         // tabs.feedback
       ];
     } else {

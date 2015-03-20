@@ -11,7 +11,7 @@
           }
         });
       },
-      restrict: 'A'
+      restrict: 'EA'
     };
   });
 })(angular);
