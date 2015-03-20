@@ -13,3 +13,28 @@
         overflow: hidden;
     }
 }
+
+#map-spinner {
+  position: relative;
+  display: block;
+
+  i.loading {
+    display: none;
+  }
+
+  &.loading {
+    background-color: #fff;
+
+    > div {
+      opacity: 0.5;
+    }
+
+    i.loading {
+      display: inline-block;
+      position: absolute;
+      z-index: 10;
+      left: 45%;
+      top: 20%;
+    }
+  }
+}
