@@ -73,11 +73,9 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
     }
 
     function updateData() {
-      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
-      data_options.dimension = $scope.formModel.dimension.value;
-      data_options.measure = $scope.formModel.measure.value;
+      var data_options = {region_id: 4};
       data_options.limit = $scope.formModel.limit.value;
-      var data = sauAPI.Data.get(data_options, function() {
+      var data = sauAPI.MaricultureData.get(data_options, function() {
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
           spinnerState.loading = false;

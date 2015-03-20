@@ -172,24 +172,21 @@ angular.module('sauWebApp')
 
     if ($scope.region.name === 'mariculture') {
       $scope.features = sauAPI.Mariculture.get({region_id:$scope.formModel.region_id});
-      $scope.features.$promise.then(function(data) {
-         angular.extend($scope, {
-           geojson: {
-             data: data.data[0].geojson,
-             style: mapConfig.defaultStyle,
-           }
-         });
-       });
-
     }
 
     $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA so IFA gets painted on top
-      if (! $scope.features.data) {
-        return;
-      }
+
       leafletData.getMap('minimap').then(function(map) {
-        L.geoJson($scope.features.data.features, {
+        var features = [$scope.features.data.features];
+
+        if(! $scope.features.data.features) {
+          features = [];
+          for (var i=0; i<$scope.features.data.length; i++) {
+            features.push($scope.features.data[i].geojson);
+          }
+        }
+        L.geoJson(features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {
             layer.on({
@@ -202,6 +199,8 @@ angular.module('sauWebApp')
           }
         }).addTo(map);
         $scope.styleSelectedFeature();
+
+
       });
     });
 });
