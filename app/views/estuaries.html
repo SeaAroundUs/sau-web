@@ -27,7 +27,10 @@
                         <td>Estuary: </td>
                         <td class="content" ng-bind="selectedFeature.properties.title"></td>
                         <td>Period: </td>
-                        <td class="content">
+                        <td ng-show="! (selectedFeature.properties.year_start && selectedFeature.properties.year_end)" class="content">
+                            unknown
+                        </td>
+                        <td ng-show="selectedFeature.properties.year_start && selectedFeature.properties.year_end" class="content">
                             <span ng-bind="selectedFeature.properties.year_start"></span>
                             -
                             <span ng-bind="selectedFeature.properties.year_end"></span>

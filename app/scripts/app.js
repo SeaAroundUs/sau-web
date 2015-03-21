@@ -45,8 +45,8 @@ angular
         resolve: {region: function() {return 'eez';}}
       })
       .when('/eez/:id', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'eez';}}
       })
       .when('/eez/:id/marine-trophic-index', {
@@ -75,8 +75,8 @@ angular
         resolve: {region: function() {return 'lme';}}
       })
       .when('/lme/:id', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'lme';}}
       })
       .when('/lme/:id/marine-trophic-index', {
@@ -100,8 +100,8 @@ angular
         resolve: {region: function() {return 'rfmo';}}
       })
       .when('/rfmo/:id', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'rfmo';}}
       })
       .when('/rfmo/:id/procedures-and-outcomes', {
@@ -114,8 +114,8 @@ angular
         resolve: {region: function() {return 'highseas';}}
       })
       .when('/highseas/:id', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'highseas';}}
       })
       .when('/highseas/:id/marine-trophic-index', {
@@ -129,8 +129,8 @@ angular
         resolve: {region: function() {return 'highseas';}}
       })
       .when('/global', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'global';}}
       })
       .when('/taxa/:taxon', {
@@ -149,20 +149,7 @@ angular
         redirectTo: '/'
       });
   })
-  .run(function($rootScope, $route, $location){
 
-    // detect back button click, and $broadcast a 'backButtonClick' event
-    $rootScope.$on('$locationChangeSuccess', function() {
-      $rootScope.actualLocation = $location.path();
-    });
-
-    $rootScope.$watch(function () {return $location.path();}, function (newLocation) {
-      if($rootScope.actualLocation === newLocation) {
-        console.debug('detected back button click');
-        $rootScope.$broadcast('backButtonClick');
-      }
-    });
-  })
   // add option to not refresh view on location change
   // courtesy http://joelsaupe.com/programming/angularjs-change-path-without-reloading/
   .run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {

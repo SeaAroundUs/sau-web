@@ -1,9 +1,9 @@
 @import 'global';
 
-.modal-content {
+.region-detail {
     padding: 20px;
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: black;
     div.row {
         margin-bottom: 10px;
     }
@@ -20,18 +20,20 @@
             padding: 2px;
         }
     }
+    .region-title {
+        min-height: 40px;
+        text-transform: uppercase;
+    }
     .x-button {
         margin-left: 20px;
         background-color: black;
-        border: 3px solid white;
-        border-radius: 20px;
+        border: 2px solid white;
+        border-radius: 0;
     }
     .tabset.content {
         padding-left: 10px;
         padding-right: 0px;
-        background-color: black;
         ul.nav-tabs {
-            background-color: black;
 
             li {
                 background-color:white;
@@ -60,14 +62,7 @@
     }
 
 }
-.modal-lg {
-    width: 100%;
-    min-width: 1200px;
-    margin-top:0px;
-    .modal-title {
-        min-height: 40px;
-    }
-}
+
 .chart-container {
     height: 350px;
     position: relative;
@@ -126,27 +121,6 @@
 }
 .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 1.0;
-}
-
-.modal.fade {
-  opacity: 1;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -ms-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-
-.modal.fade .modal-dialog,
-.modal.in .modal-dialog
-{
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-.modal-dialog {
-  width: 100%;
 }
 
 .region-detail-tabs {

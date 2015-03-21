@@ -25,11 +25,6 @@ angular.module('sauWebApp')
       });
     };
 
-    // remove parent scope listener and add our own
-    $scope.geojsonClick();
-    $scope.geojsonMouseout();
-    $scope.geojsonMouseover();
-
     var styleLayer = function(feature, layer, style) {
       if (!layer) {
         return;
@@ -44,20 +39,23 @@ angular.module('sauWebApp')
 
     var geojsonClick = function(feature, latlng) {
       /* handle clicks on overlapping layers */
-      var layers = leafletPip.pointInLayer(latlng, $scope.map);
-      var featureLayers = layers.filter(function(l) {return l.feature;});
+      leafletData.getMap('minimap').then(function(map) {
 
-      if (featureLayers.length > 1) {
-        var content = 'Area disputed by (';
-        content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
-        content += ')';
-        leafletData.getMap('minimap').then(function(map) {
-          map.openPopup(content, latlng);
-        });
-      } else {
-        $scope.formModel.region_id = feature.properties.region_id;
-        $scope.styleSelectedFeature();
-      }
+        var layers = leafletPip.pointInLayer(latlng, map);
+        var featureLayers = layers.filter(function(l) {return l.feature;});
+
+        if (featureLayers.length > 1) {
+          var content = 'Area disputed by (';
+          content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
+          content += ')';
+          leafletData.getMap('minimap').then(function(map) {
+            map.openPopup(content, latlng);
+          });
+        } else {
+          $scope.formModel.region_id = feature.properties.region_id;
+          $scope.styleSelectedFeature();
+        }
+      });
 
     };
 
