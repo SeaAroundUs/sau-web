@@ -16,7 +16,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/fao.png', label: 'FAO area' },
       { pattern: 'images/legend/fao_not_included.png', label: 'Not included'},
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
-      { pattern: 'images/legend/ifa.png', label: 'IFA boundary' }
+      { pattern: 'images/legend/ifa.png', label: 'IFA area' }
     ];
     
   	var lme = [
@@ -26,7 +26,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/fao.png', label: 'FAO area' },
       { pattern: 'images/legend/fao_not_included.png', label: 'Not included'},
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
-      { pattern: 'images/legend/ifa.png', label: 'IFA boundary' }
+      { pattern: 'images/legend/ifa.png', label: 'IFA area' }
     ];
 
     var highseas = [
