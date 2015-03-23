@@ -22,6 +22,9 @@
     <div class="col-sm-5">
         <h3>Reconstruction Reference</h3>
         <!-- for Phase 2 <p><a href="">Link</a></p> -->
-        <p><a href=""><i class="fa fa-file-pdf-o red"></i> Download PDF</a></p>
+        <p ng-repeat="doc in feature.data.reconstruction_documents">
+          <a target="_blank" ng-href="{{apiOrigin + doc.path}}"><i class="fa fa-file-pdf-o red"></i> {{doc.title}}</a>
+        </p>
+        <p ng-hide="feature.data.reconstruction_documents"><i>Not available</i></p>
     </div>
 </div>

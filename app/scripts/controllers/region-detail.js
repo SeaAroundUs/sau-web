@@ -63,6 +63,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
+    $scope.apiOrigin = (function() {
+      var pathArray = sauAPI.apiURL.split('/');
+      return pathArray[0] + '//' + pathArray[2];
+    })();
     $scope.feature = null;
     $scope.chartTitle = null;
 
