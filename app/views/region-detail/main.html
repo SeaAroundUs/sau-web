@@ -4,7 +4,7 @@
             <h1 id="region-title" class="region-title pull-left">
                 {{chartTitle}}
             </h1>
-          <a class="btn btn-primary pull-right" ng-href="{{downloadUrl}}">Download Data</a>
+          <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
         </div>
     </div>
 
@@ -69,5 +69,5 @@
         </div>
 
     </div>
-
 </div>
+<div ng-include="views/download-data-modal.html"></div>

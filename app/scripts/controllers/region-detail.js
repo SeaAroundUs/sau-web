@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs) {
+  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal) {
 
   var region_id = $routeParams.id;
 
@@ -216,6 +216,18 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
             $scope.formModel.region_id;
         }
     }, true);
+
+    $scope.openDownloadDataModal = function() {
+      $modal.open({
+        templateUrl: 'views/download-data-modal.html',
+        controller: 'DownloadDataModalCtrl',
+        resolve: {
+          dataUrl: function() {
+            return $scope.downloadUrl;
+          }
+        }
+      });
+    };
 
     init();
 });
