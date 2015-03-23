@@ -108,10 +108,10 @@ angular.module('sauWebApp')
     $scope.faoLayers = [];
 
     var drawFAO = function(map) {
-      var stripes = new L.StripePattern(mapConfig.hatchStyle);
-      stripes.addTo(map);
+      // var stripes = new L.StripePattern(mapConfig.hatchStyle);
+      // stripes.addTo(map);
       var faoStyle = mapConfig.faoStyle;
-      faoStyle.fillPattern = stripes;
+      // faoStyle.fillPattern = stripes;
 
       $scope.removeFAO();
 

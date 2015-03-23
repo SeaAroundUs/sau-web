@@ -16,18 +16,15 @@ angular.module('sauWebApp')
       weight: 1.0
     },
     faoStyle: {
-      color: '#ff0819',
-      fillColor: '#d00',
-      fillOpacity: 1.0,
-      weight: 1.0
+      color: '#00f',
+      fillColor: '#000',
+      fillOpacity: 0.0,
+      opacity: 1.0,
+      weight: 0.8
     },
     selectedFaoStyle: {
-      color: '#000',
-      stroke: true,
-      weight: 2.0,
-      fillPattern: null,
-      fillColor: '#00f',
-      fillOpacity: 0.7,
+      weight: 3.5,
+      fillOpacity: 0.0,
       opacity: 1.0
     },
     hatchStyle: {
