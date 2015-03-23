@@ -133,12 +133,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       {label: 'Fishing Country', value: 'country'},
       // {label: 'Gear', value: 'gear'},
       {label: 'Fishing Sector', value: 'sector'},
-      {label: 'Catch Type', value: 'catchtype'},
+      {label: 'Catch Type', value: 'catchtype', overrideLabel: 'Type'},
       {label: 'Reporting Status', value: 'reporting-status'}
     ];
 
     $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Landings by'},
+      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
       'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$) by'}
     };
 

@@ -129,7 +129,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     function updateChartTitle() {
       $scope.feature.$promise.then(function() {
-        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the ';
+        var dimensionLabel = $scope.formModel.dimension.overrideLabel === undefined ?
+            $scope.formModel.dimension.label :
+            $scope.formModel.dimension.overrideLabel;
+        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
         if ($scope.region.name === 'global') {
           chartTitle += 'global ocean';
         } else {
