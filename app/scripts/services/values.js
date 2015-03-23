@@ -20,7 +20,7 @@ angular.module('sauWebApp')
       fillColor: '#000',
       fillOpacity: 0.0,
       opacity: 1.0,
-      weight: 0.8
+      weight: 1.0
     },
     selectedFaoStyle: {
       weight: 3.5,

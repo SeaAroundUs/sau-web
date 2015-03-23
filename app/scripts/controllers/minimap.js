@@ -108,10 +108,7 @@ angular.module('sauWebApp')
     $scope.faoLayers = [];
 
     var drawFAO = function(map) {
-      // var stripes = new L.StripePattern(mapConfig.hatchStyle);
-      // stripes.addTo(map);
       var faoStyle = mapConfig.faoStyle;
-      // faoStyle.fillPattern = stripes;
 
       $scope.removeFAO();
 
@@ -137,7 +134,6 @@ angular.module('sauWebApp')
     };
 
     $scope.removeFAO = function() {
-      console.debug('removing FAO');
       leafletData.getMap('minimap').then(function(map) {
         for(var i=0; i<$scope.faoLayers.length; i++) {
           map.removeLayer($scope.faoLayers[i]);
@@ -148,10 +144,10 @@ angular.module('sauWebApp')
     $scope.$watch('mapLayers.selectedFAO', function(){
       // set selectedFAO to 0 to remove.  This will likely change when additional FAO data
       // comes in from the API
-      if ($scope.mapLayers.selectedFAO < 1) {
-        $scope.removeFAO();
-        return;
-      }
+      // if ($scope.mapLayers.selectedFAO < 1) {
+      //   $scope.removeFAO();
+      //   return;
+      // }
       leafletData.getMap('minimap').then(function(map) {
         $scope.features.$promise.then(function() {
           drawFAO(map);
