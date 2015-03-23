@@ -97,6 +97,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
           spinnerState.loading = false;
+          if ($scope.useScientificNames) {
+            $scope.toggleTaxonNames();
+            $scope.useScientificNames = true;
+          }
       });
       spinnerState.loading = true;
     }
