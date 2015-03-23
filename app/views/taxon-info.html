@@ -13,23 +13,24 @@
 			<td class="table-key">Functional group:</td>
 			<td class="table-value">{{taxon.functional_group}}</td>
 		</tr>
-		<tr ng-show="taxon.maximumLength">
+		<tr ng-show="taxon.sl_max_cm">
 			<td class="table-key">Maximum length:</td>
-			<td class="table-value">{{taxon.sl_max_cm}}</td>
+			<td class="table-value">{{taxon.sl_max_cm}} cm</td>
 		</tr>
-		<tr ng-show="taxon.trophic_level">
+		<tr ng-show="taxon.tl">
 			<td class="table-key">Trophic level:</td>
-			<td class="table-value">{{taxon.tl}}</td>
+			<td class="table-value">{{taxon.tl | number}}</td>
 		</tr>
-		<tr ng-show="taxon.lat_north">
+		<tr ng-show="taxon.lat_north && taxon.lat_south">
 			<td class="table-key">Latitude range:</td>
 			<td class="table-value">Northern limit: {{taxon.lat_north}}&deg;; Southern limit: {{taxon.lat_south}}&deg;</td>
 		</tr>
-		<tr ng-show="taxon.max_depth">
+		<tr ng-show="taxon.min_depth && taxon.max_depth">
 			<td class="table-key">Bottom depth range:</td>
 			<td class="table-value">Min. depth: {{taxon.min_depth}}m; Max depth: {{taxon.max_depth}}m</td>
 		</tr>
-		<tr ng-show="taxon.loo">
+		<!-- <tr ng-show="taxon.loo && taxon.woo && taxon.k"> -->
+		<tr>
 			<td class="table-key">Growth parameters:</td>
 			<td class="table-value">
 				L<sub>∞</sub> = {{taxon.loo}};
@@ -48,9 +49,11 @@
 				</ul>
 			</td>
 		</tr>
-		<tr ng-show="taxon.distributionMap">
+		<!-- <tr ng-show="taxon.distributionMap"> -->
+		<tr>
 			<td class="table-key">Distribution map:</td>
-			<td class="table-value">{{taxon.distributionMap}}</td>
+			<!--  <td class="table-value">{{taxon.distributionMap}}</td> -->
+			<td class="table-value"><span class="disabled">GIS map</span></td>
 		</tr>
 		<tr ng-show="taxon.habitatAssociationIndexes">
 			<td class="table-key">Habitat association indexes:</td>
