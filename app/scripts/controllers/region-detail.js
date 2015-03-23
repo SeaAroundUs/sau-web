@@ -45,6 +45,15 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
     };
 
+    $scope.metricLinks = {
+      'EEZ area': 'http://www.seaaroundus.org/doc/saup_manual.htm#15',
+      'Shelf Area': 'http://www.seaaroundus.org/doc/saup_manual.htm#15',
+      'Inshore Fishing Area (IFA)': 'http://www.seaaroundus.org/doc/ifa.htm',
+      'Coral Reefs': 'http://www.seaaroundus.org/doc/saup_manual.htm#2',
+      'Seamounts': 'http://www.seaaroundus.org/doc/saup_manual.htm#22',
+      'Primary production': 'http://www.seaaroundus.org/doc/saup_manual.htm#3'
+    };
+
     $scope.mapLayers = {
       selectedFAO: 0,
     };
