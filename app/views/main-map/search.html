@@ -5,11 +5,11 @@
     <!-- <a ng-class="{ active: region.name=='rfmo'}" class="btn btn-default disabled" ng-click="" role="button">RFMO</a> -->
     <a ng-class="{ active: region=='highseas'}" class="btn btn-default disabled" ng-click="changeRegion('highseas')" role="button">High Seas</a>
     <a ng-class="{ active: region.name=='global'}" class="btn btn-default disabled" ng-click="changeRegionGlobal()" role="button">Global</a>
-    <!-- <span ng-bind="$root.hoverRegion.properties.title"></span> -->
 </div>
+
 <div id="search">
     <div id="search-inner">
-        <ui-select search-enabled="true" on-select="openModal($item.properties.region_id)" ng-model="customSelected" theme="bootstrap">
+        <ui-select search-enabled="true" on-select="regionSelect($item.properties.region_id)" ng-model="customSelected" theme="bootstrap">
           <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
           <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
             <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>

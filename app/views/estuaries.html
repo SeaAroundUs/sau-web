@@ -3,7 +3,7 @@
     <div id="map-container">
         <div id="control-box">
 
-            <ui-select class="search pull-left" ng-model="selectedFeature" on-select="onSelect($item)" theme="bootstrap">
+            <ui-select class="search pull-left" ng-model="model.selectedFeature" on-select="onSelect($item)" theme="bootstrap">
               <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
               <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
                 <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
@@ -25,24 +25,24 @@
                 <tbody>
                     <tr>
                         <td>Estuary: </td>
-                        <td class="content" ng-bind="selectedFeature.properties.title"></td>
+                        <td class="content" ng-bind="model.selectedFeature.properties.title"></td>
                         <td>Period: </td>
-                        <td ng-show="! (selectedFeature.properties.year_start && selectedFeature.properties.year_end)" class="content">
+                        <td ng-show="! (model.selectedFeature.properties.year_start && model.selectedFeature.properties.year_end)" class="content">
                             unknown
                         </td>
-                        <td ng-show="selectedFeature.properties.year_start && selectedFeature.properties.year_end" class="content">
-                            <span ng-bind="selectedFeature.properties.year_start"></span>
+                        <td ng-show="model.selectedFeature.properties.year_start && model.selectedFeature.properties.year_end" class="content">
+                            <span ng-bind="model.selectedFeature.properties.year_start"></span>
                             -
-                            <span ng-bind="selectedFeature.properties.year_end"></span>
+                            <span ng-bind="model.selectedFeature.properties.year_end"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>River system(s): </td>
-                        <td ng-bind="selectedFeature.properties.river_system"></td>
+                        <td ng-bind="model.selectedFeature.properties.river_system"></td>
                     </tr>
                     <tr>
                         <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>day<sup>-1</sup>): </td>
-                        <td ng-bind="selectedFeature.properties.discharge"></td>
+                        <td ng-bind="model.selectedFeature.properties.discharge"></td>
                     </tr>
                 </tbody>
             </table>
