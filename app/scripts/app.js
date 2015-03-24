@@ -13,6 +13,8 @@ angular
     'nvd3',
     'angular-data.DSCacheFactory',
     'ui.grid',
+    'ui.grid.cellNav',
+    'ui.grid.selection',
     'ui.select',
     'ngSanitize'
   ])
@@ -164,4 +166,4 @@ angular
         }
         return original.apply($location, [path]);
     };
-}]);
+  }]);

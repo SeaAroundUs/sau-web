@@ -13,6 +13,10 @@
         };
 
         $scope.selectRow = function(row) {
+          angular.forEach(row.grid.rows, function(r) {
+            r.isSelected = false;
+          });
+          row.isSelected = true;
           var taxon = sauAPI.Taxon.get({taxon_key: row.entity.taxon_key}, function() {
             $scope.taxon = taxon.data;
           });
@@ -25,6 +29,10 @@
         $scope.gridOptions = {
           enableFiltering: true,
           rowTemplate: rowTemplate(),
+          multiSelect: false,
+          modifierKeysToMultiSelect: false,
+          noUnselect: true,
+          enableRowSelection: true,
           // want these, but they're not showing
           enableVerticalScrollbars: uiGridConstants.scrollbars.ALWAYS,
           columnDefs: [
@@ -42,18 +50,29 @@
                 condition: uiGridConstants.filter.CONTAINS,
                 placeholder: ''
               },
-              enableColumnMenu: false
+              enableColumnMenu: false,
+              allowCellFocus: false
             },
           ],
+        };
+
+        $scope.gridOptions.onRegisterApi = function(gridApi){
+           $scope.gridApi = gridApi;
+           gridApi.cellNav.on.navigate($scope,function(rowCol){
+             $scope.selectRow(rowCol.row);
+           });
         };
 
         $scope.taxonChange = function() {
           $q.all([$scope.taxon_levels.$promise, $scope.taxon_groups.$promise])
             .then(function() {
-              $scope.gridOptions.data = $filter('filter')($scope.allData, {
+
+              var filteredData = $filter('filter')($scope.allData, {
                 taxon_level: $scope.model.taxon_level.taxon_level_id,
                 taxon_group: $scope.model.taxon_group.taxon_group_id
               });
+              $scope.gridOptions.data = $filter('orderBy')(filteredData, 'common_name');
+
             });
         };
 

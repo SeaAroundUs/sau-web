@@ -5,4 +5,4 @@
     <select ng-model="model.taxon_group" ng-change="taxonChange()" ng-options="g.name for g in taxon_groups.data"></select>
 </div>
 
-<div ui-grid='gridOptions' class='eo-grid'></div>
+<div ui-grid='gridOptions' ui-grid-cellNav class='eo-grid'></div>

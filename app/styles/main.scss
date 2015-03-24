@@ -214,17 +214,13 @@ label {
   height: 250px;
   .ui-grid-cell {
     cursor: pointer;
-    background-color: transparent;
+    background-color: transparent !important;
   }
-  .ui-grid-canvas .ui-grid-row:hover {
-    // row
-    background-color: #fa4 !important;
-    .ui-grid-cell {
-      background-color: transparent !important;
-    }
+  .ui-grid-cell-focus {
+    background-color: transparent !important;
   }
-  .ui-grid-header-cell {
-    background-color: #eeeeee;
+  .ui-grid-row-selected .ui-grid-cell {
+    background-color: $orange !important;
   }
 }
 .content-container {
