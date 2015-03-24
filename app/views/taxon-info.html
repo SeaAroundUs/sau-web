@@ -32,10 +32,13 @@
 		<!-- <tr ng-show="taxon.loo && taxon.woo && taxon.k"> -->
 		<tr>
 			<td class="table-key">Growth parameters:</td>
-			<td class="table-value">
-				L<sub>∞</sub> = {{taxon.loo}};
-				W<sub>∞</sub> = {{taxon.woo}};
-				K = {{taxon.k}};
+			<td ng-hide="taxon.loo && taxon.woo && taxon.k" class="table-value">
+        L<sub>∞</sub> = ; W<sub>∞</sub> = ; K = ;
+      </td>
+			<td ng-show="taxon.loo && taxon.woo && taxon.k" class="table-value">
+				L<sub>∞</sub> = {{taxon.loo | number}} cm;
+				W<sub>∞</sub> = {{taxon.woo | number}} g;
+				K = {{taxon.k | number}} year<sup>-1</sup>;
 			</td>
 		</tr>
 		<tr ng-show="taxon.scientific_name">
