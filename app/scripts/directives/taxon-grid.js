@@ -35,6 +35,7 @@
           enableRowSelection: true,
           // want these, but they're not showing
           enableVerticalScrollbars: uiGridConstants.scrollbars.ALWAYS,
+          enableSorting: false,
           columnDefs: [
             {
               field: 'common_name',
