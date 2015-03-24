@@ -11,7 +11,7 @@
 .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 #footer {
-  background-color: #0071cf;
+  background-color: $headerBackgroundColor;
   width: 100%;
   height: $footerHeight;
   padding: 0 40px;
