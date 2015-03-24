@@ -43,7 +43,7 @@
 
             <ul class="nav nav-pills top-header">
               <li role="presentation" ng-repeat="t in templates">
-                <a ng-bind="t.name" ng-class="t.class"></a>
+                <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
               </li>
             </ul>
 

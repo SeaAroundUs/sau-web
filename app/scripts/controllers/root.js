@@ -5,18 +5,19 @@
   angular.module('sauWebApp')
     .controller('RootCtrl', function ($scope) {
 
-      var templateDir = 'views/';
       $scope.templates = [
-        {'name': 'Analyses & Visualization', 'url': templateDir+'data.html', 'class': 'selected'},
-        {'name': 'Publications', 'url': templateDir+'publications.html'},
-        {'name': 'News & About', 'url': templateDir+'news.html'},
-        {'name': 'Collaborations', 'url': templateDir+'collaborations.html'},
-        // {'name': 'People', 'url': templateDir+'people.html'},
-        {'name': 'Contact Us', 'url': templateDir+'about.html'},
+        {'name': 'Analyses & Visualization', 'url': '/data/#/', 'class': 'selected'},
+        {'name': 'Publications', 'url': '', 'class': 'disabled'},
+        {'name': 'News & About', 'url': '/about/'},
+        {'name': 'Collaborations', 'url': '/collaborations/'},
+        {'name': 'Contact Us', 'url': '', 'class': 'disabled'}
       ];
       $scope.template = $scope.templates[0];
 
       $scope.region = {name: 'eez'};
 
+      $scope.go = function(url) {
+        window.location = url;
+      };
     });
 })();
