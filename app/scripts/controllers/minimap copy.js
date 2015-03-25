@@ -118,9 +118,9 @@ angular.module('sauWebApp')
         $scope.faoLayers.push(layer);
       };
 
-      var fao = sauAPI.Regions.get({region: 'fao'}, function() {
+      $scope.faos.promise.then(function() {
 
-        $scope.faoLayer = L.geoJson(fao.data, {
+        $scope.faoLayer = L.geoJson($scope.faoData.data, {
           onEachFeature: function(feature, layer) {
             if(feature.properties.region_id === $scope.mapLayers.selectedFAO) {
               addFAOLayer(layer, mapConfig.selectedFaoStyle);
@@ -182,4 +182,3 @@ angular.module('sauWebApp')
       return false;
     }
 });
-  

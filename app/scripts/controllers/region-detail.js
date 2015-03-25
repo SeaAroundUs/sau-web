@@ -3,9 +3,9 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal) {
 
-  var region_id = $routeParams.id;
+    var region_id = $routeParams.id;
 
-	function init() {
+    function init() {
       $scope.chartChange('catch-chart');
     }
 
@@ -30,7 +30,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       zoom: 3
     };
 
-	var chartName;
+    var chartName;
 
     var tabs = {
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
@@ -59,7 +59,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.selectFAO = function(fao) {
-      $scope.mapLayers.selectedFAO = fao;
+      $scope.mapLayers.selectedFAO = fao.id;
     };
 
     $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
@@ -169,12 +169,22 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       region_id: parseInt(region_id)
     };
 
+    $scope.faos = $q.defer();
+
     $scope.updateRegion = function() {
       $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      $scope.faoData = sauAPI.Regions.get({region: 'fao'});
 
       if ($scope.region.name === 'eez') {
-        $scope.feature.$promise.then(function() {
-          $scope.faos = $scope.feature.data.intersecting_fao_area_id;
+
+        $q.all([$scope.feature.$promise, $scope.faoData.$promise]).then(function() {
+          var faosInThisRegion = [];
+          for (var i = 0; i < $scope.feature.data.intersecting_fao_area_id.length; i++) {
+            var faoId = $scope.feature.data.intersecting_fao_area_id[i];
+            faosInThisRegion[i] = {id: faoId, name: getFAOName(faoId)};
+          }
+          $scope.faos.data = faosInThisRegion;
+          $scope.faos.resolve();
         });
       }
 
@@ -228,6 +238,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       });
     };
+
+    function getFAOName(faoId) {
+      if (!$scope.faoData.$resolved) {
+        console.log('Cannot get FAO name because FAO name data is not downloaded yet.');
+        return '';
+      }
+
+      var allFAOData = $scope.faoData.data.features;
+      for (var i = 0; i < allFAOData.length; i++) {
+        if (allFAOData[i].properties.region_id === faoId) {
+          return allFAOData[i].properties.long_title;
+        }
+      }
+    }
 
     init();
 });
