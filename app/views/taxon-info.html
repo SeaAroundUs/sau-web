@@ -23,7 +23,14 @@
 		</tr>
 		<tr ng-show="taxon.lat_north && taxon.lat_south">
 			<td class="table-key">Latitude range:</td>
-			<td class="table-value">Northern limit: {{taxon.lat_north}}&deg;; Southern limit: {{taxon.lat_south}}&deg;</td>
+			<td class="table-value">
+        Northern limit:
+          <span ng-show="taxon.lat_north < 0">{{taxon.lat_north * -1}}&deg;S;</span>
+          <span ng-hide="taxon.lat_north < 0">{{taxon.lat_north}}&deg;N;</span>
+        Southern limit:
+          <span ng-show="taxon.lat_south < 0">{{taxon.lat_south * -1}}&deg;S</span>
+          <span ng-hide="taxon.lat_south < 0">{{taxon.lat_south}}&deg;N</span>
+      </td>
 		</tr>
 		<tr ng-show="taxon.min_depth && taxon.max_depth">
 			<td class="table-key">Bottom depth range:</td>
