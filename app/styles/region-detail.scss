@@ -1,15 +1,25 @@
 @import 'global';
 
 .region-detail {
-    padding: 20px;
     background-color: white;
     color: black;
+    .btn {
+      border-radius: 0;
+      background-color: $lightBlue;
+    }
     div.row {
         margin-bottom: 10px;
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+    .title.row {
+        margin-top: 30px;
     }
     div.content {
         background-color: white;
         color: black;
+        border: 1px solid $gray;
+        margin-bottom: 30px;
     }
     .padded {
         padding: 20px;
@@ -22,17 +32,17 @@
     }
     .region-title {
         min-height: 40px;
+        margin-top: 8px;
         text-transform: uppercase;
     }
-    .x-button {
-        margin-left: 20px;
-        background-color: black;
-        border: 2px solid white;
-        border-radius: 0;
+    .hover-region {
+        margin: 0px;
     }
-    .tabset.content {
-        padding-left: 10px;
-        padding-right: 0px;
+    .tabset {
+        margin-left:17px;
+        .tab-content {
+            border: 1px solid $gray;
+        }
         ul.nav-tabs {
 
             li {
@@ -58,7 +68,11 @@
         padding: 0px;
     }
     .container {
+        padding: 20px 70px;
         width: 100%;
+    }
+    .right {
+        padding-right: 0px;
     }
 
 }
@@ -76,6 +90,10 @@
     .form-group {
         margin-right: 16px;
         margin-bottom: 12px;
+    }
+
+    .form-control {
+        color: #555;
     }
 
     label {
@@ -128,20 +146,32 @@
     color: $textColor;
     background-color: $lightGray;
     margin-right: 0;
+    border: 1px solid $gray;
+    border-bottom: 0px;
+    border-radius: 0px;
   }
 
   .nav-tabs > li.active > a,
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
     border-color: transparent;
-    background: white;
+    background: $lightBlue;
+    color: white;
   }
 
-  .row.catch h3.values-by {
-    margin-top: 35px;
+  .catch {
+    .col-sm-7 {
+        padding: 0px;
+    }
+    h3.values-by {
+        margin-top: 35px;
+    }
   }
 
-  .row.biodiversity {
+  .biodiversity {
+    &>div {
+        padding: 0px;
+    }
     ul.organisms {
       list-style-type: none;
       padding-left: 5px;
