@@ -4,7 +4,7 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -42,7 +42,9 @@ angular.module('sauWebApp')
       leafletData.getMap('minimap').then(function(map) {
 
         var layers = leafletPip.pointInLayer(latlng, map);
-        var featureLayers = layers.filter(function(l) {return l.feature;});
+        var featureLayers = layers.filter(function(l) {
+          return l.feature;
+        });
 
         if (featureLayers.length > 1) {
           var content = 'Area disputed by (';
@@ -54,6 +56,16 @@ angular.module('sauWebApp')
         } else {
           $scope.formModel.region_id = feature.properties.region_id;
           $scope.styleSelectedFeature();
+
+          if ($scope.region.name === 'eez') {
+            $timeout(function() {
+              if ($scope.mapLayers.selectedFAO === 0) {
+                drawFAO();
+              } else {
+                $scope.mapLayers.selectedFAO = 0;
+              }
+            });
+          }
         }
       });
 
@@ -108,25 +120,25 @@ angular.module('sauWebApp')
     $scope.faoLayers = [];
 
     var drawFAO = function(map) {
-      var faoStyle = mapConfig.faoStyle;
-
       $scope.removeFAO();
 
       var addFAOLayer = function(layer, style) {
-        layer.setStyle(style);
-        layer.addTo(map);
-        $scope.faoLayers.push(layer);
+        leafletData.getMap('minimap').then(function(map) {
+          layer.setStyle(style);
+          layer.addTo(map);
+          $scope.faoLayers.push(layer);
+        });
       };
 
-      var fao = sauAPI.Regions.get({region: 'fao'}, function() {
-
-        $scope.faoLayer = L.geoJson(fao.data, {
+      $q.all([$scope.feature.$promise, $scope.faos.promise, $scope.faoData.$promise]).then(function() {
+        $scope.faoLayer = L.geoJson($scope.faoData.data, {
           onEachFeature: function(feature, layer) {
-            if(feature.properties.region_id === $scope.mapLayers.selectedFAO) {
-              addFAOLayer(layer, mapConfig.selectedFaoStyle);
-            }
-            else if(isFAOInThisRegion(feature.properties.region_id)) {
-              addFAOLayer(layer, faoStyle);
+            if(isFAOInThisRegion(feature.properties.region_id)) {
+              if (feature.properties.region_id === $scope.mapLayers.selectedFAO) {
+                addFAOLayer(layer, mapConfig.selectedFaoStyle);
+              } else {
+                addFAOLayer(layer, mapConfig.faoStyle);
+              }
             }
           }
         });
@@ -138,25 +150,12 @@ angular.module('sauWebApp')
         for(var i=0; i<$scope.faoLayers.length; i++) {
           map.removeLayer($scope.faoLayers[i]);
         }
+        $scope.faoLayers = [];
       });
     };
 
-    $scope.$watch('mapLayers.selectedFAO', function(){
-      // set selectedFAO to 0 to remove.  This will likely change when additional FAO data
-      // comes in from the API
-      // if ($scope.mapLayers.selectedFAO < 1) {
-      //   $scope.removeFAO();
-      //   return;
-      // }
-      leafletData.getMap('minimap').then(function(map) {
-        $scope.features.$promise.then(function() {
-          drawFAO(map);
-        });
-      });
-    });
-
     $scope.features.$promise.then(function() {
-      // add features layer when loaded, then load IFA so IFA gets painted on top
+      // add features layer when loaded, then load IFA and FAO so they get painted on top
       leafletData.getMap('minimap').then(function(map) {
 
         L.geoJson($scope.features.data.features, {
@@ -172,14 +171,24 @@ angular.module('sauWebApp')
           }
         }).addTo(map);
         $scope.styleSelectedFeature();
+        $scope.$watch('mapLayers.selectedFAO', function(){
+          leafletData.getMap('minimap').then(function(map) {
+            if ($scope.faoData) {
+              $scope.faoData.$promise.then(function() {
+                drawFAO(map);
+              });
+            }
+          });
+        });
       });
     });
 
     function isFAOInThisRegion(faoId) {
       for (var i = 0; i < $scope.faos.data.length; i++) {
-        if ($scope.faos.data[i].id === faoId) { return true; }
+        if ($scope.faos.data[i].id === faoId) {
+          return true;
+        }
       }
       return false;
     }
 });
-  

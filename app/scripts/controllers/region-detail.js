@@ -171,9 +171,22 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.faos = $q.defer();
 
-    $scope.updateRegion = function() {
-      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+    if ($scope.region.name === 'eez') {
       $scope.faoData = sauAPI.Regions.get({region: 'fao'});
+    }
+
+    $scope.updateRegion = function() {
+
+      function getFAOName(faoId) {
+        var allFAOData = $scope.faoData.data.features;
+        for (var i = 0; i < allFAOData.length; i++) {
+          if (allFAOData[i].properties.region_id === faoId) {
+            return allFAOData[i].properties.long_title;
+          }
+        }
+      }
+
+      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
 
       if ($scope.region.name === 'eez') {
 
@@ -189,6 +202,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
 
       $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
       } else {
@@ -238,20 +252,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       });
     };
-
-    function getFAOName(faoId) {
-      if (!$scope.faoData.$resolved) {
-        console.log('Cannot get FAO name because FAO name data is not downloaded yet.');
-        return '';
-      }
-
-      var allFAOData = $scope.faoData.data.features;
-      for (var i = 0; i < allFAOData.length; i++) {
-        if (allFAOData[i].properties.region_id === faoId) {
-          return allFAOData[i].properties.long_title;
-        }
-      }
-    }
 
     init();
 });
