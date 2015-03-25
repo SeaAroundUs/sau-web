@@ -1,22 +1,26 @@
 
 <div class="content-container" id="stock-status">
-    <h1>Stock status in the waters of {{region.data.title}}</h1>
-    <h3 class="uppercase">Percentage of catches from stocks of a given status</h3>
-    <div class="chart-container">
-        <nvd3 options='css_options' data='data.css'></nvd3>
-        <div class="n-equals">(n={{ data.summary.n }})</div>
-    </div>
-    <h3 class="uppercase">Percentage of stocks of a given status</h3>
-    <div class="chart-container stock">
-        <nvd3 options='nss_options' data='data.nss'></nvd3>
-      <div class="n-equals">(n={{ data.summary.n }})</div>
-    </div>
-    <p>
-        Stock status plots assess the status of stocks by catch biomass (3-year running average values; top) and by number of stocks (bottom) since 1950. Stock-status categories are defined using the following criteria (all referring to the maximum catch [peak catch] or post-peak minimum in each series): <b>Developing</b> (catches ≤ 50% of peak and year is pre-peak, or year of peak is final year of the time series); <b>Exploited</b> (catches ≥ 50% of peak catches); <b>Over-exploited</b> (catches between 50% and 10% of peak and year is post-peak); <b>Collapsed</b> (catches &lt; 10% of peak and year is post-peak); and <b>Rebuilding</b> (catches between 10% and 50% of peak and year is after post-peak minimum). Note that (n), the number of ‘stocks’ is defined as a time series of a given species, genus or family (higher and pooled groups have been excluded) for which the first and last reported landings are at least 10 years apart, for which there are at least 5 years of consecutive catches and for which the catch in a given area is at least 1000 tonnes.
+    <p ng-show="data.summary === 0" class="not-meaningful">
+      Stock status not presented, as too few data are available for meaningful use.
     </p>
+    <div ng-hide="data.summary === 0">
+      <h1>Stock status in the waters of {{region.data.title}}</h1>
+      <h3 class="uppercase">Percentage of catches from stocks of a given status</h3>
+      <div class="chart-container">
+          <nvd3 options='css_options' data='data.css'></nvd3>
+          <div class="n-equals">(n={{ data.summary.n }})</div>
+      </div>
+      <h3 class="uppercase">Percentage of stocks of a given status</h3>
+      <div class="chart-container stock">
+          <nvd3 options='nss_options' data='data.nss'></nvd3>
+        <div class="n-equals">(n={{ data.summary.n }})</div>
+      </div>
+      <p>
+          Stock status plots assess the status of stocks by catch biomass (3-year running average values; top) and by number of stocks (bottom) since 1950. Stock-status categories are defined using the following criteria (all referring to the maximum catch [peak catch] or post-peak minimum in each series): <b>Developing</b> (catches ≤ 50% of peak and year is pre-peak, or year of peak is final year of the time series); <b>Exploited</b> (catches ≥ 50% of peak catches); <b>Over-exploited</b> (catches between 50% and 10% of peak and year is post-peak); <b>Collapsed</b> (catches &lt; 10% of peak and year is post-peak); and <b>Rebuilding</b> (catches between 10% and 50% of peak and year is after post-peak minimum). Note that (n), the number of ‘stocks’ is defined as a time series of a given species, genus or family (higher and pooled groups have been excluded) for which the first and last reported landings are at least 10 years apart, for which there are at least 5 years of consecutive catches and for which the catch in a given area is at least 1000 tonnes.
+      </p>
+    </div>
     <div id="methods">
         <a target="_blank" href="{{docsMethodsURL}}SSP_methods-April-2011-final.pdf">Method</a>
-<!--         |
-        <a href="#/{{regionName}}/{{region.data.id}}?tab=5">Feedback</a> -->
+        <!-- | <a href="#/{{regionName}}/{{region.data.id}}?tab=5">Feedback</a> -->
     </div>
 </div>
