@@ -1,5 +1,6 @@
 <div class="container" id="marine-trophic-index">
     <h2>Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
+    <!--
     <table id="access-year-table">
         <tr ng-if="regionType === 'eez'">
             <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year that the Sea Around Us project set as the first year in which fishing vessels from this country engaged in fishing in High Seas waters (water beyond the boundaries of Exclusive Economic Zones). If you have knowledge and data that would support an earlier or later year to be specified, please advise us of this via feedback.">High seas accessed</a>
@@ -11,6 +12,7 @@
             <td>{{region.data.year_allowed_to_fish_other_eezs}}</td>
         </tr>
     </table>
+    -->
     <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic Level"></line-chart-with-regression>
     <line-chart-with-regression years="years" chartdata="fib_index" ylabel="FiB Index"></line-chart-with-regression>
 
