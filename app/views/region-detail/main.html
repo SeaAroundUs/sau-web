@@ -1,32 +1,28 @@
-<div class="container region-detail">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 id="region-title" class="region-title pull-left">
-                {{chartTitle}}
-            </h1>
-          <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
-        </div>
+<div class="region-detail">
+    <div class="title row">
+        <h1 class="region-title pull-left" ng-bind="chartTitle"></h1>
+        <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
     </div>
 
     <div class="row">
-        <div class="padded content col-sm-12" ng-include="chartTemplateUrl"></div>
+        <div class="padded content" ng-include="chartTemplateUrl"></div>
     </div>
 
-    <div class="row">
-        <h1 class="region-title">
+<!--     <div class="row">
+        <h1 class="hover-region region-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
                 : <span ng-bind="$root.hoverRegion.properties.long_title"></span>
             </span>
         </h1>
     </div>
-
+ -->
     <div class="two-columns row">
         <div class="map-cells col-sm-5">
-            <div class="minimap content row" ng-controller="MiniMapCtrl">
+            <div class="content minimap" ng-controller="MiniMapCtrl">
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
-            <div class="padded content row">
+            <div class="padded content">
                 <div ng-show="faos">
                     <h3>Select FAO area boundaries</h3>
                     <a href="" ng-click="selectFAO(0)">All</a> |
@@ -41,7 +37,7 @@
                     <a target="_blank" ng-href="{{eezManualURL}}">EEZ Boundary explanation</a>
                 </p>
             </div>
-            <div class="padded content row">
+            <div class="padded content">
                 <table class="metrics">
                     <tr ng-repeat="metric in feature.data.metrics">
                         <td><a ng-href="{{ metricLinks[metric.title] }}">{{metric.title}}</a></td>
@@ -60,12 +56,14 @@
             </div>
         </div>
 
-        <div class="tabset content col-sm-7 region-detail-tabs">
-            <tabset>
-              <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
-                <div class="container" ng-include="tab.template"></div>
-              </tab>
-            </tabset>
+        <div class="right col-sm-7">
+            <div class="tabset region-detail-tabs">
+                <tabset class="">
+                  <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+                    <div class="padded" ng-include="tab.template"></div>
+                  </tab>
+                </tabset>
+            </div>
         </div>
 
     </div>

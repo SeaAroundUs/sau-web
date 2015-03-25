@@ -1,4 +1,4 @@
-<div class="row catch">
+<div class="clearfix catch">
     <p>
       Please select a link below or use the dropdown menu above to choose a catch or landed value time series to view.
       You can choose various ‘dimensions’ (Taxon, Commercial group, Functional group, Country, Sector, Catch type,
@@ -7,7 +7,7 @@
       data reconstruction for this spatial entity can also be accessed.
     </p>
 
-    <div class="col-sm-7">
+    <div class="col col-sm-7">
         <h3>Tonnage by</h3>
         <p ng-repeat="dim in dimensions">
             <a ng-click="clickFormLink(dim, 'tonnage')" scroll-click="region-title">{{dim.label}}</a>

@@ -17,7 +17,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           height: 304,
           margin : {
               right: 0,
-              bottom: 16
+              bottom: 26
           },
           x: function(d){return d[0];},
           y: function(d){return d[1];},
