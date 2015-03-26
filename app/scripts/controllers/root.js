@@ -6,7 +6,6 @@
     .controller('RootCtrl', function ($scope) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
-        console.log(location.$$route.controller);
         $scope.showCBDLogo = (location.$$route.controller === 'MarineTrophicIndexCtrl');
       });
 
