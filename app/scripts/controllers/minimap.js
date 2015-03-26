@@ -119,7 +119,7 @@ angular.module('sauWebApp')
 
     $scope.faoLayers = [];
 
-    var drawFAO = function(map) {
+    var drawFAO = function() {
       $scope.removeFAO();
 
       var addFAOLayer = function(layer, style) {
