@@ -7,10 +7,10 @@
 
       $scope.templates = [
         {'name': 'Analyses & Visualization', 'url': '/data/#/', 'class': 'selected'},
-        {'name': 'Publications', 'url': '', 'class': 'disabled'},
+        {'name': 'Publications', 'url': '/articles/'},
         {'name': 'News & About', 'url': '/about/'},
         {'name': 'Collaborations', 'url': '/collaborations/'},
-        {'name': 'Contact Us', 'url': '', 'class': 'disabled'}
+        {'name': 'Contact Us', 'url': '/contact/'}
       ];
       $scope.template = $scope.templates[0];
 
