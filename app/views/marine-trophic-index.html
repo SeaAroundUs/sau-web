@@ -1,5 +1,8 @@
 <div class="container" id="marine-trophic-index">
-    <h2>Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
+    <div class="title row">
+      <h2 class="pull-left">Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
+      <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
+    </div>
     <!--
     <table id="access-year-table">
         <tr ng-if="regionType === 'eez'">

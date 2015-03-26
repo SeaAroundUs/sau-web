@@ -1,10 +1,25 @@
-#access-year-table {
-	td {
-    	padding: 4px 6px;
-    }
-}
+#marine-trophic-index {
+  padding: 0 5em;
 
-#marine-trophic-index .row.links {
-  padding: 20px 0;
-  margin-left: 3%;
+  .row.title {
+    padding: 3em 0 2em;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    button {
+      border-radius: 0;
+    }
+  }
+
+  .row.links {
+    padding: 1em 0 2em;
+  }
+
+  #access-year-table {
+    td {
+      padding: 4px 6px;
+    }
+  }
 }

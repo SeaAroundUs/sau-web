@@ -3,12 +3,24 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, sauAPI, region) {
+  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, sauAPI, region) {
 
     $scope.years = [];
     $scope.regionType = region;
 
     var id = $scope.region.name_id || $routeParams.id;
+
+    $scope.openDownloadDataModal = function() {
+      $modal.open({
+        templateUrl: 'views/download-data-modal.html',
+        controller: 'DownloadDataModalCtrl',
+        resolve: {
+          dataUrl: function () {
+            return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id;
+          }
+        }
+      });
+    };
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
