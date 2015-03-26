@@ -11,13 +11,13 @@
             case taxonLevels.taxonSpecies:
               var genericName = $filter('splitIndex')(taxon.scientific_name, ' ', 0);
               var specificName = $filter('splitIndex')(taxon.scientific_name, ' ', 1);
-              return 'http://www.fishbase.de/Summary/SpeciesSummary.cfm?genusname=' + genericName + '&SpeciesName=' + specificName;
+              return 'http://www.fishbase.org/Summary/SpeciesSummary.cfm?genusname=' + genericName + '&SpeciesName=' + specificName;
             case taxonLevels.taxonFamily:
               var familyId = extractLastThreeDigits(taxon.taxon_key);
               if (familyId === -1) { return null; }
-              return 'http://www.fishbase.de/Summary/FamilySummary.cfm?ID=' + familyId.toString();
+              return 'http://www.fishbase.org/Summary/FamilySummary.cfm?ID=' + familyId.toString();
             case taxonLevels.taxonOrder:
-              return 'http://www.fishbase.de/Summary/OrdersSummary.cfm?order=' + taxon.scientific_name;
+              return 'http://www.fishbase.org/Summary/OrdersSummary.cfm?order=' + taxon.scientific_name;
             default:
               return null;
           }
