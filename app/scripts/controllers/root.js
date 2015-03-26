@@ -5,6 +5,11 @@
   angular.module('sauWebApp')
     .controller('RootCtrl', function ($scope) {
 
+      $scope.$on('$routeChangeSuccess', function(evt, location) {
+        console.log(location.$$route.controller);
+        $scope.showCBDLogo = (location.$$route.controller === 'MarineTrophicIndexCtrl');
+      });
+
       $scope.templates = [
         {'name': 'Analyses & Visualization', 'url': '/data/#/', 'class': 'selected'},
         {'name': 'Publications', 'url': '/articles/'},

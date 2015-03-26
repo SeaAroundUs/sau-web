@@ -38,8 +38,11 @@
               <a href="/" target="_self">
                 <img class="pull-left" src="images/logo_saup.png" alt="Sea Around Us logo">
               </a>
-              <a href="http://www.vulcan.com" target="_blank">
+              <a ng-hide="showCBDLogo" href="http://www.vulcan.com" target="_blank">
                 <img class="pull-right" src="images/logo_vulcan.png" alt="Vulcan logo">
+              </a>
+              <a ng-cloak ng-show="showCBDLogo" class="cbd-logo" href="http://www.cbd.int/" target="_blank">
+                <img class="pull-right" src="images/logo_cbd.gif" alt="Vulcan logo">
               </a>
             </div>
 
@@ -142,7 +145,7 @@
     <script src="scripts/thirdparty/leaflet.pattern-src.js"></script>
     <script src="scripts/services/spinner-state.js"></script>
     <script src="scripts/directives/spinner.js"></script>
-	<script src="scripts/directives/scroll-click.js"></script>
+	  <script src="scripts/directives/scroll-click.js"></script>
     <script src="scripts/controllers/download-data-modal.js"></script>
     <!-- endbuild -->
 </body>
