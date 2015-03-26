@@ -15,7 +15,7 @@
     "angular-leaflet-directive": "~0.7.11",
     "angular-bootstrap": "~0.12.0",
     "angular-ui-bootstrap-bower": "~0.12.0",
-    "nvd3-community": "~1.7.0",
+    "nvd3-community": "1.7.0",
     "angular-nvd3": "https://github.com/klangfarbe/angular-nvd3.git#~0.1.0",
     "colorbrewer2": "*",
     "angular-cache": "~3.2.5",
