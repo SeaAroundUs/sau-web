@@ -1,9 +1,9 @@
 
 <div class="content-container" id="stock-status">
-    <p ng-show="data.summary === 0" class="not-meaningful">
+    <p ng-show="data.css === [] && data.nss === []" class="not-meaningful">
       Stock status not presented, as too few data are available for meaningful use.
     </p>
-    <div ng-hide="data.summary === 0">
+    <div ng-hide="data.css === [] && data.nss === []">
       <h1>Stock status in the waters of {{region.data.title}}</h1>
       <h3 class="uppercase">Percentage of catches from stocks of a given status</h3>
       <div class="chart-container">
