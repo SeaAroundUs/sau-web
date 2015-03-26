@@ -23,9 +23,10 @@ angular.module('sauWebApp')
       weight: 1.0
     },
     selectedFaoStyle: {
-      weight: 3.5,
+      color: '#00f',
+      opacity: 1.0,
       fillOpacity: 0.0,
-      opacity: 1.0
+      weight: 4.0,
     },
     hatchStyle: {
       patternTransform: 'rotate(45)',

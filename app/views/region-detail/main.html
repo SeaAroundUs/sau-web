@@ -25,8 +25,8 @@
             <div class="padded content">
                 <div ng-show="faos">
                     <h3>Select FAO area boundaries</h3>
-                    <a href="" ng-click="selectFAO(0)">All</a> |
-                    <span ng-repeat="fao in faos"> | <a href="" ng-click="selectFAO(fao)">{{fao}}</a></span>
+                    <a href="" ng-click="selectFAO(0)">All</a>
+                    <span ng-repeat="fao in faos.data"> | <a href="" ng-click="selectFAO(fao)">{{fao.name}}</a></span>
                 </div>
                 <sau-legend legend-keys="legendKeys"></sau-legend>
                 <p class="disclaimer">
