@@ -18,7 +18,7 @@ angular.module('sauWebApp')
                                     region,
                                     spinnerState) {
 
-    $scope.region.name = region;
+    $scope.region = {name: 'eez'};
 
     if ($routeParams.id || $location.path() === '/global') {
       $scope.regionSelect(($routeParams.id || 1));
