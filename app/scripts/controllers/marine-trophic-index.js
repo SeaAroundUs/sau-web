@@ -22,6 +22,11 @@ angular.module('sauWebApp')
       });
     };
 
+    $scope.apiOrigin = (function() {
+      var pathArray = sauAPI.apiURL.split('/');
+      return pathArray[0] + '//' + pathArray[2];
+    })();
+
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
     var data = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id}, function() {
