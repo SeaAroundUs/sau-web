@@ -51,7 +51,16 @@
 
           </div>
 
-          <div id="main_view" ng-view=""></div>
+          <div id="no-data" ng-show="hideView" ng-cloak>
+            Data not yet available
+          </div>
+
+          <div id="main_view" ng-view="" ng-hide="hideView">
+            <noscript>
+              Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.html">here</a>
+              to navigate to our site that does not require Javascript.
+            </noscript>
+          </div>
 
           <div id="footer" class="clearfix">
             <div id="copyright" class="pull-left">

@@ -314,3 +314,18 @@ a:not([href]) {
 .taxon .nvd3 .nv-legend g.nv-series:last-child {
   cursor: default;
 }
+
+[ng-cloak] {
+  display: none;
+}
+
+noscript {
+  display: block;
+  height: 200px;
+  padding: 20px;
+}
+
+#no-data {
+  height: 200px;
+  padding: 20px;
+}
