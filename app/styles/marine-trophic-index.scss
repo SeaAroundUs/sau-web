@@ -13,13 +13,55 @@
     }
   }
 
-  .row.links {
-    padding: 1em 0 2em;
+  .row {
+    &.links {
+      padding: 1em 0 2em;
+    }
+
+    &.buttons {
+      margin-bottom: 1em;
+
+      button:first-child {
+        margin-right: 10px;
+      }
+    }
   }
 
   #access-year-table {
     td {
       padding: 4px 6px;
+    }
+  }
+
+  a.show-hide-species {
+    display: inline-block;
+    margin: 1em 0;
+  }
+
+  .species-list {
+    border-spacing: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 1em;
+
+    thead tr th {
+      text-align: center;
+    }
+
+    tbody tr {
+      &:nth-child(odd) {
+        background-color: #eee;
+      }
+
+      td {
+        border-left: 1px solid #ddd;
+        padding: 5px 10px;
+
+        &:first-child {
+          border-left: none;
+          text-align: center;
+        }
+      }
     }
   }
 }

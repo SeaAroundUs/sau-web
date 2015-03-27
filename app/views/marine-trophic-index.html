@@ -1,6 +1,6 @@
 <div class="container" id="marine-trophic-index">
     <div class="title row">
-      <h2 class="pull-left">Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
+      <h2 id="mti-title" class="pull-left">Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
       <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
     </div>
     <!--
@@ -18,6 +18,38 @@
     -->
     <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic Level"></line-chart-with-regression>
     <line-chart-with-regression years="years" chartdata="fib_index" ylabel="FiB Index"></line-chart-with-regression>
+
+    <a class="show-hide-species" ng-hide="showSpecies" ng-click="showSpecies = true">Show species list</a>
+    <a class="show-hide-species" ng-show="showSpecies" ng-click="showSpecies = false">Hide species list</a>
+
+    <div class="row buttons">
+      <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
+      <button ng-show="showSpecies" ng-click="setAllExclusions(true)">Exclude all</button>
+      <button ng-show="showSpecies" ng-click="setAllExclusions(false)">Clear exclusions</button>
+    </div>
+
+    <table ng-show="showSpecies" class="species-list">
+      <thead>
+      <tr>
+        <th>Exclude</th>
+        <th>TL</th>
+        <th>SLMax(cm)</th>
+        <th>Common Name</th>
+        <th>Scientific Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="species in speciesList | orderBy: '-trophic_level'">
+        <td><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
+        <td ng-bind="species.trophic_level | number"></td>
+        <td ng-bind="species.sl_max_cm"></td>
+        <td ng-bind="species.common_name"></td>
+        <td ng-bind="species.scientific_name"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
 
     <div class="row links">
       <span ng-repeat="doc in region.data.reconstruction_documents">
