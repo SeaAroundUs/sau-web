@@ -43,15 +43,6 @@
                         <td><a ng-href="{{ metricLinks[metric.title] }}">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
-                    <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year that the Sea Around Us project set as the first year in which fishing vessels from this country engaged in fishing in High Seas waters (water beyond the boundaries of Exclusive Economic Zones). If you have knowledge and data that would support an earlier or later year to be specified, please advise us of this via feedback.">High seas accessed</a>
-                        by {{feature.data.country_name}}</td>
-                        <td>{{feature.data.year_allowed_to_fish_high_seas}}</td>
-                    </tr>
-                    <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year that the Sea Around Us project set as the first year in which fishing vessels from this country engaged in fishing in the Exclusive Economic Zone waters of other countries (if observed access or formal access agreements existed). If you have knowledge and data that would support an earlier or later year to be specified, please advise us of this via feedback.">Other EEZs accessed</a> by {{feature.data.country_name}}</td>
-                        <td>{{feature.data.year_allowed_to_fish_other_eezs}}</td>
-                    </tr>
                 </table>
             </div>
         </div>
