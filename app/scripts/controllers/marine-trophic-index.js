@@ -8,7 +8,7 @@ angular.module('sauWebApp')
     $scope.years = [];
     $scope.regionType = region;
 
-    var id = $scope.region.name_id || $routeParams.id;
+    var id = ($scope.region && $scope.region.name_id) || $routeParams.id;
 
     $scope.openDownloadDataModal = function() {
       $modal.open({
