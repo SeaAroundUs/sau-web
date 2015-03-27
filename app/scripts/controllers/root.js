@@ -14,8 +14,6 @@
       ];
       $scope.template = $scope.templates[0];
 
-      $scope.region = {name: 'eez'};
-
       $scope.go = function(url) {
         window.location = url;
       };

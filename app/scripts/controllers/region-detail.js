@@ -1,7 +1,10 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal) {
+  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal, region) {
+
+
+    $scope.region = {name: region};
 
     var region_id = $routeParams.id;
 
