@@ -1,4 +1,7 @@
-<div class="region-detail">
+<div ng-show="formModel.region_id === 554" class="region-detail no-data">
+  <p>No data available</p>
+</div>
+<div ng-hide="formModel.region_id === 554" class="region-detail">
     <div class="title row">
         <h1 id="region-title" class="region-title pull-left" ng-bind="chartTitle"></h1>
         <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>

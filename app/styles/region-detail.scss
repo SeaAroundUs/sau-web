@@ -75,6 +75,10 @@
         padding-right: 0px;
     }
 
+  &.no-data {
+    padding: 20px;
+    height: 200px;
+  }
 }
 
 .chart-container {
