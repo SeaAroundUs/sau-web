@@ -8,7 +8,7 @@
   angular.module('sauWebApp')
   .controller('EstuariesCtrl', function ($scope, $routeParams, sauAPI, region, mapConfig, leafletData) {
 
-    var id = $scope.region.name_id || $routeParams.id;
+    var id = $routeParams.id;
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
