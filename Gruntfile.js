@@ -380,7 +380,13 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }, {
+        },{
+          expand: true,
+          cwd: 'bower_components/angular-ui-grid/',
+          src: ['ui-grid.ttf', 'ui-grid.woff'],
+          dest: '<%= yeoman.dist %>/styles'
+        },
+         {
           expand: true,
           cwd: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
           src: '*',
