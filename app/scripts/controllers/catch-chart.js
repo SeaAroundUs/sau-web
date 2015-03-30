@@ -3,7 +3,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, $location, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState) {
 
     function init() {
       $scope.$watch('formModel', onFormModelChange, true);
@@ -94,6 +94,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
+          if ($scope.noData === true) {
+            $timeout(function() { $scope.api.update(); });
+          }
           $scope.noData = false;
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
