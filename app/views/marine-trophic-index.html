@@ -19,10 +19,38 @@
     <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
     <line-chart-with-regression years="years" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
 
+  <div class="row">
+    <a class="show-hide-tabular" ng-hide="showTabular" ng-click="showTabular = true">Show tabular data</a>
+    <a class="show-hide-tabular" ng-show="showTabular" ng-click="showTabular = false">Hide tabular data</a>
+  </div>
+
+  <table ng-show="showTabular" class="tabular-data">
+    <thead>
+    <tr>
+      <th>Year</th>
+      <th>Mean trophic level</th>
+      <th>Mean max. length (cm)</th>
+      <th>FiB index</th>
+      <th>Expansion factor</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="(year, data) in tabularData | orderBy: year">
+      <td ng-bind="year"></td>
+      <td ng-bind="data.mean_trophic_level | number"></td>
+      <td ng-bind="data.mean_max_len | number"></td>
+      <td ng-bind="data.fib_index | number"></td>
+      <td ng-bind="data.expansion_factor | number"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="row">
     <a class="show-hide-species" ng-hide="showSpecies" ng-click="showSpecies = true">Show species list</a>
     <a class="show-hide-species" ng-show="showSpecies" ng-click="showSpecies = false">Hide species list</a>
+  </div>
 
-    <div class="row buttons">
+  <div class="row buttons">
       <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
       <button ng-show="showSpecies" ng-click="setAllExclusions(true)">Exclude all</button>
       <button ng-show="showSpecies" ng-click="setAllExclusions(false)">Clear exclusions</button>
@@ -40,7 +68,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="species in speciesList | orderBy: '-trophic_level'">
-        <td><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
+        <td class="exclude"><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
         <td ng-bind="species.trophic_level | number"></td>
         <td ng-bind="species.sl_max_cm"></td>
         <td ng-bind="species.common_name"></td>

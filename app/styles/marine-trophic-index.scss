@@ -38,27 +38,27 @@
     margin: 1em 0;
   }
 
-  .species-list {
+  .species-list, .tabular-data {
+    border: 1px solid #aaa;
     border-spacing: 10px;
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 1em;
+    margin: 1em 0;
+
+    th, td {
+      border-bottom: 1px solid #aaa;
+    }
 
     thead tr th {
-      text-align: center;
+      background-color: #eee;
+      padding: 5px 10px;
     }
 
     tbody tr {
-      &:nth-child(odd) {
-        background-color: #eee;
-      }
-
       td {
-        border-left: 1px solid #ddd;
         padding: 5px 10px;
 
-        &:first-child {
-          border-left: none;
+        &.exclude {
           text-align: center;
         }
       }

@@ -35,19 +35,29 @@ angular.module('sauWebApp')
 
     var displayCharts = function(data) {
       $scope.data = data.data;
+      $scope.tabularData = {};
+
+      angular.forEach($scope.data[0].values, function(xy) {
+        if (xy[1]) {
+          $scope.years.push(xy[0]);
+          $scope.tabularData[xy[0]] = {};
+        }
+      });
+
       angular.forEach($scope.data, function(time_series) {
         var nullFilteredData = time_series.values.filter(function(x) {
           return x[1];
         });
         time_series.values = nullFilteredData;
         $scope[time_series.key] = [time_series];
-      });
 
-      angular.forEach($scope.data[0].values, function(xy) {
-        if (xy[1]) {
-          $scope.years.push(xy[0]);
-        }
+        angular.forEach(time_series.values, function(dataRow) {
+          if ($scope.tabularData[dataRow[0].toString()]) {
+            $scope.tabularData[dataRow[0].toString()][time_series.key] = dataRow[1];
+          }
+        });
       });
+      console.log($scope.tabularData);
     };
 
     sauAPI.MarineTrophicIndexData.get({region: region, region_id: id}, displayCharts);
