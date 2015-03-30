@@ -3,7 +3,26 @@
   'use strict';
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope) {
+    .controller('RootCtrl', function ($scope, $location) {
+
+      $scope.$on('$routeChangeSuccess', function(evt, location) {
+        $scope.showCBDLogo = (location.$$route.controller === 'MarineTrophicIndexCtrl');
+      });
+
+      var hiddenData = {
+        eez: [ 554, 555 ],
+        lme: [ 46 ]
+      };
+
+      $scope.$watch(function() { return $location.url(); }, function(url) {
+        var splitURL = url.split('/');
+        var region = splitURL[1];
+        var regionId = splitURL[2];
+        var subView = splitURL[3];
+        $scope.hideView = hiddenData[region] &&
+          hiddenData[region].indexOf(parseInt(regionId)) > -1 &&
+          subView !== 'exploited-organisms';
+      });
 
       $scope.templates = [
         {'name': 'Analyses & Visualization', 'url': '/data/#/', 'class': 'selected'},
