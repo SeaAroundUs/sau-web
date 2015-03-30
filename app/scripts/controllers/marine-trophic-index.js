@@ -57,7 +57,6 @@ angular.module('sauWebApp')
           }
         });
       });
-      console.log($scope.tabularData);
     };
 
     sauAPI.MarineTrophicIndexData.get({region: region, region_id: id}, displayCharts);
