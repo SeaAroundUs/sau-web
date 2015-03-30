@@ -81,6 +81,16 @@
     height: 350px;
     position: relative;
 
+    &.no-data {
+      text-align: center;
+      font-size: 1.5em;
+
+      p {
+        margin: 0;
+        padding: 3em 0 0 0;
+      }
+    }
+
     /* make points visible */
     .nvd3.nv-line .nv-point
     {
