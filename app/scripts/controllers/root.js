@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope) {
+    .controller('RootCtrl', function ($scope, $location) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
         $scope.showCBDLogo = (location.$$route.controller === 'MarineTrophicIndexCtrl');
@@ -14,13 +14,14 @@
         lme: [ 46 ]
       };
 
-      $scope.$on('$routeChangeSuccess', function(evt, location) {
-        var region = location.locals.region;
-        var id = location.params.id;
-        $scope.hideView = (location.$$route.controller !== 'ExploitedOrganismsCtrl' &&
-            hiddenData[region] &&
-            hiddenData[region].indexOf(parseInt(id)) > -1
-        );
+      $scope.$watch(function() { return $location.url(); }, function(url) {
+        var splitURL = url.split('/');
+        var region = splitURL[1];
+        var regionId = splitURL[2];
+        var subView = splitURL[3];
+        $scope.hideView = hiddenData[region] &&
+          hiddenData[region].indexOf(parseInt(regionId)) > -1 &&
+          subView !== 'exploited-organisms';
       });
 
       $scope.templates = [
