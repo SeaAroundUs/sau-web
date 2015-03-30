@@ -94,6 +94,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
+          $scope.noData = false;
           $scope.data = data.data;
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
           spinnerState.loading = false;
@@ -101,6 +102,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             $scope.toggleTaxonNames();
             $scope.useScientificNames = true;
           }
+      }, function() {
+        $scope.noData = true;
+        spinnerState.loading = false;
       });
       spinnerState.loading = true;
     }
