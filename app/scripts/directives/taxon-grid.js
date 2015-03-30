@@ -35,7 +35,7 @@
           enableRowSelection: true,
           // want these, but they're not showing
           enableVerticalScrollbars: uiGridConstants.scrollbars.ALWAYS,
-          enableSorting: false,
+          enableSorting: true,
           columnDefs: [
             {
               field: 'common_name',
@@ -43,7 +43,9 @@
                 condition: uiGridConstants.filter.CONTAINS,
                 placeholder: ''
               },
-              enableColumnMenu: false
+              enableColumnMenu: false,
+              enableSorting: true,
+              suppressRemoveSort: true // this plus below fixes column sorting
             },
             {
               field: 'scientific_name',
@@ -52,9 +54,10 @@
                 placeholder: ''
               },
               enableColumnMenu: false,
-              allowCellFocus: false
+              enableSorting: true,
+              suppressRemoveSort: true // this plus on.sortChanged below fixes column sorting
             },
-          ],
+          ]
         };
 
         $scope.gridOptions.onRegisterApi = function(gridApi){
@@ -62,6 +65,24 @@
            gridApi.cellNav.on.navigate($scope,function(rowCol){
              $scope.selectRow(rowCol.row);
            });
+
+           // borrowed from https://github.com/angular-ui/ng-grid/issues/2799
+           // to allow column sorting to toggle between ASC/DESC, not ASC/DESC/UNSORTED
+           $scope.gridApi.core.on.sortChanged($scope, function(grid, sortColumns) {
+             if(sortColumns.length > 1) {
+               angular.forEach(sortColumns, function(col){
+                 if(col.sort.priority === 1) {
+                   col.sort.priority = 0;
+                   col.sort.direction = null;
+                 } else {
+                   col.sort.priority = 1;
+                 }
+               });
+             } else {
+               sortColumns[0].sort.priority = 1;
+             }
+           });
+
         };
 
         $scope.taxonChange = function() {

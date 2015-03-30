@@ -43,7 +43,8 @@ angular.module('sauWebApp')
 
         var layers = leafletPip.pointInLayer(latlng, map);
         var featureLayers = layers.filter(function(l) {
-          return l.feature;
+          // only return layers which have a feature of the current region type
+          return (l.feature && (l.feature.properties.region === $scope.region));
         });
 
         if (featureLayers.length > 1) {

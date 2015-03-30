@@ -4,7 +4,7 @@
     return {
       link: function(scope, ele) {
         ele.on('click', function() {
-          window.scrollTo(0, document.getElementById(scope.scrollTarget).offsetTop + 200);
+          window.scrollTo(0, document.getElementById(scope.scrollTarget).offsetTop - 10);
         });
       },
       restrict: 'A',

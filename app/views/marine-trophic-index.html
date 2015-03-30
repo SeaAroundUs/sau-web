@@ -1,5 +1,8 @@
 <div class="container" id="marine-trophic-index">
-    <h2>Marine Trophic Index in the waters of <span ng-bind="region.data.title"></span></h2>
+    <div class="title row">
+      <h2 id="mti-title" class="pull-left">Marine trophic index of the catch of <span ng-bind="region.data.title"></span></h2>
+      <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
+    </div>
     <!--
     <table id="access-year-table">
         <tr ng-if="regionType === 'eez'">
@@ -13,13 +16,48 @@
         </tr>
     </table>
     -->
-    <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic Level"></line-chart-with-regression>
-    <line-chart-with-regression years="years" chartdata="fib_index" ylabel="FiB Index"></line-chart-with-regression>
+    <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
+    <line-chart-with-regression years="years" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
+
+    <a class="show-hide-species" ng-hide="showSpecies" ng-click="showSpecies = true">Show species list</a>
+    <a class="show-hide-species" ng-show="showSpecies" ng-click="showSpecies = false">Hide species list</a>
+
+    <div class="row buttons">
+      <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
+      <button ng-show="showSpecies" ng-click="setAllExclusions(true)">Exclude all</button>
+      <button ng-show="showSpecies" ng-click="setAllExclusions(false)">Clear exclusions</button>
+    </div>
+
+    <table ng-show="showSpecies" class="species-list">
+      <thead>
+      <tr>
+        <th>Exclude</th>
+        <th>TL</th>
+        <th>SLMax(cm)</th>
+        <th>Common Name</th>
+        <th>Scientific Name</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="species in speciesList | orderBy: '-trophic_level'">
+        <td><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
+        <td ng-bind="species.trophic_level | number"></td>
+        <td ng-bind="species.sl_max_cm"></td>
+        <td ng-bind="species.common_name"></td>
+        <td ng-bind="species.scientific_name"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
 
     <div class="row links">
-      <span class="disabled"><i class="fa fa-file-pdf-o red"></i> Download PDF</span>
-      | <a href="http://www.seaaroundus.org/doc/saup_manual.htm#19">Method</a>
-      | <span class="disabled">www.fishingdown.org</span>
+      <span ng-repeat="doc in region.data.reconstruction_documents">
+        <a target="_blank" ng-href="{{apiOrigin + doc.path}}"><i class="fa fa-file-pdf-o red"></i> {{doc.title}}</a> |
+      </span>
+      <span ng-hide="region.data.reconstruction_documents" class="disabled"><i class="fa fa-file-pdf-o red"></i> Download PDF |</span>
+      <a href="http://www.seaaroundus.org/doc/saup_manual.htm#19">Method</a>
+      | <a href="http://www.fishingdown.org/CaseStudies.aspx" target="_blank">www.fishingdown.org</a>
       | <span class="disabled">Feedback</span>
     </div>
 </div>

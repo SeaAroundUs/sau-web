@@ -290,11 +290,21 @@ module.exports = function (grunt) {
     },
 
     // Performs rewrites based on filerev and the useminPrepare configuration
+    // thanks to olsn @ https://github.com/yeoman/generator-angular/issues/665 for the
+    // bootstrap font path fix
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images'],
+        patterns: {
+          css: [
+            [/(\.\.\/bower_components\/bootstrap\-sass\-official\/assets\/fonts\/bootstrap)/g, 'god help me', function(match) {
+              var result = match.replace('../bower_components/bootstrap-sass-official/assets/fonts/bootstrap', '../fonts');
+              return result;
+            }]
+          ]
+        }
       }
     },
 
@@ -380,7 +390,13 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
-        }, {
+        },{
+          expand: true,
+          cwd: 'bower_components/angular-ui-grid/',
+          src: ['ui-grid.ttf', 'ui-grid.woff'],
+          dest: '<%= yeoman.dist %>/styles'
+        },
+         {
           expand: true,
           cwd: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
           src: '*',

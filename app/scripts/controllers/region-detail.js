@@ -195,9 +195,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
         $q.all([$scope.feature.$promise, $scope.faoData.$promise]).then(function() {
           var faosInThisRegion = [];
-          for (var i = 0; i < $scope.feature.data.intersecting_fao_area_id.length; i++) {
-            var faoId = $scope.feature.data.intersecting_fao_area_id[i];
-            faosInThisRegion[i] = {id: faoId, name: getFAOName(faoId)};
+          if ($scope.feature.data.intersecting_fao_area_id !== null) {
+            for (var i = 0; i < $scope.feature.data.intersecting_fao_area_id.length; i++) {
+              var faoId = $scope.feature.data.intersecting_fao_area_id[i];
+              faosInThisRegion[i] = {id: faoId, name: getFAOName(faoId)};
+            }
           }
           $scope.faos.data = faosInThisRegion;
           $scope.faos.resolve();

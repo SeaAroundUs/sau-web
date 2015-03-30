@@ -4,7 +4,7 @@
     <div ng-show="!showRegression">
         <p>
             Start year <select ng-change="changeRange()" ng-model="model.startYear" ng-options="y as y for y in startYears"></select>
-            End Year <select ng-change="changeRange()" ng-model="model.endYear" ng-options="y as y for y in endYears"></select>
+            End year <select ng-change="changeRange()" ng-model="model.endYear" ng-options="y as y for y in endYears"></select>
             <button ng-show="showMaximizer" class="btn btn-primary x-button" ng-click="maximizeRange()">Set Maximum Range</button>
         </p>
         <p>
