@@ -19,7 +19,7 @@
 		</tr>
 		<tr ng-show="taxon.tl">
 			<td class="table-key">Trophic level:</td>
-			<td class="table-value">{{taxon.tl | number}}</td>
+			<td class="table-value">{{taxon.tl | number: 2}}</td>
 		</tr>
 		<tr ng-show="taxon.lat_north && taxon.lat_south">
 			<td class="table-key">Latitude range:</td>
