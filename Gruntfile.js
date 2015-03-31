@@ -35,6 +35,7 @@ module.exports = function (grunt) {
   }, function done(error, result) {
     grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.qa.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.beta.constants.SAU_CONFIG.buildNumber = result.stdout;
   });
 
