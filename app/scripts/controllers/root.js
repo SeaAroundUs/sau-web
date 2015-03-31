@@ -6,7 +6,15 @@
     .controller('RootCtrl', function ($scope, $location) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
-        $scope.showCBDLogo = (location.$$route.controller === 'MarineTrophicIndexCtrl');
+        $scope.showCBDLogo = (location.$$route && location.$$route.controller === 'MarineTrophicIndexCtrl');
+
+        if (location.$$route && location.$$route.controller === 'FERUCtrl') {
+          $scope.templates[0].class = '';
+          $scope.templates[3].class = 'selected';
+        } else {
+          $scope.templates[0].class = 'selected';
+          $scope.templates[3].class = '';
+        }
       });
 
       var hiddenData = {
