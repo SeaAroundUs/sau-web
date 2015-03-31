@@ -196,7 +196,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       }
 
-      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
+      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+        if($scope.region.name === 'lme') {
+          // fishbase id is same as our id, fake it
+          $scope.feature.data.fishbase_id = $scope.feature.data.id;
+        }
+      });
 
       if ($scope.region.name === 'eez') {
 

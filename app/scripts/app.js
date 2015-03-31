@@ -2,8 +2,6 @@
 
 angular
   .module('sauWebApp', [
-    'ngAnimate',
-    'ngCookies',
     'ngResource',
     'ngRoute',
     'ngSanitize',
@@ -15,8 +13,7 @@ angular
     'ui.grid',
     'ui.grid.cellNav',
     'ui.grid.selection',
-    'ui.select',
-    'ngSanitize'
+    'ui.select'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs

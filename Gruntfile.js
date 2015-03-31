@@ -198,6 +198,7 @@ module.exports = function (grunt) {
             disallowMixedSpacesAndTabs: true,
             disallowMultipleLineBreaks: true,
             disallowMultipleSpaces: true,
+            disallowTrailingWhitespace: true,
             validateIndentation: 2,
             validateLineBreaks: 'LF'
         }
