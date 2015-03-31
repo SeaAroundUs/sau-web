@@ -9,7 +9,7 @@
  */
 angular.module('sauWebApp')
   .factory('insetMapLegendData', function() {
-  	var eez = [
+    var eez = [
       { pattern: 'images/legend/eez.png', label: 'EEZ' },
       { pattern: 'images/legend/disputed_eez.png', label: 'Disputed/shared' },
       { pattern: 'images/legend/other_eez.png', label: 'Other EEZ' },
@@ -17,8 +17,8 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
       { pattern: 'images/legend/ifa.png', label: 'IFA area' }
     ];
-    
-  	var lme = [
+
+    var lme = [
       { pattern: 'images/legend/lme.png', label: 'LME' },
       { pattern: 'images/legend/disputed_lme.png', label: 'Disputed' },
       { pattern: 'images/legend/other_lme.png', label: 'Other LME' },
@@ -41,4 +41,4 @@ angular.module('sauWebApp')
       global: null,
       rfmo: null
     };
-});
+  });

@@ -3,7 +3,6 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal, region) {
 
-
     $scope.region = {name: region};
 
     var region_id = $routeParams.id;
@@ -231,20 +230,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.ecopathURL = null;
     $scope.$watch('formModel', function() {
-        if ($scope.region.name === 'eez') {
-          $scope.feature.$promise.then(function() {
-            $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
-              $scope.feature.data.fishbase_id +
-              '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
-          });
-        } else if ($scope.region.name === 'lme') {
-          $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME='+
-            $scope.formModel.region_id +
-            '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
-        } else if ($scope.region.name === 'highseas') {
-          $scope.ecopathURL = 'http://www.ecopath.org/index.php?name=Models&sub=Models&m_FAO='+
-            $scope.formModel.region_id;
-        }
+      if ($scope.region.name === 'eez') {
+        $scope.feature.$promise.then(function() {
+          $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
+            $scope.feature.data.fishbase_id +
+            '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+        });
+      } else if ($scope.region.name === 'lme') {
+        $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME='+
+          $scope.formModel.region_id +
+          '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';
+      } else if ($scope.region.name === 'highseas') {
+        $scope.ecopathURL = 'http://www.ecopath.org/index.php?name=Models&sub=Models&m_FAO='+
+          $scope.formModel.region_id;
+      }
     }, true);
 
     $scope.openDownloadDataModal = function() {
@@ -260,4 +259,4 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     init();
-});
+  });

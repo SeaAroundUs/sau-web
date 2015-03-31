@@ -13,44 +13,44 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     $scope.options = {
       chart: {
-          type: 'stackedAreaChart',
-          height: 304,
-          margin : {
-              right: 0,
-              bottom: 26
-          },
-          x: function(d){return d[0];},
-          y: function(d){return d[1];},
-          transitionDuration: 250,
-          useInteractiveGuideline: true,
-          xAxis: {
-              showMaxMin: false,
-              tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
-          },
-          yAxis: {
-            showMaxMin: false,
-            axisLabel: $scope.formModel.measure.chartlabel
-          },
-          yAxisTickFormat: function(d) {
-            //Make values "in thousands" or "in millions" depending on the measure.
-            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-            return $filter('significantDigits')(d, magnitude);
-          },
-          cData: ['Stacked','Stream','Expanded'],
-          legend: {
-            updateState: false,
-            dispatch: {
-              /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
-              legendClick: function(taxon) {
-                if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
-                  $location.path('/taxa/' + taxon.entity_id);
-                  $scope.$apply();
-                }
+        type: 'stackedAreaChart',
+        height: 304,
+        margin : {
+          right: 0,
+          bottom: 26
+        },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        transitionDuration: 250,
+        useInteractiveGuideline: true,
+        xAxis: {
+          showMaxMin: false,
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+        },
+        yAxis: {
+          showMaxMin: false,
+          axisLabel: $scope.formModel.measure.chartlabel
+        },
+        yAxisTickFormat: function(d) {
+          //Make values "in thousands" or "in millions" depending on the measure.
+          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          return $filter('significantDigits')(d, magnitude);
+        },
+        cData: ['Stacked','Stream','Expanded'],
+        legend: {
+          updateState: false,
+          dispatch: {
+            /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
+            legendClick: function(taxon) {
+              if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
+                $location.path('/taxa/' + taxon.entity_id);
+                $scope.$apply();
               }
             }
           }
         }
-      };
+      }
+    };
 
     $scope.colors = colorbrewer;
 
@@ -69,7 +69,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.options.chart.color = $scope.color[9];
       }
     };
-
 
     $scope.toggleTaxonNames = function() {
       //Swapping each datum's key between scientific name and common name.
@@ -94,17 +93,17 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
-          if ($scope.noData === true) {
-            $timeout(function() { $scope.api.update(); });
-          }
-          $scope.noData = false;
-          $scope.data = data.data;
-          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
-          spinnerState.loading = false;
-          if ($scope.useScientificNames) {
-            $scope.toggleTaxonNames();
-            $scope.useScientificNames = true;
-          }
+        if ($scope.noData === true) {
+          $timeout(function() { $scope.api.update(); });
+        }
+        $scope.noData = false;
+        $scope.data = data.data;
+        $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
+        spinnerState.loading = false;
+        if ($scope.useScientificNames) {
+          $scope.toggleTaxonNames();
+          $scope.useScientificNames = true;
+        }
       }, function() {
         $scope.noData = true;
         spinnerState.loading = false;
@@ -128,7 +127,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.useScientificNames = !$scope.useScientificNames;
     };
 
-	function updateYLabel() {
+    function updateYLabel() {
       /* not sure why options is not updating on $scope.formModel change */
       $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
       $scope.options.chart.yAxisTickFormat = function(d) {
