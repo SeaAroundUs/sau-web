@@ -23,16 +23,15 @@ angular
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }])
   .run(function($http, DSCacheFactory) {
-
       var cache = new DSCacheFactory('defaultCache', {
-          deleteOnExpire: 'aggressive',
-          maxAge: 1000*60*60, // 1hr, value in ms
-          capacity: Math.pow(2,20) * 128, // 128MB of memory storage
-          storageMode: 'memory' // or 'localStorage', but size is limited
+        deleteOnExpire: 'aggressive',
+        maxAge: 1000*60*60, // 1hr, value in ms
+        capacity: Math.pow(2,20) * 128, // 128MB of memory storage
+        storageMode: 'memory' // or 'localStorage', but size is limited
       });
 
       $http.defaults.cache = cache;
-  })
+    })
   .config(function ($routeProvider, SAU_CONFIG) {
     $routeProvider
       .when('/', {
@@ -159,13 +158,13 @@ angular
   .run(['$route', '$rootScope', '$location', function ($route, $rootScope, $location) {
     var original = $location.path;
     $location.path = function (path, reload) {
-        if (reload === false) {
-            var lastRoute = $route.current;
-            var un = $rootScope.$on('$locationChangeSuccess', function () {
-                $route.current = lastRoute;
-                un();
-            });
-        }
-        return original.apply($location, [path]);
+      if (reload === false) {
+        var lastRoute = $route.current;
+        var un = $rootScope.$on('$locationChangeSuccess', function () {
+          $route.current = lastRoute;
+          un();
+        });
+      }
+      return original.apply($location, [path]);
     };
   }]);

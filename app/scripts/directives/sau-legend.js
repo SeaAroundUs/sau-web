@@ -12,7 +12,7 @@ angular.module('sauWebApp')
       templateUrl: 'views/sau-legend.html',
       restrict: 'E',
       scope: {
-      	legendKeys: '='
+        legendKeys: '='
       }
     };
   });

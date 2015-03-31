@@ -88,8 +88,8 @@
           $scope.geojson.data.features[i].fillColor = '#0f0';
         }
       }
-        $scope.geojson.foo = new Date(); // force an update to geojson
-      }, true);
+      $scope.geojson.foo = new Date(); // force an update to geojson
+    }, true);
 
     angular.extend($scope, {
       center: {

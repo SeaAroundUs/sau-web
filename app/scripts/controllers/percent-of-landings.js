@@ -1,5 +1,3 @@
-;(function() {
-
 'use strict';
 
 angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
@@ -39,4 +37,3 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
 
     init();
   });
-})();

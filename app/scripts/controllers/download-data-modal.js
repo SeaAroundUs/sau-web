@@ -10,11 +10,11 @@
 angular.module('sauWebApp')
   .controller('DownloadDataModalCtrl', function ($scope, $modalInstance, dataUrl, $window) {
     $scope.downloadData = function() {
-    	$window.open(dataUrl);
-    	$modalInstance.dismiss('download');
+      $window.open(dataUrl);
+      $modalInstance.dismiss('download');
     };
 
     $scope.cancel = function() {
-    	$modalInstance.dismiss('cancel');
+      $modalInstance.dismiss('cancel');
     };
   });

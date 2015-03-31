@@ -91,7 +91,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: ['newer:jshint:all', 'jscs'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -185,6 +185,21 @@ module.exports = function (grunt) {
         },
         src: ['test/spec/{,*/}*.js']
       }
+    },
+
+    jscs: {
+        src: [
+          '<%= yeoman.app %>/scripts/{,*/}*.js'
+        ],
+        options: {
+            config: '.jscsrc',
+            requireCurlyBraces: [ 'if' ],
+            disallowMixedSpacesAndTabs: true,
+            disallowMultipleLineBreaks: true,
+            disallowMultipleSpaces: true,
+            validateIndentation: 2,
+            validateLineBreaks: 'LF'
+        }
     },
 
     // Empties folders to start fresh
@@ -474,6 +489,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'newer:jshint',
+      'jscs',
       // 'test',
       'clean:dist',
       'clean:server',

@@ -63,20 +63,20 @@ angular.module('sauWebApp')
 
     $scope.handleGeojsonMouseout = function() {
       $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
-          $rootScope.hoverRegion = {};
-          if (leafletEvent && leafletEvent.target) {
-            leafletEvent.target.setStyle(mapConfig.defaultStyle);
-          }
-          if (feature && feature.target) {
-            feature.target.setStyle(mapConfig.defaultStyle);
-          }
+        $rootScope.hoverRegion = {};
+        if (leafletEvent && leafletEvent.target) {
+          leafletEvent.target.setStyle(mapConfig.defaultStyle);
+        }
+        if (feature && feature.target) {
+          feature.target.setStyle(mapConfig.defaultStyle);
+        }
       });
     };
     $scope.handleGeojsonMouseout();
 
     $scope.handleGeojsonClick = function() {
       $scope.geojsonClick = $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
-          geojsonClick(leafletClickEvent.latlng);
+        geojsonClick(leafletClickEvent.latlng);
       });
     };
     $scope.handleGeojsonClick();
@@ -116,14 +116,14 @@ angular.module('sauWebApp')
       spinnerState.loading = true;
       $scope.features = sauAPI.Regions.get({region:$scope.region.name});
       $scope.features.$promise.then(function(data) {
-          angular.extend($scope, {
-            geojson: {
-              data: data.data,
-              style: mapConfig.defaultStyle,
-            }
-          });
-        $timeout(function() { spinnerState.loading = false; });
+        angular.extend($scope, {
+          geojson: {
+            data: data.data,
+            style: mapConfig.defaultStyle,
+          }
         });
+        $timeout(function() { spinnerState.loading = false; });
+      });
     };
 
     $scope.getFeatures();

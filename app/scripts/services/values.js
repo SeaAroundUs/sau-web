@@ -1,5 +1,3 @@
-;(function() {
-
 'use strict';
 
 angular.module('sauWebApp')
@@ -73,6 +71,3 @@ angular.module('sauWebApp')
       docsMethods: 'http://www.seaaroundus.org/doc/methods/',
       docs: 'http://www.seaaroundus.org/doc/'
     });
-
-
-})();
