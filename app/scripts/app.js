@@ -70,6 +70,11 @@ angular
         controller: 'EstuariesCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/:dimension', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -95,6 +100,11 @@ angular
         controller: 'ExploitedOrganismsCtrl',
         resolve: {region: function() {return 'lme';}}
       })
+      .when('/lme/:id/:dimension', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        resolve: {region: function() {return 'lme';}}
+      })
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -107,7 +117,7 @@ angular
       })
       .when('/rfmo/:id/procedures-and-outcomes', {
         templateUrl: 'views/procedures-and-outcomes.html',
-        controller: 'ProceduresAndOutcomesCtrl',
+        controller: 'ProceduresAndOutcomesCtrl'
       })
       /*
       .when('/highseas', {
@@ -147,6 +157,10 @@ angular
       .when('/topic/biodiversity', {
         templateUrl: 'views/topic-biodiversity.html',
         controller: 'TopicBiodiversityCtrl'
+      })
+      .when('/feru', {
+        templateUrl: 'views/feru.html',
+        controller: 'FERUCtrl'
       })
       .otherwise({
         redirectTo: '/'

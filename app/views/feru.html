@@ -1,0 +1,100 @@
+<div id="feru" ng-controller="FERUCtrl">
+  <h1 id="feru-title">Global Fisheries Economics</h1>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  </p>
+
+  <div class="tabset">
+    <tabset>
+      <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+        <h3 ng-bind="tab.longTitle"></h3>
+        <p ng-bind="tab.shortText"></p>
+
+        <div class="region-select">
+          <ui-select search-enabled="true" ng-model="tab.selected.region" theme="bootstrap">
+            <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
+            <ui-select-choices repeat="feature in tab.regions.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
+              <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <div class="dim-select">
+          <ui-select ng-model="tab.selected.dim" theme="bootstrap">
+            <ui-select-match placeholder="Select item from list...">{{$select.selected.label}}</ui-select-match>
+            <ui-select-choices repeat="dim in tab.dims">
+              <span ng-bind-html="dim.label"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <button class="btn btn-primary" ng-click="submitRegion(tab.selected)" scroll-click="feru-title">Submit</button>
+      </tab>
+    </tabset>
+
+    <p class="note">
+      *More information available for <a ng-href="#/eez">EEZs</a> and <a ng-href="#/lme">LMEs</a>
+    </p>
+  </div>
+
+  <hr />
+
+  <h2>Fisheries subsidies**</h2>
+
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
+    nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit
+    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt
+    in culpa qui officia deserunt mollit anim id est laborum.
+  </p>
+
+  <div class="countries-territories">
+    <h3>Countries &amp; Territories</h3>
+
+    <div class="country-territory">
+      <ui-select search-enabled="true" ng-model="selectedCountry" theme="bootstrap">
+        <ui-select-match placeholder="Type or select item from list...">{{$select.selected.label}}</ui-select-match>
+        <ui-select-choices repeat="country in countries">
+          <span ng-bind-html="country.label"></span>
+        </ui-select-choices>
+      </ui-select>
+    </div>
+
+    <!-- <button class="btn btn-primary" ng-click="submitCountry(tab)" scroll-click="feru-title">Submit</button> -->
+    <button class="btn btn-primary" disabled>Submit</button>
+  </div>
+
+  <p class="note">
+    **A short video by the United Nations Environment Programme (UNEP) provides a good introduction
+    to the important issue of fisheries subsides, and their link to overfishing. See also
+    <a href="http://feru.org/blog/unep-discusses-fishery-subsidies-video/" target="_blank">Fisheries Economics Research Unit</a>
+    for more details.
+  </p>
+
+  <iframe width="640" height="360"
+          src="https://www.youtube.com/embed/ol6XR3S_-UI?feature=player_embedded"
+          frameborder="0" allowfullscreen>
+  </iframe>
+
+  <p>
+    <span class="disabled">Feedback</span>
+  </p>
+</div>
