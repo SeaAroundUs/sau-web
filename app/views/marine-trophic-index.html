@@ -38,7 +38,7 @@
     <tr ng-repeat="(year, data) in tabularData | orderBy: year">
       <td ng-bind="year"></td>
       <td ng-bind="data.mean_trophic_level | number"></td>
-      <td ng-bind="data.mean_max_len | number"></td>
+      <td ng-bind="data.mean_max_length | number"></td>
       <td ng-bind="data.fib_index | number"></td>
       <td ng-bind="data.expansion_factor | number"></td>
     </tr>
