@@ -13,7 +13,9 @@ angular
     'ui.grid',
     'ui.grid.cellNav',
     'ui.grid.selection',
-    'ui.select'
+    'ui.select',
+    'angulartics',
+    'angulartics.google.analytics'
   ])
   .config(['$resourceProvider', function($resourceProvider) {
     // Don't strip trailing slashes from calculated URLs
