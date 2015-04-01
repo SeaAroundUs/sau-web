@@ -144,18 +144,18 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.dimensions = [
       {label: 'Taxon', value: 'taxon'},
-      {label: 'Commercial Groups', value: 'commercialgroup'},
-      {label: 'Functional Groups', value: 'functionalgroup'},
-      {label: 'Fishing Country', value: 'country'},
+      {label: 'Commercial groups', value: 'commercialgroup'},
+      {label: 'Functional groups', value: 'functionalgroup'},
+      {label: 'Fishing country', value: 'country'},
       // {label: 'Gear', value: 'gear'},
-      {label: 'Fishing Sector', value: 'sector'},
-      {label: 'Catch Type', value: 'catchtype', overrideLabel: 'Type'},
-      {label: 'Reporting Status', value: 'reporting-status'}
+      {label: 'Fishing sector', value: 'sector'},
+      {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
+      {label: 'Reporting status', value: 'reporting-status'}
     ];
 
     $scope.measures = {
       'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
-      'value': {label: 'Landed Value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$) by'}
+      'value': {label: 'Landed value', value: 'value', chartlabel: 'Real 2000 value (million US$)', titleLabel: 'Real 2000 value (US$) by'}
     };
 
     $scope.limits = [
