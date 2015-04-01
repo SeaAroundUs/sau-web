@@ -4,7 +4,9 @@
             <li><a ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms" scroll-click="region-title">Exploited organisms</a></li>
 
             <li ng-repeat="link in fishbaseLinks.fish">
-                <sau-link-or-disabled link="link" show="feature.data.fishbase_id"></sau-link-or-disabled>
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
             </li>
         </ul>
     </div>
@@ -12,14 +14,18 @@
         <h3 ng-show="fishbaseLinks.threatened">Threatened organisms</h3>
         <ul>
             <li ng-repeat="link in fishbaseLinks.threatened">
-                <sau-link-or-disabled link="link" show="feature.data.fishbase_id"></sau-link-or-disabled>
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
             </li>
         </ul>
 
         <h3 ng-show="fishbaseLinks.invertebrates">Marine invertebrates</h3>
         <ul>
             <li ng-repeat="link in fishbaseLinks.invertebrates">
-                <sau-link-or-disabled link="link" show="feature.data.fishbase_id"></sau-link-or-disabled>
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
             </li>
         </ul>
     </div>

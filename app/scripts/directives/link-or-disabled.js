@@ -5,8 +5,9 @@ angular.module('sauWebApp')
     return {
       templateUrl: 'views/link-or-disabled.html',
       restrict: 'E',
+      transclude: true,
       scope: {
-        link: '=',
+        href: '=',
         show: '=',
         target: '=?',
       },

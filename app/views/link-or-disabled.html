@@ -1,10 +1,10 @@
 <a ng-show="show"
     target="{{target}}"
-    ng-href="{{link.url}}"
-    ng-bind="link.label"
-></a>
+    ng-href="{{href}}">
+    <ng-transclude></ng-transclude>
+</a>
 <span
     ng-hide="show"
-    class="disabled"
-    ng-bind="link.label">
+    class="disabled">
+    <ng-transclude></ng-transclude>
 </span>
