@@ -52,6 +52,12 @@ angular.module('sauWebApp')
       },
     };
 
+    $scope.$watch('chartdata', function() {
+      if (!$scope.showRegression) {
+        $scope.changeRange();
+      }
+    }, true);
+
     $scope.$watch('years', function() {
       $scope.fullRange = {
         startYear: $scope.years[0],

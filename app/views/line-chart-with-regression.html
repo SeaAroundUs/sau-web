@@ -1,7 +1,7 @@
 <div class="chart-container">
     <nvd3 options='options' data='chartdata'></nvd3>
-    <button class="btn btn-primary x-button" ng-click="changeRange()" ng-show="showRegression" ng-click="hide()">Compute regression</button>
-    <div ng-show="!showRegression">
+    <button class="btn btn-primary x-button" ng-click="changeRange()" ng-show="showRegression">Compute regression</button>
+    <div ng-hide="showRegression">
         <p>
             Start year <select ng-change="changeRange()" ng-model="model.startYear" ng-options="y as y for y in startYears"></select>
             End year <select ng-change="changeRange()" ng-model="model.endYear" ng-options="y as y for y in endYears"></select>

@@ -39,16 +39,15 @@ angular.module('sauWebApp')
 
       angular.forEach($scope.data[0].values, function(xy) {
         if (xy[1]) {
-          $scope.years.push(xy[0]);
-          $scope.tabularData[xy[0]] = {};
+          if ($scope.years.indexOf(xy[0]) === -1) {
+            $scope.years.push(xy[0]);
+            $scope.tabularData[xy[0]] = {};
+          }
         }
       });
 
       angular.forEach($scope.data, function(time_series) {
-        var nullFilteredData = time_series.values.filter(function(x) {
-          return x[1];
-        });
-        time_series.values = nullFilteredData;
+        time_series.values = time_series.values.filter(function(x) { return x[1]; });
         $scope[time_series.key] = [time_series];
 
         angular.forEach(time_series.values, function(dataRow) {
