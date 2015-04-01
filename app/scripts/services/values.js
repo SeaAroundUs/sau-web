@@ -57,7 +57,7 @@ angular.module('sauWebApp')
       clear: {
         name: 'clear',
         type: 'imageOverlay',
-        url: '/images/clear-pixel.png',
+        url: 'images/clear-pixel.png',
         bounds: [[-540, -960], [540, 960]],
         layerParams: {
           noWrap: true,
