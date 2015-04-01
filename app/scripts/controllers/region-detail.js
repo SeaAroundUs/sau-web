@@ -218,8 +218,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         });
       }
 
-      $scope.estuariesData = sauAPI.EstuariesData.get({region: $scope.region.name, region_id: $scope.formModel.region_id});
-
       if ($scope.region.name === 'global') {
         $location.path('/' + $scope.region.name, false);
       } else {
@@ -244,6 +242,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.$watch('formModel', function() {
       if ($scope.region.name === 'eez') {
         $scope.feature.$promise.then(function() {
+          $scope.estuariesLink = {url: '#/'+$scope.region.name+'/'+$scope.formModel.region_id+'/estuaries', label: 'Estuaries'};
           $scope.ecopathURL = 'http://www.ecopath.org/models/?m_terms=&m_EEZ=' +
             $scope.feature.data.fishbase_id +
             '&m_LME=&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc=';

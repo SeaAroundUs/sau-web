@@ -1,5 +1,6 @@
 <p ng-show="ecopathURL"><a target="_blank" href="" ng-href="{{ecopathURL}}">Ecopath models</a></p>
 
-<p ng-show="estuariesData.data.features.length"><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/estuaries">Estuaries</a></p>
-<p ng-hide="estuariesData.data.features.length"><span class="disabled">Estuaries</span></p>
+<p>
+    <sau-link-or-disabled target="'_self'" link="estuariesLink" show="feature.data.estuary_count"></sau-link-or-disabled>
+</p>
 <p><a ng-href="">Fish parameters</a></p>

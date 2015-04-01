@@ -7,7 +7,11 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: {
         link: '=',
-        show: '='
+        show: '=',
+        target: '=?',
+      },
+      controller: function($scope) {
+        $scope.target = $scope.target || '_blank';
       }
     };
   });

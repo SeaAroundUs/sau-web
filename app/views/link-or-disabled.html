@@ -1,9 +1,8 @@
-<a
-    ng-show="show"
-    target="_blank"
+<a ng-show="show"
+    target="{{target}}"
     ng-href="{{link.url}}"
     ng-bind="link.label"
-</a>
+></a>
 <span
     ng-hide="show"
     class="disabled"
