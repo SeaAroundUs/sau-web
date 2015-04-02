@@ -187,6 +187,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.updateRegion = function() {
 
+      $scope.estuariesURL = '#/'+$scope.region.name+'/'+$scope.formModel.region_id+'/estuaries';
+
       function getFAOName(faoId) {
         var allFAOData = $scope.faoData.data.features;
         for (var i = 0; i < allFAOData.length; i++) {
@@ -239,7 +241,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
     $scope.ecopathURL = null;
-    $scope.estuariesURL = '#/'+$scope.region.name+'/'+$scope.formModel.region_id+'/estuaries';
 
     $scope.$watch('formModel', function() {
       if ($scope.region.name === 'eez') {
