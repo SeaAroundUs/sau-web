@@ -24,7 +24,7 @@ angular.module('sauWebApp')
             .select('svg')
             .select('.nv-stackedarea');
 
-            container.append('line')
+          container.append('line')
             .attr({
               x1: chart.xAxis.scale()(1950),
               y1: chart.yAxis.scale()($scope.maximumFraction),
@@ -32,14 +32,14 @@ angular.module('sauWebApp')
               y2: chart.yAxis.scale()($scope.maximumFraction)
             })
             .style('stroke', '#f70');
-            container.append('text')
-              .attr({
-                x: 10 + chart.xAxis.scale()(1950),
-                y: -5 + chart.yAxis.scale()($scope.maximumFraction),
-                fill: '#000',
-                style: 'font-style: italic' // in SVG, styling attributes don't override css but style attr does
-              })
-              .text('Maximum fraction ' + $scope.maximumFraction);
+          container.append('text')
+            .attr({
+              x: 10 + chart.xAxis.scale()(1950),
+              y: -5 + chart.yAxis.scale()($scope.maximumFraction),
+              fill: '#000',
+              style: 'font-style: italic' // in SVG, styling attributes don't override css but style attr does
+            })
+            .text('Maximum fraction ' + $scope.maximumFraction);
         });
       });
     });
