@@ -1,15 +1,46 @@
 'use strict';
 
 /* global angular */
+/* global d3 */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, externalURLs) {
 
     $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
 
+    $scope.api = {};
+
     $scope.$watch('formModel.region_id', function() {
       var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
-        $scope.data = data.data;
+        $scope.data = data.data.countries;
+        $scope.maximumFraction = data.data.maximum_fraction;
+
+        // draw maximum fraction line.  $timeout so it's drawn on top.
+        $timeout(function() {
+          console.debug($scope.maximum_fraction);
+          var chart = $scope.api.getScope().chart;
+          var container = d3
+            .select('.chart-container')
+            .select('svg')
+            .select('.nv-stackedarea');
+
+            container.append('line')
+            .attr({
+              x1: chart.xAxis.scale()(1950),
+              y1: chart.yAxis.scale()($scope.maximumFraction),
+              x2: chart.xAxis.scale()(2020),
+              y2: chart.yAxis.scale()($scope.maximumFraction)
+            })
+            .style('stroke', '#f70');
+            container.append('text')
+              .attr({
+                x: 10 + chart.xAxis.scale()(1950),
+                y: -5 + chart.yAxis.scale()($scope.maximumFraction),
+                fill: '#000',
+                style: 'font-style: italic' // in SVG, styling attributes don't override css but style attr does
+              })
+              .text('Maximum fraction ' + $scope.maximumFraction);
+        });
       });
     });
 
@@ -29,7 +60,7 @@ angular.module('sauWebApp')
         },
         x: function(d){return d[0];},
         y: function(d){return d[1];},
-        transitionDuration: 250,
+        transitionDuration: 0,
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
