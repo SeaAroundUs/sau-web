@@ -17,12 +17,8 @@ angular.module('sauWebApp')
 
         // draw maximum fraction line.  $timeout so it's drawn on top.
         $timeout(function() {
-          console.debug($scope.maximum_fraction);
           var chart = $scope.api.getScope().chart;
-          var container = d3
-            .select('.chart-container')
-            .select('svg')
-            .select('.nv-stackedarea');
+          var container = d3.select('.chart-container svg .nv-stackedarea');
 
           container.append('line')
             .attr({

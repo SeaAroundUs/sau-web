@@ -88,7 +88,12 @@
     }
 
 }
-
+.eez .chart-container {
+    .header-links {
+       margin-top:-10px;
+       line-height: 1.2em;
+    }
+}
 .chart-container {
     height: 350px;
     position: relative;

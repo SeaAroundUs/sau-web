@@ -3,8 +3,9 @@
     <p>No data is available for this selection</p>
   </div>
 
-  <div  ng-hide="noData" class="chart-container form-inline" spinner>
+  <div ng-hide="noData" class="chart-container form-inline" spinner>
     <i class="fa fa-spinner fa-spin loading fa-5x"></i>
+
     <div class="form-group">
       <label for="dimension">Dimension</label>
       <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
@@ -22,9 +23,14 @@
       <select class="form-control" ng-model="color" ng-options="c for (c,value) in colors"></select>
     </div>
     <div class="pull-right header-links">
-      <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
-      <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
-      <span><a href="http://www.seaaroundus.org/doc/saup_manual.htm#13" target="_blank">Method</a></span>
+
+      <span ng-show="(!declarationYear.enabled) && declarationYear.show"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
+      <span ng-show="declarationYear.enabled && declarationYear.show"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
+
+      <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
+      <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
+
+      <span><a ng-href="{{docURL}}saup_manual.htm#13" target="_blank">Method</a></span><br />
     </div>
     <div>
       <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
