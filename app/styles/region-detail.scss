@@ -3,6 +3,18 @@
 .region-detail {
     background-color: white;
     color: black;
+
+    &.eez {
+        .metrics {
+            min-height: 220px;
+        }
+    }
+    &.lme {
+        .metrics {
+            min-height: 186px;
+        }
+    }
+
     .btn {
       border-radius: 0;
       background-color: $lightBlue;
@@ -24,7 +36,7 @@
     .padded {
         padding: 20px;
     }
-    table.metrics {
+    .metrics table {
         width: 100%;
         td {
             padding: 2px;

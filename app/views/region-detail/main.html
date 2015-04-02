@@ -1,4 +1,4 @@
-<div class="region-detail">
+<div class="region-detail {{region.name}}">
     <div class="title row">
         <h1 id="region-title" class="region-title pull-left" ng-bind="chartTitle"></h1>
         <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
@@ -37,16 +37,16 @@
                     <a target="_blank" ng-href="{{eezManualURL}}">EEZ Boundary explanation</a>
                 </p>
             </div>
-            <div class="padded content">
-                <table class="metrics">
+            <div class="padded content metrics">
+                <table>
                     <tr ng-repeat="metric in feature.data.metrics">
                         <td><a ng-href="{{ metricLinks[metric.title] }}">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
-                    <tr ng-if="region.name === 'eez'">      
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a>     
-                        by {{feature.data.country_name}}</td>      
-                        <td>{{feature.data.year_started_eez_at}}</td>       
+                    <tr ng-if="region.name === 'eez'">
+                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a>
+                        by {{feature.data.country_name}}</td>
+                        <td>{{feature.data.year_started_eez_at}}</td>
                     </tr>
                 </table>
             </div>
