@@ -22,9 +22,7 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/lme.png', label: 'LME' },
       { pattern: 'images/legend/disputed_lme.png', label: 'Disputed' },
       { pattern: 'images/legend/other_lme.png', label: 'Other LME' },
-      { pattern: 'images/legend/fao.png', label: 'FAO boundary' },
       { pattern: 'images/legend/high_seas.png', label: 'High seas' },
-      { pattern: 'images/legend/ifa.png', label: 'IFA area' }
     ];
 
     var highseas = [

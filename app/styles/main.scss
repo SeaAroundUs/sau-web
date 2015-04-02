@@ -277,8 +277,8 @@ label {
   line-height: 16px;
 }
 .external-links {
-  a:nth-child(2) {
-    margin-left:20px;
+  a:first-child {
+    margin-right: 20px;
   }
 }
 
