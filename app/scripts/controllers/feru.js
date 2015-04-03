@@ -18,7 +18,6 @@ angular.module('sauWebApp')
         title: 'EEZ',
         active: true,
         longTitle: 'EEZ Landed Values*',
-        shortText: 'lorem ipsum EEZ',
         regions: sauAPI.Regions.get({region: 'eez'}),
         dims: dims,
         selected: {}
@@ -27,7 +26,6 @@ angular.module('sauWebApp')
         title: 'LME',
         active: false,
         longTitle: 'LME Landed Values*',
-        shortText: 'lorem ipsum LME',
         regions: sauAPI.Regions.get({region: 'lme'}),
         dims: dims,
         selected: {}
