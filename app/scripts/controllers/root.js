@@ -6,7 +6,9 @@
     .controller('RootCtrl', function ($scope, $location) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
-        $scope.showCBDLogo = (location.$$route && location.$$route.controller === 'MarineTrophicIndexCtrl');
+        $scope.showCBDLogo = location.$$route &&
+          (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
+           location.$$route.controller === 'MarineTrophicIndexSearchCtrl');
 
         if (location.$$route && location.$$route.controller === 'FERUCtrl') {
           $scope.templates[0].class = '';

@@ -161,6 +161,10 @@ angular
         templateUrl: 'views/feru.html',
         controller: 'FERUCtrl'
       })
+      .when('/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index-search.html',
+        controller: 'MarineTrophicIndexSearchCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
