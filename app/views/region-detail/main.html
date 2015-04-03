@@ -44,8 +44,7 @@
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a>
-                        by {{feature.data.country_name}}</td>
+                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a></td>
                         <td>{{feature.data.year_started_eez_at}}</td>
                     </tr>
                 </table>
