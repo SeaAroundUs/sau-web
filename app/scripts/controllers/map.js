@@ -87,7 +87,7 @@ angular.module('sauWebApp')
       center: {
         lat: 0,
         lng: 0,
-        zoom: 3
+        zoom: 2
       },
       defaults: mapConfig.defaults,
       layers: {
