@@ -3,7 +3,7 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, $filter, sauAPI, region) {
+  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, $filter, $q, sauAPI, region) {
 
     $scope.years = [];
     $scope.regionType = region;
@@ -41,55 +41,48 @@ angular.module('sauWebApp')
       return pathArray[0] + '//' + pathArray[2];
     })();
 
-    $scope.region = sauAPI.Region.get({region: region, region_id: id});
-
-    var species = sauAPI.ExploitedOrganismsData.get({region: region, region_id: id}, function() {
-      $scope.speciesList = species.data;
-    });
-
     var displayCharts = function(data) {
       $scope.data = data.data;
       $scope.tabularData = {};
 
-      angular.forEach($scope.data[0].values, function(xy) {
-        if (xy[1]) {
-          if ($scope.years.indexOf(xy[0]) === -1) {
-            $scope.years.push(xy[0]);
-            $scope.tabularData[xy[0]] = {};
-          }
-        }
-      });
+      $scope.years = $scope.data[0].values
+        .filter(function(o) {return o[1];})
+        .map(function(o) {return o[0];});
 
-      $scope.fib.year = $scope.years[0];
+      $scope.fib.year = $scope.fib.year || $scope.years[0];
 
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
         $scope[time_series.key] = [time_series];
 
         angular.forEach(time_series.values, function(dataRow) {
-          if ($scope.tabularData[dataRow[0].toString()]) {
-            $scope.tabularData[dataRow[0].toString()][time_series.key] = dataRow[1];
+          var year = dataRow[0];
+          if ($scope.years.indexOf(year) >=0) {
+            if (! $scope.tabularData[year]) {
+              $scope.tabularData[year] = {};
+            }
+            $scope.tabularData[year][time_series.key] = dataRow[1];
           }
         });
       });
     };
 
-    sauAPI.MarineTrophicIndexData.get({region: region, region_id: id}, displayCharts);
-
     // compute data with exclusions from species table
     $scope.compute = function() {
-      var url = sauAPI.apiURL + region + '/marine-trophic-index/?region_id=' + id;
 
-      angular.forEach($scope.speciesList, function(species) {
-        if (species.excluded) {
-          url += '&exclude=' + species.taxon_key;
-        }
-      });
+      var excludedTaxons = $scope.speciesList
+        .filter(function(o) { return o.excluded; } )
+        .map(function(o) {return o.taxon_key});
 
-      url += '&reference_year' + $scope.fib.year;
-      url += '&transfer_efficiency' + $scope.fib.transferEfficiency;
+      var params = {
+        region: region,
+        region_id: id,
+        reference_year: $scope.fib.year,
+        transfer_efficiency: $scope.fib.transferEfficiency,
+        exclude: excludedTaxons
+      };
 
-      $http.get(url).success(displayCharts);
+      sauAPI.MarineTrophicIndexData.get(params, displayCharts);
     };
 
     // select/deselect all exclusion checkboxes on species table
@@ -98,5 +91,18 @@ angular.module('sauWebApp')
         species.excluded = excluded;
       });
     };
+
+    var init = function() {
+      $scope.region = sauAPI.Region.get({region: region, region_id: id});
+      var species = sauAPI.ExploitedOrganismsData.get({region: region, region_id: id}, function() {
+        $scope.speciesList = species.data;
+      });
+
+      $q.all([species.$promise]).then(function() {
+        $scope.compute();
+      });
+    };
+
+    init();
 
   });
