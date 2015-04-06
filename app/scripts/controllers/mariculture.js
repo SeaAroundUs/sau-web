@@ -41,11 +41,11 @@
       .get();
     $scope.features.$promise.then(function(data) {
         var filteredData = data.features.filter(function(f) {
-                    if($scope.un_mapping[f.properties.iso_a3]){
-                      return true;
-                    } else {
-                      return false;
-                    }
+          if($scope.un_mapping[f.properties.iso_a3]){
+            return true;
+          } else {
+            return false;
+          }
         });
         // $scope.features.data = filteredData;
         angular.extend($scope, {

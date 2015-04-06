@@ -163,33 +163,12 @@ angular.module('sauWebApp')
       });
     };
 
-<<<<<<< HEAD
-    $scope.$watch('mapLayers.selectedFAO', function(){
-      // set selectedFAO to 0 to remove.  This will likely change when additional FAO data
-      // comes in from the API
-      if ($scope.mapLayers.selectedFAO < 1) {
-        $scope.removeFAO();
-        return;
-      }
-      leafletData.getMap('minimap').then(function(map) {
-        $scope.features.$promise.then(function() {
-          drawFAO(map);
-        });
-      });
-    });
-
-
     if ($scope.region.name === 'mariculture') {
       $scope.features = sauAPI.Mariculture.get({region_id:$scope.formModel.region_id});
     }
 
     $scope.features.$promise.then(function() {
-      // add features layer when loaded, then load IFA so IFA gets painted on top
-
-=======
-    $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA and FAO so they get painted on top
->>>>>>> master
       leafletData.getMap('minimap').then(function(map) {
         var features = [$scope.features.data.features];
 
@@ -212,10 +191,7 @@ angular.module('sauWebApp')
           }
         }).addTo(map);
         $scope.styleSelectedFeature();
-<<<<<<< HEAD
 
-
-=======
         $scope.$watch('mapLayers.selectedFAO', function(){
           leafletData.getMap('minimap').then(function(map) {
             if ($scope.faoData) {
@@ -225,7 +201,6 @@ angular.module('sauWebApp')
             }
           });
         });
->>>>>>> master
       });
     });
 

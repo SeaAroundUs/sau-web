@@ -12,44 +12,44 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
 
     $scope.options = {
       chart: {
-          type: 'stackedAreaChart',
-          height: 304,
-          margin : {
-              right: 0,
-              bottom: 16
-          },
-          x: function(d){return d[0];},
-          y: function(d){return d[1];},
-          transitionDuration: 0,
-          useInteractiveGuideline: true,
-          xAxis: {
-              showMaxMin: false,
-              tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
-          },
-          yAxis: {
-            showMaxMin: false,
-            axisLabel: $scope.formModel.measure.chartlabel
-          },
-          yAxisTickFormat: function(d) {
-            //Make values "in thousands" or "in millions" depending on the measure.
-            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-            return $filter('significantDigits')(d, magnitude);
-          },
-          cData: ['Stacked','Stream','Expanded'],
-          legend: {
-            updateState: false,
-            dispatch: {
-              /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
-              legendClick: function(taxon) {
-                if ($scope.formModel.dimension.value === 'taxon') {
-                  //Route user to "key information on taxon page" via the modal close event.
-                  $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
-                }
+        type: 'stackedAreaChart',
+        height: 304,
+        margin : {
+          right: 0,
+          bottom: 16
+        },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        transitionDuration: 0,
+        useInteractiveGuideline: true,
+        xAxis: {
+          showMaxMin: false,
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+        },
+        yAxis: {
+          showMaxMin: false,
+          axisLabel: $scope.formModel.measure.chartlabel
+        },
+        yAxisTickFormat: function(d) {
+          //Make values "in thousands" or "in millions" depending on the measure.
+          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          return $filter('significantDigits')(d, magnitude);
+        },
+        cData: ['Stacked','Stream','Expanded'],
+        legend: {
+          updateState: false,
+          dispatch: {
+            /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
+            legendClick: function(taxon) {
+              if ($scope.formModel.dimension.value === 'taxon') {
+                //Route user to "key information on taxon page" via the modal close event.
+                $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
               }
             }
           }
         }
-      };
+      }
+    };
 
     $scope.colors = colorbrewer;
 
@@ -76,9 +76,9 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
       var data_options = {region_id: 4};
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.MaricultureData.get(data_options, function() {
-          $scope.data = data.data;
-          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
-          spinnerState.loading = false;
+        $scope.data = data.data;
+        $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
+        spinnerState.loading = false;
       });
       spinnerState.loading = true;
     }
