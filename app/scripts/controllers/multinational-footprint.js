@@ -6,6 +6,10 @@
 angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, externalURLs) {
 
+    var getChartTitle = function() {
+      return 'Primary Production Required for catches in the waters of ' + $scope.feature.data.title;
+    };
+
     $scope.methodURL = externalURLs.manual + '#13';
 
     $scope.api = {};
@@ -14,6 +18,7 @@ angular.module('sauWebApp')
       var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
         $scope.data = data.data.countries;
         $scope.maximumFraction = data.data.maximum_fraction;
+        $scope.updateChartTitle(getChartTitle());
 
         // draw maximum fraction line.  $timeout so it's drawn on top.
         $timeout(function() {
@@ -41,7 +46,7 @@ angular.module('sauWebApp')
     });
 
     $scope.feature.$promise.then(function() {
-      $scope.updateChartTitle('Primary Production Required for catches in the waters of ' + $scope.feature.data.title);
+      $scope.updateChartTitle(getChartTitle());
       updateDataDownloadUrl();
     });
 
