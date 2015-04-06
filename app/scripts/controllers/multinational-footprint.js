@@ -6,7 +6,7 @@
 angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, externalURLs) {
 
-    $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
+    $scope.methodURL = externalURLs.manual + '#13';
 
     $scope.api = {};
 

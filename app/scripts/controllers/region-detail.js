@@ -49,12 +49,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.metricLinks = {
-      'EEZ area': externalURLs.docs + 'saup_manual.htm#15',
-      'Shelf Area': externalURLs.docs + 'saup_manual.htm#15',
-      'Inshore Fishing Area (IFA)': externalURLs.docs + 'ifa.htm',
-      'Coral Reefs': externalURLs.docs + 'saup_manual.htm#2',
-      'Seamounts': externalURLs.docs + 'saup_manual.htm#22',
-      'Primary production': externalURLs.docs + 'saup_manual.htm#3'
+      'EEZ area': externalURLs.manual + '#15',
+      'Shelf Area': externalURLs.manual + '#15',
+      'Inshore Fishing Area (IFA)': externalURLs.manual,
+      'Coral Reefs': externalURLs.manual + '#2',
+      'Seamounts': externalURLs.manual + '#22',
+      'Primary production': externalURLs.manual + '#3'
     };
 
     $scope.mapLayers = {
@@ -65,7 +65,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.mapLayers.selectedFAO = fao.id;
     };
 
-    $scope.eezManualURL = externalURLs.docs + 'saup_manual.htm#15';
+    $scope.eezManualURL = externalURLs.manual + '#15';
     $scope.apiOrigin = (function() {
       var pathArray = sauAPI.apiURL.split('/');
       return pathArray[0] + '//' + pathArray[2];

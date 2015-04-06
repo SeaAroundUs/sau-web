@@ -68,6 +68,6 @@ angular.module('sauWebApp')
   })
   .value('externalURLs',
     {
-      docsMethods: 'http://www.seaaroundus.org/doc/methods/',
-      docs: 'http://www.seaaroundus.org/doc/'
+      manual: '/reference.html',
+      sspMethods: '/wp-content/uploads/2015/04/SSP_methods-April-2011-final.pdf'
     });

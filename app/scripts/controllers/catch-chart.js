@@ -12,7 +12,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.declarationYear.show = true;
       }
 
-      $scope.docURL = externalURLs.docs;
+      $scope.manualURL = externalURLs.manual;
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       updateDataDownloadUrl();

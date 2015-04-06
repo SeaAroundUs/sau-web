@@ -8,7 +8,7 @@ angular.module('sauWebApp')
     $scope.data = {};
     $scope.regionName = region;
     $scope.region = sauAPI.Region.get({region: region, region_id: $routeParams.id});
-    $scope.docsMethodsURL = externalURLs.docsMethods;
+    $scope.docsMethodsURL = externalURLs.sspMethods;
 
     var data = sauAPI.StockStatusData.get({region: region, region_id: $routeParams.id}, function() {
       angular.forEach(data.data, function(data_set, key) {
