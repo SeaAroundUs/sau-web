@@ -3,20 +3,14 @@
     <div id="map-container">
         <div id="control-box">
 
-            <input class="typeahead pull-left"
-                type="text"
-                ng-model="selected"
-                placeholder="Type or select item from list"
-                typeahead="feature as feature.properties.title
-                    for feature in geojson.data.features
-                    | filter:{properties:{title:$viewValue}}
-                    | orderBy:'properties.title'"
-                typeahead-editable="true"
-                typeahead-on-select=""
-                typeahead-min-length="0"
-            >
+            <ui-select class="search pull-left" ng-model="model.selectedFeature" on-select="onSelect($item)" theme="bootstrap">
+              <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
+              <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
+                <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
+              </ui-select-choices>
+            </ui-select>
 
-            <span class="pull-right">
+            <span class="number-estuaries pull-right">
                 No. of estuaries:
                 <span ng-bind="geojson.data.features.length"></span>
             </span>
@@ -31,21 +25,24 @@
                 <tbody>
                     <tr>
                         <td>Estuary: </td>
-                        <td class="content" ng-bind="selected.properties.title"></td>
+                        <td class="content" ng-bind="model.selectedFeature.properties.title"></td>
                         <td>Period: </td>
-                        <td class="content">
-                            <span ng-bind="selected.properties.year_start"></span>
+                        <td ng-show="! (model.selectedFeature.properties.year_start && model.selectedFeature.properties.year_end)" class="content">
+                            unknown
+                        </td>
+                        <td ng-show="model.selectedFeature.properties.year_start && model.selectedFeature.properties.year_end" class="content">
+                            <span ng-bind="model.selectedFeature.properties.year_start"></span>
                             -
-                            <span ng-bind="selected.properties.year_end"></span>
+                            <span ng-bind="model.selectedFeature.properties.year_end"></span>
                         </td>
                     </tr>
                     <tr>
                         <td>River system(s): </td>
-                        <td ng-bind="selected.properties.river_system"></td>
+                        <td ng-bind="model.selectedFeature.properties.river_system"></td>
                     </tr>
                     <tr>
-                        <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>day<sup>-1</sup>): </td>
-                        <td ng-bind="selected.properties.discharge"></td>
+                        <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>): </td>
+                        <td ng-bind="model.selectedFeature.properties.discharge"></td>
                     </tr>
                 </tbody>
             </table>

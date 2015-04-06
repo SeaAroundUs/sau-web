@@ -1,5 +1,3 @@
-;(function() {
-
 'use strict';
 
 angular.module('sauWebApp')
@@ -33,5 +31,3 @@ angular.module('sauWebApp')
 
     return methods;
   });
-
-})();

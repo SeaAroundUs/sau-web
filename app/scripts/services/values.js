@@ -1,5 +1,3 @@
-;(function() {
-
 'use strict';
 
 angular.module('sauWebApp')
@@ -22,19 +20,16 @@ angular.module('sauWebApp')
       weight: 1.0
     },
     faoStyle: {
-      color: '#ff0819',
-      fillColor: '#d00',
-      fillOpacity: 1.0,
+      fill: false,
+      color: '#00f',
+      opacity: 1.0,
       weight: 1.0
     },
     selectedFaoStyle: {
-      color: '#000',
-      stroke: true,
-      weight: 2.0,
-      fillPattern: null,
-      fillColor: '#00f',
-      fillOpacity: 0.7,
-      opacity: 1.0
+      fill: false,
+      color: '#00f',
+      opacity: 1.0,
+      weight: 4.0,
     },
     hatchStyle: {
       patternTransform: 'rotate(45)',
@@ -68,7 +63,7 @@ angular.module('sauWebApp')
       clear: {
         name: 'clear',
         type: 'imageOverlay',
-        url: '/images/clear-pixel.png',
+        url: 'images/clear-pixel.png',
         bounds: [[-540, -960], [540, 960]],
         layerParams: {
           noWrap: true,
@@ -79,9 +74,6 @@ angular.module('sauWebApp')
   })
   .value('externalURLs',
     {
-      docsMethods: 'http://www.seaaroundus.org/doc/methods/',
-      docs: 'http://www.seaaroundus.org/doc/'
+      manual: '/reference.html',
+      sspMethods: '/wp-content/uploads/2015/04/SSP_methods-April-2011-final.pdf'
     });
-
-
-})();

@@ -1,37 +1,61 @@
 @import 'global';
 
-.modal-content {
-    padding: 20px;
-    background-color: black;
-    color: white;
+.region-detail {
+    background-color: white;
+    color: black;
+
+    &.eez {
+        .metrics {
+            min-height: 220px;
+        }
+    }
+    &.lme {
+        .metrics {
+            min-height: 186px;
+        }
+    }
+
+    .btn {
+      border-radius: 0;
+      background-color: $lightBlue;
+    }
     div.row {
         margin-bottom: 10px;
+        margin-left: 70px;
+        margin-right: 70px;
+    }
+    .title.row {
+        margin-top: 30px;
     }
     div.content {
         background-color: white;
         color: black;
+        border: 1px solid $gray;
+        margin-bottom: 30px;
     }
     .padded {
         padding: 20px;
     }
-    table.metrics {
+    .metrics table {
         width: 100%;
         td {
             padding: 2px;
         }
     }
-    .x-button {
-        margin-left: 20px;
-        background-color: black;
-        border: 3px solid white;
-        border-radius: 20px;
+    .region-title {
+        min-height: 40px;
+        margin-top: 8px;
+        text-transform: uppercase;
     }
-    .tabset.content {
-        padding-left: 10px;
-        padding-right: 0px;
-        background-color: black;
+    .hover-region {
+        margin: 0px;
+    }
+    .tabset {
+        margin-left:17px;
+        .tab-content {
+            border: 1px solid $gray;
+        }
         ul.nav-tabs {
-            background-color: black;
 
             li {
                 background-color:white;
@@ -56,21 +80,33 @@
         padding: 0px;
     }
     .container {
+        padding: 20px 70px;
         width: 100%;
+    }
+    .right {
+        padding-right: 0px;
     }
 
 }
-.modal-lg {
-    width: 100%;
-    min-width: 1200px;
-    margin-top:0px;
-    .modal-title {
-        min-height: 40px;
+.eez .chart-container {
+    .header-links {
+       margin-top:-10px;
+       line-height: 1.2em;
     }
 }
 .chart-container {
     height: 350px;
     position: relative;
+
+    &.no-data {
+      text-align: center;
+      font-size: 1.5em;
+
+      p {
+        margin: 0;
+        padding: 3em 0 0 0;
+      }
+    }
 
     /* make points visible */
     .nvd3.nv-line .nv-point
@@ -81,6 +117,10 @@
     .form-group {
         margin-right: 16px;
         margin-bottom: 12px;
+    }
+
+    .form-control {
+        color: #555;
     }
 
     label {
@@ -128,46 +168,37 @@
     fill-opacity: 1.0;
 }
 
-.modal.fade {
-  opacity: 1;
-  -webkit-transition: none;
-  -moz-transition: none;
-  -ms-transition: none;
-  -o-transition: none;
-  transition: none;
-}
-
-.modal.fade .modal-dialog,
-.modal.in .modal-dialog
-{
-  -webkit-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-
-.modal-dialog {
-  width: 100%;
-}
-
 .region-detail-tabs {
   .nav-tabs > li > a {
     color: $textColor;
     background-color: $lightGray;
     margin-right: 0;
+    border: 1px solid $gray;
+    border-bottom: 0px;
+    border-radius: 0px;
   }
 
   .nav-tabs > li.active > a,
   .nav-tabs > li.active > a:hover,
   .nav-tabs > li.active > a:focus {
     border-color: transparent;
-    background: white;
+    background: $lightBlue;
+    color: white;
   }
 
-  .row.catch h3.values-by {
-    margin-top: 35px;
+  .catch {
+    .col-sm-7 {
+        padding: 0px;
+    }
+    h3.values-by {
+        margin-top: 35px;
+    }
   }
 
-  .row.biodiversity {
+  .biodiversity {
+    &>div {
+        padding: 0px;
+    }
     ul.organisms {
       list-style-type: none;
       padding-left: 5px;

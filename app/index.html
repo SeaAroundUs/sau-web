@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/nvd3-community/build/nv.d3.css" />
     <link rel="stylesheet" href="bower_components/colorbrewer2/colorbrewer.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -24,6 +25,10 @@
     <link rel="stylesheet" href="styles/region-detail.css">
     <link rel="stylesheet" href="styles/taxon-info.css">
     <link rel="stylesheet" href="styles/sau-legend.css">
+    <link rel="stylesheet" href="styles/marine-trophic-index.css">
+    <link rel="stylesheet" href="styles/stock-status.css">
+    <link rel="stylesheet" href="styles/feru.css">
+    <link rel="stylesheet" href="styles/marine-trophic-index-search.css">
     <!-- endbuild -->
 
   </head>
@@ -32,29 +37,43 @@
         <div id="root">
           <div id="header">
             <div id="logos" class="clearfix">
-              <a href="#/">
+              <a href="/" target="_self">
                 <img class="pull-left" src="images/logo_saup.png" alt="Sea Around Us logo">
               </a>
-              <img class="pull-right" src="images/logo_vulcan.png" alt="Vulcan logo">
+              <a ng-hide="showCBDLogo" href="http://www.vulcan.com" target="_blank">
+                <img class="pull-right" src="images/logo_vulcan.png" alt="Vulcan logo">
+              </a>
+              <a ng-cloak ng-show="showCBDLogo" class="cbd-logo" href="http://www.cbd.int/" target="_blank">
+                <img class="pull-right" src="images/logo_cbd.gif" alt="Vulcan logo">
+              </a>
             </div>
 
             <ul class="nav nav-pills top-header">
               <li role="presentation" ng-repeat="t in templates">
-                <a ng-bind="t.name" ng-class="t.class"></a>
+                <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
               </li>
             </ul>
 
           </div>
 
-          <div id="main_view" ng-view=""></div>
+          <div id="no-data" ng-show="hideView" ng-cloak>
+            Data not yet available
+          </div>
+
+          <div id="main_view" ng-view="" ng-hide="hideView">
+            <noscript>
+              Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.html">here</a>
+              to navigate to our site that does not require Javascript.
+            </noscript>
+          </div>
 
           <div id="footer" class="clearfix">
             <div id="copyright" class="pull-left">
-              Copyright Information here. All rights reserved.
+              © 2015 Sea Around Us
             </div>
             <div id="legal" class="pull-right">
-              <a class="" href="#">Privacy Policies</a>
               <!--
+              <a class="" href="#">Privacy Policies</a>
               <span class="separator">|</span>
               <a class="" href="#">Terms and Conditions</a>
               -->
@@ -72,6 +91,7 @@
 
     <!-- build:js(.) scripts/vendor.js -->
     <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/bootstrap-sass-official/vendor/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
@@ -94,6 +114,27 @@
     <script src="bower_components/leaflet-pip/leaflet-pip.js"></script>
     <script src="bower_components/esri-leaflet/dist/esri-leaflet.js"></script>
     <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+    <script src="bower_components/ngSanitize/index.js"></script>
+    <script src="bower_components/waypoints/waypoints.js"></script>
+    <script src="bower_components/SHA-1/sha1.js"></script>
+    <script src="bower_components/angulartics/src/angulartics.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-adobe.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-chartbeat.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-cnzz.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-flurry.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-ga-cordova.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-ga.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-gtm.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-kissmetrics.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-mixpanel.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-piwik.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-scroll.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-segmentio.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-splunk.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-woopra.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-marketo.js"></script>
+    <script src="bower_components/angulartics/src/angulartics-intercom.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -120,10 +161,19 @@
     <script src="scripts/controllers/procedures-and-outcomes.js"></script>
     <script src="scripts/controllers/country-profile.js"></script>
     <script src="scripts/controllers/topic-biodiversity.js"></script>
+    <script src="scripts/controllers/feru.js"></script>
+    <script src="scripts/controllers/tab-biodiversity.js"></script>
+    <script src="scripts/controllers/download-data-modal.js"></script>
+    <script src="scripts/controllers/marine-trophic-index-search.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/taxon-info.js"></script>
     <script src="scripts/directives/taxon-grid.js"></script>
+    <script src="scripts/directives/spinner.js"></script>
+    <script src="scripts/directives/scroll-click.js"></script>
+    <script src="scripts/directives/sau-legend.js"></script>
+    <script src="scripts/directives/link-or-disabled.js"></script>
+    <script src="scripts/directives/lorem.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/filters/significantdigits.js"></script>
@@ -131,12 +181,18 @@
     <script src="scripts/services/sau-api.js"></script>
     <script src="scripts/services/taxonlevels.js"></script>
     <script src="scripts/services/values.js"></script>
-    <script src="scripts/directives/sau-legend.js"></script>
     <script src="scripts/services/inset-map-legend-data.js"></script>
-
-    <script src="scripts/thirdparty/leaflet.pattern-src.js"></script>
     <script src="scripts/services/spinner-state.js"></script>
-    <script src="scripts/directives/spinner.js"></script>
+
     <!-- endbuild -->
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-61452144-1', { 'cookieDomain': 'none' });
+    </script>
 </body>
 </html>

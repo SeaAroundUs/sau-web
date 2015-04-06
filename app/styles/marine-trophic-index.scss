@@ -1,0 +1,67 @@
+#marine-trophic-index {
+  padding: 0 5em;
+
+  .row.title {
+    padding: 3em 0 2em;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    button {
+      border-radius: 0;
+    }
+  }
+
+  .row {
+    &.links {
+      padding: 1em 0 2em;
+    }
+
+    &.buttons {
+      margin-bottom: 1em;
+
+      button:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  #access-year-table {
+    td {
+      padding: 4px 6px;
+    }
+  }
+
+  a.show-hide-species {
+    display: inline-block;
+    margin: 1em 0;
+  }
+
+  .species-list, .tabular-data {
+    border: 1px solid #aaa;
+    border-spacing: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+
+    th, td {
+      border-bottom: 1px solid #aaa;
+    }
+
+    thead tr th {
+      background-color: #eee;
+      padding: 5px 10px;
+    }
+
+    tbody tr {
+      td {
+        padding: 5px 10px;
+
+        &.exclude {
+          text-align: center;
+        }
+      }
+    }
+  }
+}

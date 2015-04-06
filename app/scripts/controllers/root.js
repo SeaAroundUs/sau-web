@@ -3,38 +3,48 @@
   'use strict';
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope, $rootScope, $location) {
+    .controller('RootCtrl', function ($scope, $location) {
 
-      var templateDir = 'views/';
-      $scope.templates = [
-        {'name': 'Analyses & Visualization', 'url': templateDir+'data.html', 'class': 'selected'},
-        {'name': 'Publications', 'url': templateDir+'publications.html'},
-        {'name': 'News & About', 'url': templateDir+'news.html'},
-        {'name': 'Collaborations', 'url': templateDir+'collaborations.html'},
-        // {'name': 'People', 'url': templateDir+'people.html'},
-        {'name': 'Contact Us', 'url': templateDir+'about.html'},
-      ];
-      $scope.template = $scope.templates[0];
+      $scope.$on('$routeChangeSuccess', function(evt, location) {
+        $scope.showCBDLogo = location.$$route &&
+          (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
+           location.$$route.controller === 'MarineTrophicIndexSearchCtrl');
 
-      if ($rootScope.modalInstance) {
-        $rootScope.modalInstance.close();
-      }
-
-      $scope.region = {name: 'eez'};
-
-      $scope.$on('backButtonClick', function() {
-        if ($rootScope.modalInstance &&
-              (
-                // should be whitelisting modal-to-modal paths instead of this..
-                $location.path() === ('/' + $scope.region.name) ||
-                $location.path() === ('/topic/biodiversity'),
-                $location.path() === ('/mariculture'),
-                $location.path().slice(0,5) === ('/taxa')
-              )
-            ) {
-          $rootScope.modalInstance.close({location: $location.path()});
+        if (location.$$route && location.$$route.controller === 'FERUCtrl') {
+          $scope.templates[0].class = '';
+          $scope.templates[3].class = 'selected';
+        } else {
+          $scope.templates[0].class = 'selected';
+          $scope.templates[3].class = '';
         }
       });
 
+      var hiddenData = {
+        eez: [ 554, 555 ],
+        lme: [ 46 ]
+      };
+
+      $scope.$watch(function() { return $location.url(); }, function(url) {
+        var splitURL = url.split('/');
+        var region = splitURL[1];
+        var regionId = splitURL[2];
+        var subView = splitURL[3];
+        $scope.hideView = hiddenData[region] &&
+          hiddenData[region].indexOf(parseInt(regionId)) > -1 &&
+          subView !== 'exploited-organisms';
+      });
+
+      $scope.templates = [
+        {'name': 'Analyses & Visualization', 'url': '/data/#/', 'class': 'selected'},
+        {'name': 'Publications', 'url': '/articles/'},
+        {'name': 'News & About', 'url': '/about/'},
+        {'name': 'Collaborations', 'url': '/collaborations/'},
+        {'name': 'Contact Us', 'url': '/contact/'}
+      ];
+      $scope.template = $scope.templates[0];
+
+      $scope.go = function(url) {
+        window.location = url;
+      };
     });
 })();

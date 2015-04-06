@@ -31,10 +31,11 @@ module.exports = function (grunt) {
   var buildNumber = '';
   grunt.util.spawn({
     cmd: 'git',
-    args: ['rev-parse', 'HEAD'],
+    args: ['log', '-n', '1', '--no-color'],
   }, function done(error, result) {
     grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.qa.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.beta.constants.SAU_CONFIG.buildNumber = result.stdout;
   });
 
@@ -91,7 +92,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: ['newer:jshint:all', 'jscs'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -185,6 +186,22 @@ module.exports = function (grunt) {
         },
         src: ['test/spec/{,*/}*.js']
       }
+    },
+
+    jscs: {
+        src: [
+          '<%= yeoman.app %>/scripts/{,*/}*.js'
+        ],
+        options: {
+            config: '.jscsrc',
+            requireCurlyBraces: [ 'if' ],
+            disallowMixedSpacesAndTabs: true,
+            disallowMultipleLineBreaks: true,
+            disallowMultipleSpaces: true,
+            disallowTrailingWhitespace: true,
+            validateIndentation: 2,
+            validateLineBreaks: 'LF'
+        }
     },
 
     // Empties folders to start fresh
@@ -290,11 +307,21 @@ module.exports = function (grunt) {
     },
 
     // Performs rewrites based on filerev and the useminPrepare configuration
+    // thanks to olsn @ https://github.com/yeoman/generator-angular/issues/665 for the
+    // bootstrap font path fix
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images'],
+        patterns: {
+          css: [
+            [/(\.\.\/bower_components\/bootstrap\-sass\-official\/assets\/fonts\/bootstrap)/g, 'god help me', function(match) {
+              var result = match.replace('../bower_components/bootstrap-sass-official/assets/fonts/bootstrap', '../fonts');
+              return result;
+            }]
+          ]
+        }
       }
     },
 
@@ -380,6 +407,17 @@ module.exports = function (grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/images',
           src: ['generated/*']
+        },{
+          expand: true,
+          cwd: 'bower_components/angular-ui-grid/',
+          src: ['ui-grid.ttf', 'ui-grid.woff'],
+          dest: '<%= yeoman.dist %>/styles'
+        },
+         {
+          expand: true,
+          cwd: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+          src: '*',
+          dest: '<%= yeoman.dist %>/fonts'
         }, {
           expand: true,
           cwd: 'bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/',
@@ -453,6 +491,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'newer:jshint',
+      'jscs',
       // 'test',
       'clean:dist',
       'clean:server',

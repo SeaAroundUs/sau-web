@@ -1,0 +1,26 @@
+<div class="marine-trophic-index-search">
+  <h1 id="mti-title">Marine Trophic Index</h1>
+  <lorem></lorem>
+
+  <div class="tabset">
+    <tabset>
+      <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+        <p ng-bind="tab.text"></p>
+
+        <div class="region-select">
+          <ui-select search-enabled="true" ng-model="tab.selected.region" theme="bootstrap">
+            <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
+            <ui-select-choices repeat="feature in tab.regions.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
+              <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
+            </ui-select-choices>
+          </ui-select>
+        </div>
+
+        <button class="btn btn-primary" ng-click="submitRegion(tab.selected)" scroll-click="mti-title">Submit</button>
+      </tab>
+    </tabset>
+
+    <a class="feedback" href="/feedback/?referringURL=/data/%23/marine-trophic-index">Feedback</a>
+
+  </div>
+</div>

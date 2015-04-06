@@ -1,5 +1,3 @@
-;(function() {
-
 'use strict';
 
 angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
@@ -10,7 +8,7 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
     }
 
     window.scope = $scope;
-    $scope.methodURL = externalURLs.docs + 'saup_manual.htm#13';
+    $scope.methodURL = externalURLs.manual + '#13';
 
     var data = sauAPI.EEZVsHighSeasData.get({}, function() {
       $scope.data = data.data;
@@ -39,4 +37,3 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
 
     init();
   });
-})();

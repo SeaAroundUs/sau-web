@@ -8,11 +8,11 @@
   angular.module('sauWebApp')
   .controller('EstuariesCtrl', function ($scope, $routeParams, sauAPI, region, mapConfig, leafletData) {
 
-    var id = $scope.region.name_id || $routeParams.id;
+    var id = $routeParams.id;
 
     $scope.region = sauAPI.Region.get({region: region, region_id: id});
 
-    $scope.selected = {};
+    $scope.model = {};
 
     var estuariesData = sauAPI.EstuariesData.get({region: region, region_id: id}, function() {
       angular.extend($scope, {
@@ -32,9 +32,13 @@
         }
       });
 
-      $scope.selected = estuariesData.data.features[0];
+      $scope.model.selectedFeature = estuariesData.data.features[0];
 
     });
+
+    $scope.onSelect = function(f) {
+      $scope.model.selectedFeature = f;
+    };
 
     var regions = sauAPI.Regions.get({region: region}, function() {
       $scope.regions = regions.data;
@@ -70,22 +74,22 @@
     });
 
     $scope.$on('leafletDirectiveMap.geojsonMouseover', function(geojsonClickEvent, feature) {
-      $scope.selected = feature;
+      $scope.model.selectedFeature = feature;
     });
 
-    $scope.$watch('selected', function() {
-      if (!$scope.geojson || !$scope.selected.properties) {
+    $scope.$watch('model.selectedFeature.properties.title', function() {
+      if (!$scope.geojson || !$scope.model.selectedFeature.properties) {
         return;
       }
       for (var i=0; i < $scope.geojson.data.features.length; i++){
-        if ($scope.selected.properties.title === $scope.geojson.data.features[i].properties.title) {
+        if ($scope.model.selectedFeature.properties.title === $scope.geojson.data.features[i].properties.title) {
           $scope.geojson.data.features[i].fillColor = '#f00';
         } else {
           $scope.geojson.data.features[i].fillColor = '#0f0';
         }
       }
-        $scope.geojson.foo = new Date(); // force an update to geojson
-      }, true);
+      $scope.geojson.foo = new Date(); // force an update to geojson
+    }, true);
 
     angular.extend($scope, {
       center: {

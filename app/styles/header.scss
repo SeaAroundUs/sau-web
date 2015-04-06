@@ -45,6 +45,12 @@
         line-height: 24px;
         cursor: pointer;
 
+        &.disabled:not(href),
+        &.disabled:hover:not(href) {
+          color: #555;
+          cursor: default;
+        }
+
         &:hover {
           color: #fff;
           background-color: inherit;

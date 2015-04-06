@@ -1,56 +1,106 @@
 'use strict';
 
-/* global colorbrewer */ /* for jshint */
+/* global colorbrewer */
+/* global d3 */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, externalURLs) {
 
     function init() {
+      $scope.declarationYear = {enabled: true};
+      if ($scope.region.name === 'eez') {
+        $scope.declarationYear.show = true;
+      }
+
+      $scope.manualURL = externalURLs.manual;
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       updateDataDownloadUrl();
     }
 
+    $scope.drawDeclarationYear = function() {
+      $scope.declarationYear.enabled = true;
+      $timeout(function() {
+        $scope.feature.$promise.then(function(){
+          var chart = $scope.api.getScope().chart;
+          var container = d3.select('.chart-container svg .nv-stackedarea');
+
+          var x = chart.xAxis.scale()($scope.feature.data.year_started_eez_at);
+          var g = container.append('g');
+          g.attr('id', 'declaration-year');
+          g.append('line')
+            .attr({
+              x1: x,
+              y1: 0.0,
+              x2: x,
+              y2: chart.yAxis.scale()(0)
+            })
+            .style('stroke', '#2daf51')
+            .style('stroke-width', '1');
+
+          g.append('text')
+            .attr({
+              fill: '#000',
+              style: 'font-style: italic;',
+              transform: 'translate('+(x+15)+',130) rotate(270,0,0)'
+            })
+            .text('EEZ declaration year');
+        });
+      });
+    };
+    $scope.hideDeclarationYear = function() {
+      $scope.declarationYear.enabled = false;
+      d3.select('.chart-container svg .nv-stackedarea g#declaration-year')
+        .remove();
+    };
+    $scope.updateDeclarationYear = function() {
+      if ($scope.declarationYear.show && $scope.declarationYear.enabled) {
+        $scope.drawDeclarationYear();
+      } else if ($scope.declarationYear.show && (!$scope.declarationYear.enabled)){
+        $scope.hideDeclarationYear();
+      }
+    };
+
     $scope.options = {
       chart: {
-          type: 'stackedAreaChart',
-          height: 304,
-          margin : {
-              right: 0,
-              bottom: 16
-          },
-          x: function(d){return d[0];},
-          y: function(d){return d[1];},
-          transitionDuration: 0,
-          useInteractiveGuideline: true,
-          xAxis: {
-              showMaxMin: false,
-              tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
-          },
-          yAxis: {
-            showMaxMin: false,
-            axisLabel: $scope.formModel.measure.chartlabel
-          },
-          yAxisTickFormat: function(d) {
-            //Make values "in thousands" or "in millions" depending on the measure.
-            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-            return $filter('significantDigits')(d, magnitude);
-          },
-          cData: ['Stacked','Stream','Expanded'],
-          legend: {
-            updateState: false,
-            dispatch: {
-              /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
-              legendClick: function(taxon) {
-                if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
-                  //Route user to "key information on taxon page" via the modal close event.
-                  $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
-                }
+        type: 'stackedAreaChart',
+        height: 304,
+        margin : {
+          right: 0,
+          bottom: 26
+        },
+        x: function(d){return d[0];},
+        y: function(d){return d[1];},
+        transitionDuration: 250,
+        useInteractiveGuideline: true,
+        xAxis: {
+          showMaxMin: false,
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+        },
+        yAxis: {
+          showMaxMin: false,
+          axisLabel: $scope.formModel.measure.chartlabel
+        },
+        yAxisTickFormat: function(d) {
+          //Make values "in thousands" or "in millions" depending on the measure.
+          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          return $filter('significantDigits')(d, magnitude);
+        },
+        cData: ['Stacked','Stream','Expanded'],
+        legend: {
+          updateState: false,
+          dispatch: {
+            /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
+            legendClick: function(taxon) {
+              if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
+                $location.path('/taxa/' + taxon.entity_id);
+                $scope.$apply();
               }
             }
           }
         }
-      };
+      }
+    };
 
     $scope.colors = colorbrewer;
 
@@ -68,8 +118,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       } else {
         $scope.options.chart.color = $scope.color[9];
       }
+      $scope.updateDeclarationYear();
     };
-   
 
     $scope.toggleTaxonNames = function() {
       //Swapping each datum's key between scientific name and common name.
@@ -94,9 +144,21 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.Data.get(data_options, function() {
-          $scope.data = data.data;
-          $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
-          spinnerState.loading = false;
+        if ($scope.noData === true) {
+          $timeout(function() { $scope.api.update(); });
+        }
+        $scope.noData = false;
+        $scope.data = data.data;
+        $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
+        spinnerState.loading = false;
+        if ($scope.useScientificNames) {
+          $scope.toggleTaxonNames();
+          $scope.useScientificNames = true;
+        }
+        $scope.updateDeclarationYear();
+      }, function() {
+        $scope.noData = true;
+        spinnerState.loading = false;
       });
       spinnerState.loading = true;
     }
@@ -115,9 +177,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.data[i].scientific_name = temp;
       }
       $scope.useScientificNames = !$scope.useScientificNames;
+      $scope.updateDeclarationYear();
     };
 
-	function updateYLabel() {
+    function updateYLabel() {
       /* not sure why options is not updating on $scope.formModel change */
       $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
       $scope.options.chart.yAxisTickFormat = function(d) {
@@ -129,7 +192,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     function updateChartTitle() {
       $scope.feature.$promise.then(function() {
-        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the ';
+        var dimensionLabel = $scope.formModel.dimension.overrideLabel === undefined ?
+            $scope.formModel.dimension.label :
+            $scope.formModel.dimension.overrideLabel;
+        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
         if ($scope.region.name === 'global') {
           chartTitle += 'global ocean';
         } else {

@@ -1,7 +1,8 @@
-<p><a ng-href="">Marine protected areas</a></p>
-
 <p ng-show="ecopathURL"><a target="_blank" href="" ng-href="{{ecopathURL}}">Ecopath models</a></p>
 
-<p ng-show="estuariesData.data.features.length"><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/estuaries">Estuaries</a></p>
-<p ng-hide="estuariesData.data.features.length"><span class="disabled">Estuaries</span></p>
-<p><a ng-href="">FishParameters</a></p>
+<p>
+    <sau-link-or-disabled target="'_self'" href="estuariesURL" show="feature.data.estuary_count">
+        Estuaries
+    </sau-link-or-disabled>
+</p>
+<p><a ng-href="">Fish parameters</a></p>

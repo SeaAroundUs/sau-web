@@ -1,20 +1,15 @@
-<div class="container modal-body">
-    <div class="row">
-        <div class="col-sm-12">
-            <h1 class="modal-title pull-left">
-                {{chartTitle}}
-            </h1>
-          <button class="btn btn-primary x-button pull-right" ng-click="close()">X</button>
-          <a class="btn btn-primary x-button pull-right" ng-href="{{downloadUrl}}">Download Data</a>
-        </div>
+<div class="region-detail {{region.name}}">
+    <div class="title row">
+        <h1 id="region-title" class="region-title pull-left" ng-bind="chartTitle"></h1>
+        <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
     </div>
 
     <div class="row">
-        <div class="padded content col-sm-12" ng-include="chartTemplateUrl"></div>
+        <div class="padded content" ng-include="chartTemplateUrl"></div>
     </div>
 
     <div class="row">
-        <h1 class="modal-title">
+        <h1 class="hover-region region-title">
             <span ng-bind="$root.hoverRegion.properties.title"></span>
             <span ng-show="$root.hoverRegion.properties.long_title">
                 : <span ng-bind="$root.hoverRegion.properties.long_title"></span>
@@ -24,51 +19,48 @@
 
     <div class="two-columns row">
         <div class="map-cells col-sm-5">
-            <div class="minimap content row" ng-controller="MiniMapCtrl">
+            <div class="content minimap" ng-controller="MiniMapCtrl">
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
-            <div class="padded content row">
-                <div ng-show="faos">
-                    <h3>Select FAO area</h3>
-                    <a href="" ng-click="selectFAO(0)">All</a> |
-                    <span ng-repeat="fao in faos"> | <a href="" ng-click="selectFAO(fao)">{{fao}}</a></span>
+            <div class="padded content">
+                <div ng-show="faos && region.name !== 'lme'">
+                    <h3>Select FAO area boundaries</h3>
+                    <a href="" ng-click="selectFAO(0)">All</a>
+                    <span ng-repeat="fao in faos.data"> | <a href="" ng-click="selectFAO(fao)">{{fao.name}}</a></span>
                 </div>
                 <sau-legend legend-keys="legendKeys"></sau-legend>
                 <p class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime boundaries (see <a href="http://www.seaaroundus.org/doc/saup_manual.htm#15" target="_blank">Methods</a>).
                 </p>
                 <p class="external-links">
-                    <a target="_blank" href="http://www.seaaroundus.org/eez/FAOarea.htm">FAO Areas</a>
+                    <a ng-hide="region.name === 'lme'" target="_blank" href="http://www.seaaroundus.org/eez/FAOarea.htm">FAO Areas</a>
                     <a target="_blank" ng-href="{{eezManualURL}}">EEZ Boundary explanation</a>
                 </p>
             </div>
-            <div class="padded content row">
-                <table class="metrics">
+            <div class="padded content metrics">
+                <table>
                     <tr ng-repeat="metric in feature.data.metrics">
-                        <td><a>{{metric.title}}</a></td>
+                        <td><a ng-href="{{ metricLinks[metric.title] }}">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year that the Sea Around Us project set as the first year in which fishing vessels from this country engaged in fishing in High Seas waters (water beyond the boundaries of Exclusive Economic Zones). If you have knowledge and data that would support an earlier or later year to be specified, please advise us of this via feedback.">High seas accessed</a>
-                        by {{feature.data.country_name}}</td>
-                        <td>{{feature.data.year_allowed_to_fish_high_seas}}</td>
-                    </tr>
-                    <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year that the Sea Around Us project set as the first year in which fishing vessels from this country engaged in fishing in the Exclusive Economic Zone waters of other countries (if observed access or formal access agreements existed). If you have knowledge and data that would support an earlier or later year to be specified, please advise us of this via feedback.">Other EEZs accessed</a> by {{feature.data.country_name}}</td>
-                        <td>{{feature.data.year_allowed_to_fish_other_eezs}}</td>
+                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a></td>
+                        <td>{{feature.data.year_started_eez_at}}</td>
                     </tr>
                 </table>
             </div>
         </div>
 
-        <div class="tabset content col-sm-7 region-detail-tabs">
-            <tabset>
-              <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
-                <div class="container" ng-include="tab.template"></div>
-              </tab>
-            </tabset>
+        <div class="right col-sm-7">
+            <div class="tabset region-detail-tabs">
+                <tabset class="">
+                  <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+                    <div class="padded" ng-include="tab.template"></div>
+                  </tab>
+                </tabset>
+            </div>
         </div>
 
     </div>
-
 </div>
+<div ng-include="views/download-data-modal.html"></div>

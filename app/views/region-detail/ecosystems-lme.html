@@ -1,7 +1,10 @@
-<p><a href="">Profile (NOAA)</a></p>
+<p><a href="http://lme.edc.uri.edu/" target="_blank">Profile (NOAA)</a></p>
 <!-- <p><a href="#">Primary production</a></p> -->
 <p><span class="disabled">Primary production</span></p>
 <p ng-show="ecopathURL"><a target="_blank" ng-href="{{ecopathURL}}">Ecopath models</a></p>
 <p ng-hide="ecopathURL"><span class="disabled">Ecopath models</span></p>
-<p ng-show="estuariesData.data.features.length"><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/estuaries">Estuaries</a></p>
-<p ng-hide="estuariesData.data.features.length"><span class="disabled">Estuaries</span></p>
+<p>
+    <sau-link-or-disabled target="'_self'" href="estuariesURL" show="">
+    Estuaries
+    </sau-link-or-disabled>
+</p>

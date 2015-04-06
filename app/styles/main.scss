@@ -11,7 +11,7 @@
 .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 #footer {
-  background-color: #0071cf;
+  background-color: $headerBackgroundColor;
   width: 100%;
   height: $footerHeight;
   padding: 0 40px;
@@ -94,7 +94,7 @@ label {
 
 #main_view {
   .row.regions {
-    background: $headerBackgroundColor;
+    background: #022040;
     text-align: center;
 
     * {
@@ -162,15 +162,17 @@ label {
     position: absolute;
     z-index: 1;
     left: 50%;
-    div {
+    div#search-inner {
       width: 500px;
       background-color: $darkBlue;
       padding: 10px 10px 15px;
       position: relative;
       left: -50%;
-      input {
+      div.ui-select-container {
         width: 100%;
         padding: 5px 15px;
+        background-color:none;
+        color: black;
       }
     }
   }
@@ -212,17 +214,13 @@ label {
   height: 250px;
   .ui-grid-cell {
     cursor: pointer;
-    background-color: transparent;
+    background-color: transparent !important;
   }
-  .ui-grid-canvas .ui-grid-row:hover {
-    // row
-    background-color: #fa4 !important;
-    .ui-grid-cell {
-      background-color: transparent !important;
-    }
+  .ui-grid-cell-focus {
+    background-color: transparent !important;
   }
-  .ui-grid-header-cell {
-    background-color: #eeeeee;
+  .ui-grid-row-selected .ui-grid-cell {
+    background-color: $orange !important;
   }
 }
 .content-container {
@@ -235,13 +233,14 @@ label {
     background-color: #eee;
     font-size: 14pt;
     #control-box {
-      padding: 5px 50px 10px 30px;
+      padding: 5px 50px 10px 50px;
       height: 50px;
-      .typeahead {
+      .search {
         padding: 3px;
         font-size: 16pt;
+        width: 500px;
       }
-      span {
+      .number-estuaries {
         margin-top: 10px;
       }
     }
@@ -278,13 +277,9 @@ label {
   line-height: 16px;
 }
 .external-links {
-  a:nth-child(2) {
-    margin-left:20px;
+  a:first-child {
+    margin-right: 20px;
   }
-}
-
-.modal-title {
-  text-transform: uppercase;
 }
 
 .content-container#country-profile {
@@ -312,21 +307,29 @@ a:not([href]) {
   cursor: pointer;
 }
 
-.mariculture.regions.row {
-  span {
-    margin-right: 20px;
-  }
-  input {
-    min-width: 400px;
-  }
-  .dropdown-menu strong {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-  }
-  height: 50px;
-  padding-top: 12px;
+.uppercase {
+  text-transform: uppercase;
 }
 
 .taxon .nvd3 .nv-legend g.nv-series:last-child {
   cursor: default;
+}
+
+[ng-cloak] {
+  display: none;
+}
+
+noscript {
+  display: block;
+  height: 200px;
+  padding: 20px;
+}
+
+#no-data {
+  height: 200px;
+  padding: 20px;
+}
+
+button {
+  border-radius: 0 !important;
 }

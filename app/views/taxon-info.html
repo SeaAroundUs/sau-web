@@ -1,5 +1,5 @@
 <div ng-show="taxon" class="taxon-info">
-	<h3>Key Information on {{taxon.common_name}}</h3>
+	<h3>Key Information on <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})</h3>
 	<table class="table-bordered" >
 		<colgroup>
 			<col class="table-key col-xs-3" />
@@ -13,28 +13,44 @@
 			<td class="table-key">Functional group:</td>
 			<td class="table-value">{{taxon.functional_group}}</td>
 		</tr>
-		<tr ng-show="taxon.maximumLength">
+		<tr ng-show="taxon.sl_max_cm">
 			<td class="table-key">Maximum length:</td>
-			<td class="table-value">{{taxon.sl_max_cm}}</td>
+			<td class="table-value">{{taxon.sl_max_cm}} cm</td>
 		</tr>
-		<tr ng-show="taxon.trophic_level">
+		<tr ng-show="taxon.tl">
 			<td class="table-key">Trophic level:</td>
-			<td class="table-value">{{taxon.tl}}</td>
+			<td class="table-value">{{taxon.tl | number: 2}}</td>
 		</tr>
-		<tr ng-show="taxon.lat_north">
+		<tr ng-show="taxon.lat_north && taxon.lat_south">
 			<td class="table-key">Latitude range:</td>
-			<td class="table-value">Northern limit: {{taxon.lat_north}}&deg;; Southern limit: {{taxon.lat_south}}&deg;</td>
-		</tr>
-		<tr ng-show="taxon.max_depth">
-			<td class="table-key">Bottom depth range:</td>
-			<td class="table-value">Min. depth: {{taxon.min_depth}}m; Max depth: {{taxon.max_depth}}m</td>
-		</tr>
-		<tr ng-show="taxon.loo">
-			<td class="table-key">Growth parameters:</td>
 			<td class="table-value">
-				L<sub>∞</sub> = {{taxon.loo}};
-				W<sub>∞</sub> = {{taxon.woo}};
-				K = {{taxon.k}};
+        Northern limit:
+          <span ng-show="taxon.lat_north < 0">{{taxon.lat_north * -1}}&deg;S;</span>
+          <span ng-hide="taxon.lat_north < 0">{{taxon.lat_north}}&deg;N;</span>
+        Southern limit:
+          <span ng-show="taxon.lat_south < 0">{{taxon.lat_south * -1}}&deg;S</span>
+          <span ng-hide="taxon.lat_south < 0">{{taxon.lat_south}}&deg;N</span>
+      </td>
+		</tr>
+		<tr ng-show="taxon.min_depth && taxon.max_depth">
+			<td class="table-key">Bottom depth range:</td>
+      <td class="table-value">
+        Min. depth: {{taxon.min_depth}} m;
+        Max depth:
+        <span ng-hide="taxon.max_depth === 9999">{{taxon.max_depth}} m</span>
+        <span ng-show="taxon.max_depth === 9999">none</span>
+      </td>
+		</tr>
+		<!-- <tr ng-show="taxon.loo && taxon.woo && taxon.k"> -->
+		<tr>
+			<td class="table-key">Growth parameters:</td>
+			<td ng-hide="taxon.loo && taxon.woo && taxon.k" class="table-value">
+        L<sub>∞</sub> = ; W<sub>∞</sub> = ; K = ;
+      </td>
+			<td ng-show="taxon.loo && taxon.woo && taxon.k" class="table-value">
+				L<sub>∞</sub> = {{taxon.loo | number}} cm;
+				W<sub>∞</sub> = {{taxon.woo | number}} g;
+				K = {{taxon.k | number}} year<sup>-1</sup>;
 			</td>
 		</tr>
 		<tr ng-show="taxon.scientific_name">
@@ -42,15 +58,17 @@
 			<td class="table-value">
 				<ul class="list-inline">
 					<li><a ng-show="fishBaseUrl" target="_blank" ng-href="{{fishBaseUrl}}">FishBase</a></li>
-					<li><a target="_blank" ng-href="http://www.google.com/search?q={{taxon.scientific_name}}">Google</a></li>
+					<li><a target="_blank" ng-href="http://www.google.com/search?q={{taxon.scientific_name}} {{taxon.common_name}}">Google</a></li>
 					<li><a target="_blank" ng-href="http://scholar.google.com/scholar?q={{taxon.scientific_name}}">Scholar</a></li>
 					<!-- <li><a target="_blank" ng-href="http://ispecies.org/?q={{taxon.scientific_name}}">iSpecies</a></li> -->
 				</ul>
 			</td>
 		</tr>
-		<tr ng-show="taxon.distributionMap">
+		<!-- <tr ng-show="taxon.distributionMap"> -->
+		<tr>
 			<td class="table-key">Distribution map:</td>
-			<td class="table-value">{{taxon.distributionMap}}</td>
+			<!--  <td class="table-value">{{taxon.distributionMap}}</td> -->
+			<td class="table-value"><span class="disabled">GIS map</span></td>
 		</tr>
 		<tr ng-show="taxon.habitatAssociationIndexes">
 			<td class="table-key">Habitat association indexes:</td>

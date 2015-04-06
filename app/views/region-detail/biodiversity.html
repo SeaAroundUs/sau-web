@@ -1,38 +1,32 @@
-<div class="row biodiversity">
+<div class="clearfix biodiversity" ng-controller="BiodiversityTab">
     <div class="col-sm-6">
         <ul class="organisms">
-            <li><a target="_blank" ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms">Exploited organisms</a></li>
-            <li ng-repeat="habitat in [
-                {label: 'Reef fishes', value: 'reef'},
-                {label: 'Fresh water fishes', value: 'fresh'},
-                {label: 'Marine fishes', value: 'saltwater'},
-                {label: 'Pelagic fishes', value: 'pelagic'},
-                {label: 'Deep water fishes', value: 'deepwater'},
-            ]">
-                <a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat={{habitat.value}}&csub_code=">{{habitat.label}}</a>
+            <li><a ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms" scroll-click="region-title">Exploited organisms</a></li>
+
+            <li ng-repeat="link in fishbaseLinks.fish">
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
             </li>
-
-            <li><a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group=nonfishvertebrates&c_code={{feature.data.fishbase_id}}&action=list">Non-fish vertebrates</a></li>
-
         </ul>
     </div>
     <div class="col-sm-6">
-        <h3>Threatened organisms</h3>
+        <h3 ng-show="fishbaseLinks.threatened">Threatened organisms</h3>
         <ul>
-            <li><a target="_blank" ng-href="http://www.fishbase.de/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Fish</a></li>
-            <li><a target="_blank" ng-href="http://www.sealifebase.org/Country/CountryChecklist.php?c_code={{feature.data.fishbase_id}}&vhabitat=threatened&csub_code=">Non-fish</a></li>
-        </ul>
-        <h3>Marine invertebrates</h3>
-        <ul>
-            <li ng-repeat="group in [
-                {label: 'Crustaceans', value: 'crustaceans'},
-                {label: 'Mollusks', value: 'mollusks'},
-                {label: 'Echinoderms', value: 'echinoderms'},
-                {label: 'Coelenterates', value: 'coelenterates'},
-            ]">
-                <a target="_blank" ng-href="http://www.sealifebase.org/speciesgroup/index.php?group={{group.value}}&c_code={{feature.data.fishbase_id}}&action=list">{{group.label}}</a>
+            <li ng-repeat="link in fishbaseLinks.threatened">
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
             </li>
+        </ul>
 
+        <h3 ng-show="fishbaseLinks.invertebrates">Marine invertebrates</h3>
+        <ul>
+            <li ng-repeat="link in fishbaseLinks.invertebrates">
+                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
+                    {{link.label}}
+                </sau-link-or-disabled>
+            </li>
         </ul>
     </div>
 </div>

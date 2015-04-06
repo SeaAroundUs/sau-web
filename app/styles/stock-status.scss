@@ -1,0 +1,32 @@
+@import 'global';
+
+#stock-status {
+  padding: 0 10%;
+
+  h1 {
+    margin: 40px 0 30px;
+  }
+
+  h3 {
+    font-size: 0.9em;
+    font-weight: normal;
+    margin-bottom: -10px;
+  }
+
+  .not-meaningful {
+    height: 300px;
+    padding-top: 10px;
+  }
+
+  .chart-container .n-equals {
+    position: absolute;
+    display: inline-block;
+    bottom: 45px;
+    right: 30px;
+    font-size: 0.8em;
+  }
+
+  #methods a {
+    font-weight: bold;
+  }
+}
