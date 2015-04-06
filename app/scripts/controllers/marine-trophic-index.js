@@ -71,8 +71,8 @@ angular.module('sauWebApp')
     $scope.compute = function() {
 
       var excludedTaxons = $scope.speciesList
-        .filter(function(o) { return o.excluded; } )
-        .map(function(o) {return o.taxon_key});
+        .filter(function(o) { return o.excluded; })
+        .map(function(o) { return o.taxon_key; });
 
       var params = {
         region: region,
