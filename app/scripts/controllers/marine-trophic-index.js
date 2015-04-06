@@ -3,10 +3,24 @@
 /* global angular */
 
 angular.module('sauWebApp')
-  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, sauAPI, region) {
+  .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, $filter, sauAPI, region) {
 
     $scope.years = [];
     $scope.regionType = region;
+
+    $scope.fib = {
+      year: null,
+      transferEfficiency: 0.1
+    };
+
+    $scope.transferEfficiencyBounds = function() {
+      var floatTE = parseFloat($scope.fib.transferEfficiency);
+      if (floatTE < 0.1) {
+        $scope.fib.transferEfficiency = 0.1;
+      } else if (floatTE > 0.3) {
+        $scope.fib.transferEfficiency = 0.3;
+      }
+    };
 
     var id = ($scope.region && $scope.region.name_id) || $routeParams.id;
 
@@ -46,6 +60,8 @@ angular.module('sauWebApp')
         }
       });
 
+      $scope.fib.year = $scope.years[0];
+
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
         $scope[time_series.key] = [time_series];
@@ -69,6 +85,9 @@ angular.module('sauWebApp')
           url += '&exclude=' + species.taxon_key;
         }
       });
+
+      url += '&reference_year' + $scope.fib.year;
+      url += '&transfer_efficiency' + $scope.fib.transferEfficiency;
 
       $http.get(url).success(displayCharts);
     };

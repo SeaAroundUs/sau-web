@@ -19,6 +19,15 @@
     <line-chart-with-regression years="years" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
     <line-chart-with-regression years="years" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
 
+  <h3>FiB index inputs</h3>
+  <label for="fibYear">Reference year:</label>
+  <select id="fibYear" ng-model="fib.year" ng-options="year for year in years"></select>
+  <label for="fibTransferEfficiency">Transfer efficiency:</label>
+  <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text" />
+  <button class="btn btn-primary" ng-click="compute()">Compute</button>
+
+  <hr />
+
   <div class="row">
     <a class="show-hide-tabular" ng-hide="showTabular" ng-click="showTabular = true">Show tabular data</a>
     <a class="show-hide-tabular" ng-show="showTabular" ng-click="showTabular = false">Hide tabular data</a>
