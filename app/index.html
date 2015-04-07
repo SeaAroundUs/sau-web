@@ -32,6 +32,10 @@
     <link rel="stylesheet" href="styles/mariculture.css">
     <!-- endbuild -->
 
+  <!-- old browser detection -->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mobile-detect/1.0.0/mobile-detect.min.js"></script>
+  <script type="text/javascript" src="scripts/old-browser.js"></script>
+
   </head>
   <body ng-app="sauWebApp" ng-controller="RootCtrl">
     <div id="container">
@@ -63,7 +67,7 @@
 
           <div id="main_view" ng-view="" ng-hide="hideView">
             <noscript>
-              Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.html">here</a>
+              Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.php">here</a>
               to navigate to our site that does not require Javascript.
             </noscript>
           </div>
