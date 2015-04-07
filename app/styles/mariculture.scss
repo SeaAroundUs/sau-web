@@ -1,0 +1,26 @@
+@import 'global';
+
+#main_view {
+  .mariculture {
+    .search {
+      margin-left:auto;
+      margin-right: auto;
+      height: 70px;
+      width: 100%;
+      color: white;
+      background: $darkBlue;
+      text-align: center;
+      .title {
+        margin-top: 25px;
+        margin-left: 200px;
+      }
+      .ui-select-container {
+        width: 500px;
+        margin-top:12px;
+        padding: 5px 15px;
+        background-color:none;
+        color: black;
+      }
+    }
+  }
+}
