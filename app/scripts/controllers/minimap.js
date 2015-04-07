@@ -87,19 +87,11 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
-    $scope.$watch('formModel.region_id', function() {
+    $scope.$watch('formModel', function() {
       leafletData.getMap('minimap')
         .then(function(map) {
           $scope.feature.$promise.then(function() {
-            if (! $scope.feature.data) {
-              return;
-            }
-            var f = null;
-            if ($scope.feature.data.geojson) {
-              f = L.geoJson($scope.feature.data.geojson);
-            } else {
-              f = L.geoJson($scope.feature.data[0].geojson);
-            }
+            var f = L.geoJson($scope.feature.data.geojson);
             var bounds = f.getBounds();
             map.fitBounds(bounds);
           });
@@ -163,22 +155,11 @@ angular.module('sauWebApp')
       });
     };
 
-    if ($scope.region.name === 'mariculture') {
-      $scope.features = sauAPI.Mariculture.get({region_id:$scope.formModel.region_id});
-    }
-
     $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA and FAO so they get painted on top
       leafletData.getMap('minimap').then(function(map) {
-        var features = [$scope.features.data.features];
 
-        if(! $scope.features.data.features) {
-          features = [];
-          for (var i=0; i<$scope.features.data.length; i++) {
-            features.push($scope.features.data[i].geojson);
-          }
-        }
-        L.geoJson(features, {
+        L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {
             layer.on({
@@ -191,7 +172,6 @@ angular.module('sauWebApp')
           }
         }).addTo(map);
         $scope.styleSelectedFeature();
-
         $scope.$watch('mapLayers.selectedFAO', function(){
           leafletData.getMap('minimap').then(function(map) {
             if ($scope.faoData) {

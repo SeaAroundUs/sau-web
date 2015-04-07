@@ -8,6 +8,8 @@
 
     $scope.region = {name: 'mariculture'};
 
+    $scope.selectedRegion = {feature: null};
+
     angular.extend($scope, {
       center: {
         lat: 0,
@@ -50,6 +52,7 @@
                 },
                 mouseover: function() {
                   layer.setStyle(mapConfig.selectedStyle);
+                  $scope.selectedRegion.feature = feature;
                 },
                 mouseout: function() {
                   layer.setStyle(mapConfig.countryStyle);

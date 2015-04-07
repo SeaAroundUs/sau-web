@@ -158,8 +158,8 @@ angular
         controller: 'MaricultureCtrl'
       })
       .when('/mariculture/:id', {
-        templateUrl: 'views/map.html',
-        controller: 'MapCtrl',
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'mariculture';}}
       })
       .when('/topic/biodiversity', {

@@ -20,6 +20,10 @@ angular.module('sauWebApp')
 
     $scope.region = {name: region};
 
+    $scope.regionSelect = function(region_id) {
+      $location.path('/' + $scope.region.name + '/' + region_id);
+    };
+
     if ($routeParams.id || $location.path() === '/global') {
       $scope.regionSelect(($routeParams.id || 1));
     }
@@ -29,10 +33,6 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('Oceans').addTo(map);
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
-
-    $scope.regionSelect = function(region_id) {
-      $location.path('/' + $scope.region.name + '/' + region_id);
-    };
 
     var geojsonClick = function(latlng) {
       /* handle clicks on overlapping layers */

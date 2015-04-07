@@ -12,16 +12,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     }
 
     $scope.getFeatures = function() {
+      if (region === 'mariculture') {
+        $scope.features = sauAPI.Mariculture.get({region_id: region_id});
+      } else {
 
-      $scope.features = sauAPI.Regions.get({region:$scope.region.name});
-      $scope.features.$promise.then(function(data) {
-          angular.extend($scope, {
-            geojson: {
-              data: data.data,
-              style: mapConfig.defaultStyle,
-            }
+        $scope.features = sauAPI.Regions.get({region:$scope.region.name});
+        $scope.features.$promise.then(function(data) {
+            angular.extend($scope, {
+              geojson: {
+                data: data.data,
+                style: mapConfig.defaultStyle,
+              }
+            });
           });
-        });
+      }
     };
 
     $scope.getFeatures();
@@ -45,6 +49,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       indicatorsLME: {title: 'Indicators', template: 'views/region-detail/indicators-lme.html'},
       indicatorsHighSeas: {title: 'Indicators', template: 'views/region-detail/indicators-highseas.html'},
       otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
+      productionInfo: {title: 'Production Info', template: 'views/region-detail/production-info.html'},
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
     };
 
@@ -203,12 +208,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       }
 
-      $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
-        if($scope.region.name === 'lme') {
-          // fishbase id is same as our id, fake it
-          $scope.feature.data.fishbase_id = $scope.feature.data.id;
-        }
-      });
+      if (region.name !== 'mariculture') {
+        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+          if($scope.region.name === 'lme') {
+            // fishbase id is same as our id, fake it
+            $scope.feature.data.fishbase_id = $scope.feature.data.id;
+          }
+        });
+      }
 
       if ($scope.region.name === 'eez') {
 
