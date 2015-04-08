@@ -1,4 +1,8 @@
 (function() {
+  'use strict';
+
+  /* global MobileDetect */
+
   var cookies = {};
   var keyVals = document.cookie.split('; ');
   var cookie;
@@ -13,7 +17,7 @@
   md = new MobileDetect(window.navigator.userAgent);
   modernBrowser = md.match('chrome|firefox') || md.version('IE') >= 9;
 
-  if (!modernBrowser && cookies['ignoreOldBrowser'] !== '1' && window.location.pathname !== '/simple-site.php') {
+  if (!modernBrowser && cookies.ignoreOldBrowser !== '1' && window.location.pathname !== '/simple-site.php') {
     window.location.pathname = '/simple-site.php';
   }
 })();
