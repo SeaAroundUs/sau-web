@@ -149,6 +149,11 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         }
         $scope.noData = false;
         $scope.data = data.data;
+        angular.forEach($scope.data, function(datum) {
+          if (datum.key === 'reported landings') {
+            datum.key = 'Reported landings';
+          }
+        });
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
         if ($scope.useScientificNames) {
