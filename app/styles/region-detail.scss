@@ -73,8 +73,15 @@
             background-color: white;
         }
     }
-    .tab-pane .container {
-        padding: 20px;
+    .tab-pane {
+        .ui-select-container {
+            span.btn {
+                background-color: transparent !important;
+            }
+        }
+        .container {
+           padding: 20px;
+        }
     }
     .map-cells {
         padding: 0px;

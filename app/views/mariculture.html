@@ -1,0 +1,13 @@
+<div class="mariculture row">
+    <div class="search">
+        <span class='title pull-left'>MARICULTURE PRODUCTION IN: </span>
+        <ui-select class='pull-left' search-enabled="true" on-select="selected($item.properties)" ng-model="selectedRegion.feature" theme="bootstrap">
+          <ui-select-match placeholder="Type or select item from list">{{$select.selected.properties.title}}</ui-select-match>
+          <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
+            <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
+          </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+
+<leaflet id="mainmap" layers="layers" maxbounds="maxbounds" geojson="geojson" center="center" defaults="defaults"></leaflet>
