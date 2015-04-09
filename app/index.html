@@ -38,6 +38,25 @@
 
   </head>
   <body ng-app="sauWebApp" ng-controller="RootCtrl">
+
+    <!-- slow client detection -->
+    <script type="text/javascript">
+      try {
+        'use strict';
+        var start = Date.now();
+        var end, elapsed;
+        window.onload = function() {
+          end = Date.now();
+          elapsed = end - start;
+          if ((elapsed / 1000) > 20.0) {
+            window.location.pathname = '/simple-site.php';
+          }
+        };
+      } catch(e) {
+        window.location.pathname = '/simple-site.php';
+      }
+    </script>
+
     <div id="container">
         <div id="root">
           <div id="header">
