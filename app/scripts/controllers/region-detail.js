@@ -4,6 +4,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal, region) {
 
     $scope.region = {name: region};
+    $scope.showDownload = false;
 
     var region_id = $routeParams.id;
 

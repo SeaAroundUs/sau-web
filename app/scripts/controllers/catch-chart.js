@@ -143,7 +143,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
+      $scope.$parent.$parent.showDownload = false;
       var data = sauAPI.Data.get(data_options, function() {
+        $scope.$parent.$parent.showDownload = true;
         if ($scope.noData === true) {
           $timeout(function() { $scope.api.update(); });
         }
