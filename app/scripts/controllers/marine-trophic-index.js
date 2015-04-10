@@ -49,6 +49,14 @@ angular.module('sauWebApp')
         .filter(function(o) {return o[1];})
         .map(function(o) {return o[0];});
 
+      $scope.mtlYears = $scope.data[3].values
+        .filter(function(o) {return o[1];})
+        .map(function(o) {return o[0];});
+
+      $scope.fibYears = $scope.data[1].values
+        .filter(function(o) {return o[1];})
+        .map(function(o) {return o[0];});
+
       $scope.fib.year = $scope.fib.year || $scope.years[0];
 
       angular.forEach($scope.data, function(time_series) {
