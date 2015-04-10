@@ -209,9 +209,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
     });
 
+    var measure = $scope.measures[0];
+    angular.forEach($scope.measures, function(m) {
+      if (m.value === $routeParams.measure) {
+        measure = m;
+      }
+    });
+
     $scope.formModel = {
       dimension: dimension,
-      measure: $scope.measures.tonnage,
+      measure: measure,
       limit : $scope.limits[1],
       region_id: parseInt(region_id)
     };

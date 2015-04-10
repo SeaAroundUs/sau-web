@@ -44,7 +44,7 @@ angular.module('sauWebApp')
       var region = selection.region.properties.region;
       var regionId = selection.region.properties.region_id;
       var dim = selection.dim === undefined ? dims[0].value : selection.dim.value;
-      var url = '/' + region + '/' + regionId + '/' + dim;
+      var url = '/' + region + '/' + regionId + '/' + dim + '/value';
       $location.path(url);
     };
 

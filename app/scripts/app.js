@@ -74,6 +74,11 @@ angular
         controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/:dimension/:measure', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        resolve: {region: function() {return 'eez';}}
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -100,6 +105,11 @@ angular
         resolve: {region: function() {return 'lme';}}
       })
       .when('/lme/:id/:dimension', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        resolve: {region: function() {return 'lme';}}
+      })
+      .when('/lme/:id/:dimension/:measure', {
         templateUrl: 'views/region-detail/main.html',
         controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'lme';}}
