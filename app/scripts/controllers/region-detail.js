@@ -209,7 +209,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
     });
 
-    var measure = $scope.measures[0];
+    var measure = $scope.measures.tonnage;
     angular.forEach($scope.measures, function(m) {
       if (m.value === $routeParams.measure) {
         measure = m;
