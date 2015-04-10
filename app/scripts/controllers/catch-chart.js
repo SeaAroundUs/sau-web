@@ -4,7 +4,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, externalURLs) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState) {
 
     function init() {
       $scope.declarationYear = {enabled: true};
@@ -12,7 +12,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.declarationYear.show = true;
       }
 
-      $scope.manualURL = externalURLs.manual;
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       updateDataDownloadUrl();

@@ -1,14 +1,13 @@
 'use strict';
 
 angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
-  function ($scope, sauAPI, externalURLs) {
+  function ($scope, sauAPI) {
 
     function init() {
       $scope.updateDataDownloadUrl(sauAPI.apiURL + '/global/eez-vs-high-seas/?format=csv');
     }
 
     window.scope = $scope;
-    $scope.methodURL = externalURLs.manual + '#13';
 
     var data = sauAPI.EEZVsHighSeasData.get({}, function() {
       $scope.data = data.data;

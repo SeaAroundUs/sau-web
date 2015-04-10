@@ -4,13 +4,11 @@
 /* global d3 */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, externalURLs) {
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI) {
 
     var getChartTitle = function() {
       return 'Primary Production Required for catches in the waters of ' + $scope.feature.data.title;
     };
-
-    $scope.methodURL = externalURLs.manual + '#13';
 
     $scope.api = {};
 

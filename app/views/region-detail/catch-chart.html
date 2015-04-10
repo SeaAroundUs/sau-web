@@ -30,7 +30,7 @@
       <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
       <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
 
-      <span><a ng-href="{{manualURL}}#13" target="_blank">Method</a></span><br />
+      <method anchor="13"></method><br />
     </div>
     <div>
       <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
