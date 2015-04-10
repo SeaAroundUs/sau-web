@@ -6,13 +6,6 @@
 angular.module('sauWebApp')
   .controller('MiniMapMaricultureCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
 
-    if ($scope.region.name === 'mariculture') {
-      $scope.selectedProvince = {feature: null};
-      $scope.selectedMaricultureProvince = function(province) {
-        console.log(province);
-      };
-    }
-
     angular.extend($scope, {
       defaults: mapConfig.defaults,
       layers: {
@@ -20,28 +13,17 @@ angular.module('sauWebApp')
       }
     });
 
-    var styleLayer = function(feature, layer, style) {
-      if (!layer) {
-        return;
-      }
-      style = style || mapConfig.defaultStyle;
-      if(feature.properties.region_id === $scope.formModel.region_id) {
-      } else {
-      }
-    };
-
     var geojsonClick = function(feature) {
-      console.log('clicked ', feature);
+      $scope.selectedProvince.feature = feature;
+      $scope.$apply();
     };
 
-    var geojsonMouseout = function(ev, feature) {
+    var geojsonMouseout = function() {
       $rootScope.hoverRegion = {};
-      styleLayer(feature, ev.layer);
     };
 
     var geojsonMouseover = function(ev, feature) {
-      $rootScope.hoverRegion = feature;
-      styleLayer(feature, ev.layer, mapConfig.highlightStyle);
+      $rootScope.hoverRegion = {properties: feature};
     };
 
     leafletData.getMap('minimap').then(function(map) {
@@ -79,7 +61,7 @@ angular.module('sauWebApp')
                 stroke: true
               });
             },
-            onEachFeature: function(feature, layer) {
+            onEachFeature: function(f, layer) {
               layer.on({
                 click: function(e) {
                   geojsonClick(feature, e.latlng);

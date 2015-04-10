@@ -3,11 +3,11 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('MaricultureChartCtrl',
-  function ($scope, $rootScope, $filter, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $location, $filter, sauAPI, spinnerState) {
 
     function init() {
+      $scope.$watch('selectedProvince', onFormModelChange, true);
       $scope.$watch('formModel', onFormModelChange, true);
-      updateDataDownloadUrl();
     }
 
     $scope.options = {
@@ -41,9 +41,9 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
           dispatch: {
             /* When the user clicks on a taxon in the legend, take them to the "Key Information on Taxon" page.*/
             legendClick: function(taxon) {
-              if ($scope.formModel.dimension.value === 'taxon') {
-                //Route user to "key information on taxon page" via the modal close event.
-                $rootScope.modalInstance.close({location: '/taxa/' + taxon.entity_id});
+              if ($scope.formModel.dimension.value === 'taxon' && taxon.key !== 'Others') {
+                $location.path('/taxa/' + taxon.entity_id);
+                $scope.$apply();
               }
             }
           }
@@ -73,7 +73,14 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
     }
 
     function updateData() {
-      var data_options = {region_id: 4};
+      if (!$scope.selectedProvince.feature) {
+        return;
+      }
+      var data_options = {
+        entity_id: $scope.selectedProvince.feature.entity_id,
+        sub_unit_id: $scope.selectedProvince.feature.region_id,
+        dimension: $scope.formModel.dimension.value
+      };
       data_options.limit = $scope.formModel.limit.value;
       var data = sauAPI.MaricultureData.get(data_options, function() {
         $scope.data = data.data;
@@ -110,25 +117,31 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
     }
 
     function updateChartTitle() {
-      $scope.feature.$promise.then(function() {
-        var chartTitle = $scope.formModel.measure.titleLabel + ' ' + $scope.formModel.dimension.label + ' in the ';
-        chartTitle += 'waters of ' + $scope.feature.data.title;
+      if($scope.selectedProvince.feature) {
+        var chartTitle = [
+          'Mariculture production by',
+          $scope.formModel.dimension.label,
+          'in',
+          $scope.selectedProvince.feature.title
+          ].join(' ');
         $scope.updateChartTitle(chartTitle);
-      });
+      }
     }
 
     function updateDataDownloadUrl() {
-      var url = ['',
+      if (!$scope.selectedProvince.feature) {
+        return '';
+      }
+      var url = [
         sauAPI.apiURL,
-        $scope.region.name,
-        '/',
-        $scope.formModel.measure.value,
-        '/',
+        'mariculture/',
         $scope.formModel.dimension.value,
-        '/?format=csv&limit=',
+        '/',
+        $scope.selectedProvince.feature.entity_id,
+        '/',
+        $scope.selectedProvince.feature.region_id,
+        '?format=csv&limit=',
         $scope.formModel.limit.value,
-        '&region_id=',
-        $scope.formModel.region_id,
       ].join('');
 
       $scope.updateDataDownloadUrl(url);

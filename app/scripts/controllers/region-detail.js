@@ -8,6 +8,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     var region_id = $routeParams.id;
 
+    $scope.selectedProvince = {feature: null};
+
+    $scope.onProvinceSelect = function(f) {
+      $scope.selectedProvince.feature = f;
+      $scope.apply();
+    };
+
     function init() {
       if ($scope.region.name === 'mariculture') {
         $scope.chartChange('mariculture-chart');
@@ -19,6 +26,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.getFeatures = function() {
       if (region === 'mariculture') {
         $scope.features = sauAPI.Mariculture.get({region_id: region_id});
+        $scope.features.$promise.then(function() {
+          if($scope.features.data.length > 0) {
+            $scope.selectedProvince.feature = $scope.features.data[0];
+          }
+        });
       } else {
         $scope.features = sauAPI.Regions.get({region:$scope.region.name});
         $scope.features.$promise.then(function(data) {
@@ -155,16 +167,28 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.tabs[0].active = true;
     }
 
-    $scope.dimensions = [
-      {label: 'Taxon', value: 'taxon'},
-      {label: 'Commercial groups', value: 'commercialgroup'},
-      {label: 'Functional groups', value: 'functionalgroup'},
-      {label: 'Fishing country', value: 'country'},
-      // {label: 'Gear', value: 'gear'},
-      {label: 'Fishing sector', value: 'sector'},
-      {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
-      {label: 'Reporting status', value: 'reporting-status'}
-    ];
+    if ($scope.region.name === 'mariculture') {
+
+      $scope.dimensions = [
+        {label: 'Taxon', value: 'taxon'},
+        {label: 'Commercial groups', value: 'commercialgroup'},
+        {label: 'Functional groups', value: 'functionalgroup'}
+      ];
+
+    } else {
+
+      $scope.dimensions = [
+        {label: 'Taxon', value: 'taxon'},
+        {label: 'Commercial groups', value: 'commercialgroup'},
+        {label: 'Functional groups', value: 'functionalgroup'},
+        {label: 'Fishing country', value: 'country'},
+        // {label: 'Gear', value: 'gear'},
+        {label: 'Fishing sector', value: 'sector'},
+        {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
+        {label: 'Reporting status', value: 'reporting-status'}
+      ];
+
+    }
 
     $scope.measures = {
       'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},

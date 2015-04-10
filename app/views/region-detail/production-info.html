@@ -2,7 +2,7 @@
 </p>
 
 <h3>Select State/Province</h3>
-<ui-select search-enabled="true" on-select="selectedMaricultureProvince($item)" ng-model="selectedProvince.feature" theme="bootstrap">
+<ui-select search-enabled="true" on-select="onProvinceSelect($item)" ng-model="selectedProvince.feature" theme="bootstrap">
   <ui-select-match placeholder="Type or select item from list">{{$select.selected.title}}</ui-select-match>
   <ui-select-choices repeat="feature in features.data | orderBy: 'title' | filter: {title:$select.search}">
     <span ng-bind-html="feature.title | highlight: $select.search"></span>
@@ -10,6 +10,6 @@
 </ui-select>
 
 <h3>Production by</h3>
-<p><a href="">Taxon</a></p>
-<p><a href="">Commercial groups</a></p>
-<p><a href="">Functional groups</a></p>
+<p ng-repeat="dim in dimensions">
+    <a ng-click="formModel.dimension = dim" scroll-click="region-title">{{dim.label}}</a>
+</p>

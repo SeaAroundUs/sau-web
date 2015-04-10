@@ -2,15 +2,11 @@
     <i class="fa fa-spinner fa-spin loading fa-5x"></i>
     <div class="form-group">
         <label for="province">State/Province</label>
-        <select class="form-control" ng-model="formModel.province" ng-options="opt as opt.label for opt in provinces"></select>
+        <select class="form-control" ng-model="selectedProvince.feature" ng-options="feature as feature.title for feature in features.data"></select>
     </div>
     <div class="form-group">
         <label for="dimension">Dimension</label>
         <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
-    </div>
-    <div class="form-group">
-        <label for="measure">Measure</label>
-        <select class="form-control" ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"></select>
     </div>
     <div class="form-group">
         <label for="limit">Limit</label>
