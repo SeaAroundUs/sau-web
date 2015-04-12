@@ -24,6 +24,6 @@
         <p ng-repeat="doc in feature.data.reconstruction_documents">
           <a target="_blank" ng-href="{{doc.url}}"><i class="fa fa-file-pdf-o red"></i> {{doc.name}}</a>
         </p>
-        <p ng-hide="feature.data.reconstruction_documents"><i>Not available</i></p>
+        <p ng-hide="feature.data.reconstruction_documents && feature.data.reconstruction_documents.length > 0"><i>Not available</i></p>
     </div>
 </div>
