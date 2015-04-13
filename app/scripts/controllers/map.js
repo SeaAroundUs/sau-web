@@ -11,6 +11,7 @@ angular.module('sauWebApp')
                                     $route,
                                     $routeParams,
                                     $timeout,
+                                    $q,
                                     sauAPI,
                                     mapConfig,
                                     leafletData,
@@ -115,14 +116,20 @@ angular.module('sauWebApp')
     $scope.getFeatures = function() {
       spinnerState.loading = true;
       $scope.features = sauAPI.Regions.get({region:$scope.region.name});
-      $scope.features.$promise.then(function(data) {
+      var mapPromise = leafletData.getMap('mainmap');
+      var featuresPromise = $scope.features.$promise;
+
+      $q.all([mapPromise, featuresPromise]).then(function() {
         angular.extend($scope, {
           geojson: {
-            data: data.data,
+            data: $scope.features.data,
             style: mapConfig.defaultStyle,
           }
         });
-        $timeout(function() { spinnerState.loading = false; });
+        $timeout(function() {
+          spinnerState.loading = false;
+          mapPromise.$$state.value.invalidateSize();
+        });
       });
     };
 
