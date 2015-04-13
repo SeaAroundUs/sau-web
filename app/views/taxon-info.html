@@ -1,4 +1,7 @@
-<div ng-show="taxon" class="taxon-info">
+<div ng-if="taxon.error" class="error">
+	<h3>Error: taxon {{taxon.key}} was not found</h3>
+</div>
+<div ng-if="taxon && ! taxon.error" class="taxon-info">
 	<h3>Key Information on <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})</h3>
 	<table class="table-bordered" >
 		<colgroup>
