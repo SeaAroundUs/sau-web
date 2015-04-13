@@ -105,10 +105,16 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
     $scope.colors.Bold = {
       11: ['#f00','#0f0', '#00f', '#ff0', '#f0f', '#0ff', '#000',
-            '#08f', '#0f8', '#f80', '#8f0', '#80f', '#f08'
+            '#08f', '#0f8', '#f80', '#8f0', '#80f', '#f08',
+            '#fff', '#f88', '#88f', '#8f8', '#800', '#080', '#008'
           ]
     };
 
+    var defaultColors = $scope.colors.Spectral['11'];
+    defaultColors.push(
+      '#fff', '#f88', '#88f', '#8f8', '#800', '#080', '#008',
+      '#888', '#333'
+    );
     $scope.color = $scope.colors.Spectral;
 
     $scope.updateColor = function() {
