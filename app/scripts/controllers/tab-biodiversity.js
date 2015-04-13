@@ -8,6 +8,7 @@ angular.module('sauWebApp')
     $scope.feature.$promise.then(function() {
 
       var fishbase_id = null;
+
       if ($scope.region.name === 'eez') {
         fishbase_id = $scope.feature.data.fishbase_id;
 
@@ -40,19 +41,30 @@ angular.module('sauWebApp')
         };
       } else if ($scope.region.name === 'lme') {
 
-        // fishbase_id = $scope.feature.data.id;
+        var sealifebaseLink = $scope.feature.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
 
         $scope.fishbaseLinks = {
           fish: [
-            // {label: 'Reef fishes', url: 'http://www.fishbase.org/trophiceco/FishEcoList.php?ve_code='+fishbase_id},
-            // {label: 'Deep water fishes', url: 'http://www.sealifebase.org/trophiceco/EcoDeepwaterList.php?ve_code='+fishbase_id+'5&group=deepwater'},
+            {label: 'Reef fishes', url: $scope.feature.data.fishbase_link},
+            {label: 'Fresh water fishes', url: $scope.feature.data.fishbase_link},
+            {label: 'Marine fishes', url: $scope.feature.data.fishbase_link},
+            {label: 'Pelagic fishes', url: $scope.feature.data.fishbase_link},
+            {label: 'Deep water fishes', url: $scope.feature.data.fishbase_link},
+            {label: 'Non-fish vertebrates', url: $scope.feature.data.fishbase_link},
           ],
 
-          threatened: null,
+          threatened: [
+            {label: 'Fish', url: $scope.feature.data.fishbase_link},
+            {label: 'Non-fish', url: sealifebaseLink},
+          ],
 
-          invertebrates: null
+          invertebrates: [
+            {label: 'Crustaceans', url: sealifebaseLink},
+            {label: 'Mollusks', url: sealifebaseLink},
+            {label: 'Echinoderms', url: sealifebaseLink},
+            {label: 'Coelenterates', url: sealifebaseLink}
+          ]
         };
-
       }
     });
   });
