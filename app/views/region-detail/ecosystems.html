@@ -1,8 +1,11 @@
 <p ng-show="ecopathURL"><a target="_blank" href="" ng-href="{{ecopathURL}}">Ecopath models</a></p>
-
 <p>
     <sau-link-or-disabled target="'_self'" href="estuariesURL" show="feature.data.estuary_count">
         Estuaries
     </sau-link-or-disabled>
 </p>
-<p><a ng-href="">Fish parameters</a></p>
+<p>
+  <sau-link-or-disabled target="'_blank'" href="fishParametersURL" show="feature.data.c_code">
+    Fish parameters
+  </sau-link-or-disabled>
+</p>
