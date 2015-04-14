@@ -43,7 +43,7 @@
             <div ng-if="region.name !== 'mariculture'" class="padded content metrics">
                 <table>
                     <tr ng-repeat="metric in feature.data.metrics" ng-hide="metric.hide">
-                        <td><a ng-href="{{ metricLinks[metric.title] }}">{{metric.title}}</a></td>
+                        <td><a ng-href="{{ metricLinks[metric.title] }}" target="_blank">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
