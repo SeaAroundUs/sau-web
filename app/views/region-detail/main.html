@@ -20,7 +20,7 @@
     <div class="two-columns row">
         <div class="map-cells col-sm-5">
             <div ng-if="region.name==='mariculture'" class="content minimap" ng-controller="MiniMapMaricultureCtrl">
-                <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
+                <leaflet layers="layers" geojson="geojson" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
             <div ng-if="region.name!=='mariculture'" class="content minimap" ng-controller="MiniMapCtrl">
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>

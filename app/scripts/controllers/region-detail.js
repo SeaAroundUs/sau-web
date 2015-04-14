@@ -12,25 +12,35 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.onProvinceSelect = function(f) {
       $scope.selectedProvince.feature = f;
-      $scope.apply();
+      $scope.$apply();
     };
 
     function init() {
       if ($scope.region.name === 'mariculture') {
         $scope.chartChange('mariculture-chart');
+        $scope.$watch('formModel.region_id', $scope.getFeatures);
       } else {
         $scope.chartChange('catch-chart');
+        $scope.getFeatures();
       }
     }
 
     $scope.getFeatures = function() {
       if (region === 'mariculture') {
-        $scope.features = sauAPI.Mariculture.get({region_id: region_id});
+
+        $scope.countryFeatures = sauAPI.Regions.get({region: 'country'});
+        $scope.features = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
+
         $scope.features.$promise.then(function() {
-          if($scope.features.data.length > 0) {
-            $scope.selectedProvince.feature = $scope.features.data[0];
-          }
+          var allProvinces = {
+            title: 'All',
+            entity_id: $scope.features.data[0].entity_id,
+            country_name: $scope.features.data[0].country_name
+          };
+          $scope.features.data.unshift(allProvinces);
+          $scope.selectedProvince.feature = $scope.features.data[0];
         });
+
       } else {
         $scope.features = sauAPI.Regions.get({region:$scope.region.name});
         $scope.features.$promise.then(function(data) {
@@ -43,8 +53,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           });
       }
     };
-
-    $scope.getFeatures();
 
     $scope.center = {
       lat: 0,
@@ -242,7 +250,9 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       }
 
-      if (region.name !== 'mariculture') {
+      if ($scope.region.name === 'mariculture') {
+        $scope.feature = sauAPI.Region.get({region: 'country', region_id: $scope.formModel.region_id});
+      } else {
         $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it

@@ -21,7 +21,6 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
   });
 
   leafletData.getMap('mainmap').then(function(map) {
-    $scope.map = map;
     L.esri.basemapLayer('Oceans').addTo(map);
     L.esri.basemapLayer('OceansLabels').addTo(map);
   });
@@ -29,12 +28,6 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
   $scope.selected = function(feature) {
     $location.path('/mariculture/' + feature.c_number);
   };
-
-  // these functions are required to exist by
-  // minimap. Fake it 'till you make it.
-  $scope.geojsonClick = function() {};
-  $scope.geojsonMouseout = function() {};
-  $scope.geojsonMouseover = function() {};
 
   $scope.features = sauAPI.Regions.get({region: 'country'});
   $scope.features.$promise.then(function(data) {

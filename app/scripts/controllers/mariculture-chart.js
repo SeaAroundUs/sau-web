@@ -3,7 +3,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('MaricultureChartCtrl',
-  function ($scope, $rootScope, $location, $filter, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $location, $filter, $q, sauAPI, spinnerState) {
 
     function init() {
       $scope.$watch('selectedProvince', onFormModelChange, true);
@@ -117,15 +117,22 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
     }
 
     function updateChartTitle() {
-      if($scope.selectedProvince.feature) {
-        var chartTitle = [
-          'Mariculture production by',
-          $scope.formModel.dimension.label,
-          'in',
-          $scope.selectedProvince.feature.title
-          ].join(' ');
-        $scope.updateChartTitle(chartTitle);
-      }
+      $q.all([$scope.feature.$promise, $scope.countryFeatures.$promise]).then(function() {
+        if($scope.selectedProvince.feature) {
+          var countryName = $scope.selectedProvince.feature.country_name;
+          var chartTitle = [
+            'Mariculture production by',
+            $scope.formModel.dimension.label,
+            'in',
+            countryName,
+            ].join(' ');
+            if ($scope.selectedProvince.feature &&
+                $scope.selectedProvince.feature.title !== 'All') {
+              chartTitle += ' - ' + $scope.selectedProvince.feature.title;
+            }
+          $scope.updateChartTitle(chartTitle);
+        }
+      });
     }
 
     function updateDataDownloadUrl() {
