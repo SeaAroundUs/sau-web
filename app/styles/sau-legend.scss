@@ -1,21 +1,40 @@
 @import 'global';
 
 #legend {
-	li {
-		padding: 2px 8px;
-	}
+    li {
+        padding: 2px 8px;
+    }
 
-	.legend-key-label {
-		height: 16px;
-		vertical-align: middle;
-		padding-left: 2px;
-	}
+    .legend-key-label {
+        height: 16px;
+        vertical-align: middle;
+        padding-left: 2px;
+    }
 
-	img {
-		border-color: black;
-		border-width: 1px;
-		border-style: solid;
-		width: 16px;
-		height: 16px;
-	}
+    img {
+        border-color: black;
+        border-width: 1px;
+        border-style: solid;
+        width: 16px;
+        height: 16px;
+    }
+}
+
+#mariculture-legend {
+    h3 {
+        font-weight: normal;
+        font-size: .9rem;
+    }
+    .key {
+        float: left;
+        .label {
+            color: black;
+        }
+        * {
+            float: left;
+            vertical-align: middle;
+            line-height: 17px;
+            font-size: 9pt;
+        }
+    }
 }

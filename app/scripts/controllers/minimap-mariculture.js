@@ -1,10 +1,9 @@
 'use strict';
 
-/* global d3 */
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapMaricultureCtrl', function ($scope, $rootScope, $q, $timeout, $location, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapMaricultureCtrl', function ($scope, $rootScope, $q, $timeout, $location, sauAPI, mapConfig, leafletBoundsHelpers, leafletData, sauD3Utils) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -66,7 +65,6 @@ angular.module('sauWebApp')
 
         leafletData.getMap('minimap').then(function(map) {
           var points = [];
-          var colorScale = d3.scale.quantize().domain([0,100,1000,10000,100000,100000000]).range(['green', '#0f0', 'yellow', 'orange', 'pink', 'red']);
           for (var i=0; i<$scope.provinceLayers.length; i++) {
             map.removeLayer($scope.provinceLayers[i]);
           }
@@ -79,20 +77,20 @@ angular.module('sauWebApp')
               title: feature.title,
               region_id: feature.region_id,
             };
-            // 2 visual dimensions representing the same value. The sea fills with Tufte's tears.
-            var metric = feature.total_production * 1000.0;
-            var pointSize = 1.5*Math.log10(metric/500.0);
-            var color = colorScale(metric);
+
+            var metric = feature.total_production;
+
+            var circleProperties = sauD3Utils.pointCircleProperties(metric);
 
             var layer = L.geoJson(feature.point_geojson, {
               pointToLayer: function (feature, latlng) {
                 return L.circleMarker(latlng, {
-                  fillColor: color,
+                  fillColor: circleProperties.color,
                   color: '#000',
-                  fillOpacity: 0.8,
-                  opacity: 0.8,
+                  fillOpacity: 1.0,
+                  opacity: 1.0,
                   weight: 1,
-                  radius: pointSize,
+                  radius: circleProperties.size,
                   stroke: true
                 });
               },

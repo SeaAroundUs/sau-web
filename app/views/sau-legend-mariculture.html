@@ -1,0 +1,18 @@
+<div id="mariculture-legend">
+    <h3>Average annual total production in tonnes for the decade 2000-2010</h3>
+    <div class="clearfix">
+        <span class="key" ng-repeat="marker in markers">
+            <svg width="20" height="20">
+                <circle
+                    cx="10"
+                    cy="10"
+                    ng-attr-r="{{marker.size}}"
+                    fill="{{marker.color}}"
+                    stroke="black"
+                    stroke-width="1"
+                />
+            </svg>
+            <span class="label" ng-bind="marker.label"></span>
+        </span>
+    </div>
+</div>
