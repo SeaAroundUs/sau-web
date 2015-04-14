@@ -126,10 +126,11 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
             'in',
             countryName,
             ].join(' ');
-            if ($scope.selectedProvince.feature &&
-                $scope.selectedProvince.feature.title !== 'All') {
-              chartTitle += ' - ' + $scope.selectedProvince.feature.title;
-            }
+
+          if ($scope.selectedProvince.feature &&
+            $scope.selectedProvince.feature.title !== 'All') {
+            chartTitle += ' - ' + $scope.selectedProvince.feature.title;
+          }
           $scope.updateChartTitle(chartTitle);
         }
       });
