@@ -50,7 +50,7 @@ angular.module('sauWebApp')
             {label: 'Marine fishes', url: $scope.feature.data.fishbase_link},
             {label: 'Pelagic fishes', url: $scope.feature.data.fishbase_link},
             {label: 'Deep water fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Non-fish vertebrates', url: $scope.feature.data.fishbase_link},
+            {label: 'Non-fish vertebrates', url: sealifebaseLink},
           ],
 
           threatened: [
