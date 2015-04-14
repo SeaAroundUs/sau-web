@@ -279,7 +279,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.faos.data = faosInThisRegion;
           $scope.faos.resolve();
 
-          $scope.fishParametersURL = 'http://www.fishbase.ca/report/KeyFactsMatrixList.php?c_code=' +
+          $scope.fishParametersURL = 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code=' +
             $scope.feature.data.c_code + '&sb=1&disabled=1&fsb=0&custom=1';
         });
       }
