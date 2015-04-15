@@ -86,6 +86,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         $scope.data = data.data;
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
+        $scope.$parent.$parent.showDownload = true;
       });
       spinnerState.loading = true;
     }
@@ -146,12 +147,13 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         $scope.formModel.dimension.value,
         '/',
         $scope.selectedProvince.feature.entity_id,
-        '/',
-        $scope.selectedProvince.feature.region_id,
         '?format=csv&limit=',
         $scope.formModel.limit.value,
       ].join('');
 
+      if ($scope.selectedProvince.feature.region_id) {
+        url += '&sub_unit_id=' + $scope.selectedProvince.feature.region_id;
+      }
       $scope.updateDataDownloadUrl(url);
     }
 
