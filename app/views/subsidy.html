@@ -15,11 +15,11 @@
   <table>
     <thead>
     <tr>
-      <th>Subsidies categories and types</th>
-      <th>Year</th>
-      <th>Amount US$ '000 for specified year</th>
-      <th>% of landed value for specified year</th>
-      <th>Source</th>
+      <th class="title">Subsidies categories and types</th>
+      <th class="year">Year</th>
+      <th class="value">Amount US$ '000 for specified year</th>
+      <th class="percent">% of landed value for specified year</th>
+      <th class="source">Source</th>
     </tr>
     </thead>
     <tbody ng-repeat="category in country.subsidies.combined.categories"
@@ -29,7 +29,7 @@
       </tr>
       <tr ng-repeat="row in category.rows" ng-class="{summary: !row.title, 'top-padding': row.year === '2003'}">
         <!-- subsidies categories/types -->
-        <td ng-if="row.title && row.year === '2003'" class="fake-popover">
+        <td ng-if="row.title && row.year === '2003'" class="fake-popover title">
           <a tooltip-html-unsafe="{{ row.description }}"
              tooltip-placement="right"
              tooltip-trigger="click"
@@ -41,35 +41,35 @@
         <td ng-if="row.year === '2009'"></td>
 
         <!-- year -->
-        <td ng-bind="row.year"></td>
+        <td ng-bind="row.year" class="year"></td>
 
         <!-- amount -->
-        <td ng-if="row.value">[{{ row.value | number:0 }}]</td>
-        <td ng-if="row.sub_total" ng-bind="row.sub_total | number:0"></td>
-        <td ng-if="!row.value && !row.sub_total">-</td>
+        <td ng-if="row.value" class="value">[{{ row.value | number:0 }}]</td>
+        <td ng-if="row.sub_total" ng-bind="row.sub_total | number:0" class="value"></td>
+        <td ng-if="!row.value && !row.sub_total" class="value">-</td>
 
         <!-- % landed value -->
-        <td ng-if="row.percent_of_landed_value" ng-bind="row.percent_of_landed_value | number:2"></td>
-        <td ng-if="!row.percent_of_landed_value">-</td>
+        <td ng-if="row.percent_of_landed_value" ng-bind="row.percent_of_landed_value | number:2" class="percent"></td>
+        <td ng-if="!row.percent_of_landed_value" class="percent">-</td>
 
         <!-- source -->
-        <td>-</td>
+        <td class="source">-</td>
       </tr>
     </tbody>
     <tbody class="totals">
       <tr>
         <td class="summary">Grand totals</td>
-        <td>2003</td>
-        <td ng-bind="country.subsidies['2003'].total | number:0"></td>
-        <td ng-bind="country.subsidies['2003'].percent_of_landed_value | number:2"></td>
-        <td></td>
+        <td class="year">2003</td>
+        <td ng-bind="country.subsidies['2003'].total | number:0" class="value"></td>
+        <td ng-bind="country.subsidies['2003'].percent_of_landed_value | number:2" class="percent"></td>
+        <td class="source"></td>
       </tr>
       <tr>
         <td></td>
-        <td>2009</td>
-        <td ng-bind="country.subsidies['2009'].total | number:0"></td>
-        <td ng-bind="country.subsidies['2009'].percent_of_landed_value | number:2"></td>
-        <td></td>
+        <td class="year">2009</td>
+        <td ng-bind="country.subsidies['2009'].total | number:0" class="value"></td>
+        <td ng-bind="country.subsidies['2009'].percent_of_landed_value | number:2" class="percent"></td>
+        <td class="source"></td>
       </tr>
     </tbody>
   </table>

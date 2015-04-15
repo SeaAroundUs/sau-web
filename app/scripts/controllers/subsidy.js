@@ -46,8 +46,6 @@ angular.module('sauWebApp')
 
             $scope.country.subsidies.combined.categories[i] = newCategory;
           }
-
-          console.log($scope.country);
         });
       });
     });

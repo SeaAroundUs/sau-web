@@ -50,6 +50,15 @@
 
     th, td {
       padding: 2px 10px;
+
+      &.year, &.value, &.percent {
+        text-align: center;
+        width: 11%;
+      }
+
+      &.source {
+        width: 25%;
+      }
     }
 
     thead tr {
@@ -85,11 +94,17 @@
         padding-bottom: 15px;
       }
 
-      &.totals tr:first-child {
-        border-top: 1px solid #aaa;
+      &.totals tr {
+        &:first-child {
+          border-top: 1px solid #aaa;
 
-        td {
-          padding-top: 15px;
+          td {
+            padding-top: 15px;
+          }
+        }
+
+        &:last-child td {
+          padding-top: 0;
         }
       }
 
