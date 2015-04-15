@@ -1,0 +1,118 @@
+@import 'global';
+
+#subsidy {
+  min-height: 400px;
+  padding: 10px 60px 20px;
+
+  hr {
+    clear: both;
+  }
+
+  .fake-popover .tooltip {
+    border: 1px solid #ccc;
+    opacity: 1;
+    padding: 8px;
+    background: white;
+
+    .tooltip-arrow {
+      border-right-color: white;
+    }
+
+    .tooltip-inner {
+      background: white;
+      color: black;
+      max-width: 500px;
+      width: auto;
+      text-align: left;
+    }
+  }
+
+  .bottom-info {
+    overflow: auto;
+    zoom: 1;
+
+    .words {
+      width: 90%;
+    }
+
+    .links {
+      text-align: right;
+    }
+
+    .feedback {
+      float: right;
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-top: 20px;
+
+    th, td {
+      padding: 2px 10px;
+    }
+
+    thead tr {
+      background: #ddd;
+
+      th {
+        padding-top: 4px;
+        padding-bottom: 4px;
+      }
+    }
+
+    tbody {
+      &.good td.category-title {
+        color: green;
+        border-color: green;
+      }
+
+      &.bad td.category-title  {
+        color: red;
+        border-color: red;
+      }
+
+      &.ugly td.category-title  {
+        color: saddlebrown;
+        border-color: saddlebrown;
+      }
+
+      &.good tr:first-child td {
+        padding-top: 15px;
+      }
+
+      &.ugly tr:last-child td {
+        padding-bottom: 15px;
+      }
+
+      &.totals tr:first-child {
+        border-top: 1px solid #aaa;
+
+        td {
+          padding-top: 15px;
+        }
+      }
+
+      tr {
+        &.top-padding td {
+          padding-top: 10px;
+        }
+
+        &:nth-child(2) td {
+          padding-top: 10px;
+        }
+      }
+
+      td {
+        &.category-title {
+          border-bottom: 1px solid;
+        }
+
+        &.summary {
+          font-style: italic;
+          text-align: right;
+        }
+      }
+    }
+  }
+}

@@ -170,6 +170,10 @@ angular
         controller: 'RegionDetailCtrl',
         resolve: {region: function() {return 'mariculture';}}
       })
+      .when('/subsidy/:id', {
+        templateUrl: 'views/subsidy.html',
+        controller: 'SubsidyCtrl'
+      })
       .when('/topic/biodiversity', {
         templateUrl: 'views/topic-biodiversity.html',
         controller: 'TopicBiodiversityCtrl'
