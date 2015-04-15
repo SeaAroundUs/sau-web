@@ -4,10 +4,12 @@ angular.module('sauWebApp')
   .controller('SubsidyCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
     var regionID = $routeParams.id;
 
-    $scope.citationURL = externalURLs.s3Root + 'scientific-papers/reference/Fisheries_Subsidies_Citations.pdf';
+    $scope.citationURL = externalURLs.s3Root +
+      'scientific-papers/reference/Fisheries_Subsidies_Citations.pdf';
     $scope.journalURL = externalURLs.s3Root +
-      '/scientific-papers/reference/MarineProtectedAreaCostsAsBeneficialFisheriesSubsidies.pdf';
-    $scope.fullReportURL = '';
+      'scientific-papers/reference/MarineProtectedAreaCostsAsBeneficialFisheriesSubsidies.pdf';
+    $scope.fullReportURL = externalURLs.s3Root +
+      'scientific-papers/reference/SumailaPauly-Subsidies-2006-FCRR-146.pdf';
 
     sauAPI.CountryProfile.get({ region_id: regionID }, function(resp) {
       $scope.country = resp.data;
