@@ -75,5 +75,6 @@ angular.module('sauWebApp')
   .value('externalURLs',
     {
       manual: '/reference.html',
-      sspMethods: '/wp-content/uploads/2015/04/SSP_methods-April-2011-final.pdf'
+      sspMethods: '/wp-content/uploads/2015/04/SSP_methods-April-2011-final.pdf',
+      s3Root: 'https://s3-us-west-2.amazonaws.com/'
     });

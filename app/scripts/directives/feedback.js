@@ -3,7 +3,7 @@
   angular.module('sauWebApp').directive('feedback', function($location) {
     return {
       link: function(scope) {
-        scope.url = '/feedback/?referringURL=/data/%23/' + $location.$$path;
+        scope.url = '/feedback/?referringURL=/data/%23' + $location.$$path;
       },
       restrict: 'E',
       replace: true,
