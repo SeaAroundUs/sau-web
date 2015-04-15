@@ -33,12 +33,12 @@ angular.module('sauWebApp')
     ];
 
     var mariculture = [
-      {size: 99, label: '1-99'},
-      {size: 999, label: '100-999'},
-      {size: 9999, label: '1,000-9,999'},
-      {size: 999999, label: '10,000-999,999'},
-      {size: 9999999, label: '1,000,000-9,999,999'},
-      {size: 12999999, label: '10,000,000-12,999,999'},
+      {value: 99, label: '1-99'},
+      {value: 999, label: '100-999'},
+      {value: 9999, label: '1,000-9,999'},
+      {value: 999999, label: '10,000-999,999'},
+      {value: 9999999, label: '1,000,000-9,999,999'},
+      {value: 12999999, label: '10,000,000-12,999,999'},
     ];
 
     return {

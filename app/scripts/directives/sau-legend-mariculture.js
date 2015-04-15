@@ -5,7 +5,7 @@ angular.module('sauWebApp')
 
   var controller = function($scope) {
     $scope.markers = insetMapLegendData.mariculture.map(function(marker) {
-      var circleProperties = sauD3Utils.pointCircleProperties(marker.size);
+      var circleProperties = sauD3Utils.pointCircleProperties(marker.value);
       marker.color = circleProperties.color;
       marker.size = circleProperties.size;
       return marker;
