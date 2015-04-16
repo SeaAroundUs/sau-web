@@ -20,32 +20,32 @@ angular.module('sauWebApp')
       }).join('<br />');
 
       angular.forEach(['good', 'bad', 'ugly'], function(cat) {
-        var i, figure, currentCat;
-        var year2000 = resp.data['2000'][cat];
+        var i, figure, currentCat, combineData;
+        var year2003 = resp.data['2000'][cat];
         var year2009 = resp.data['2009'][cat];
 
         $scope.data.combined.push({
-          title: year2000.title,
-          description: year2000.description,
+          title: year2003.title,
+          description: year2003.description,
           figures: []
         });
 
         currentCat = $scope.data.combined[$scope.data.combined.length - 1];
 
-        for (i = 0; i < year2000.figures.length; i++) {
-          figure = year2000.figures[i];
+        combineData = function(obj, year) {
+          figure = obj.figures[i];
           if (figure.amount < 0) {
             figure.amount = '[' + Math.abs(figure.amount) + ']';
           }
-          figure.year = 2003;
+          if (typeof figure.url === 'string' && figure.url.indexOf('~') === 0) {
+            figure.url = figure.url.toLowerCase().replace(/^(~\/)/, externalURLs.s3Root);
+          }
+          figure.year = parseInt(year);
           currentCat.figures.push(figure);
+        };
 
-          figure = year2009.figures[i];
-          if (figure.amount < 0) {
-            figure.amount = '[' + Math.abs(figure.amount) + ']';
-          }
-          figure.year = 2009;
-          currentCat.figures.push(figure);
+        for (i = 0; i < year2003.figures.length; i++) {
+          angular.forEach({ '2003': year2003, '2009': year2009 }, combineData);
         }
       });
     });
