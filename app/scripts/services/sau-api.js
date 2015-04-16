@@ -27,6 +27,7 @@ angular.module('sauWebApp')
       TaxonGroups: resourceFactory('taxon-group/'),
       GeoList: resourceFactory('geo-entity/'),
       Subsidies: resourceFactory('geo-entity/:geo_id/subsidies/'),
+      SubsidyReference: resourceFactory('subsidy-reference/:id'),
 
       apiURL: SAU_CONFIG.apiURL
     };

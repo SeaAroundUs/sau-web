@@ -12,7 +12,7 @@
     </a>
   </p>
 
-  <table>
+  <table class="data-table">
     <thead>
     <tr>
       <th class="title">Subsidies categories and types</th>
@@ -54,11 +54,16 @@
         <td ng-if="row.perc_landed === null" class="percent">-</td>
 
         <!-- source -->
+        <td class="source fake-popover">
+          <subsidy-reference link="row.link_text" url="row.url" ref="row.reference_id"></subsidy-reference>
+        </td>
+        <!--
         <td ng-if="row.title !== 'sub_total' && (row.link_text === null || row.url === null)"  class="source">-</td>
         <td ng-if="row.title !== 'sub_total' && row.link_text !== null && row.url !== null" class="source">
           <a target="_blank" ng-href="{{ row.url }}" ng-bind="row.link_text"></a>
         </td>
         <td ng-if="row.title === 'sub_total'" class="source"></td>
+        -->
       </tr>
     </tbody>
     <tbody class="totals">

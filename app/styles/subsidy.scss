@@ -16,6 +16,7 @@
 
     .tooltip-arrow {
       border-right-color: white;
+      border-left-color: white;
     }
 
     .tooltip-inner {
@@ -44,7 +45,21 @@
     }
   }
 
-  table {
+  table.popover-table {
+    width: 250px;
+
+    tr {
+      &:nth-child(odd) {
+        background-color: #eee;
+      }
+
+      td {
+        padding: 5px !important;
+      }
+    }
+  }
+
+  table.data-table {
     width: 100%;
     margin-top: 20px;
 

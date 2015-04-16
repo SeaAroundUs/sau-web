@@ -1,0 +1,8 @@
+<span ng-if="!link">-</span>
+<a ng-if="url" ng-href="{{ url }}" ng-bind="link"></a>
+<a ng-if="!url"
+   tooltip-html-unsafe="{{ refPopover }}"
+   tooltip-placement="left"
+   tooltip-trigger="click"
+   tooltip-animation="false"
+   ng-bind="link"></a>
