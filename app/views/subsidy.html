@@ -1,11 +1,11 @@
 <div id="subsidy">
-  <h1>Fisheries Subsidies in {{ country.country }}</h1>
+  <h1>Fisheries Subsidies in {{ data.name }}</h1>
   <p class="fake-popover">
     <a tooltip-html-unsafe="{{ eezPopover }}"
        tooltip-placement="right"
        tooltip-trigger="click"
        tooltip-animation="false">
-      <ng-pluralize count="country.eezs.length"
+      <ng-pluralize count="data.eezs.length"
                     when="{'one': '(presented as 1 EEZ component)',
                     'other': '(presented as {} EEZ components)'}">
       </ng-pluralize>
@@ -22,53 +22,58 @@
       <th class="source">Source</th>
     </tr>
     </thead>
-    <tbody ng-repeat="category in country.subsidies.combined.categories"
+    <tbody ng-repeat="category in data.combined"
            ng-class="{good: $index === 0, bad: $index === 1, ugly: $index === 2}">
-      <tr>
+    <tr>
         <td colspan="5" ng-bind="category.title" class="category-title"></td>
       </tr>
-      <tr ng-repeat="row in category.rows" ng-class="{summary: !row.title, 'top-padding': row.year === '2003'}">
+      <tr ng-repeat="row in category.figures"
+          ng-class="{summary: row.title === 'sub_total', 'top-padding': row.year === 2003}">
+
         <!-- subsidies categories/types -->
-        <td ng-if="row.title && row.year === '2003'" class="fake-popover title">
+        <td ng-if="row.title !== 'sub_total' && row.year === 2003" class="fake-popover title">
           <a tooltip-html-unsafe="{{ row.description }}"
              tooltip-placement="right"
              tooltip-trigger="click"
-             tooltip-animation="false">
-            {{ row.title }}
-          </a>
+             tooltip-animation="false"
+             ng-bind="row.title"></a>
         </td>
-        <td ng-if="!row.title && row.year === '2003'" class="summary">Sub totals</td>
-        <td ng-if="row.year === '2009'"></td>
+        <td ng-if="row.title === 'sub_total' && row.year === 2003" class="summary">Sub totals</td>
+        <td ng-if="row.year === 2009"></td>
 
         <!-- year -->
         <td ng-bind="row.year" class="year"></td>
 
         <!-- amount -->
-        <td ng-if="row.value" class="value">[{{ row.value | number:0 }}]</td>
+        <td ng-if="row.amount !== null" class="value" ng-bind="row.amount"></td>
         <td ng-if="row.sub_total" ng-bind="row.sub_total | number:0" class="value"></td>
-        <td ng-if="!row.value && !row.sub_total" class="value">-</td>
+        <td ng-if="row.amount === null && !row.sub_total" class="value">-</td>
 
         <!-- % landed value -->
-        <td ng-if="row.percent_of_landed_value" ng-bind="row.percent_of_landed_value | number:2" class="percent"></td>
-        <td ng-if="!row.percent_of_landed_value" class="percent">-</td>
+        <td ng-if="row.perc_landed !== null" ng-bind="row.perc_landed | number:2" class="percent"></td>
+        <td ng-if="row.perc_landed === null" class="percent">-</td>
 
         <!-- source -->
-        <td class="source">-</td>
+        <td ng-if="row.title !== 'sub_total' && (row.link_text === null || row.url === null)"  class="source">-</td>
+        <td ng-if="row.title !== 'sub_total' && row.link_text !== null && row.url !== null" class="source">
+          <a target="_blank" ng-href="{{ row.url }}" ng-bind="row.link_text"></a>
+        </td>
+        <td ng-if="row.title === 'sub_total'" class="source"></td>
       </tr>
     </tbody>
     <tbody class="totals">
       <tr>
         <td class="summary">Grand totals</td>
         <td class="year">2003</td>
-        <td ng-bind="country.subsidies['2003'].total | number:0" class="value"></td>
-        <td ng-bind="country.subsidies['2003'].percent_of_landed_value | number:2" class="percent"></td>
+        <td ng-bind="data['2000'].grand_total.amount | number:0" class="value"></td>
+        <td ng-bind="data['2000'].grand_total.perc_landed | number:2" class="percent"></td>
         <td class="source"></td>
       </tr>
       <tr>
         <td></td>
         <td class="year">2009</td>
-        <td ng-bind="country.subsidies['2009'].total | number:0" class="value"></td>
-        <td ng-bind="country.subsidies['2009'].percent_of_landed_value | number:2" class="percent"></td>
+        <td ng-bind="data['2009'].grand_total.amount | number:0" class="value"></td>
+        <td ng-bind="data['2009'].grand_total.perc_landed | number:2" class="percent"></td>
         <td class="source"></td>
       </tr>
     </tbody>

@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp')
   .controller('SubsidyCtrl', function ($scope, $routeParams, sauAPI, externalURLs) {
-    var regionID = $routeParams.id;
+    var geoID = $routeParams.id;
 
     $scope.citationURL = externalURLs.s3Root +
       'scientific-papers/reference/Fisheries_Subsidies_Citations.pdf';
@@ -11,44 +11,42 @@ angular.module('sauWebApp')
     $scope.fullReportURL = externalURLs.s3Root +
       'scientific-papers/reference/SumailaPauly-Subsidies-2006-FCRR-146.pdf';
 
-    sauAPI.CountryProfile.get({ region_id: regionID }, function(resp) {
-      $scope.country = resp.data;
-      $scope.country.subsidies = { '2003': {}, '2009': {} };
+    sauAPI.Subsidies.get({geo_id: geoID}, function(resp) {
+      $scope.data = resp.data;
+      $scope.data.combined = [];
 
-      sauAPI.Subsidies.get({ region_id: regionID, year: 2000 }, function(resp) {
-        $scope.country.subsidies['2003'] = resp.data;
-        $scope.country.subsidies.combined = resp.data;
-        $scope.country.eezs = resp.data.eezs;
+      $scope.eezPopover = resp.data.eezs.map(function(eez) {
+        return '<a href="#/eez/' + eez.eez_id + '">EEZ Waters of ' + eez.name + '</a>';
+      }).join('<br />');
 
-        $scope.eezPopover = $scope.country.eezs.map(function(eez) {
-          return '<a href="#/eez/' + eez.id + '">EEZ Waters of ' + eez.title + '</a>';
-        }).join('<br />');
+      angular.forEach(['good', 'bad', 'ugly'], function(cat) {
+        var i, figure, currentCat;
+        var year2000 = resp.data['2000'][cat];
+        var year2009 = resp.data['2009'][cat];
 
-        sauAPI.Subsidies.get({ region_id: regionID, year: 2009 }, function(resp) {
-          var i, j, category, row, newCategory, otherRow;
-
-          $scope.country.subsidies['2009'] = resp.data;
-
-          for(i = 0; i < $scope.country.subsidies.combined.categories.length; i++) {
-            category = $scope.country.subsidies.combined.categories[i];
-            newCategory = {
-              title: category.title,
-              description: category.description,
-              rows: []
-            };
-
-            for(j = 0; j < category.rows.length; j++) {
-              row = category.rows[j];
-              row.year = '2003';
-              newCategory.rows.push(row);
-              otherRow = $scope.country.subsidies['2009'].categories[i].rows[j];
-              otherRow.year = '2009';
-              newCategory.rows.push(otherRow);
-            }
-
-            $scope.country.subsidies.combined.categories[i] = newCategory;
-          }
+        $scope.data.combined.push({
+          title: year2000.title,
+          description: year2000.description,
+          figures: []
         });
+
+        currentCat = $scope.data.combined[$scope.data.combined.length - 1];
+
+        for (i = 0; i < year2000.figures.length; i++) {
+          figure = year2000.figures[i];
+          if (figure.amount < 0) {
+            figure.amount = '[' + Math.abs(figure.amount) + ']';
+          }
+          figure.year = 2003;
+          currentCat.figures.push(figure);
+
+          figure = year2009.figures[i];
+          if (figure.amount < 0) {
+            figure.amount = '[' + Math.abs(figure.amount) + ']';
+          }
+          figure.year = 2009;
+          currentCat.figures.push(figure);
+        }
       });
     });
   });
