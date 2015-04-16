@@ -12,6 +12,7 @@ angular.module('sauWebApp')
       Region: resourceFactory(':region/:region_id'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
+      CountryList: resourceFactory('country/'),
       CountryProfile: resourceFactory('country/:region_id'),
       Mariculture: resourceFactory('country/:region_id/mariculture/'),
       Subsidies: resourceFactory('country/:region_id/subsidies/'),

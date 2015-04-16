@@ -62,16 +62,16 @@
     <h3>Countries &amp; Territories</h3>
 
     <div class="country-territory">
-      <ui-select search-enabled="true" ng-model="selectedCountry" theme="bootstrap">
-        <ui-select-match placeholder="Type or select item from list...">{{$select.selected.label}}</ui-select-match>
-        <ui-select-choices repeat="country in countries">
-          <span ng-bind-html="country.label"></span>
+      <ui-select search-enabled="true" ng-model="country.selected" theme="bootstrap">
+        <ui-select-match placeholder="Type or select item from list...">{{$select.selected.title}}</ui-select-match>
+        <ui-select-choices repeat="country in countries | filter: $select.search">
+          <span ng-bind-html="country.title | highlight: $select.search"></span>
         </ui-select-choices>
       </ui-select>
     </div>
 
     <!-- <button class="btn btn-primary" ng-click="submitCountry(tab)" scroll-click="feru-title">Submit</button> -->
-    <button class="btn btn-primary" disabled>Submit</button>
+    <button class="btn btn-primary" ng-click="submitCountry(country)">Submit</button>
   </div>
 
   <p class="note">

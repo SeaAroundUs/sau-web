@@ -32,13 +32,11 @@ angular.module('sauWebApp')
       }
     ];
 
-    $scope.selectedCountry = null;
+    $scope.country = {};
 
-    $scope.countries = [
-      {label: 'Foo', value: 1},
-      {label: 'Bar', value: 2},
-      {label: 'Baz', value: 3}
-    ];
+    sauAPI.CountryList.get({ nospatial: true }, function(resp) {
+      $scope.countries = resp.data;
+    });
 
     $scope.submitRegion = function(selection) {
       var region = selection.region.properties.region;
@@ -48,7 +46,9 @@ angular.module('sauWebApp')
       $location.path(url);
     };
 
-    $scope.submitCountry = function() {
-      console.log($scope.selectedCountry);
+    $scope.submitCountry = function(country) {
+      if (country.selected) {
+        $location.path('/subsidy/' + country.selected.c_number);
+      }
     };
   });
