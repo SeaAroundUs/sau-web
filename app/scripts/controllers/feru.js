@@ -34,7 +34,7 @@ angular.module('sauWebApp')
 
     $scope.country = {};
 
-    sauAPI.CountryList.get({ nospatial: true }, function(resp) {
+    sauAPI.GeoList.get({ nospatial: true }, function(resp) {
       $scope.countries = resp.data;
     });
 
@@ -48,7 +48,7 @@ angular.module('sauWebApp')
 
     $scope.submitCountry = function(country) {
       if (country.selected) {
-        $location.path('/subsidy/' + country.selected.c_number);
+        $location.path('/subsidy/' + country.selected.geo_entity_id);
       }
     };
   });

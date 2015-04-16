@@ -12,10 +12,8 @@ angular.module('sauWebApp')
       Region: resourceFactory(':region/:region_id'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
-      CountryList: resourceFactory('country/'),
       CountryProfile: resourceFactory('country/:region_id'),
       Mariculture: resourceFactory('country/:region_id/mariculture/'),
-      Subsidies: resourceFactory('country/:region_id/subsidies/'),
       MaricultureData: resourceFactory('mariculture/:dimension/:entity_id'),
       Data: resourceFactory(':region/:measure/:dimension/'),
       MarineTrophicIndexData: resourceFactory(':region/marine-trophic-index/'),
@@ -27,6 +25,8 @@ angular.module('sauWebApp')
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),
+      GeoList: resourceFactory('geo-entity/'),
+      Subsidies: resourceFactory('geo-entity/:geo_id/subsidies/'),
 
       apiURL: SAU_CONFIG.apiURL
     };

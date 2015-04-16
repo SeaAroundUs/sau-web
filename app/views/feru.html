@@ -63,9 +63,9 @@
 
     <div class="country-territory">
       <ui-select search-enabled="true" ng-model="country.selected" theme="bootstrap">
-        <ui-select-match placeholder="Type or select item from list...">{{$select.selected.title}}</ui-select-match>
+        <ui-select-match placeholder="Type or select item from list...">{{$select.selected.name}}</ui-select-match>
         <ui-select-choices repeat="country in countries | filter: $select.search">
-          <span ng-bind-html="country.title | highlight: $select.search"></span>
+          <span ng-bind-html="country.name | highlight: $select.search"></span>
         </ui-select-choices>
       </ui-select>
     </div>
