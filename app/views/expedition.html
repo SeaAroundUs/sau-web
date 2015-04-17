@@ -1,0 +1,80 @@
+<div id="expedition">
+  <h1>Historic Expeditions</h1>
+  <h2>Search the Scientific Expeditions &amp; Surveys database</h2>
+
+  <div class="drop-searches">
+    <div class="drop-search">
+      <label>Time period:</label>
+      <select ng-model="selected.period" ng-options="p as p for p in timePeriods"></select>
+    </div>
+
+    <div class="drop-search">
+      <label>Vessel name:</label>
+      <select ng-model="selected.vessel" ng-options="v as v for v in vessels"></select>
+    </div>
+
+    <button class="btn btn-primary"
+            ng-click="getExpeditions({period: selected.period, vessel: selected.vessel})">
+      Search
+    </button>
+  </div>
+
+  <p>-- OR --</p>
+
+  <div class="drop-searches">
+    <div class="drop-search">
+      <label>Captain:</label>
+      <select ng-model="selected.captain" ng-options="c as c for c in captains"></select>
+    </div>
+
+    <div class="drop-search">
+      <label>Scientist(s):</label>
+      <select ng-model="selected.scientist" ng-options="s as s for s in scientists"></select>
+    </div>
+
+    <button class="btn btn-primary"
+            ng-click="getExpeditions({captain: selected.captain, scientist: selected.scientist})">
+      Search
+    </button>
+  </div>
+
+  <p>
+    This component of the Sea Around Us project web site presents information on both historic expeditions,
+    and more recent surveys, with emphasis on the fish that were collected. Some older expeditions are described
+    using information assembled from journals, other narratives, maps, drawings and other material, while for
+    recent surveys, the information provided include the expedition name, year(s), the countries covered and
+    the sponsoring institution. References to sources are given when available.
+  </p>
+
+  <div class="search-results" ng-show="expeditions">
+    <h3>Your search for:</h3>
+    <ul>
+      <li ng-repeat="param in searchParams" ng-bind="param"></li>
+    </ul>
+
+    <table class="expeditions">
+      <thead>
+        <tr>
+          <td>Expedition name</td>
+          <td>Time period</td>
+          <td>Area surveyed</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="exp in expeditions">
+          <td>
+            <a ng-href="#/expedition/{{ exp.expedition_key }}">
+              {{ exp.expedition_name || "[No expedition name]" }}
+            </a>
+          </td>
+          <td>
+            {{ exp.year_depart }} - {{ exp.year_arrive }}
+          </td>
+          <td>
+            {{ exp.coverage_geographic || "-" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

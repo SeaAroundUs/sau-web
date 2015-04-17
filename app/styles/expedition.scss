@@ -1,0 +1,54 @@
+@import 'global';
+
+#expedition {
+  min-height: 400px;
+  padding: 10px 120px 20px;
+
+  .drop-searches {
+    margin: 15px 0;
+    overflow: auto;
+    zoom: 1;
+
+    button {
+      margin-top: 15px;
+      text-transform: uppercase;
+      padding: 5px 15px;
+    }
+
+    .drop-search {
+      float: left;
+      margin-right: 30px;
+      width: 200px;
+
+      select {
+        width: 100%;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .search-results {
+    margin-top: 30px;
+
+    table.expeditions {
+      width: 100%;
+      margin-top: 30px;
+
+      th, td {
+        padding: 10px;
+      }
+
+      thead {
+        background: #eee;
+
+        th {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

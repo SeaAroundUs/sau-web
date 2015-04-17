@@ -186,6 +186,10 @@ angular
         templateUrl: 'views/marine-trophic-index-search.html',
         controller: 'MarineTrophicIndexSearchCtrl'
       })
+      .when('/expedition', {
+        templateUrl: 'views/expedition.html',
+        controller: 'ExpeditionCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

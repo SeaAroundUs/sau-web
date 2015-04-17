@@ -28,6 +28,7 @@ angular.module('sauWebApp')
       GeoList: resourceFactory('geo-entity/'),
       Subsidies: resourceFactory('geo-entity/:geo_id/subsidies/'),
       SubsidyReference: resourceFactory('subsidy-reference/:id'),
+      Expeditions: resourceFactory('expeditions/:subview/:id'),
 
       apiURL: SAU_CONFIG.apiURL
     };
