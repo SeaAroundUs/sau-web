@@ -63,9 +63,9 @@
       <tbody>
         <tr ng-repeat="exp in expeditions">
           <td class="name">
-            <a ng-click="getExpeditionDetails(exp.expedition_key)" scroll-click="expedition-details">
-              {{ exp.expedition_name || "[No expedition name]" }}
-            </a>
+            <a ng-click="getExpeditionDetails(exp.expedition_key)"
+               scroll-click="expedition-details"
+               ng-bind-html="exp.expedition_name || '[No expedition name]'"></a>
           </td>
           <td>
             {{ exp.year_depart }}{{ exp.year_arrive ? ' - ' : '' }}{{ exp.year_arrive }}
@@ -80,7 +80,7 @@
 
   <div id="expedition-details" class="expedition-details">
     <div ng-show="expDetails">
-      <h3>{{ expDetails.expedition_name || '[No expedition name]' }}</h3>
+      <h3 ng-bind-html="expDetails.expedition_name || '[No expedition name]'"></h3>
 
       <p>
         <b>Captain(s):</b>
@@ -103,7 +103,7 @@
 
       <p><b>Vessel(s):</b> {{ expDetails.vessel_name }}</p>
       <p><b>Area surveyed:</b> {{ expDetails.coverage_geographic }}</p>
-      <p><b>Expedition type:</b> {{ expDetails.expedition_type }}</p>
+      <p><b>Expedition type:</b> {{ expDetails.type_geographic | capitalize }}</p>
 
       <div>
         <b>Narrative:</b>
