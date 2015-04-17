@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .controller('ExpeditionCtrl', function ($scope, sauAPI) {
+  .controller('ExpeditionCtrl', function ($scope, $modal, sauAPI) {
 
     getTimePeriods();
     getVessels();
@@ -54,6 +54,10 @@ angular.module('sauWebApp')
       sauAPI.Expeditions.get({id: expId}, function(resp) {
         $scope.expDetails = resp.data;
       });
+    };
+
+    $scope.acknowledgementModal = function() {
+      $modal.open({templateUrl: 'views/exp-ack-modal.html', backdrop: false});
     };
 
     function getTimePeriods() {

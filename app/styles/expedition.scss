@@ -78,3 +78,14 @@
     }
   }
 }
+
+#acknowledgement-modal {
+  padding: 20px;
+  overflow: auto;
+  zoom: 1;
+
+  button {
+    text-transform: uppercase;
+    float: right;
+  }
+}
