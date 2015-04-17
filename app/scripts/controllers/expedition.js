@@ -50,6 +50,12 @@ angular.module('sauWebApp')
       });
     };
 
+    $scope.getExpeditionDetails = function(expId) {
+      sauAPI.Expeditions.get({id: expId}, function(resp) {
+        $scope.expDetails = resp.data;
+      });
+    };
+
     function getTimePeriods() {
       $scope.timePeriods = [
         '-- Any year --',

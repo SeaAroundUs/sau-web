@@ -40,6 +40,10 @@
 
       th, td {
         padding: 10px;
+
+        &.name {
+          width: 60%;
+        }
       }
 
       thead {
@@ -48,6 +52,28 @@
         th {
           font-weight: bold;
         }
+      }
+
+      tbody {
+        tr {
+          border-top: 1px solid #eee;
+
+          &:first-child {
+            border-top: none;
+          }
+        }
+      }
+    }
+  }
+
+  .expedition-details {
+    margin-top: 25px;
+
+    .other-info {
+      margin-bottom: 25px;
+
+      p {
+        margin-bottom: 0;
       }
     }
   }

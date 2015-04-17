@@ -55,26 +55,70 @@
     <table class="expeditions">
       <thead>
         <tr>
-          <td>Expedition name</td>
-          <td>Time period</td>
-          <td>Area surveyed</td>
+          <th class="name">Expedition name</th>
+          <th>Time period</th>
+          <th>Area surveyed</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="exp in expeditions">
-          <td>
-            <a ng-href="#/expedition/{{ exp.expedition_key }}">
+          <td class="name">
+            <a ng-click="getExpeditionDetails(exp.expedition_key)" scroll-click="expedition-details">
               {{ exp.expedition_name || "[No expedition name]" }}
             </a>
           </td>
           <td>
-            {{ exp.year_depart }} - {{ exp.year_arrive }}
+            {{ exp.year_depart }}{{ exp.year_arrive ? ' - ' : '' }}{{ exp.year_arrive }}
           </td>
           <td>
-            {{ exp.coverage_geographic || "-" }}
+            {{ exp.coverage_geographic }}
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <div id="expedition-details" class="expedition-details">
+    <div ng-show="expDetails">
+      <h3>{{ expDetails.expedition_name || '[No expedition name]' }}</h3>
+
+      <p>
+        <b>Captain(s):</b>
+        <span ng-repeat="captain in expDetails.captains">
+          <a ng-bind="captain"></a>{{ $last ? '' : ', ' }}
+        </span>
+      </p>
+
+      <p>
+        <b>Other participant(s):</b>
+        <span ng-repeat="other in expDetails.others">
+          <a ng-bind="other"></a>{{ $last ? '' : ', ' }}
+        </span>
+      </p>
+
+      <p>
+        <b>Time period:</b>
+        {{ expDetails.year_depart }}{{ expDetails.year_arrive ? ' to ' : '' }}{{ expDetails.year_arrive }}
+      </p>
+
+      <p><b>Vessel(s):</b> {{ expDetails.vessel_name }}</p>
+      <p><b>Area surveyed:</b> {{ expDetails.coverage_geographic }}</p>
+      <p><b>Expedition type:</b> {{ expDetails.expedition_type }}</p>
+
+      <div>
+        <b>Narrative:</b>
+        <p ng-bind="expDetails.narrative"></p>
+      </div>
+
+      <div class="other-info">
+        <b>Other information available:</b>
+        <p><a>Fish specimens collected</a></p>
+        <p><a>References used</a></p>
+      </div>
+
+      <div>
+        <a>Acknowledgement</a>
+      </div>
+    </div>
   </div>
 </div>
