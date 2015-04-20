@@ -16,7 +16,9 @@ angular.module('sauWebApp')
     $scope.getExpeditions = function(params) {
       var param, years;
 
+      $scope.searchResults = null;
       $scope.expeditions = null;
+      $scope.expDetails = null;
 
       for (param in params) {
         if (params.hasOwnProperty(param) && params[param].indexOf('-- Any') === 0) {
@@ -31,6 +33,9 @@ angular.module('sauWebApp')
       }
 
       sauAPI.Expeditions.get(params, function(resp) {
+        $scope.searchResults = true;
+        $scope.noData = (resp.data === undefined);
+
         $scope.expeditions = resp.data;
         $scope.searchParams = [];
 

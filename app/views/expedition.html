@@ -46,13 +46,15 @@
     the sponsoring institution. References to sources are given when available.
   </p>
 
-  <div class="search-results" ng-show="expeditions">
+  <div class="search-results" ng-show="searchResults">
     <h3>Your search for:</h3>
     <ul>
       <li ng-repeat="param in searchParams" ng-bind="param"></li>
     </ul>
 
-    <table class="expeditions">
+    <h3 ng-show="noData">Your search returned no results</h3>
+
+    <table class="expeditions" ng-hide="noData">
       <thead>
         <tr>
           <th class="name">Expedition name</th>
