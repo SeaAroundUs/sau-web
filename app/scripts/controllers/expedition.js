@@ -16,6 +16,8 @@ angular.module('sauWebApp')
     $scope.getExpeditions = function(params) {
       var param, years;
 
+      $scope.expeditions = null;
+
       for (param in params) {
         if (params.hasOwnProperty(param) && params[param].indexOf('-- Any') === 0) {
           delete params[param];
@@ -51,6 +53,8 @@ angular.module('sauWebApp')
     };
 
     $scope.getExpeditionDetails = function(expId) {
+      $scope.expDetails = null;
+
       sauAPI.Expeditions.get({id: expId}, function(resp) {
         $scope.expDetails = resp.data;
       });
