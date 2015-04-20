@@ -39,32 +39,10 @@ angular.module('sauWebApp')
             {label: 'Coelenterates', url: 'http://www.sealifebase.org/speciesgroup/index.php?group='+'coelenterates'+'&c_code='+fishbase_id+'&action=list'}
           ]
         };
+
       } else if ($scope.region.name === 'lme') {
-
-        var sealifebaseLink = $scope.feature.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
-
-        $scope.fishbaseLinks = {
-          fish: [
-            {label: 'Reef fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Fresh water fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Marine fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Pelagic fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Deep water fishes', url: $scope.feature.data.fishbase_link},
-            {label: 'Non-fish vertebrates', url: sealifebaseLink},
-          ],
-
-          threatened: [
-            {label: 'Fish', url: $scope.feature.data.fishbase_link},
-            {label: 'Non-fish', url: sealifebaseLink},
-          ],
-
-          invertebrates: [
-            {label: 'Crustaceans', url: sealifebaseLink},
-            {label: 'Mollusks', url: sealifebaseLink},
-            {label: 'Echinoderms', url: sealifebaseLink},
-            {label: 'Coelenterates', url: sealifebaseLink}
-          ]
-        };
+        $scope.fishbaseLink = $scope.feature.data.fishbase_link;
+        $scope.sealifebaseLink = $scope.feature.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
       }
     });
   });

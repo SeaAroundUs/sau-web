@@ -65,6 +65,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     var tabs = {
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
       biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
+      biodiversityLME: {title: 'Biodiversity', template: 'views/region-detail/biodiversity-lme.html'},
       ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
       ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
       ecosystemsHighSeas: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-highseas.html'},
@@ -134,7 +135,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     } else if ($scope.region.name === 'lme') {
       $scope.tabs = [
         tabs.catchInfo,
-        tabs.biodiversity,
+        tabs.biodiversityLME,
         tabs.ecosystemsLME,
         tabs.indicatorsLME
         // tabs.feedback
