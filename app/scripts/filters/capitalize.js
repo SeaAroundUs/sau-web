@@ -8,6 +8,6 @@
       } else {
         return input;
       }
-    }
+    };
   });
 })(angular);
