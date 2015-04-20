@@ -2,7 +2,6 @@
 
 /* Custom page header */
 #header {
-  border-bottom: 1px solid #e5e5e5;
   padding-top: 20px;
 
   /* Make the masthead heading the same height as the navigation */
@@ -25,7 +24,7 @@
     padding: 4px 55px;
     text-align: center;
     cursor: default;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    border-bottom: 2px solid $headerBackgroundColor;
 
     li {
       padding: 12px 1.14em 12px 0;

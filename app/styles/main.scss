@@ -126,33 +126,9 @@ label {
       }
     }
   }
-  .row.topics {
-    // background-color: #E8E0D8;
-    .nav-tabs {
-      background-color: #E8E0D8;
-      text-align: center;
-      border-bottom: 0;
 
-      li {
-        background-color: #E8E0D8;
-        margin-top:12px;
-        display: inline-block;
-        float: none;
-        padding: 0 30px;
-
-        a {
-          text-transform: uppercase;
-          color: $darkBlue;
-        }
-
-        &.active a {
-          background-color: $darkBlue;
-          color: white;
-          border: 0;
-          border-radius: 0;
-        }
-      }
-    }
+  .row.topics  .nav-tabs {
+      display: none;
   }
 }
 
