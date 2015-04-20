@@ -4,6 +4,16 @@
     background-color: white;
     color: black;
 
+    .download-div {
+      display: table;
+      text-align: right;
+
+      button {
+        display: block;
+        margin-bottom: 5px;
+      }
+    }
+
     &.eez {
         .metrics {
             min-height: 220px;
