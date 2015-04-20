@@ -87,14 +87,14 @@
       <p>
         <b>Captain(s):</b>
         <span ng-repeat="captain in expDetails.captains">
-          <a ng-bind="captain"></a>{{ $last ? '' : ', ' }}
+          <span ng-bind="captain"></span>{{ $last ? '' : ', ' }}
         </span>
       </p>
 
       <p>
         <b>Other participant(s):</b>
         <span ng-repeat="other in expDetails.others">
-          <a ng-bind="other"></a>{{ $last ? '' : ', ' }}
+          <span ng-bind="other"></span>{{ $last ? '' : ', ' }}
         </span>
       </p>
 
@@ -112,11 +112,13 @@
         <p ng-bind="expDetails.narrative"></p>
       </div>
 
+      <!--
       <div class="other-info">
         <b>Other information available:</b>
         <p><a>Fish specimens collected</a></p>
         <p><a>References used</a></p>
       </div>
+      -->
 
       <div>
         <a ng-click="acknowledgementModal()">Acknowledgement</a>
