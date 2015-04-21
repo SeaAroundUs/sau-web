@@ -3,7 +3,7 @@
 /* global colorbrewer */ /* for jshint */
 
 angular.module('sauWebApp').controller('MaricultureChartCtrl',
-  function ($scope, $rootScope, $location, $filter, $q, sauAPI, spinnerState) {
+  function ($scope, $rootScope, $location, $filter, $q, sauAPI, spinnerState, sauChartUtils) {
 
     function init() {
       $scope.$watch('selectedProvince', onFormModelChange, true);
@@ -55,16 +55,6 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
 
     $scope.color = $scope.colors.Spectral;
 
-    $scope.toggleTaxonNames = function() {
-      //Swapping each datum's key between scientific name and common name.
-      for (var i = 0; i < $scope.data.length; i++) {
-        var temp = $scope.data[i].key;
-        $scope.data[i].key = $scope.data[i].scientific_name;
-        $scope.data[i].scientific_name = temp;
-      }
-      $scope.useScientificNames = !$scope.useScientificNames;
-    };
-
     function onFormModelChange() {
       updateData();
       updateYLabel();
@@ -94,21 +84,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
       spinnerState.loading = true;
     }
 
-    $scope.toggleTaxonNames = function() {
-      //Swapping each datum's key between scientific name and common name.
-      for (var i = 0; i < $scope.data.length; i++) {
-        var temp = $scope.data[i].key;
-
-        // if there is no scientific name, don't toggle it
-        if ($scope.data[i].scientific_name === undefined) {
-          continue;
-        }
-
-        $scope.data[i].key = $scope.data[i].scientific_name;
-        $scope.data[i].scientific_name = temp;
-      }
-      $scope.useScientificNames = !$scope.useScientificNames;
-    };
+    $scope.toggleTaxonNames = sauChartUtils.toggleTaxonNames($scope);
 
     function updateYLabel() {
       /* not sure why options is not updating on $scope.formModel change */
