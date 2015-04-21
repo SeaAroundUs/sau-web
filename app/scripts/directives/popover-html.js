@@ -15,14 +15,14 @@
       );
     })
     .directive('popoverHtmlPopup', function() {
-    return {
-      restrict: 'EA',
-      replace: true,
-      scope: { title: '@', content: '@', placement: '@', animation: '&', isOpen: '&' },
-      templateUrl: 'template/popover/popover-html-unsafe-popup.html'
-    };
-  })
-  .directive('popoverHtml', function ($tooltip) {
-    return $tooltip('popoverHtml', 'popover', 'click');
-  });
+      return {
+        restrict: 'EA',
+        replace: true,
+        scope: { title: '@', content: '@', placement: '@', animation: '&', isOpen: '&' },
+        templateUrl: 'template/popover/popover-html-unsafe-popup.html'
+      };
+    })
+    .directive('popoverHtml', function ($tooltip) {
+      return $tooltip('popoverHtml', 'popover', 'click');
+    });
 })(angular);
