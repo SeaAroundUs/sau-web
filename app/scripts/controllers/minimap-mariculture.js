@@ -60,7 +60,7 @@ angular.module('sauWebApp')
       });
     });
 
-    $scope.$watch('formModel', function() {
+    $scope.$watch('formModel.region_id', function() {
 
       $q.all([$scope.features.$promise, $scope.countryFeatures.$promise]).then(function() {
         leafletData.getMap('minimap').then(function(map) {
