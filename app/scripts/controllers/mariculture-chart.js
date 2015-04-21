@@ -87,6 +87,9 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
         $scope.$parent.$parent.showDownload = true;
+      }, function() {
+        $scope.noData = true;
+        spinnerState.loading = false;
       });
       spinnerState.loading = true;
     }

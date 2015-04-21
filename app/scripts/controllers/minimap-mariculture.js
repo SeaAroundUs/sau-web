@@ -29,12 +29,7 @@ angular.module('sauWebApp')
     leafletData.getMap('minimap').then(function(map) {
       L.esri.basemapLayer('Oceans').addTo(map);
       L.esri.basemapLayer('OceansLabels').addTo(map);
-    });
-
-    $scope.$watch('formModel', function() {
-
-      $q.all([$scope.features.$promise, $scope.countryFeatures.$promise]).then(function() {
-        // add features layer when loaded
+      $q.all([$scope.countryFeatures.$promise]).then(function() {
         angular.extend($scope, {
           geojson: {
             data: $scope.countryFeatures.data,
@@ -62,7 +57,12 @@ angular.module('sauWebApp')
             }
           }
         });
+      });
+    });
 
+    $scope.$watch('formModel', function() {
+
+      $q.all([$scope.features.$promise, $scope.countryFeatures.$promise]).then(function() {
         leafletData.getMap('minimap').then(function(map) {
           var points = [];
           for (var i=0; i<$scope.provinceLayers.length; i++) {
@@ -110,9 +110,18 @@ angular.module('sauWebApp')
             points.push(point);
           });
           var bounds = L.latLngBounds(points);
-          map.fitBounds(bounds);
+          $timeout(function(){
+            map.eachLayer(function(l){
+              if (l.feature && l.feature.properties) {
+                if(l.feature.properties.c_number === $scope.formModel.region_id) {
+                  var featureBounds = L.geoJson(l.feature).getBounds();
+                  bounds.extend(featureBounds);
+                  map.fitBounds(bounds);
+                }
+              }
+            });
+          });
         });
       });
     }, true);
-
   });
