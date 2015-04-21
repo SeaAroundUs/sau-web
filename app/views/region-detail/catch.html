@@ -23,7 +23,7 @@
       <div ng-show="region.name === 'eez'">
         <h3>Reconstruction Reference</h3>
         <p ng-repeat="doc in feature.data.reconstruction_documents">
-          <a target="_blank" ng-href="{{doc.url}}"><i class="fa fa-file-pdf-o red"></i> {{doc.name}}</a>
+          <a target="_blank" ng-href="{{doc.url}}"><i class="fa fa-file-pdf-o red"></i> {{doc.name | breakUnderscores}}</a>
         </p>
         <p ng-hide="feature.data.reconstruction_documents && feature.data.reconstruction_documents.length > 0"><i>Not available</i></p>
       </div>
