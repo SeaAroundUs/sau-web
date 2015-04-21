@@ -49,7 +49,7 @@
                 <table>
                     <tr ng-repeat="metric in feature.data.metrics" ng-hide="metric.hide">
                         <td ng-if="metric.title !== 'LME area'"><a ng-href="{{ metricLinks[metric.title] }}" target="_blank">{{metric.title}}</a></td>
-                        <td ng-if="metric.title === 'LME area'"><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="Surface areas are expressed in km2 and were obtained by overlaying a global 2-minute cell ESRI GRID of surface area values with a matching ESRI GRID of LME areas prepared from shapefiles available from www.lme.noaa.gov.  For each LME the intersecting surface area based on the 2-minute raster was extracted and summed.">{{metric.title}}</a></td>
+                        <td ng-if="metric.title === 'LME area'"><a tabindex="0" popover-placement="right" popover-trigger="focus" popover-html="Surface areas are expressed in km2 and were obtained by overlaying a global 2-minute cell ESRI GRID of surface area values with a matching ESRI GRID of LME areas prepared from shapefiles available from <a target='_blank' href='http://www.lme.noaa.gov'>www.lme.noaa.gov</a>. For each LME the intersecting surface area based on the 2-minute raster was extracted and summed.">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
