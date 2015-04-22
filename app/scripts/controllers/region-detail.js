@@ -97,7 +97,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.mapLayers = {
-      selectedFAO: 0,
+      selectedFAO: undefined,
     };
 
     $scope.selectFAO = function(fao) {
@@ -263,7 +263,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($scope.region.name === 'mariculture') {
         $scope.feature = sauAPI.Region.get({region: 'country', region_id: $scope.formModel.region_id});
       } else {
-        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO}, function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
             $scope.feature.data.fishbase_id = $scope.feature.data.id;
@@ -313,6 +313,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.$watch('formModel.region_id', $scope.updateRegion);
+
+    $scope.$watch('mapLayers.selectedFAO', $scope.updateRegion);
 
     $scope.ecopathURL = null;
 

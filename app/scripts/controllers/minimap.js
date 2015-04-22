@@ -60,10 +60,10 @@ angular.module('sauWebApp')
 
           if ($scope.region.name === 'eez') {
             $timeout(function() {
-              if ($scope.mapLayers.selectedFAO === 0) {
+              if (! $scope.mapLayers.selectedFAO ) {
                 drawFAO();
               } else {
-                $scope.mapLayers.selectedFAO = 0;
+                $scope.mapLayers.selectedFAO = undefined;
               }
             });
           }
