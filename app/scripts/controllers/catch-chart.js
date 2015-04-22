@@ -14,6 +14,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
+      $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
       updateDataDownloadUrl();
     }
 
@@ -134,7 +135,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     }
 
     function updateData() {
-      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id};
+      var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO};
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
@@ -193,7 +194,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     }
 
     function updateDataDownloadUrl() {
-      var url = ['',
+      var params = [
         sauAPI.apiURL,
         $scope.region.name,
         '/',
@@ -203,8 +204,15 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         '/?format=csv&limit=',
         $scope.formModel.limit.value,
         '&region_id=',
-        $scope.formModel.region_id,
-      ].join('');
+        $scope.formModel.region_id
+      ];
+      var url;
+
+      if ($scope.mapLayers.selectedFAO) {
+        params.push('&fao_id=', $scope.mapLayers.selectedFAO);
+      }
+
+      url = params.join('');
 
       $scope.updateDataDownloadUrl(url);
     }
