@@ -132,6 +132,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       updateYLabel();
       updateChartTitle();
       updateDataDownloadUrl();
+      updateURL();
     }
 
     function updateData() {
@@ -215,6 +216,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       url = params.join('');
 
       $scope.updateDataDownloadUrl(url);
+    }
+
+    function updateURL() {
+      $scope.setChartSettings({chart: 'catch-chart',
+        dimension: $scope.formModel.dimension.value,
+        measure: $scope.formModel.measure.value
+      });
     }
 
     init();

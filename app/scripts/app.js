@@ -47,6 +47,7 @@ angular
       .when('/eez/:id', {
         templateUrl: 'views/region-detail/main.html',
         controller: 'RegionDetailCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'eez';}}
       })
       .when('/eez/:id/marine-trophic-index', {
@@ -69,19 +70,10 @@ angular
         controller: 'EstuariesCtrl',
         resolve: {region: function() {return 'eez';}}
       })
-      .when('/eez/:id/:dimension', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
-        resolve: {region: function() {return 'eez';}}
-      })
-      .when('/eez/:id/:dimension/:measure', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
-        resolve: {region: function() {return 'eez';}}
-      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'lme';}}
       })
       .when('/lme/:id', {
@@ -104,19 +96,10 @@ angular
         controller: 'ExploitedOrganismsCtrl',
         resolve: {region: function() {return 'lme';}}
       })
-      .when('/lme/:id/:dimension', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
-        resolve: {region: function() {return 'lme';}}
-      })
-      .when('/lme/:id/:dimension/:measure', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
-        resolve: {region: function() {return 'lme';}}
-      })
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'rfmo';}}
       })
       .when('/rfmo/:id', {
@@ -131,6 +114,7 @@ angular
       .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'highseas';}}
       })
       .when('/highseas/:id', {
@@ -151,6 +135,7 @@ angular
       .when('/global', {
         templateUrl: 'views/region-detail/main.html',
         controller: 'RegionDetailCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'global';}}
       })
       .when('/taxa/:taxon', {

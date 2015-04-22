@@ -18,11 +18,23 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     function init() {
       if ($scope.region.name === 'mariculture') {
-        $scope.chartChange('mariculture-chart');
         $scope.$watch('formModel.region_id', $scope.getFeatures);
       } else {
-        $scope.chartChange('catch-chart');
         $scope.getFeatures();
+      }
+
+      var rmLocationChangeEvent = $rootScope.$on('$locationChangeSuccess', function() {
+        changeChart();
+      });
+
+      $scope.$on('$destroy', function() {
+        rmLocationChangeEvent();
+      });
+
+      if ($location.search().chart) {
+        changeChart();
+      } else {
+        $scope.setChartSettings({chart: getCurrChart()});
       }
     }
 
@@ -69,8 +81,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       zoom: 3
     };
 
-    var chartName;
-
     var tabs = {
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
       biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
@@ -111,11 +121,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     })();
     $scope.feature = null;
     $scope.chartTitle = null;
-
-    $scope.chartChange = function(templateUrl) {
-      chartName = templateUrl;
-      $scope.chartTemplateUrl = 'views/region-detail/' + templateUrl + '.html';
-    };
 
     $scope.updateChartTitle = function(title) {
       $scope.chartTitle = title;
@@ -205,7 +210,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
         {label: 'Reporting status', value: 'reporting-status'}
       ];
-
     }
 
     $scope.measures = {
@@ -220,23 +224,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       {label: '20', value: '20'}
     ];
 
-    var dimension = $scope.dimensions[0];
-    angular.forEach($scope.dimensions, function(dim) {
-      if (dim.value === $routeParams.dimension) {
-        dimension = dim;
-      }
-    });
-
-    var measure = $scope.measures.tonnage;
-    angular.forEach($scope.measures, function(m) {
-      if (m.value === $routeParams.measure) {
-        measure = m;
-      }
-    });
-
+    //TODO Get rid of formModel, as it is catch chart specific, and any non-generic code should go into the chart controller.
     $scope.formModel = {
-      dimension: dimension,
-      measure: measure,
+      dimension: getDimensionObjectByValue(getCurrDimension()),
+      measure: getMeasureObjectByValue(getCurrMeasure()),
       limit : $scope.limits[1],
       region_id: parseInt(region_id)
     };
@@ -306,12 +297,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.hoverRegion = $scope.feature;
 
-    $scope.clickFormLink = function(dim, measure) {
-      if (chartName !== 'catch-chart') { $scope.chartChange('catch-chart'); }
-      $scope.formModel.dimension = dim;
-      $scope.formModel.measure = $scope.measures[measure];
-    };
-
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
     $scope.$watch('mapLayers.selectedFAO', $scope.updateRegion);
@@ -346,6 +331,48 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         }
       });
     };
+
+    $scope.setChartSettings = function(searchArgs) {
+      $location.search(searchArgs);
+    };
+
+    function getCurrChart() {
+      var fallbackChart = $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
+      return $location.search().chart || fallbackChart;
+    }
+
+    function getCurrDimension() {
+      return $location.search().dimension || $scope.dimensions[0].value;
+    }
+
+    function getCurrMeasure() {
+      return $location.search().measure || $scope.measures.tonnage.value;
+    }
+
+    function changeChart() {
+      var currChart = getCurrChart();
+      $scope.chartTemplateUrl = 'views/region-detail/' + currChart + '.html';
+      if (currChart === 'catch-chart') {
+        $scope.formModel.dimension = getDimensionObjectByValue(getCurrDimension());
+        $scope.formModel.measure = getMeasureObjectByValue(getCurrMeasure());
+      }
+    }
+
+    function getDimensionObjectByValue(value) {
+      var dimension = null;
+      angular.forEach($scope.dimensions, function(i) {
+        if (i.value === value) { dimension = i; }
+      });
+      return dimension;
+    }
+
+    function getMeasureObjectByValue(value) {
+      var measure = null;
+      angular.forEach($scope.measures, function(i) {
+        if (i.value === value) { measure = i; }
+      });
+      return measure;
+    }
 
     init();
   });

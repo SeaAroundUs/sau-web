@@ -7,6 +7,7 @@ angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI) {
 
     var getChartTitle = function() {
+      if (!$scope.feature || !$scope.feature.data) { return '';}
       return 'Primary Production Required for catches in the waters of ' + $scope.feature.data.title;
     };
 
