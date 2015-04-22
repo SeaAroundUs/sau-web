@@ -1,6 +1,9 @@
 <div class="container" id="marine-trophic-index">
     <div class="title row">
-      <h2 id="mti-title" class="pull-left">Marine Trophic Index of the catch of <span ng-bind="region.data.title"></span></h2>
+      <h2 id="mti-title" class="pull-left">
+        Marine Trophic Index of the catch of <span ng-bind="region.data.title"></span>
+        {{ withExclusions? " with exclusions" : "" }}
+      </h2>
       <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
     </div>
     <!--
@@ -81,7 +84,7 @@
         <td ng-bind="species.trophic_level | number"></td>
         <td ng-bind="species.sl_max_cm"></td>
         <td ng-bind="species.common_name"></td>
-        <td ng-bind="species.scientific_name"></td>
+        <td class="scientific-name" ng-bind="species.scientific_name"></td>
       </tr>
       </tbody>
     </table>

@@ -82,6 +82,8 @@ angular.module('sauWebApp')
         .filter(function(o) { return o.excluded; })
         .map(function(o) { return o.taxon_key; });
 
+      $scope.withExclusions = excludedTaxons.length > 0;
+
       var params = {
         region: region,
         region_id: id,
