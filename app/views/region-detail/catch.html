@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-sm-5">
-      <div ng-show="region.name === 'eez'">
+      <div class="recon-ref" ng-show="region.name === 'eez'">
         <h3>Reconstruction Reference</h3>
         <p ng-repeat="doc in feature.data.reconstruction_documents">
           <a target="_blank" ng-href="{{doc.url}}"><i class="fa fa-file-pdf-o red"></i> {{doc.name | breakUnderscores}}</a>
