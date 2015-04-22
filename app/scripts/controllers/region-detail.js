@@ -252,7 +252,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($scope.region.name === 'mariculture') {
         $scope.feature = sauAPI.Region.get({region: 'mariculture', region_id: $scope.formModel.region_id});
       } else {
-        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO}, function() {
+        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO});
+        $scope.feature.$promise.then(function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
             $scope.feature.data.fishbase_id = $scope.feature.data.id;
