@@ -10,12 +10,12 @@
     <div class="col col-sm-7">
         <h3>Tonnage by</h3>
         <p ng-repeat="dim in dimensions">
-            <a ng-click="setChartSettings({chart: 'catch-chart', dimension: dim.value, measure: 'tonnage'})" scroll-click="region-title">{{dim.label}}</a>
+            <a ng-click="setURLParams({chart: 'catch-chart', dimension: dim.value, measure: 'tonnage'})" scroll-click="region-title">{{dim.label}}</a>
         </p>
 
         <h3 class="values-by">Values by</h3>
         <p ng-repeat="dim in dimensions">
-            <a ng-click="setChartSettings({chart: 'catch-chart', dimension: dim.value, measure: 'value'})" scroll-click="region-title">{{dim.label}}</a>
+            <a ng-click="setURLParams({chart: 'catch-chart', dimension: dim.value, measure: 'value'})" scroll-click="region-title">{{dim.label}}</a>
         </p>
     </div>
 

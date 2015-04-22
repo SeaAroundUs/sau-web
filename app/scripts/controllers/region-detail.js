@@ -23,18 +23,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         $scope.getFeatures();
       }
 
-      var rmLocationChangeEvent = $rootScope.$on('$locationChangeSuccess', function() {
-        changeChart();
-      });
+      var rmLocationChangeEvent = $rootScope.$on('$locationChangeSuccess', setChartFromURLParams);
 
       $scope.$on('$destroy', function() {
         rmLocationChangeEvent();
       });
 
       if ($location.search().chart) {
-        changeChart();
+        setChartFromURLParams();
       } else {
-        $scope.setChartSettings({chart: getCurrChart()});
+        $location.search({chart: getChartIdFromURL()});
       }
     }
 
@@ -226,8 +224,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     //TODO Get rid of formModel, as it is catch chart specific, and any non-generic code should go into the chart controller.
     $scope.formModel = {
-      dimension: getDimensionObjectByValue(getCurrDimension()),
-      measure: getMeasureObjectByValue(getCurrMeasure()),
+      dimension: getDimensionObjectByValue(getDimensionFromURL()),
+      measure: getMeasureObjectByValue(getMeasureFromURL()),
       limit : $scope.limits[1],
       region_id: parseInt(region_id)
     };
@@ -332,29 +330,40 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       });
     };
 
-    $scope.setChartSettings = function(searchArgs) {
+    $scope.setURLParams = function(searchArgs) {
       $location.search(searchArgs);
     };
 
-    function getCurrChart() {
+    function getChartIdFromURL() {
       var fallbackChart = $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
       return $location.search().chart || fallbackChart;
     }
 
-    function getCurrDimension() {
-      return $location.search().dimension || $scope.dimensions[0].value;
+    function getDimensionFromURL() {
+      var dimensionObj = getDimensionObjectByValue($location.search().dimension);
+      if (dimensionObj) {
+        return dimensionObj.value;
+      } else {
+        return $scope.dimensions[0].value;
+      }
     }
 
-    function getCurrMeasure() {
-      return $location.search().measure || $scope.measures.tonnage.value;
+    function getMeasureFromURL() {
+      var measureObj = getMeasureObjectByValue($location.search().measure);
+      if (measureObj) {
+        return measureObj.value;
+      } else {
+        return $scope.measures.tonnage.value;
+      }
     }
 
-    function changeChart() {
-      var currChart = getCurrChart();
+    //Swaps out a new chart on the page based on what's in the URL Params.
+    function setChartFromURLParams() {
+      var currChart = getChartIdFromURL();
       $scope.chartTemplateUrl = 'views/region-detail/' + currChart + '.html';
       if (currChart === 'catch-chart') {
-        $scope.formModel.dimension = getDimensionObjectByValue(getCurrDimension());
-        $scope.formModel.measure = getMeasureObjectByValue(getCurrMeasure());
+        $scope.formModel.dimension = getDimensionObjectByValue(getDimensionFromURL());
+        $scope.formModel.measure = getMeasureObjectByValue(getMeasureFromURL());
       }
     }
 

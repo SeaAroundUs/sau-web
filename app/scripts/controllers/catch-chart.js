@@ -219,7 +219,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     }
 
     function updateURL() {
-      $scope.setChartSettings({chart: 'catch-chart',
+      $location.search({chart: 'catch-chart',
         dimension: $scope.formModel.dimension.value,
         measure: $scope.formModel.measure.value
       });
