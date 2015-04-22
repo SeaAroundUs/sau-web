@@ -33,13 +33,12 @@ angular.module('sauWebApp')
         angular.extend($scope, {
           geojson: {
             data: $scope.countryFeatures.data,
-            style: mapConfig.countryStyle,
+            style: mapConfig.defaultStyle,
             onEachFeature: function(feature, layer) {
               layer.on({
                 click: function() {
-                  $scope.formModel.region_id = layer.feature.properties.c_number;
-                  $scope.formModel.iso_code = layer.feature.properties.c_iso_code;
-                  $location.path('/mariculture/' + layer.feature.properties.c_number, false);
+                  $scope.formModel.region_id = layer.feature.properties.region_id;
+                  $location.path('/mariculture/' + layer.feature.properties.region_id, false);
                   $scope.$apply();
                 },
                 mouseover: function() {
@@ -50,7 +49,7 @@ angular.module('sauWebApp')
                   $rootScope.hoverRegion = feature;
                 },
                 mouseout: function() {
-                  layer.setStyle(mapConfig.countryStyle);
+                  layer.setStyle(mapConfig.defaultStyle);
                   $rootScope.hoverRegion = {};
                 }
               });
@@ -113,7 +112,7 @@ angular.module('sauWebApp')
           $timeout(function(){
             map.eachLayer(function(l){
               if (l.feature && l.feature.properties) {
-                if(l.feature.properties.c_number === $scope.formModel.region_id) {
+                if(l.feature.properties.region_id === $scope.formModel.region_id) {
                   var featureBounds = L.geoJson(l.feature).getBounds();
                   bounds.extend(featureBounds);
                   map.fitBounds(bounds);

@@ -29,7 +29,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.getFeatures = function() {
       if (region === 'mariculture') {
 
-        $scope.countryFeatures = sauAPI.Regions.get({region: 'country'});
+        $scope.countryFeatures = sauAPI.Regions.get({region: 'mariculture'});
         $scope.features = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
 
         $scope.features.$promise.then(function() {
@@ -261,7 +261,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
 
       if ($scope.region.name === 'mariculture') {
-        $scope.feature = sauAPI.Region.get({region: 'country', region_id: $scope.formModel.region_id});
+        $scope.feature = sauAPI.Region.get({region: 'mariculture', region_id: $scope.formModel.region_id});
       } else {
         $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO}, function() {
           if($scope.region.name === 'lme') {

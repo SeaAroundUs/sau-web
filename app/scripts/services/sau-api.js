@@ -13,7 +13,7 @@ angular.module('sauWebApp')
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
       CountryProfile: resourceFactory('country/:region_id'),
-      Mariculture: resourceFactory('country/:region_id/mariculture/'),
+      Mariculture: resourceFactory('mariculture/:region_id'),
       MaricultureData: resourceFactory('mariculture/:dimension/:entity_id'),
       Data: resourceFactory(':region/:measure/:dimension/'),
       MarineTrophicIndexData: resourceFactory(':region/marine-trophic-index/'),

@@ -27,10 +27,10 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
   });
 
   $scope.selected = function(feature) {
-    $location.path('/mariculture/' + feature.c_number);
+    $location.path('/mariculture/' + feature.region_id);
   };
 
-  $scope.features = sauAPI.Regions.get({region: 'country'});
+  $scope.features = sauAPI.Regions.get({region: $scope.region.name});
 
   spinnerState.loading = true;
 
@@ -38,18 +38,18 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
     angular.extend($scope, {
       geojson: {
         data: data.data,
-        style: mapConfig.countryStyle,
+        style: mapConfig.defaultStyle,
         onEachFeature: function(feature, layer) {
           layer.on({
             click: function() {
               $scope.selected(layer.feature.properties);
             },
             mouseover: function() {
-              layer.setStyle(mapConfig.selectedStyle);
+              layer.setStyle(mapConfig.highlightStyle);
               $scope.selectedRegion.feature = feature;
             },
             mouseout: function() {
-              layer.setStyle(mapConfig.countryStyle);
+              layer.setStyle(mapConfig.defaultStyle);
             }
           });
         }
