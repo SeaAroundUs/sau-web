@@ -15,9 +15,11 @@ angular.module('sauWebApp')
       $scope.data = resp.data;
       $scope.data.combined = [];
 
-      $scope.eezPopover = resp.data.eezs.map(function(eez) {
-        return '<a href="#/eez/' + eez.eez_id + '">EEZ Waters of ' + eez.name + '</a>';
-      }).join('<br />');
+      if (resp.data.eezs) {
+        $scope.eezPopover = resp.data.eezs.map(function(eez) {
+          return '<a href="#/eez/' + eez.eez_id + '">EEZ Waters of ' + eez.name + '</a>';
+        }).join('<br />');
+      }
 
       angular.forEach(['good', 'bad', 'ugly'], function(cat) {
         var i, figure, currentCat, combineData;
