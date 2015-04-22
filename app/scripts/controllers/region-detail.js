@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
-  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, sauAPI, insetMapLegendData, externalURLs, $modal, region) {
+  function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, $timeout,
+            sauAPI, insetMapLegendData, externalURLs, $modal, region) {
 
     $scope.region = {name: region};
     $scope.showDownload = false;
@@ -37,8 +38,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
             entity_id: $scope.features.data[0].entity_id,
             country_name: $scope.features.data[0].country_name
           };
+
+          if ($scope.noData === true) {
+            $timeout(function() { $scope.api.update(); });
+          }
+          $scope.noData = false;
+
           $scope.features.data.unshift(allProvinces);
           $scope.selectedProvince.feature = $scope.features.data[0];
+        }, function() {
+          $scope.noData = true;
         });
 
       } else {

@@ -1,22 +1,28 @@
 <div ng-controller="MaricultureChartCtrl" class="chart-container form-inline" spinner>
-    <i class="fa fa-spinner fa-spin loading fa-5x"></i>
-    <div class="form-group">
-        <label for="province">State/Province</label>
-        <select class="form-control" ng-model="selectedProvince.feature" ng-options="feature as feature.title for feature in features.data"></select>
+    <div ng-show="noData" class="chart-container no-data">
+      <p>No data is available for this selection</p>
     </div>
-    <div class="form-group">
-        <label for="dimension">Dimension</label>
-        <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
-    </div>
-    <div class="form-group">
-        <label for="limit">Limit</label>
-        <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
-    </div>
-    <div class="pull-right header-links">
-        <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
-        <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
-    </div>
-    <div>
-        <nvd3 options="options" data="data" api="api"></nvd3>
+
+    <div ng-hide="noData">
+        <i class="fa fa-spinner fa-spin loading fa-5x"></i>
+        <div class="form-group">
+            <label for="province">State/Province</label>
+            <select class="form-control" ng-model="selectedProvince.feature" ng-options="feature as feature.title for feature in features.data"></select>
+        </div>
+        <div class="form-group">
+            <label for="dimension">Dimension</label>
+            <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+        </div>
+        <div class="form-group">
+            <label for="limit">Limit</label>
+            <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
+        </div>
+        <div class="pull-right header-links">
+            <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
+            <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
+        </div>
+        <div>
+            <nvd3 options="options" data="data" api="api"></nvd3>
+        </div>
     </div>
 </div>
