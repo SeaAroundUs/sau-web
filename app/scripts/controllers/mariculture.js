@@ -2,7 +2,8 @@
 
 'use strict';
 
-angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $resource, $location, mapConfig, sauAPI, leafletData, leafletBoundsHelpers) {
+angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $resource, $location, $timeout, mapConfig,
+                                                                   sauAPI, leafletData, leafletBoundsHelpers, spinnerState) {
 
   $scope.region = {name: 'mariculture'};
   $scope.selectedRegion = {feature: null};
@@ -30,6 +31,9 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
   };
 
   $scope.features = sauAPI.Regions.get({region: 'country'});
+
+  spinnerState.loading = true;
+
   $scope.features.$promise.then(function(data) {
     angular.extend($scope, {
       geojson: {
@@ -50,6 +54,10 @@ angular.module('sauWebApp').controller('MaricultureCtrl', function($scope, $reso
           });
         }
       }
+    });
+
+    $timeout(function() {
+      spinnerState.loading = false;
     });
   });
 });
