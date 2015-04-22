@@ -24,7 +24,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
 
-          var x = chart.xAxis.scale()(Math.max(1950, $scope.feature.data.year_started_eez_at));
+          var x = chart.xAxis.scale()(Math.max(1950, $scope.feature.data.declaration_year));
           var g = container.append('g');
           g.attr('id', 'declaration-year');
           g.append('line')
