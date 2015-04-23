@@ -2,6 +2,7 @@
 
 /* global colorbrewer */
 /* global d3 */
+/* global nv */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
   function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils) {
@@ -24,7 +25,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.feature.$promise.then(function(){
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
-
+          container.select('#declaration-year').remove();
           var x = chart.xAxis.scale()(Math.max(1950, $scope.feature.data.declaration_year));
           var g = container.append('g');
           g.attr('id', 'declaration-year');
@@ -60,6 +61,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.hideDeclarationYear();
       }
     };
+    nv.utils.windowResize($scope.updateDeclarationYear);
 
     $scope.options = {
       chart: {
@@ -71,7 +73,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         },
         x: function(d){return d[0];},
         y: function(d){return d[1];},
-        transitionDuration: 250,
+        transitionDuration: 0,
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
