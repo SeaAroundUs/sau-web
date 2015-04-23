@@ -57,28 +57,26 @@
         <td class="source fake-popover">
           <subsidy-reference link="row.link_text" url="row.url" ref="row.reference_id"></subsidy-reference>
         </td>
-        <!--
-        <td ng-if="row.title !== 'sub_total' && (row.link_text === null || row.url === null)"  class="source">-</td>
-        <td ng-if="row.title !== 'sub_total' && row.link_text !== null && row.url !== null" class="source">
-          <a target="_blank" ng-href="{{ row.url }}" ng-bind="row.link_text"></a>
-        </td>
-        <td ng-if="row.title === 'sub_total'" class="source"></td>
-        -->
       </tr>
     </tbody>
+
     <tbody class="totals">
       <tr>
         <td class="summary">Grand totals</td>
         <td class="year">2003</td>
-        <td ng-bind="data['2000'].grand_total.amount | number:0" class="value"></td>
-        <td ng-bind="data['2000'].grand_total.perc_landed | number:2" class="percent"></td>
+        <td ng-if="data['2000'].grand_total.amount !== null" ng-bind="data['2000'].grand_total.amount | number:0" class="value"></td>
+        <td ng-if="data['2000'].grand_total.amount === null" class="value">-</td>
+        <td ng-if="data['2000'].grand_total.perc_landed !== null" ng-bind="data['2000'].grand_total.perc_landed | number:2" class="percent"></td>
+        <td ng-if="data['2000'].grand_total.perc_landed === null" class="percent">-</td>
         <td class="source"></td>
       </tr>
       <tr>
         <td></td>
         <td class="year">2009</td>
-        <td ng-bind="data['2009'].grand_total.amount | number:0" class="value"></td>
-        <td ng-bind="data['2009'].grand_total.perc_landed | number:2" class="percent"></td>
+        <td ng-if="data['2009'].grand_total.amount !== null" ng-bind="data['2009'].grand_total.amount | number:0" class="value"></td>
+        <td ng-if="data['2009'].grand_total.amount === null" class="value">-</td>
+        <td ng-if="data['2009'].grand_total.perc_landed !== null" ng-bind="data['2009'].grand_total.perc_landed | number:2" class="percent"></td>
+        <td ng-if="data['2009'].grand_total.perc_landed === null" class="percent">-</td>
         <td class="source"></td>
       </tr>
     </tbody>

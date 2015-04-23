@@ -63,11 +63,26 @@
     width: 100%;
     margin-top: 20px;
 
+    th {
+      &.year, &.value, &.percent {
+        text-align: center;
+      }
+    }
+
+    td {
+      &.year {
+        text-align: center;
+      }
+      
+      &.value, &.percent {
+        text-align: right;
+      }
+    }
+
     th, td {
       padding: 2px 10px;
 
       &.year, &.value, &.percent {
-        text-align: center;
         width: 11%;
       }
 
