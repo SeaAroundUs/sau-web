@@ -446,6 +446,20 @@ module.exports = function (grunt) {
       }
     },
 
+    protractor: {
+      options: {
+        configFile: 'protractor/conf.js',
+        keepAlive: true, // If false, the grunt process stops when the test fails.
+        noColor: false,
+        args: {
+        }
+      },
+      all: {
+        options: {
+        }
+      },
+    },
+
     aws: grunt.file.readJSON('aws-keys.json'), // Read the file
 
     aws_s3: {
