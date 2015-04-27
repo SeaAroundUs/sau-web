@@ -20,8 +20,8 @@
       });
 
       var hiddenData = {
-        eez: [ 554, 555 ],
-        lme: [ 46 ]
+        eez: null,
+        lme: null
       };
 
       $scope.$watch(function() { return $location.url(); }, function(url) {
