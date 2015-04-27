@@ -1,10 +1,19 @@
 <div class="clearfix catch">
-    <p>
+    <p ng-if="region.name === 'eez'">
       Please select a link below or use the dropdown menu above to choose a catch or landed value time series to view.
       You can choose various 'dimensions' (Taxon, Commercial group, Functional group, Country, Sector, Catch type,
       Reporting Status) and 'measures' (Tonnage, Landed value), and select the level of taxonomic details you want to
       view the data at. Data can be downloaded by the selected parameters. <b>For background information on the
       reconstruction data, download the .pdf below.</b>
+    </p>
+
+    <p ng-if="region.name !== 'eez'">
+      Please select a link below or use the dropdown menu above to choose a catch or landed value time series to view.
+      You can choose various 'dimensions' (Taxon, Commercial group, Functional group, Country, Sector, Catch type,
+      Reporting Status) and 'measures' (Tonnage, Landed value), and select the level of taxonomic details you want to
+      view the data at. Data can be downloaded by the selected parameters. <b>For background information on the
+      reconstruction data used, please see the documentation associated with the individual EEZs associated with the
+      area presented here.</b>
     </p>
 
     <div class="col col-sm-7">
