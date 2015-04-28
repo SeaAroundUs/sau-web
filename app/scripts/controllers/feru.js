@@ -42,8 +42,9 @@ angular.module('sauWebApp')
       var region = selection.region.properties.region;
       var regionId = selection.region.properties.region_id;
       var dim = selection.dim === undefined ? dims[0].value : selection.dim.value;
-      var url = '/' + region + '/' + regionId + '/' + dim + '/value';
-      $location.path(url);
+      var url = '/' + region + '/' + regionId;
+      var search = { chart: 'catch-chart', dimension: dim, measure: 'value' };
+      $location.path(url).search(search);
     };
 
     $scope.submitCountry = function(country) {
