@@ -224,7 +224,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $location.search({chart: 'catch-chart',
         dimension: $scope.formModel.dimension.value,
         measure: $scope.formModel.measure.value
-      });
+      }).replace();
     }
 
     init();
