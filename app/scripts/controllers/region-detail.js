@@ -32,7 +32,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($location.search().chart) {
         setChartFromURLParams();
       } else {
-        $location.search({chart: getChartIdFromURL()});
+        $location.search({chart: getChartIdFromURL()}).replace();
       }
     }
 
