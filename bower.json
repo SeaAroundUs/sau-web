@@ -18,7 +18,6 @@
     "nvd3-community": "1.7.0",
     "angular-nvd3": "https://github.com/klangfarbe/angular-nvd3.git#~0.1.0",
     "colorbrewer2": "*",
-    "angular-cache": "3.2.5",
     "simple-statistics": "0.9.1",
     "leaflet-pip": "0.1.0",
     "esri-leaflet": "1.0.0-rc.6",

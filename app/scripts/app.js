@@ -9,7 +9,7 @@ angular
     'leaflet-directive',
     'ui.bootstrap',
     'nvd3',
-    'angular-data.DSCacheFactory',
+    'httpu.caches',
     'ui.grid',
     'ui.grid.cellNav',
     'ui.grid.selection',
@@ -21,12 +21,24 @@ angular
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
   }])
-  .run(function($http, DSCacheFactory) {
-      var cache = new DSCacheFactory('defaultCache', {
-        deleteOnExpire: 'aggressive',
+  .factory('myCompressSerializer', function($window) {
+    return {
+      stringify: function(obj) {
+        return $window.LZString.compress(JSON.stringify(obj));
+      },
+      parse: function(str) {
+        return JSON.parse($window.LZString.decompress(str));
+      }
+    };
+  })
+  .run(function($http, $window, huCacheSerializableFactory) {
+      /*jshint -W055 */
+      /* ignore lowercase constructor */
+      var cache = new huCacheSerializableFactory('defaultCache', {
+        serializer: 'myCompressSerializer',
         maxAge: 1000*60*60, // 1hr, value in ms
-        capacity: Math.pow(2,20) * 128, // 128MB of memory storage
-        storageMode: 'memory' // or 'localStorage', but size is limited
+        maxLength: 5 * 1024 * 1024, // 1MB of compressed chars
+        storageMode: $window.localStorage
       });
 
       $http.defaults.cache = cache;
