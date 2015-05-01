@@ -21,6 +21,7 @@ angular.module('sauWebApp')
       EstuariesData: resourceFactory(':region/estuaries/'),
       MultinationalFootprintData: resourceFactory(':region/multinational-footprint/'),
       ExploitedOrganismsData: resourceFactory(':region/exploited-organisms/'),
+      ExploitedOrganismsList: resourceFactory('exploited-organisms/'),
       EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),

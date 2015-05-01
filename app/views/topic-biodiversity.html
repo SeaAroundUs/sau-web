@@ -1,4 +1,5 @@
 <div class="content-container" id="topic-biodiversity">
+    <h1>Biodiversity</h1>
 
     <p>
       To view landings by taxon, select the type and name of the spatial entity then click SUBMIT. To view
@@ -6,14 +7,14 @@
       at the bottom of the screen.
     </p>
 
-    <h3>Biodiversity Information by</h3>
+    <h3>Information by Region</h3>
 
     <div id="region-selector">
         <select ng-model="selectedRegion" ng-options="region.title for region in regions"></select>
         for
         <select ng-model="selectedSubregion" ng-options="region.title for region in subregions | orderBy: 'title'"></select>
 
-        <button type="button" ng-click="changeRoute()" class="btn btn-primary">
+        <button type="button" ng-click="changeRoute()" ng-disabled="regionId === 0" class="btn btn-primary">
             Submit
         </button>
     </div>
