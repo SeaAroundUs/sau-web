@@ -275,12 +275,15 @@ label {
     margin-top: 60px;
   }
 }
+
 .content-container#topic-biodiversity {
-  #region-selector {
-    margin-top: 30px;
+  padding: 20px 90px 30px;
+
+  & p:first-child, #controls, #region-selector {
     margin-bottom: 30px;
   }
 }
+
 .disabled {
   color: grey;
 }

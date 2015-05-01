@@ -104,10 +104,16 @@ angular.module('sauWebApp')
       });
 
       $scope.$watch('regionId', function() {
-        sauAPI.ExploitedOrganismsData.get({region: $scope.regionName, region_id: $scope.regionId}, function(response) {
-            $scope.allData = response.data;
-            $scope.taxonChange();
-          });
+        var cb = function(response) {
+          $scope.allData = response.data;
+          $scope.taxonChange();
+        };
+
+        if ($scope.regionId === 0) {
+          sauAPI.ExploitedOrganismsList.get(cb);
+        } else {
+          sauAPI.ExploitedOrganismsData.get({region: $scope.regionName, region_id: $scope.regionId}, cb);
+        }
       }, true);
 
     };

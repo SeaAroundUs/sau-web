@@ -21,6 +21,7 @@
 
       var data = sauAPI.Regions.get({region: $scope.selectedRegion.value, nospatial: true}, function() {
         $scope.subregions = data.data;
+        $scope.subregions.unshift({title: '-- All regions --', id: 0});
         $scope.selectedSubregion = data.data[0];
       });
 
@@ -33,7 +34,13 @@
     });
 
     $scope.changeRoute = function() {
-      var newPath = '/' + $scope.regionName + '/' + $scope.regionId;
+      var newPath;
+
+      if ($scope.regionId === 0) {
+        return;
+      }
+
+      newPath = '/' + $scope.regionName + '/' + $scope.regionId;
       $location.path(newPath);
     };
 
