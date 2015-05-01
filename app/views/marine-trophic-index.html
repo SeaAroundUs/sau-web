@@ -4,7 +4,8 @@
         Marine Trophic Index of the catch of <span ng-bind="region.data.title"></span>
         {{ withExclusions? " with exclusions" : "" }}
       </h2>
-      <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()">Download Data</button>
+      <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
+              ga-event="downloadModalGA">Download Data</button>
     </div>
     <!--
     <table id="access-year-table">

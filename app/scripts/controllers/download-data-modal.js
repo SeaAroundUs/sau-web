@@ -17,4 +17,15 @@ angular.module('sauWebApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+
+    $scope.downloadGA = {
+      category: 'DownloadModal',
+      action: 'Download',
+      label: dataUrl
+    };
+
+    $scope.cancelGA = {
+      category: 'DownloadModal',
+      action: 'Cancel'
+    };
   });

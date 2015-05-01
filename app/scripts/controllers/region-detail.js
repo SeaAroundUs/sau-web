@@ -7,6 +7,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.region = {name: region};
     $scope.showDownload = false;
 
+    $scope.downloadModalGA = {
+      category: 'DownloadModal',
+      action: 'Open'
+    };
+
     var region_id = $routeParams.id;
 
     $scope.selectedProvince = {feature: null};

@@ -9,7 +9,9 @@
         <p><strong>By clicking Download Data Now, you agree to provide attribution for any Sea Around Us data you use.</strong></p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" ng-click="downloadData()">DOWNLOAD DATA NOW</button>
-        <button type="button" class="btn btn-default" ng-click="cancel()">CANCEL</button>
+        <button type="button" class="btn btn-primary" ng-click="downloadData()"
+                ga-event="downloadGA">DOWNLOAD DATA NOW</button>
+        <button type="button" class="btn btn-default" ng-click="cancel()"
+                ga-event="cancelGA">CANCEL</button>
     </div>
 </div>
