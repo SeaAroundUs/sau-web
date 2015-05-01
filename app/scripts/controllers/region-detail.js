@@ -257,11 +257,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
             $scope.feature.data.fishbase_id = $scope.feature.data.id;
-            angular.forEach($scope.feature.data.metrics, function(metric) {
-              if (metric.title === 'Inshore Fishing Area (IFA)') {
-                metric.hide = true;
-              }
-            });
           }
         });
       }
