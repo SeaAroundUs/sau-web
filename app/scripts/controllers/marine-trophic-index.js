@@ -8,6 +8,11 @@ angular.module('sauWebApp')
     $scope.years = [];
     $scope.regionType = region;
 
+    $scope.downloadModalGA = {
+      category: 'DownloadModal',
+      action: 'Open'
+    };
+
     $scope.fib = {
       year: null,
       transferEfficiency: 0.1
