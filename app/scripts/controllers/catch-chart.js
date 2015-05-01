@@ -5,7 +5,7 @@
 /* global nv */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga) {
 
     function init() {
       $scope.declarationYear = {enabled: true};
@@ -18,6 +18,14 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
       updateDataDownloadUrl();
     }
+
+    $scope.dropdownGA = function(label, value) {
+      ga.sendEvent({
+        category: 'CatchInfo',
+        action: 'Dropdown',
+        label: value ? label + ' :: ' + value : label
+      });
+    };
 
     $scope.drawDeclarationYear = function() {
       $scope.declarationYear.enabled = true;
