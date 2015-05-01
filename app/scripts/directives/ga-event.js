@@ -1,17 +1,14 @@
 (function(angular) {
   'use strict';
 
-  angular.module('sauWebApp').directive('gaEvent', function(ga) {
+  angular.module('sauWebApp').directive('gaEvent', function($parse, ga) {
     return {
-      link: function(scope, ele) {
+      link: function(scope, ele, attrs) {
         ele.on('click', function() {
-          ga.sendEvent(scope.gaEvent);
+          ga.sendEvent($parse(attrs.gaEvent)(scope));
         });
       },
-      restrict: 'A',
-      scope: {
-        'gaEvent': '='
-      }
+      restrict: 'A'
     };
   });
 })(angular);

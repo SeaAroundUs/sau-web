@@ -1,3 +1,5 @@
+/* global ga */
+
 (function(angular) {
   'use strict';
 
