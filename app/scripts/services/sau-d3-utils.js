@@ -10,6 +10,11 @@ angular.module('sauWebApp')
       // for representing sized and colored points on
       // map and legend.
 
+      // shim for IE/old browsers
+      Math.log10 = Math.log10 || function(x) {
+        return Math.log(x) / Math.LN10;
+      };
+
       var colorScale = d3.scale
                         .threshold()
                         .domain([100,1000,10000,1000000,10000000,13000000].map(Math.log10))
