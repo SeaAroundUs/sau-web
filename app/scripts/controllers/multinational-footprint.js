@@ -28,7 +28,7 @@ angular.module('sauWebApp')
             .attr({
               x1: chart.xAxis.scale()(1950),
               y1: chart.yAxis.scale()($scope.maximumFraction),
-              x2: chart.xAxis.scale()(2020),
+              x2: chart.xAxis.scale()(2010),
               y2: chart.yAxis.scale()($scope.maximumFraction)
             })
             .style('stroke', '#f70');
@@ -55,7 +55,7 @@ angular.module('sauWebApp')
         height: 350,
         margin : {
           top: 20,
-          right: 0,
+          right: 16,
           bottom: 60,
         },
         x: function(d){return d[0];},
