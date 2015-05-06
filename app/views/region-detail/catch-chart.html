@@ -16,7 +16,7 @@
       <select class="form-control" ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"
               ng-change="dropdownGA('Measure', formModel.measure.label)"></select>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-hide="formModel.dimension.value === 'reporting-status' || formModel.dimension.value === 'catchtype'">
       <label for="limit">Limit</label>
       <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"
               ng-change="dropdownGA('Limit', formModel.limit.label)"></select>
