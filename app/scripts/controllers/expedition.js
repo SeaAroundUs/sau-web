@@ -82,7 +82,7 @@ angular.module('sauWebApp')
         '1966 - 1980',
         '1981 - 1990',
         '1991 - 2000',
-        '2001 - ' + (new Date()).year
+        '2001 - ' + (new Date()).getFullYear()
       ];
     }
 
