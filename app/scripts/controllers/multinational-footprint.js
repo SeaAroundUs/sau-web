@@ -52,11 +52,11 @@ angular.module('sauWebApp')
     $scope.options = {
       chart: {
         type: 'stackedAreaChart',
-        height: 350,
+        height: 530,
         margin : {
           top: 20,
           right: 16,
-          bottom: 60,
+          bottom: 26,
         },
         x: function(d){return d[0];},
         y: function(d){return d[1];},
@@ -64,8 +64,7 @@ angular.module('sauWebApp')
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
-          axisLabel: 'Year'
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
         },
         yAxisTickFormat: function(d) {
           return Number(d).toFixed(3).toString();
