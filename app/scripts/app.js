@@ -17,9 +17,10 @@ angular
     'angulartics',
     'angulartics.google.analytics'
   ])
-  .config(['$resourceProvider', function($resourceProvider) {
+  .config(['$resourceProvider', '$locationProvider', function($resourceProvider, $locationProvider) {
     // Don't strip trailing slashes from calculated URLs
     $resourceProvider.defaults.stripTrailingSlashes = false;
+    $locationProvider.html5Mode(false).hashPrefix('!');
   }])
   .run(function($http, DSCacheFactory) {
       var cache = new DSCacheFactory('defaultCache', {
