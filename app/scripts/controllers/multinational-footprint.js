@@ -4,7 +4,7 @@
 /* global d3 */
 
 angular.module('sauWebApp')
-  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI) {
+  .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, sauChartUtils) {
 
     var getChartTitle = function() {
       if (!$scope.feature || !$scope.feature.data) { return '';}
@@ -18,6 +18,11 @@ angular.module('sauWebApp')
         $scope.data = data.data.countries;
         $scope.maximumFraction = data.data.maximum_fraction;
         $scope.updateChartTitle(getChartTitle());
+
+        //Once we obtain the maximumFraction data, we may want to raise the ceiling on the yAxis.
+        //Sometimes the maximumFraction is larger than the largest data point,
+        //so this prevents the maximumFraction from being rendered "off the chart".
+        sauChartUtils.calculateYAxisCeiling($scope, [$scope.maximumFraction], 0.15);
 
         // draw maximum fraction line.  $timeout so it's drawn on top.
         $timeout(function() {
@@ -62,6 +67,7 @@ angular.module('sauWebApp')
         y: function(d){return d[1];},
         transitionDuration: 0,
         useInteractiveGuideline: true,
+        showControls: false,
         xAxis: {
           showMaxMin: false,
           tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
