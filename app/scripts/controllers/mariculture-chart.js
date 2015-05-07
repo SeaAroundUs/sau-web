@@ -13,7 +13,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
     $scope.options = {
       chart: {
         type: 'stackedAreaChart',
-        height: 304,
+        height: 504,
         margin : {
           right: 0,
           bottom: 16
