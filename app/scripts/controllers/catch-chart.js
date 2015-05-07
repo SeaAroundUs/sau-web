@@ -85,7 +85,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
         },
         yAxis: {
           showMaxMin: false,
@@ -152,16 +152,48 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.limit = $scope.formModel.limit.value;
       $scope.$parent.$parent.showDownload = false;
       var data = sauAPI.Data.get(data_options, function() {
+        var dataHash;
+        var tempData = [];
+        var hostCountry = [];
+        var otherCountries = [];
+        var orderedLabels = {
+          'catchtype': ['Landings', 'Discards'],
+          'sector': ['Industrial', 'Artisanal', 'Subsistence', 'Recreational'],
+          'reporting-status': ['Reported', 'Unreported']
+        };
+
         $scope.$parent.$parent.showDownload = true;
         if ($scope.noData === true) {
           $timeout(function() { $scope.api.update(); });
         }
         $scope.noData = false;
 
-        // SAU-934 fix Catch Type ordering
-        console.log(data_options.dimension);
-        if (data_options.dimension === 'catchtype') {
-          $scope.data = [data.data[1], data.data[0]];
+        // chart ordering by label
+        if (orderedLabels[data_options.dimension]) {
+          dataHash = data.data.reduce(function(dh, datum) {
+            dh[datum.key] = datum;
+            return dh;
+          }, {});
+
+          orderedLabels[data_options.dimension].forEach(function(label) {
+            if (dataHash[label]) {
+              tempData.push(dataHash[label]);
+            }
+          });
+          $scope.data = tempData;
+
+        // chart ordering host country first
+        } else if (data_options.dimension === 'country') {
+          data.data.forEach(function(country) {
+            if (country.key === data.host_country) {
+              hostCountry[0] = country;
+            } else {
+              otherCountries.push(country);
+            }
+          });
+          $scope.data = hostCountry.concat(otherCountries);
+
+        // default chart ordering
         } else {
           $scope.data = data.data;
         }
