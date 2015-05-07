@@ -20,6 +20,36 @@ angular.module('sauWebApp')
         }
         scope.useScientificNames = !scope.useScientificNames;
       };
+    },
+    //Returns the sum of the year values across the keys (e.g. Sum of all catch data in 1950),
+    //then returns the largest of those values (e.g. Finds 1967 to be the largest sum).
+    //This is useful for determining the yRange of a stacked area chart.
+    getMaxDataSum: function(scope) {
+      var max = 0;
+      var valuesByYear = [];
+
+      for (var i = 0; i < scope.data.length; i++) {
+        for (var j = 0; j < scope.data[i].values.length; j++) {
+          if (!valuesByYear[j]) {
+            valuesByYear[j] = 0;
+          }
+          if (scope.data[i].values[j][1]) {
+            valuesByYear[j] += scope.data[i].values[j][1];
+          }
+        }
+      }
+
+      return Math.max.apply(null, valuesByYear);
+    },
+    //Adjusts the domain of the Y axis of the chart.
+    //"otherChartValues" is an array of other values besides the chart data that should be considered in the ceiling calculation (useful for maximum fraction)
+    //"additionalCeilingScale" scales the ceiling even higher above the maximum value. The value 0 scales it up 0%. The value 1 scales it up 100%.
+    calculateYAxisCeiling: function(scope, otherChartValues, additionalCeilingScale) {
+      var chart = scope.api.getScope().chart;
+      var ceiling = Math.max.apply(null, otherChartValues);
+      ceiling = Math.max(ceiling, this.getMaxDataSum(scope)) * (1 + additionalCeilingScale);
+      scope.api.getScope().options.chart.yDomain = [0, ceiling];
+      scope.api.refresh();
     }
   };
 
