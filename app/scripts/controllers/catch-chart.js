@@ -157,12 +157,15 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $timeout(function() { $scope.api.update(); });
         }
         $scope.noData = false;
-        $scope.data = data.data;
-        angular.forEach($scope.data, function(datum) {
-          if (datum.key === 'reported landings') {
-            datum.key = 'Reported landings';
-          }
-        });
+
+        // SAU-934 fix Catch Type ordering
+        console.log(data_options.dimension);
+        if (data_options.dimension === 'catchtype') {
+          $scope.data = [data.data[1], data.data[0]];
+        } else {
+          $scope.data = data.data;
+        }
+
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
         if ($scope.useScientificNames) {
