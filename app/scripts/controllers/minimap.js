@@ -72,14 +72,15 @@ angular.module('sauWebApp')
 
     };
 
-    var geojsonMouseout = function(ev, feature) {
-      $rootScope.hoverRegion = {};
-      styleLayer(feature, ev.layer);
+    var geojsonMouseout = function(map) {
+      map.closePopup();
     };
 
-    var geojsonMouseover = function(ev, feature) {
-      $rootScope.hoverRegion = feature;
-      styleLayer(feature, ev.layer, mapConfig.highlightStyle);
+    var geojsonMouseover = function(ev, feature, map) {
+      new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
+      .setContent(feature.properties.title)
+      .setLatLng(ev.latlng)
+      .openOn(map);
     };
 
     leafletData.getMap('minimap').then(function(map) {
@@ -166,8 +167,15 @@ angular.module('sauWebApp')
               click: function(e) {
                 geojsonClick(feature, e.latlng);
               },
-              mouseover: function(e) {geojsonMouseover(e, feature);},
-              mouseout: function(e) {geojsonMouseout(e, feature); }
+              mouseover: function(e) {
+                geojsonMouseover(e, feature, map);
+              },
+              mousemove: function(e) {
+                geojsonMouseover(e, feature, map);
+              },
+              mouseout: function(e) {
+                geojsonMouseout(map);
+              }
             });
           }
         }).addTo(map);

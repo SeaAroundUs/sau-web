@@ -13,12 +13,7 @@
     </div>
 
     <div class="row">
-        <h1 class="hover-region region-title">
-            <span ng-bind="$root.hoverRegion.properties.title"></span>
-            <span ng-show="$root.hoverRegion.properties.long_title">
-                : <span ng-bind="$root.hoverRegion.properties.long_title"></span>
-            </span>
-        </h1>
+        <h1 class="hover-region region-title">{{feature.data.title}}</h1>
     </div>
 
     <div class="two-columns row">
