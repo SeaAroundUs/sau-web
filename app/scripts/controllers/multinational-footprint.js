@@ -22,7 +22,7 @@ angular.module('sauWebApp')
         //Once we obtain the maximumFraction data, we may want to raise the ceiling on the yAxis.
         //Sometimes the maximumFraction is larger than the largest data point,
         //so this prevents the maximumFraction from being rendered "off the chart".
-        sauChartUtils.calculateYAxisCeiling($scope, [$scope.maximumFraction], 0.15);
+        sauChartUtils.calculateYAxisCeiling($scope, [$scope.maximumFraction], 0.1);
 
         // draw maximum fraction line.  $timeout so it's drawn on top.
         $timeout(function() {

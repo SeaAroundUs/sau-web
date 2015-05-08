@@ -83,12 +83,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         y: function(d){return d[1];},
         transitionDuration: 0,
         useInteractiveGuideline: true,
+        showControls: false,
         xAxis: {
           showMaxMin: false,
           tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
         },
         yAxis: {
-          showMaxMin: false,
+          showMaxMin: true,
           axisLabel: $scope.formModel.measure.chartlabel
         },
         yAxisTickFormat: function(d) {
@@ -205,6 +206,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $scope.useScientificNames = true;
         }
         $scope.updateDeclarationYear();
+        //Raises the ceiling of of the catch chart by 10%.
+        //The second parameter (which is null) is for any additional data points that should be included in the ceiling calculation,
+        //such as the maximum fraction on the MNF chart.
+        sauChartUtils.calculateYAxisCeiling($scope, null, 0.1);
       }, function() {
         $scope.noData = true;
         spinnerState.loading = false;

@@ -44,6 +44,11 @@ angular.module('sauWebApp')
     //"otherChartValues" is an array of other values besides the chart data that should be considered in the ceiling calculation (useful for maximum fraction)
     //"additionalCeilingScale" scales the ceiling even higher above the maximum value. The value 0 scales it up 0%. The value 1 scales it up 100%.
     calculateYAxisCeiling: function(scope, otherChartValues, additionalCeilingScale) {
+      //Create a safe base-case for otherChartValues.
+      if (!otherChartValues || otherChartValues.length === 0) {
+        otherChartValues = [0];
+      }
+
       var ceiling = Math.max.apply(null, otherChartValues);
       ceiling = Math.max(ceiling, this.getMaxDataSum(scope)) * (1 + additionalCeilingScale);
       scope.api.getScope().options.chart.yDomain = [0, ceiling];
