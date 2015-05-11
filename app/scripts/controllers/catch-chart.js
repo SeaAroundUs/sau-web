@@ -16,6 +16,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
+      $scope.$on("toggleTaxonNames", $scope.updateDeclarationYear);
       updateDataDownloadUrl();
     }
 

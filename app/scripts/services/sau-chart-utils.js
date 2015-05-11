@@ -19,6 +19,7 @@ angular.module('sauWebApp')
           scope.data[i].scientific_name = temp;
         }
         scope.useScientificNames = !scope.useScientificNames;
+        scope.$emit("toggleTaxonNames", scope.useScientificNames);
       };
     },
     //Returns the sum of the year values across the keys (e.g. Sum of all catch data in 1950),
