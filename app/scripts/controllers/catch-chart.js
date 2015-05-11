@@ -16,7 +16,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
-      $scope.$on("toggleTaxonNames", $scope.updateDeclarationYear);
+      $scope.$on('toggleTaxonNames', $scope.updateDeclarationYear);
       updateDataDownloadUrl();
     }
 
@@ -84,7 +84,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         y: function(d){return d[1];},
         transitionDuration: 0,
         useInteractiveGuideline: true,
-        showControls: false,
+        showControls: true,
         xAxis: {
           showMaxMin: false,
           tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
