@@ -46,7 +46,7 @@
       .then(function(map) {
         // draw EEZ regions on map
         var f = L.geoJson(regions.data);
-        f.setStyle(mapConfig.defaultStyle);
+        f.setStyle(mapConfig.noClickStyle);
         f.addTo(map);
         // now highlight EEZ regions specified in the estuaries response,
         // fit map to those bounds to filter out scattered data

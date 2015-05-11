@@ -51,6 +51,16 @@ angular.module('sauWebApp')
       fillOpacity: 0.3,
       lineCap: 'round'
     },
+    noClickStyle : {
+      clickable: false,
+      color: 'black',
+      stroke: true,
+      weight: 1,
+      opacity: 1.0,
+      fillColor: 'black',
+      fillOpacity: 0.3,
+      lineCap: 'round'
+    },
     defaults: {
       minZoom: 1,
       tileLayerOptions: {
