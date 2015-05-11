@@ -173,7 +173,7 @@ angular.module('sauWebApp')
               mousemove: function(e) {
                 geojsonMouseover(e, feature, map);
               },
-              mouseout: function(e) {
+              mouseout: function() {
                 geojsonMouseout(map);
               }
             });
