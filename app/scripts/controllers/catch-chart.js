@@ -145,6 +145,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       updateChartTitle();
       updateDataDownloadUrl();
       updateURL();
+      window.prerenderReady = true;
     }
 
     function updateData() {
