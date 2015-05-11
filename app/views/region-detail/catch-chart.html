@@ -1,6 +1,6 @@
 <div ng-controller="CatchChartCtrl">
   <div ng-show="noData" class="chart-container no-data">
-    <p>No data is available for this selection</p>
+    <p ng-bind="noDataMessage"></p>
   </div>
 
   <div ng-hide="noData" class="chart-container form-inline" spinner>
