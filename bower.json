@@ -26,7 +26,7 @@
     "angular-ui-select": "0.11.2",
     "ngSanitize": "0.0.2",
     "angulartics": "0.17.2",
-    "rrose": "https://github.com/motionsmith/rrose.git#e0b967451cfbc7e32cf9b77df110f8e833adee44"
+    "rrose": "https://github.com/motionsmith/rrose.git#caa2597ae60db128f3908337e2969ddd083ae98d"
   },
   "devDependencies": {
     "angular-mocks": "~1.3.0",
