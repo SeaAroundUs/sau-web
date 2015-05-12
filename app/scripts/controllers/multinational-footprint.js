@@ -15,6 +15,13 @@ angular.module('sauWebApp')
 
     $scope.$watch('formModel.region_id', function() {
       var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+
+        //If we go from having no data to having data, we need to redraw the chart after the DOM re-enables the div that holds the chart.
+        if ($scope.noData === true) {
+          $timeout(function() { $scope.api.update(); });
+        }
+        $scope.noData = false;
+
         $scope.data = data.data.countries;
         $scope.maximumFraction = data.data.maximum_fraction;
         $scope.updateChartTitle(getChartTitle());
@@ -46,6 +53,11 @@ angular.module('sauWebApp')
             })
             .text('Maximum fraction ' + $scope.maximumFraction);
         });
+      },
+      function() { //Error MNF data response
+        $scope.noData = true;
+        //Some very hard-coded custom error messages, quarantined in the utils class.
+        $scope.noDataMessage = sauChartUtils.getNoDataMessage($scope.region.name, $scope.formModel.region_id);
       });
     });
 

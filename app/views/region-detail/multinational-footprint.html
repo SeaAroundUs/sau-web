@@ -1,8 +1,14 @@
-<div ng-controller="MultinationalFootprintCtrl" class="chart-container">
-    <div class="pull-right header-links">
-		<!--<span ng-show="showDecisionRule"><a ng-click="toggleDecisionRule()">Hide decision rule</a></span>
-		<span ng-show="!showDecisionRule"><a ng-click="toggleDecisionRule()">Show decision rule</a></span>-->
-		<method anchor="13"></method>
+<div ng-controller="MultinationalFootprintCtrl">
+	<div ng-show="noData" class="chart-container no-data">
+    	<p ng-bind="noDataMessage"></p>
 	</div>
-    <nvd3 api="api" options="options" data="data"></nvd3>
+
+	<div ng-hide="noData" class="chart-container form-inline" spinner>
+    	<div class="pull-right header-links">
+			<!--<span ng-show="showDecisionRule"><a ng-click="toggleDecisionRule()">Hide decision rule</a></span>
+			<span ng-show="!showDecisionRule"><a ng-click="toggleDecisionRule()">Show decision rule</a></span>-->
+			<method anchor="13"></method>
+		</div>
+    	<nvd3 api="api" options="options" data="data"></nvd3>
+    </div>
 </div>

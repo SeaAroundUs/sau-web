@@ -242,7 +242,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     }
 
     $scope.updateRegion = function() {
-
       $scope.estuariesURL = '#/'+$scope.region.name+'/'+$scope.formModel.region_id+'/estuaries';
 
       function getFAOName(faoId) {
