@@ -3,39 +3,7 @@
     <p ng-bind="noDataMessage"></p>
   </div>
 
-  <div ng-hide="noData" class="chart-container form-inline" spinner>
-    <i class="fa fa-spinner fa-spin loading fa-5x"></i>
-
-    <div class="form-group">
-      <label for="dimension">Dimension</label>
-      <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"
-        ng-change="dropdownGA('Dimension', formModel.dimension.label)"></select>
-    </div>
-    <div class="form-group">
-      <label for="measure">Measure</label>
-      <select class="form-control" ng-model="formModel.measure" ng-options="opt as opt.label for (measure, opt) in measures"
-              ng-change="dropdownGA('Measure', formModel.measure.label)"></select>
-    </div>
-    <div class="form-group" ng-hide="formModel.dimension.value === 'reporting-status' || formModel.dimension.value === 'catchtype'">
-      <label for="limit">Limit</label>
-      <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"
-              ng-change="dropdownGA('Limit', formModel.limit.label)"></select>
-    </div>
-    <div class="form-group">
-      <label for="color">Color scheme</label>
-      <select class="form-control" ng-model="color" ng-options="c for (c,value) in colors"
-              ng-change="dropdownGA('Color')"></select>
-    </div>
-    <div class="pull-right header-links">
-
-      <span ng-show="(!declarationYear.enabled) && declarationYear.show"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
-      <span ng-show="declarationYear.enabled && declarationYear.show"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
-
-      <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
-      <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
-
-      <method anchor="13"></method><br />
-    </div>
+  <div ng-hide="noData" class="chart-container form-inline">
     <div>
       <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
     </div>

@@ -46,13 +46,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
               y2: chart.yAxis.scale()(0)
             })
             .style('stroke', '#2daf51')
-            .style('stroke-width', '1');
+            .style('stroke-width', '4');
 
           g.append('text')
             .attr({
               fill: '#000',
               style: 'font-style: italic;',
-              transform: 'translate('+(x+15)+',130) rotate(270,0,0)'
+              transform: 'translate('+(x+50)+',550) rotate(270,0,0)'
             })
             .text('EEZ declaration year');
         });
@@ -75,10 +75,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     $scope.options = {
       chart: {
         type: 'stackedAreaChart',
-        height: 2000,
+        height: 2250,
         margin : {
-          right: 16,
-          bottom: 26
+          top: 250,
+          left: 250,
+          right: 250,
+          bottom: 250
         },
         x: function(d){return d[0];},
         y: function(d){return d[1];},
@@ -92,6 +94,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         yAxis: {
           showMaxMin: false,
           axisLabel: $scope.formModel.measure.chartlabel
+          //nv.utils.calcTicksY(availableHeight/36, data)
         },
         yAxisTickFormat: function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
@@ -235,6 +238,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
         return $filter('significantDigits')(d, magnitude);
       };
+      //$scope.options.chart.yAxis.ticks(nv.utils.calcTicksY(225))
     }
 
     function updateChartTitle() {
