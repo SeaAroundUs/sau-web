@@ -127,6 +127,10 @@
       font-size: 55px !important;
     }
 
+    .nvd3-svg.nv-y g.tick.zero {
+      opacity: 0 !important;
+    }
+
     /* make points visible */
     .nvd3.nv-line .nv-point
     {

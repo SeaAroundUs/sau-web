@@ -7,6 +7,8 @@
 angular.module('sauWebApp').controller('CatchChartCtrl',
   function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga) {
 
+    nv.utils.calcTicksY = function() { return 20; };
+
     function init() {
       $scope.declarationYear = {enabled: true};
       if ($scope.region.name === 'eez') {
@@ -94,7 +96,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         yAxis: {
           showMaxMin: false,
           axisLabel: $scope.formModel.measure.chartlabel
-          //nv.utils.calcTicksY(availableHeight/36, data)
         },
         yAxisTickFormat: function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
@@ -238,7 +239,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
         return $filter('significantDigits')(d, magnitude);
       };
-      //$scope.options.chart.yAxis.ticks(nv.utils.calcTicksY(225))
+      $timeout(function() {
+        $scope.feature.$promise.then(function() {
+          var chart = $scope.api.getScope().chart;
+          chart.yAxis.ticks(20);
+        });
+      });
     }
 
     function updateChartTitle() {
