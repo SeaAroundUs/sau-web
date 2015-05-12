@@ -22,6 +22,7 @@ angular.module('sauWebApp')
         scope.$emit('toggleTaxonNames', scope.useScientificNames);
       };
     },
+
     //Returns the sum of the year values across the keys (e.g. Sum of all catch data in 1950),
     //then returns the largest of those values (e.g. Finds 1967 to be the largest sum).
     //This is useful for determining the yRange of a stacked area chart.
@@ -41,6 +42,7 @@ angular.module('sauWebApp')
 
       return Math.max.apply(null, valuesByYear);
     },
+
     //Adjusts the domain of the Y axis of the chart.
     //"otherChartValues" is an array of other values besides the chart data that should be considered in the ceiling calculation (useful for maximum fraction)
     //"additionalCeilingScale" scales the ceiling even higher above the maximum value. The value 0 scales it up 0%. The value 1 scales it up 100%.
@@ -54,6 +56,16 @@ angular.module('sauWebApp')
       ceiling = Math.max(ceiling, this.getMaxDataSum(scope)) * (1 + additionalCeilingScale);
       scope.api.getScope().options.chart.yDomain = [0, ceiling];
       scope.api.refresh();
+    },
+
+    //This delivers the hard-coded message to be displayed when there is no data for a region id.
+    //Provide the region type and ID, and it will return you there proper message.
+    getNoDataMessage: function(regionName, regionId) {
+      if (regionName === 'lme' && regionId === 64) {
+        return 'Currently no catches due to ice cover';
+      } else {
+        return 'No data is available for this selection';
+      }
     }
   };
 

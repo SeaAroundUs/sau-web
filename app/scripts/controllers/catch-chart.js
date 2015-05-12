@@ -218,12 +218,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         $scope.noData = true;
         spinnerState.loading = false;
 
-        // TODO put his into factory for modularized alternative "no data" messages
-        if ($scope.region.name === 'lme' && $scope.formModel.region_id === 64) {
-          $scope.noDataMessage = 'Currently no catches due to ice cover';
-        } else {
-          $scope.noDataMessage = 'No data is available for this selection';
-        }
+        //Some very hard-coded custom error messages, quarantined in the utils class.
+        $scope.noDataMessage = sauChartUtils.getNoDataMessage($scope.region.name, $scope.formModel.region_id);
       });
       spinnerState.loading = true;
     }
