@@ -50,8 +50,7 @@
         <td ng-if="row.amount === null && !row.sub_total" class="value">-</td>
 
         <!-- % landed value -->
-        <td ng-if="row.perc_landed !== null" ng-bind="row.perc_landed | number:2" class="percent"></td>
-        <td ng-if="row.perc_landed === null" class="percent"></td>
+        <td ng-bind="row.perc_landed | number:2" class="percent"></td>
 
         <!-- source -->
         <td class="source fake-popover">
@@ -66,8 +65,7 @@
         <td class="year">2003</td>
         <td ng-if="data['2000'].grand_total.amount !== null" ng-bind="data['2000'].grand_total.amount | number:0" class="value"></td>
         <td ng-if="data['2000'].grand_total.amount === null" class="value">-</td>
-        <td ng-if="data['2000'].grand_total.perc_landed !== null" ng-bind="data['2000'].grand_total.perc_landed | number:2" class="percent"></td>
-        <td ng-if="data['2000'].grand_total.perc_landed === null" class="percent">-</td>
+        <td ng-bind="data['2000'].grand_total.perc_landed | number:2" class="percent"></td>
         <td class="source"></td>
       </tr>
       <tr>
@@ -75,8 +73,7 @@
         <td class="year">2009</td>
         <td ng-if="data['2009'].grand_total.amount !== null" ng-bind="data['2009'].grand_total.amount | number:0" class="value"></td>
         <td ng-if="data['2009'].grand_total.amount === null" class="value">-</td>
-        <td ng-if="data['2009'].grand_total.perc_landed !== null" ng-bind="data['2009'].grand_total.perc_landed | number:2" class="percent"></td>
-        <td ng-if="data['2009'].grand_total.perc_landed === null" class="percent">-</td>
+        <td ng-bind="data['2009'].grand_total.perc_landed | number:2" class="percent"></td>
         <td class="source"></td>
       </tr>
     </tbody>
