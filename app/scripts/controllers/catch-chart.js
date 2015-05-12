@@ -95,7 +95,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         },
         yAxis: {
           showMaxMin: false,
-          axisLabel: $scope.formModel.measure.chartlabel
+          axisLabel: $scope.formModel.measure.chartlabel,
+          axisLabelDistance: 75
         },
         yAxisTickFormat: function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
