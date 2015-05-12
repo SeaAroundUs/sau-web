@@ -75,7 +75,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     $scope.options = {
       chart: {
         type: 'stackedAreaChart',
-        height: 504,
+        height: 2000,
         margin : {
           right: 16,
           bottom: 26
@@ -87,7 +87,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         showControls: false,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
+          tickValues: [1950,1960,1970,1980,1990,2000,2010]
         },
         yAxis: {
           showMaxMin: false,
