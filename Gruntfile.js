@@ -238,7 +238,8 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath:  /\.\.\//,
+        exclude: 'bower_components/nvd3-community/build/nv.d3.js'
       },
       sass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
