@@ -1,4 +1,8 @@
+//jscs:disable
+
 /* nvd3 version 1.7.0(https://github.com/liquidpele/nvd3) 2014-12-13 */
+
+/* fork by Robert Reis 2015-05-13 */
 (function(){
 
 // set up main nv object on window
