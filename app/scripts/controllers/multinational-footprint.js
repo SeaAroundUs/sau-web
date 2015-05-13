@@ -21,6 +21,7 @@ angular.module('sauWebApp')
           $timeout(function() { $scope.api.update(); });
         }
         $scope.noData = false;
+        $scope.$parent.$parent.showDownload = true;
 
         $scope.data = data.data.countries;
         $scope.maximumFraction = data.data.maximum_fraction;
@@ -56,6 +57,8 @@ angular.module('sauWebApp')
       },
       function() { //Error MNF data response
         $scope.noData = true;
+        $scope.$parent.$parent.showDownload = false;
+
         //Some very hard-coded custom error messages, quarantined in the utils class.
         $scope.noDataMessage = sauChartUtils.getNoDataMessage($scope.region.name, $scope.formModel.region_id);
       });
