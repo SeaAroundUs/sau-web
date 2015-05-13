@@ -29,14 +29,5 @@ angular.module('sauWebApp')
         }
       }
       return d3.format(',.d')(n2);
-
-      //Inline examples are with a magnitude = 3.
-      /*var n1 = Number(input) / (Math.pow(10, magnitude - 1)); //Takes 123456.789 and turns it into 1234.56789
-      var n2 = Math.round(n1) / 10; //Takes 1234.56789 and turns it into 123.4;
-      if (n2 === 0) {
-        n1 = Number(input) / (Math.pow(10, magnitude - 2));
-        n2 = Math.round(n1) / 100;
-      }
-      return d3.format(',.d')(n2); //Adds commas.*/
     };
   });
