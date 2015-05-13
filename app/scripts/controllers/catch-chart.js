@@ -133,7 +133,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       '#666', '#f88', '#88f', '#8f8', '#800', '#080', '#008',
       '#888', '#333'
     );
-    $scope.color = $scope.colors.Spectral;
+    $scope.color = $scope.colors.Set1;
 
     $scope.updateColor = function() {
       if ($scope.color[11]){
@@ -157,7 +157,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       var data_options = {region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO};
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
-      data_options.limit = $scope.formModel.limit.value;
+      data_options.limit = 10;
       $scope.$parent.$parent.showDownload = false;
       var data = sauAPI.Data.get(data_options, function() {
         var dataHash;
@@ -215,7 +215,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           $scope.toggleTaxonNames();
           $scope.useScientificNames = true;
         }
-        $scope.updateDeclarationYear();
+        //$scope.updateDeclarationYear();
         //Raises the ceiling of of the catch chart by 10%.
         //The second parameter (which is null) is for any additional data points that should be included in the ceiling calculation,
         //such as the maximum fraction on the MNF chart.
