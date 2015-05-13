@@ -67,7 +67,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     };
     $scope.updateDeclarationYear = function() {
       if ($scope.declarationYear.show && $scope.declarationYear.enabled) {
-        $scope.drawDeclarationYear();
+        //$scope.drawDeclarationYear();
       } else if ($scope.declarationYear.show && (!$scope.declarationYear.enabled)){
         $scope.hideDeclarationYear();
       }
@@ -150,7 +150,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       updateChartTitle();
       updateDataDownloadUrl();
       updateURL();
-      window.prerenderReady = true;
     }
 
     function updateData() {
@@ -190,8 +189,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             }
           });
           $scope.data = tempData;
+          $timeout(function() {
+            window.prerenderReady = true;
+          });
 
-        // chart ordering home country, then host country
+
+          // chart ordering home country, then host country
         } else if (data_options.dimension === 'country') {
           data.data.forEach(function(country) {
             if (country.key === data.host_country) {
@@ -203,6 +206,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             }
           });
           $scope.data = homeCountry.concat(hostCountry.concat(otherCountries));
+          $timeout(function() {
+            window.prerenderReady = true;
+          });
 
         // default chart ordering
         } else {
@@ -220,6 +226,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         //The second parameter (which is null) is for any additional data points that should be included in the ceiling calculation,
         //such as the maximum fraction on the MNF chart.
         sauChartUtils.calculateYAxisCeiling($scope, null, 0.1);
+
+        $timeout(function() {
+          window.prerenderReady = true;
+        });
       }, function() {
         $scope.noData = true;
         spinnerState.loading = false;
