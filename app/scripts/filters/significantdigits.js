@@ -21,9 +21,10 @@
 angular.module('sauWebApp')
   .filter('significantDigits', function () {
     return function (input, magnitude) {
+      var n2 = 0;
       for (var i = 1; i < magnitude; i++) {
         var n1 = Number(input) / Math.pow(10, magnitude - i);
-        var n2 = Math.round(n1) / Math.pow(10, i);
+        n2 = Math.round(n1) / Math.pow(10, i);
         if (n2 !== 0) {
           break;
         }
