@@ -59,11 +59,11 @@ angular.module('sauWebApp')
         //Some very hard-coded custom error messages, quarantined in the utils class.
         $scope.noDataMessage = sauChartUtils.getNoDataMessage($scope.region.name, $scope.formModel.region_id);
       });
-    });
 
-    $scope.feature.$promise.then(function() {
-      $scope.updateChartTitle(getChartTitle());
-      updateDataDownloadUrl();
+      $scope.feature.$promise.then(function() {
+        $scope.updateChartTitle(getChartTitle());
+        updateDataDownloadUrl();
+      });
     });
 
     $scope.options = {
