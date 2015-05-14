@@ -22,6 +22,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         y: function(d){return d[1];},
         transitionDuration: 0,
         useInteractiveGuideline: true,
+        showControls: false,
         xAxis: {
           showMaxMin: false,
           tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
