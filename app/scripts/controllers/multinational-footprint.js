@@ -91,6 +91,7 @@ angular.module('sauWebApp')
           return Number(d).toFixed(3).toString();
         },
         yAxis: {
+          showMaxMin: false,
           axisLabel: 'Fraction of prim.prod.'
         }
       }
