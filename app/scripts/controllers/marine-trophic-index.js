@@ -90,14 +90,17 @@ angular.module('sauWebApp')
       $scope.withExclusions = excludedTaxons.length > 0;
 
       var params = {
-        region: region,
+        region: region
+      };
+
+      var postData = {
         region_id: id,
         reference_year: $scope.fib.year,
         transfer_efficiency: $scope.fib.transferEfficiency,
         exclude: excludedTaxons
       };
 
-      sauAPI.MarineTrophicIndexData.get(params, displayCharts);
+      sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts);
     };
 
     // select/deselect all exclusion checkboxes on species table
