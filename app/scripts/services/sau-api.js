@@ -4,7 +4,10 @@ angular.module('sauWebApp')
   .factory('sauAPI', function ($resource, SAU_CONFIG) {
 
     var resourceFactory = function(apiPath) {
-      return $resource(SAU_CONFIG.apiURL + apiPath, {}, {get: {method: 'GET', cache: true}});
+      return $resource(SAU_CONFIG.apiURL + apiPath,
+        {},
+        {get: {method: 'GET', cache: true}, post: {method: 'POST', cache: true}}
+      );
     };
 
     var methods = {
