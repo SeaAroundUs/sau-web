@@ -83,7 +83,7 @@
       <tr ng-repeat="species in speciesList | orderBy: '-trophic_level'">
         <td class="exclude"><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
         <td ng-bind="species.trophic_level | number"></td>
-        <td ng-bind="species.sl_max_cm"></td>
+        <td ng-bind="species.sl_max"></td>
         <td ng-bind="species.common_name"></td>
         <td class="scientific-name" ng-bind="species.scientific_name"></td>
       </tr>
