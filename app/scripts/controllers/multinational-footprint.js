@@ -13,8 +13,8 @@ angular.module('sauWebApp')
 
     $scope.api = {};
 
-    $scope.$watch('formModel.region_id', function() {
-      var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id}, function() {
+    var updateData = function() {
+      var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO}, function() {
 
         //If we go from having no data to having data, we need to redraw the chart after the DOM re-enables the div that holds the chart.
         if ($scope.noData === true) {
@@ -67,7 +67,13 @@ angular.module('sauWebApp')
         $scope.updateChartTitle(getChartTitle());
         updateDataDownloadUrl();
       });
+    };
+
+    $scope.$watch('formModel.region_id', function() {
+      $scope.mapLayers.selectedFAO = undefined;
+      updateData();
     });
+    $scope.$watch('mapLayers.selectedFAO', updateData);
 
     $scope.options = {
       chart: {
@@ -98,13 +104,19 @@ angular.module('sauWebApp')
     };
 
     function updateDataDownloadUrl() {
-      var url = ['',
+      var params = ['',
         sauAPI.apiURL,
         $scope.region.name,
         '/multinational-footprint/?region_id=',
         $scope.formModel.region_id,
         '&format=csv'
-      ].join('');
+      ];
+
+      if ($scope.mapLayers.selectedFAO) {
+        params.push('&fao_id=', $scope.mapLayers.selectedFAO);
+      }
+
+      var url = params.join('');
       $scope.updateDataDownloadUrl(url);
     }
 

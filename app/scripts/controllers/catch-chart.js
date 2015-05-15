@@ -264,13 +264,12 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         '&region_id=',
         $scope.formModel.region_id
       ];
-      var url;
 
       if ($scope.mapLayers.selectedFAO) {
         params.push('&fao_id=', $scope.mapLayers.selectedFAO);
       }
 
-      url = params.join('');
+      var url = params.join('');
 
       $scope.updateDataDownloadUrl(url);
     }
