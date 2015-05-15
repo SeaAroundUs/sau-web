@@ -112,7 +112,7 @@ angular.module('sauWebApp')
 
     var init = function() {
       $scope.region = sauAPI.Region.get({region: region, region_id: id});
-      var species = sauAPI.ExploitedOrganismsData.get({region: region, region_id: id}, function() {
+      var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true}, function() {
         $scope.speciesList = species.data;
       });
 
