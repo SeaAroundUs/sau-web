@@ -59,6 +59,9 @@ angular.module('sauWebApp')
     }, true);
 
     $scope.$watch('years', function() {
+      if (!$scope.years) {
+        return;
+      }
       $scope.fullRange = {
         startYear: $scope.years[0],
         endYear: $scope.years[$scope.years.length-1]
