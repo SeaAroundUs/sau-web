@@ -16,6 +16,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
+      $scope.$watch('useScientificNames', updateDataDownloadUrl);
       $scope.$on('toggleTaxonNames', $scope.updateDeclarationYear);
       updateDataDownloadUrl();
     }
@@ -262,7 +263,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         '/?format=csv&limit=',
         $scope.formModel.limit.value,
         '&region_id=',
-        $scope.formModel.region_id
+        $scope.formModel.region_id,
+        '&sciname=',
+        !!$scope.useScientificNames
       ];
 
       if ($scope.mapLayers.selectedFAO) {
