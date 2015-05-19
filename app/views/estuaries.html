@@ -38,11 +38,11 @@
                     </tr>
                     <tr>
                         <td>River system(s): </td>
-                        <td ng-bind="model.selectedFeature.properties.river_system"></td>
+                        <td ng-bind="model.selectedFeature.properties.river_system || '-'"></td>
                     </tr>
                     <tr>
                         <td>Av. discharge (m<sup>3</sup>s<sup>-1</sup>): </td>
-                        <td ng-bind="model.selectedFeature.properties.discharge"></td>
+                        <td ng-bind="model.selectedFeature.properties.discharge || '-'"></td>
                     </tr>
                 </tbody>
             </table>
