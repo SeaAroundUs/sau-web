@@ -218,10 +218,11 @@
   }
 
   .biodiversity {
-    &>div {
+    & > div {
         padding: 0px;
     }
-    ul.organisms {
+
+    ul {
       list-style-type: none;
       padding-left: 5px;
     }

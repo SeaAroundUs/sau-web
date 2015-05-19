@@ -3,30 +3,28 @@
       Click a link below to open a new window with information from FishBase (fish) or SeaLifeBase
       (non-fish vertebrates and invertebrates).
     </p>
-    <div class="col-sm-6">
-        <ul class="organisms">
-            <li><a ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms" scroll-click="region-title">Exploited organisms</a></li>
 
-            <li ng-repeat="link in fishbaseLinks.fish">
+    <p>
+      <a ng-href="#/{{region.name}}/{{formModel.region_id}}/exploited-organisms" scroll-click="region-title">Exploited organisms</a>
+      <i>View all exploited taxa for this region</i>
+    </p>
+
+    <div class="col-sm-6">
+        <h3>FishBase Links</h3>
+        <ul class="organisms">
+            <li ng-repeat="link in fishbaseLinks">
                 <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
                     {{link.label}}
                 </sau-link-or-disabled>
             </li>
         </ul>
     </div>
-    <div class="col-sm-6">
-        <h3 ng-show="fishbaseLinks.threatened">Threatened organisms</h3>
-        <ul>
-            <li ng-repeat="link in fishbaseLinks.threatened">
-                <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
-                    {{link.label}}
-                </sau-link-or-disabled>
-            </li>
-        </ul>
 
-        <h3 ng-show="fishbaseLinks.invertebrates">Marine invertebrates</h3>
+
+    <div class="col-sm-6">
+        <h3>SeaLifeBase Links</h3>
         <ul>
-            <li ng-repeat="link in fishbaseLinks.invertebrates">
+            <li ng-repeat="link in sealifebaseLinks">
                 <sau-link-or-disabled href="link.url" show="feature.data.fishbase_id">
                     {{link.label}}
                 </sau-link-or-disabled>
