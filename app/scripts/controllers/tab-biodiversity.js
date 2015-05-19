@@ -10,20 +10,15 @@ angular.module('sauWebApp')
       var fishbase_id = null;
 
       if ($scope.region.name === 'eez') {
-        fishbase_id = $scope.feature.data.fishbase_id;
-
-        var padToThree = function(d){
-          // given an integer in the range 0-999, returns a 0-padded string representation
-          return ('100' + d).slice(-3);
-        };
+        fishbase_id = ('100' + $scope.feature.data.fishbase_id).slice(-3);
 
         $scope.fishbaseLinks = [
-          {label: 'Marine fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat='+'saltwater'+'&csub_code='},
-          {label: 'Fresh water fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat='+'fresh'+'&csub_code='},
-          {label: 'Pelagic fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat='+'pelagic'+'&csub_code='},
-          {label: 'Reef fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat='+'reef'+'&csub_code='},
-          {label: 'Deep water fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat='+'deepwater'+'&csub_code='},
-          {label: 'Threatened fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+padToThree(fishbase_id)+'&vhabitat=threatened&csub_code='}
+          {label: 'Marine fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat='+'saltwater'+'&csub_code='},
+          {label: 'Fresh water fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat='+'fresh'+'&csub_code='},
+          {label: 'Pelagic fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat='+'pelagic'+'&csub_code='},
+          {label: 'Reef fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat='+'reef'+'&csub_code='},
+          {label: 'Deep water fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat='+'deepwater'+'&csub_code='},
+          {label: 'Threatened fishes', url: 'http://www.fishbase.org/Country/CountryChecklist.php?c_code='+fishbase_id+'&vhabitat=threatened&csub_code='}
         ];
 
         $scope.sealifebaseLinks = [
