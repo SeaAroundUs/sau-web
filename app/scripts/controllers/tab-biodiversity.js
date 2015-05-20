@@ -10,7 +10,7 @@ angular.module('sauWebApp')
       var fishbase_id = null;
 
       if ($scope.region.name === 'eez') {
-        fishbase_id = ('100' + $scope.feature.data.fishbase_id).slice(-3);
+        fishbase_id = $scope.feature.data.fishbase_id;
 
         $scope.fishbaseLinks = {
           fish: [
