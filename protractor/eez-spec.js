@@ -43,9 +43,9 @@ describe('SAU app', function() {
     var e = element(by.css('.ui-select-container'));
     e.click();
     var input = $('.ui-select-container input.form-control');
-    input.sendKeys('aleutian');
+    input.sendKeys('antarctic');
     input.sendKeys(protractor.Key.ENTER);
-    expect(browser.getLocationAbsUrl()).toMatch('/lme/65');
+    expect(browser.getLocationAbsUrl()).toMatch('/lme/61');
   });
 
   it('should render LME MNF', function() {
