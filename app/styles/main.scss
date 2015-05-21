@@ -137,13 +137,12 @@ label {
   #search {
     position: absolute;
     z-index: 1;
-    left: 50%;
+    left: calc(50% - 250px);
     div#search-inner {
       width: 500px;
       background-color: $darkBlue;
       padding: 10px 10px 15px;
       position: relative;
-      left: -50%;
       div.ui-select-container {
         width: 100%;
         padding: 5px 15px;
