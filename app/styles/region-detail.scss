@@ -232,3 +232,11 @@
 i.fa.red {
   color: red;
 }
+
+p.under-review {
+  color: blue;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-style: italic;
+  margin: 25px 0 0;
+}
