@@ -5,8 +5,13 @@
         {{ withExclusions? " with exclusions" : "" }}
       </h2>
       <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
-              ga-event="downloadModalGA">Download Data</button>
+              ga-event="downloadModalGA" ng-hide="noData">Download Data</button>
     </div>
+
+  <div ng-show="noData">
+    <p class="no-data">Not enough data available</p>
+  </div>
+  <div ng-hide="noData">
     <!--
     <table id="access-year-table">
         <tr ng-if="regionType === 'eez'">
@@ -89,6 +94,7 @@
       </tr>
       </tbody>
     </table>
+  </div>
 
     <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
 

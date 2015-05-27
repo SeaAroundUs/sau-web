@@ -7,6 +7,7 @@ angular.module('sauWebApp')
 
     $scope.years = [];
     $scope.regionType = region;
+    $scope.noData = false;
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
@@ -47,6 +48,7 @@ angular.module('sauWebApp')
     })();
 
     var displayCharts = function(data) {
+      $scope.noData = false;
       $scope.data = data.data;
       $scope.tabularData = {};
 
@@ -100,7 +102,9 @@ angular.module('sauWebApp')
         exclude: excludedTaxons
       };
 
-      sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts);
+      sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {
+        $scope.noData = true;
+      });
     };
 
     // select/deselect all exclusion checkboxes on species table
@@ -111,7 +115,10 @@ angular.module('sauWebApp')
     };
 
     var init = function() {
-      $scope.region = sauAPI.Region.get({region: region, region_id: id});
+      $scope.region = sauAPI.Region.get({region: region, region_id: id}, angular.noop, function() {
+        $scope.noData = true;
+      });
+
       var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true}, function() {
         $scope.speciesList = species.data;
       });
