@@ -1,3 +1,20 @@
 <div class="content-container">
 	<sau-taxon-info taxon="taxon"></sau-taxon-info>
+
+  <div class="habitat-index" ng-show="taxon.has_habitat_index">
+    <a ng-hide="showHabitatIndex" ng-click="showHabitatIndex=true">Show habitat index</a>
+    <a ng-show="showHabitatIndex" ng-click="showHabitatIndex=false">Hide habitat index</a>
+    <div class="habitat-index-chart" ng-show="showHabitatIndex">
+      <div class="chart-title">
+        Habitat association indexes for {{taxon.scientific_name}} ({{taxon.common_name}})
+      </div>
+      <nvd3 options="options" data="data" api="api"></nvd3>
+      <div class="legend">
+        <span class="legend-item" ng-repeat="legendItem in legend">
+          <span class="legend-color" ng-style="{'background-color': legendItem.color}"></span>
+          <span class="legend-label" ng-bind="legendItem.label"></span>
+        </span>
+      </div>
+    </div>
+  </div>
 </div>

@@ -322,3 +322,29 @@ button {
   color: red;
   text-align: center;
 }
+
+.habitat-index {
+  margin: 10px 0 0 20px;
+
+  .chart-title {
+    font-weight: bold;
+    margin: 20px 0 0 70px;
+    font-size: 1.3rem;
+  }
+
+  .legend {
+    margin: 20px auto 0;
+    width: 400px;
+    text-align: center;
+
+    .legend-item {
+      margin-right: 10px;
+
+      .legend-color {
+        display: inline-block;
+        width: 20px;
+        height: 10px;
+      }
+    }
+  }
+}
