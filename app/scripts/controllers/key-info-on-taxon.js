@@ -1,5 +1,7 @@
 'use strict';
 
+/* global d3 */
+
 angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
   function ($scope, sauAPI, $routeParams, $timeout, $filter) {
     $scope.colors = { red: '#FC111E', blue: '#0F25FA', green: '#138115' };
@@ -10,11 +12,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
       { label: 'Distance from shore', color: $scope.colors.green }
     ];
 
-    $scope.$watch('showHabitatIndex', function() {
-      if ($scope.api && $scope.api.update) {
-        $timeout(function() { $scope.api.update(); });
-      }
-    });
+    $scope.$watch('showHabitatIndex', drawChart);
 
     sauAPI.Taxon.get({taxon_key: $routeParams.taxon},
       function(result) {
@@ -35,6 +33,9 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
       chart: {
         type: 'discreteBarChart',
         height: 500,
+        margin: {
+          right: 100
+        },
         x: function(d) { return $filter('capitalize')(d.label); },
         xAxis: { axisLabel: 'Habitat' },
         y: function(d) { return d.value; },
@@ -68,5 +69,46 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
       }, []);
 
       return [{ key: 'Habitat Index', values: data }];
+    }
+
+    function drawChart() {
+      if ($scope.api && $scope.api.update) {
+        $timeout(function () {
+          var y1, y1Axis, y1AxisPosition, chart, svg;
+
+          // grab existing chart elements
+          svg = d3.select('.habitat-index-chart svg');
+          chart = d3.select('.habitat-index-chart svg .nv-discreteBarWithAxes');
+
+          // create new y-axis
+          y1 = d3.scale.linear().range([435, 0]);
+          y1.domain([0,100]);
+          y1Axis = d3.svg.axis()
+            .scale(y1)
+            .orient('right')
+            .ticks(10)
+            .tickSize(0,0);
+
+          // calculate far edge of chart
+          y1AxisPosition = svg[0][0].clientWidth - 100;
+
+          // add new y-axis
+          chart.append('g')
+            .attr('class', 'y axis secondary')
+            .attr('transform', 'translate(' + y1AxisPosition + ' ,15)')
+            .call(y1Axis);
+
+          // add new y-axis label
+          chart.append('text')
+            .attr('class', 'y label')
+            .attr('text-anchor', 'end')
+            .attr('transform', 'translate(' + (y1AxisPosition + 50) + ' ,260) rotate(90)')
+            .attr('dy', '.75em')
+            .text('Kilometers');
+
+          // resize chart
+          $scope.api.update();
+        });
+      }
     }
   });
