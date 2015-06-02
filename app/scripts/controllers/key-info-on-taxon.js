@@ -138,7 +138,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
               .style('stroke', line.color)
               .style('stroke-width', 1);
 
-            lineLabelTranslate = 'translate('+ (line.attr.x2 - 80) + ',';
+            lineLabelTranslate = 'translate('+ (line.attr.x2 - 10) + ',';
             if (i === 4) {
               lineLabelTranslate += (line.attr.y2 - 2) + ')';
             } else {
@@ -147,8 +147,9 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
 
             lineG.append('text')
               .attr('transform', lineLabelTranslate)
+              .attr('text-anchor', 'end')
               .attr('style', 'font-style:italic;')
-              .text(line.label)
+              .text(line.label);
           });
 
           //TODO only draw extra stuff once
