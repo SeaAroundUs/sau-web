@@ -34,7 +34,8 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
         type: 'discreteBarChart',
         height: 500,
         margin: {
-          right: 100
+          right: 100,
+          bottom: 50
         },
         x: function(d) { return $filter('capitalize')(d.label); },
         xAxis: { axisLabel: 'Habitat' },
@@ -74,14 +75,17 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
     function drawChart() {
       if ($scope.api && $scope.api.update) {
         $timeout(function () {
-          var y1, y1Axis, y1AxisPosition, chart, svg, wfLines, lineG, lineLabelTranslate;
+          var y1, y0Axis, y1Axis, y1AxisPosition, chart, svg,
+            wfLines, lineG, lineLabelTranslate, sideMeasureG,
+            habIdx, habIdxY, effectiveD, effectiveDY;
 
           // grab existing chart elements
+          y0Axis = $scope.api.getScope().chart.yAxis;
           svg = d3.select('.habitat-index-chart svg');
           chart = d3.select('.habitat-index-chart svg .nv-discreteBarWithAxes');
 
           // create new y-axis
-          y1 = d3.scale.linear().range([435, 0]);
+          y1 = d3.scale.linear().range([y0Axis.scale()(0), 0]);
           y1.domain([0,100]);
           y1Axis = d3.svg.axis()
             .scale(y1)
@@ -102,7 +106,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
           chart.append('text')
             .attr('class', 'y label')
             .attr('text-anchor', 'end')
-            .attr('transform', 'translate(' + (y1AxisPosition + 50) + ' ,260) rotate(90)')
+            .attr('transform', 'translate(' + (y1AxisPosition + 55) + ' ,260) rotate(90)')
             .attr('dy', '.75em')
             .text('Kilometers');
 
@@ -110,23 +114,23 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
           wfLines = [
             { label: 'Always',
               color: '#FC111E',
-              attr: { x1: 60, x2: y1AxisPosition, y1: 15, y2: 15 }
+              attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(1) + 15, y2: y0Axis.scale()(1) + 15 }
             },
             { label: 'Abundant',
               color: '#0F25FA',
-              attr: { x1: 60, x2: y1AxisPosition, y1: 122, y2: 122 }
+              attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(0.75) + 15, y2: y0Axis.scale()(0.75) + 15 }
             },
             { label: 'Often',
               color: '#138115',
-              attr: { x1: 60, x2: y1AxisPosition, y1: 232, y2: 232 }
+              attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(0.5) + 15, y2: y0Axis.scale()(0.5) + 15 }
             },
             { label: 'Occasional',
               color: '#ECD2A5',
-              attr: { x1: 60, x2: y1AxisPosition, y1: 342, y2: 342 }
+              attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(0.25) + 15, y2: y0Axis.scale()(0.25) + 15 }
             },
             { label: 'Absent/rare',
               color: '#64F4F3',
-              attr: { x1: 60, x2: y1AxisPosition, y1: 450, y2: 450 }
+              attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(0) + 15, y2: y0Axis.scale()(0) + 15 }
             }
           ];
 
@@ -151,6 +155,40 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
               .attr('style', 'font-style:italic;')
               .text(line.label);
           });
+
+          sideMeasureG = chart.append('g');
+
+          // habitat index indicator
+          habIdx = $scope.taxon.habitat_index.habitat_diversity_index.toFixed(2);
+          habIdxY = y0Axis.scale()(habIdx) + 15;
+          sideMeasureG.append('text')
+            .attr('transform', 'translate(30, ' + habIdxY + ') rotate(-90)')
+            .attr('fill', '#FC111E')
+            .attr('text-anchor', 'middle')
+            .text('Habitat diversity: ' + habIdx);
+          sideMeasureG.append('line')
+            .attr({ x1: 30, x2: 60, y1: habIdxY, y2: habIdxY })
+            .style('stroke', '#FC111E')
+            .style('stroke-width', 1);
+
+          // effective distance inicator
+          effectiveD = $scope.taxon.habitat_index.effective_d.toFixed(2);
+          effectiveDY = y1Axis.scale()(effectiveD) + 15;
+          sideMeasureG.append('text')
+            .attr('transform',
+              'translate(' + (y1AxisPosition + 25) +', ' + effectiveDY + ') rotate(90)')
+            .attr('fill', '#FC111E')
+            .attr('text-anchor', 'middle')
+            .text('Effective distance: ' + effectiveD);
+          sideMeasureG.append('line')
+            .attr({
+              x1: (y1AxisPosition + 25),
+              x2: y1AxisPosition,
+              y1: effectiveDY,
+              y2: effectiveDY
+            })
+            .style('stroke', '#FC111E')
+            .style('stroke-width', 1);
 
           //TODO only draw extra stuff once
 
