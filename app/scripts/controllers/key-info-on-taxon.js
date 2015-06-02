@@ -74,7 +74,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
     function drawChart() {
       if ($scope.api && $scope.api.update) {
         $timeout(function () {
-          var y1, y1Axis, y1AxisPosition, chart, svg;
+          var y1, y1Axis, y1AxisPosition, chart, svg, wfLines, lineG, lineLabelTranslate;
 
           // grab existing chart elements
           svg = d3.select('.habitat-index-chart svg');
@@ -105,6 +105,53 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
             .attr('transform', 'translate(' + (y1AxisPosition + 50) + ' ,260) rotate(90)')
             .attr('dy', '.75em')
             .text('Kilometers');
+
+          // add weighing factor lines
+          wfLines = [
+            { label: 'Always',
+              color: '#FC111E',
+              attr: { x1: 60, x2: y1AxisPosition, y1: 15, y2: 15 }
+            },
+            { label: 'Abundant',
+              color: '#0F25FA',
+              attr: { x1: 60, x2: y1AxisPosition, y1: 122, y2: 122 }
+            },
+            { label: 'Often',
+              color: '#138115',
+              attr: { x1: 60, x2: y1AxisPosition, y1: 232, y2: 232 }
+            },
+            { label: 'Occasional',
+              color: '#ECD2A5',
+              attr: { x1: 60, x2: y1AxisPosition, y1: 342, y2: 342 }
+            },
+            { label: 'Absent/rare',
+              color: '#64F4F3',
+              attr: { x1: 60, x2: y1AxisPosition, y1: 450, y2: 450 }
+            }
+          ];
+
+          lineG = chart.append('g');
+
+          wfLines.forEach(function(line, i) {
+            lineG.append('line')
+              .attr(line.attr)
+              .style('stroke', line.color)
+              .style('stroke-width', 1);
+
+            lineLabelTranslate = 'translate('+ (line.attr.x2 - 80) + ',';
+            if (i === 4) {
+              lineLabelTranslate += (line.attr.y2 - 2) + ')';
+            } else {
+              lineLabelTranslate += (line.attr.y2 + 12) + ')';
+            }
+
+            lineG.append('text')
+              .attr('transform', lineLabelTranslate)
+              .attr('style', 'font-style:italic;')
+              .text(line.label)
+          });
+
+          //TODO only draw extra stuff once
 
           // resize chart
           $scope.api.update();
