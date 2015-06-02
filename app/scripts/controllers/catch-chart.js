@@ -33,10 +33,11 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.declarationYear.enabled = true;
       $timeout(function() {
         $scope.feature.$promise.then(function(){
+          var decYear = Math.max(1950, $scope.feature.data.declaration_year);
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
           container.select('#declaration-year').remove();
-          var x = chart.xAxis.scale()(Math.max(1950, $scope.feature.data.declaration_year));
+          var x = chart.xAxis.scale()(decYear);
           var g = container.append('g');
           g.attr('id', 'declaration-year');
           g.append('line')
@@ -53,9 +54,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             .attr({
               fill: '#000',
               style: 'font-style: italic;',
-              transform: 'translate('+(x+15)+',130) rotate(270,0,0)'
+              transform: 'translate('+(x+15)+',150) rotate(270,0,0)'
             })
-            .text('EEZ declaration year');
+            .text('EEZ declaration year: ' + decYear);
         });
       });
     };
