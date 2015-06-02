@@ -75,40 +75,17 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
     }
 
     function addExtras() {
-      var y1, y0Axis, y1Axis, y1AxisPosition, chart, svg,
+      var y0Axis, y1AxisPosition, chart, svg,
         wfLines, lineG, lineLabelTranslate, sideMeasureG,
-        habIdx, habIdxY, effectiveD, effectiveDY;
+        habIdx, habIdxY;
 
       // grab existing chart elements
       y0Axis = $scope.api.getScope().chart.yAxis;
       svg = d3.select('.habitat-index-chart svg');
       chart = d3.select('.habitat-index-chart svg .nv-discreteBarWithAxes');
 
-      // create new y-axis
-      y1 = d3.scale.linear().range([y0Axis.scale()(0), 0]);
-      y1.domain([0,100]);
-      y1Axis = d3.svg.axis()
-        .scale(y1)
-        .orient('right')
-        .ticks(10)
-        .tickSize(0,0);
-
       // calculate far edge of chart
       y1AxisPosition = svg[0][0].clientWidth - 100;
-
-      // add new y-axis
-      chart.append('g')
-        .attr('class', 'y axis secondary')
-        .attr('transform', 'translate(' + y1AxisPosition + ' ,15)')
-        .call(y1Axis);
-
-      // add new y-axis label
-      chart.append('text')
-        .attr('class', 'y label')
-        .attr('text-anchor', 'end')
-        .attr('transform', 'translate(' + (y1AxisPosition + 55) + ' ,260) rotate(90)')
-        .attr('dy', '.75em')
-        .text('Kilometers');
 
       // add weighing factor lines
       wfLines = [
@@ -116,7 +93,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
           color: '#FC111E',
           attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(1) + 15, y2: y0Axis.scale()(1) + 15 }
         },
-        { label: 'Abundant',
+        { label: 'Usually',
           color: '#0F25FA',
           attr: { x1: 60, x2: y1AxisPosition, y1: y0Axis.scale()(0.75) + 15, y2: y0Axis.scale()(0.75) + 15 }
         },
@@ -168,25 +145,6 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
         .text('Habitat diversity: ' + habIdx);
       sideMeasureG.append('line')
         .attr({ x1: 30, x2: 60, y1: habIdxY, y2: habIdxY })
-        .style('stroke', '#FC111E')
-        .style('stroke-width', 1);
-
-      // effective distance inicator
-      effectiveD = $scope.taxon.habitat_index.effective_d.toFixed(2);
-      effectiveDY = y1Axis.scale()(effectiveD) + 15;
-      sideMeasureG.append('text')
-        .attr('transform',
-        'translate(' + (y1AxisPosition + 25) +', ' + effectiveDY + ') rotate(90)')
-        .attr('fill', '#FC111E')
-        .attr('text-anchor', 'middle')
-        .text('Effective distance: ' + effectiveD);
-      sideMeasureG.append('line')
-        .attr({
-          x1: (y1AxisPosition + 25),
-          x2: y1AxisPosition,
-          y1: effectiveDY,
-          y2: effectiveDY
-        })
         .style('stroke', '#FC111E')
         .style('stroke-width', 1);
 
