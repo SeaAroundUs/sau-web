@@ -18,7 +18,34 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
 
     sauAPI.Taxon.get({taxon_key: $routeParams.taxon},
       function(result) {
+        var firstDigit, habIdxCaveat;
+
         $scope.taxon = result.data;
+
+        firstDigit = $scope.taxon.taxon_key.toString().charAt(0);
+        habIdxCaveat = 'Habitat diversity index estimated from the average ecological parameters ' +
+          'of species belonging to the same ';
+
+        switch(firstDigit) {
+          // Per Deng: "refrain from displaying the Habitat Diversity Index column
+          // values for all taxon keys starting with 1 for now"
+          case '1':
+            $scope.taxon.has_habitat_index = false;
+            break;
+          case '2':
+            $scope.habitatIndexCaveat = habIdxCaveat + 'class';
+            break;
+          case '3':
+            $scope.habitatIndexCaveat = habIdxCaveat + 'order';
+            break;
+          case '4':
+            $scope.habitatIndexCaveat = habIdxCaveat + 'family';
+            break;
+          case '5':
+            $scope.habitatIndexCaveat = habIdxCaveat + 'genus';
+            break;
+        }
+
         if ($scope.taxon.has_habitat_index) {
           $scope.data = habitatIndexData($scope.taxon.habitat_index);
         }

@@ -339,6 +339,16 @@ button {
     }
   }
 
+  p.caveat {
+    font-style: italic;
+    margin-top: 20px;
+    text-align: center;
+
+    &:before {
+      content: '*';
+    }
+  }
+
   .legend {
     margin: -40px auto 0;
     width: 400px;
