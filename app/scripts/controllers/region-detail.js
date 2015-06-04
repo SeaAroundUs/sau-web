@@ -281,6 +281,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.fishParametersURL = 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code=' +
             $scope.feature.data.c_code + '&sb=1&disabled=1&fsb=0&custom=1';
         });
+      } else if ($scope.region.name === 'global') {
+        $scope.faos.data = [
+          { id: 1, name: 'EEZs of the world' },
+          { id: 2, name: 'High Seas of the world' }
+        ];
+        $scope.faos.resolve();
       }
 
       if ($scope.region.name === 'global') {

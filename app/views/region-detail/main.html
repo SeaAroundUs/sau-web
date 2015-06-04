@@ -27,8 +27,13 @@
             <div class="padded content">
                 <div ng-show="faos && region.name === 'eez'">
                     <h3>Select FAO area boundaries</h3>
-                    <a href="" ng-click="selectFAO(0)" scroll-click="region-title">All</a>
-                    <span ng-repeat="fao in faos.data"> | <a href="" ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
+                    <a ng-click="selectFAO(0)" scroll-click="region-title">All</a>
+                    <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
+                </div>
+                <div class="global-fao" ng-show="region.name === 'global'">
+                  <h3>Select</h3>
+                  <a ng-click="selectFAO(0)" scroll-click="region-title">All</a>
+                  <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
                 </div>
                 <sau-legend ng-if="region.name !== 'mariculture'" legend-keys="legendKeys"></sau-legend>
                 <p ng-hide="region.name === 'mariculture'" class="disclaimer">
