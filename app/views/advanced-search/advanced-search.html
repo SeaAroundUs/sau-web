@@ -1,0 +1,37 @@
+<div id="advanced-search">
+	<h1>Advanced Search</h1>
+	<p> Use our <strong>advanced search</strong> feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
+	<div class="sau-panel">
+		<div class="panel-header">
+
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label for="searchParamSelect">Search on</label>
+						<select id="searchParamSelect" class="form-control">
+							<option>EEZ</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-sm-6 help-text hidden-xs">
+					<p>Changing this value will change the fields below.</p>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+
+		<div class="panel-body">
+			<!-- EEZ - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-eez.html'"></div>
+		</div>
+
+		<div class="panel-footer">
+			<!-- center this inside the footer -->
+			<div class="text-center">
+				<button class="btn btn-primary">View graph</button>
+				<span class="or-separator">or</span>
+				<button class="btn btn-primary">Download data</button>
+			</div>
+		</div>
+	</div>
+</div>

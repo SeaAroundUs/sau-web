@@ -26,22 +26,6 @@ $column-padding: 10px; //I want the bootstrap column padding to be 10px not 15px
 		color: black;
 	}
 
-	//This search box sits directly on top of a select box, so remove the bottom border.
-	.bottomless-search-box {
-		border-bottom-style: none;
-	}
-
-	//This select box sits directly below a search box, so remove the top radius.
-	.squared-topped-select {
-		option {
-			padding-bottom: 8px;
-			padding-left: 0;
-			padding-right: 0;
-		}
-		height: 200px;
-		padding: $minor-margin;
-	}
-
 	.selected-items-panel {
 		//height: 234px;
 		line-height: normal;

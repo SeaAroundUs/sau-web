@@ -191,7 +191,7 @@ angular
         controller: 'ExpeditionCtrl'
       })
       .when('/search', {
-        templateUrl: 'views/advanced-search.html',
+        templateUrl: 'views/advanced-search/advanced-search.html',
         controller: 'AdvancedSearchCtrl'
       })
       .otherwise({
