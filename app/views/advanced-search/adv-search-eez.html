@@ -18,8 +18,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="dimensionInput">Dimension</label>
-				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension">
-				</select>
+				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension"></select>
 			</div>
 		</div>
 	</div>
@@ -28,9 +27,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="measureInput">Measure</label>
-				<select id="measureInput" class="form-control">
-					<option>Tonnage</option>
-				</select>
+				<select id="measureInput" class="form-control" ng-options="measure.label for measure in measures" ng-model="selectedMeasure"></select>
 			</div>
 		</div>
 	</div>
@@ -39,14 +36,12 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="limitInput">Legend limit</label>
-				<select id="limitInput" class="form-control">
-					<option>5</option>
-				</select>
+				<select id="limitInput" class="form-control" ng-options="limit.label for limit in limits" ng-model="selectedLimit"></select>
 			</div>
 		</div>
 
 		<div class="col-sm-6 help-text hidden-xs">
-			<p>Limit the number of dimensions given.</p>
+			<p>Limit the number of dimensions shown on the graph.</p>
 		</div>
 	</div>
 </div>

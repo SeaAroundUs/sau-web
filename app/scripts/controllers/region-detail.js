@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, $timeout,
-            sauAPI, insetMapLegendData, externalURLs, $modal, region, regionDimensions) {
+            sauAPI, insetMapLegendData, externalURLs, $modal, region, regionDimensions, regionMeasures, regionDimensionLimits) {
 
     $scope.region = {name: region};
     $scope.showDownload = false;
@@ -193,18 +193,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     }
 
     $scope.dimensions = regionDimensions[$scope.region.name];
-
-    $scope.measures = {
-      'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
-      'value': {label: 'Landed value', value: 'value', chartlabel: 'Real 2005 value (million US$)', titleLabel: 'Real 2005 value (US$) by'}
-    };
-
-    $scope.limits = [
-      {label: '5', value: '5'},
-      {label: '10', value: '10'},
-      {label: '15', value: '15'},
-      {label: '20', value: '20'}
-    ];
+    $scope.measures = regionMeasures[$scope.region.name];
+    $scope.limits = regionDimensionLimits[$scope.region.name];
 
     //TODO Get rid of formModel, as it is catch chart specific, and any non-generic code should go into the chart controller.
     $scope.formModel = {
@@ -341,7 +331,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if (measureObj) {
         return measureObj.value;
       } else {
-        return $scope.measures.tonnage.value;
+        return $scope.measures[0].value;
       }
     }
 
