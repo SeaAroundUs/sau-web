@@ -18,6 +18,9 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
       $scope.$watch('useScientificNames', updateDataDownloadUrl);
       $scope.$on('toggleTaxonNames', $scope.updateDeclarationYear);
+      $scope.$watch('options', function(newOptions) {
+        $timeout(function() { $scope.api.refresh(newOptions); $scope.updateDeclarationYear(); });
+      }, true);
       updateDataDownloadUrl();
     }
 
@@ -154,6 +157,11 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       data_options.dimension = $scope.formModel.dimension.value;
       data_options.measure = $scope.formModel.measure.value;
       data_options.limit = $scope.formModel.limit.value;
+      if (data_options.limit > 15) {
+        $scope.options.chart.height = 800;
+      } else {
+        $scope.options.chart.height = 504;
+      }
       $scope.$parent.$parent.showDownload = false;
       var data = sauAPI.Data.get(data_options, function() {
         var dataHash;
