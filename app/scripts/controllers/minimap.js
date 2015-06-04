@@ -92,9 +92,11 @@ angular.module('sauWebApp')
       leafletData.getMap('minimap')
         .then(function(map) {
           $scope.feature.$promise.then(function() {
-            var f = L.geoJson($scope.feature.data.geojson);
-            var bounds = f.getBounds();
-            map.fitBounds(bounds);
+            if ($scope.feature.data && $scope.feature.data.geojson) {
+              var f = L.geoJson($scope.feature.data.geojson);
+              var bounds = f.getBounds();
+              map.fitBounds(bounds);
+            }
           });
         });
     }, true);

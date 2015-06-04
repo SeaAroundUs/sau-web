@@ -12,7 +12,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       action: 'Open'
     };
 
-    var region_id = $routeParams.id;
+    var region_id = $scope.region.name === 'global' ? 1: $routeParams.id;
 
     $scope.selectedProvince = {feature: null};
 
