@@ -13,6 +13,15 @@
     margin-bottom: -10px;
   }
 
+  .download-div {
+    height: 0;
+    text-align: right;
+
+    button.download {
+      margin-top: -110px;
+    }
+  }
+
   .not-meaningful {
     height: 300px;
     padding-top: 10px;

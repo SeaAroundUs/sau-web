@@ -4,17 +4,23 @@
 /* global d3 */
 
 angular.module('sauWebApp')
-  .controller('StockStatusCtrl', function ($scope, $routeParams, sauAPI, externalURLs, region) {
+  .controller('StockStatusCtrl', function ($scope, $routeParams, $modal, sauAPI, externalURLs, region) {
     $scope.data = {};
     $scope.regionName = region;
     $scope.region = sauAPI.Region.get({region: region, region_id: $routeParams.id});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
     var data = sauAPI.StockStatusData.get({region: region, region_id: $routeParams.id}, function() {
+      $scope.showDownload = true;
       angular.forEach(data.data, function(data_set, key) {
         $scope.data[key] = data_set;
       });
     });
+
+    $scope.downloadModalGA = {
+      category: 'DownloadModal',
+      action: 'Open'
+    };
 
     $scope.css_options = {
       chart: {
@@ -48,4 +54,23 @@ angular.module('sauWebApp')
 
     $scope.nss_options = angular.copy($scope.css_options);
     $scope.nss_options.chart.yAxis.axisLabel = 'Number of stocks by status';
+
+    $scope.openDownloadDataModal = function() {
+      var params = [
+        sauAPI.apiURL,
+        region,
+        '/stock-status',
+        '/?format=csv',
+        '&region_id=',
+        $routeParams.id
+      ];
+
+      $modal.open({
+        templateUrl: 'views/download-data-modal.html',
+        controller: 'DownloadDataModalCtrl',
+        resolve: {
+          dataUrl: function() { return params.join(''); }
+        }
+      });
+    };
   });

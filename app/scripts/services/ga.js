@@ -11,7 +11,7 @@
   angular.module('sauWebApp').factory('ga', function() {
     return {
       sendEvent: function(opt) {
-        if (typeof opt.category === 'string' && typeof opt.action === 'string' &&
+        if (opt && typeof opt.category === 'string' && typeof opt.action === 'string' &&
           (opt.label === undefined || typeof opt.label === 'string') &&
           (opt.value === undefined || (typeof opt.value === 'number' && opt.value > 0))) {
 

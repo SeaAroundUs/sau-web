@@ -9,6 +9,8 @@
  */
 angular.module('sauWebApp')
   .controller('DownloadDataModalCtrl', function ($scope, $modalInstance, dataUrl, $window) {
+    console.log(dataUrl);
+
     $scope.downloadData = function() {
       $window.open(dataUrl);
       $modalInstance.dismiss('download');
