@@ -7,23 +7,10 @@
 
 	<div class="row">
 		<div class="col-sm-6">
-			<sau-multi-select label-key="title" data="eezList.data" search-placeholder="Search EEZ regions"></sau-multi-select>
+			<sau-multi-select label-key="title" data="eezList.data" search-placeholder="Search EEZ regions" selected="selectedEEZs"></sau-multi-select>
 		</div>
 		<div class="col-sm-6">
-			<div class="form-group">
-				<div class="sau-panel selected-items-panel">
-					<div class="panel-header-small">
-						Selected EEZ regions
-					</div>
-					<div>
-					<div class="panel-body">
-						<ul class="list-unstyled">
-							<li ng-repeat="i in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]">Thing {{i}}</li>
-						</ul>
-					</div>
-					</div>
-				</div>
-			</div>
+			<sau-selected-options label-key="title" title="Selected EEZ regions" selected="selectedEEZs"></sau-selected-options>
 		</div>
 	</div>
 

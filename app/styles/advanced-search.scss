@@ -13,7 +13,6 @@ $column-padding: 10px; //I want the bootstrap column padding to be 10px not 15px
 	.help-text {
 		color: #808080;
 		font-size: 12px;
-		top: 27px;
 	}
 
 	//Change the bootstrap columns on this page to be 10px padded rather than the 15px default.
@@ -24,24 +23,6 @@ $column-padding: 10px; //I want the bootstrap column padding to be 10px not 15px
 
 	.form-control {
 		color: black;
-	}
-
-	.selected-items-panel {
-		//height: 234px;
-		line-height: normal;
-
-		.panel-body {
-			padding: $minor-margin;
-			height: 196px;
-		}
-
-		ul {
-			margin: 0;
-		}
-
-		li {
-			padding-bottom: 8px;
-		}
 	}
 
 	select, input {
