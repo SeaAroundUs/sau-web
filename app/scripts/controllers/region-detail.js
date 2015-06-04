@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, $timeout,
-            sauAPI, insetMapLegendData, externalURLs, $modal, region) {
+            sauAPI, insetMapLegendData, externalURLs, $modal, region, regionDimensions) {
 
     $scope.region = {name: region};
     $scope.showDownload = false;
@@ -192,27 +192,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.tabs[0].active = true;
     }
 
-    if ($scope.region.name === 'mariculture') {
-
-      $scope.dimensions = [
-        {label: 'Taxon', value: 'taxon'},
-        {label: 'Commercial groups', value: 'commercialgroup'},
-        {label: 'Functional groups', value: 'functionalgroup'}
-      ];
-
-    } else {
-
-      $scope.dimensions = [
-        {label: 'Taxon', value: 'taxon'},
-        {label: 'Commercial groups', value: 'commercialgroup'},
-        {label: 'Functional groups', value: 'functionalgroup'},
-        {label: 'Fishing country', value: 'country'},
-        // {label: 'Gear', value: 'gear'},
-        {label: 'Fishing sector', value: 'sector'},
-        {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
-        {label: 'Reporting status', value: 'reporting-status'}
-      ];
-    }
+    $scope.dimensions = regionDimensions[$scope.region.name];
 
     $scope.measures = {
       'tonnage': {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
