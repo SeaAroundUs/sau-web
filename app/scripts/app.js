@@ -190,6 +190,10 @@ angular
         templateUrl: 'views/expedition.html',
         controller: 'ExpeditionCtrl'
       })
+      .when('/search', {
+        templateUrl: 'views/advanced-search.html',
+        controller: 'AdvancedSearchCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

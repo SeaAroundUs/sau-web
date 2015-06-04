@@ -365,3 +365,31 @@ button {
     }
   }
 }
+
+// Classes for making generic panels with potentially a header, body, and footer.
+.sau-panel {
+    border: 1px solid #aaaaaa;
+
+  }
+
+.panel-header {
+  background: #f1f1f1;
+  padding: 10px;
+  border: none;
+}
+
+.panel-header-small {
+  background: #f1f1f1;
+  padding: 10px;
+  border: none;
+}
+
+.panel-body {
+  overflow: auto;
+}
+
+.panel-footer {
+  background: #f1f1f1;
+  padding: 20px;
+  border: none;
+}
