@@ -7,7 +7,7 @@ angular.module('sauWebApp')
 
       $scope.model = {
         taxon_level: {},
-        taxon_group: {},
+        taxon_group: {}
       };
 
       $scope.selectRow = function(row) {
@@ -121,6 +121,6 @@ angular.module('sauWebApp')
     return {
       templateUrl: 'views/taxon-grid.html',
       restrict: 'E',
-      controller: controller,
+      controller: controller
     };
   });
