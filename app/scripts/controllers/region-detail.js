@@ -145,13 +145,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         tabs.ecosystemsGlobal,
         tabs.indicatorsGlobal,
         tabs.otherTopics
-        // tabs.feedback
       ];
     } else if ($scope.region.name === 'rfmo') {
       $scope.tabs = [
         tabs.catchInfo,
         tabs.governance
-        // tabs.feedback
       ];
     } else if ($scope.region.name === 'lme') {
       $scope.tabs = [
@@ -159,18 +157,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         tabs.biodiversityLME,
         tabs.ecosystemsLME,
         tabs.indicatorsLME
-        // tabs.feedback
       ];
     } else if ($scope.region.name === 'highseas') {
       $scope.tabs = [
         tabs.catchInfo,
         tabs.ecosystemsHighSeas,
         tabs.indicatorsHighSeas
-        // tabs.feedback
       ];
     } else if ($scope.region.name === 'mariculture') {
       $scope.tabs = [
-        tabs.productionInfo,
+        tabs.productionInfo
       ];
     } else {
       $scope.tabs = [
@@ -179,7 +175,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         tabs.ecosystems,
         tabs.governance,
         tabs.indicators
-        // tabs.feedback
       ];
     }
 
