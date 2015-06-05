@@ -36,7 +36,7 @@
                   <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
                 </div>
                 <sau-legend ng-if="region.name !== 'mariculture'" legend-keys="legendKeys"></sau-legend>
-                <p ng-hide="region.name === 'mariculture'" class="disclaimer">
+                <p ng-hide="region.name === 'mariculture' || region.name === 'lme'" class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime
                     boundaries<span ng-hide="region.name === 'mariculture'"> (see <method anchor="15"></method>)</span>.
                 </p>

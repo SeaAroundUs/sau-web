@@ -20,9 +20,8 @@ angular.module('sauWebApp')
 
     var lme = [
       { pattern: 'images/legend/lme.png', label: 'LME' },
-      { pattern: 'images/legend/disputed_lme.png', label: 'Disputed' },
       { pattern: 'images/legend/other_lme.png', label: 'Other LME' },
-      { pattern: 'images/legend/high_seas.png', label: 'High seas' },
+      { pattern: 'images/legend/high_seas.png', label: 'High seas' }
     ];
 
     var highseas = [
@@ -38,7 +37,7 @@ angular.module('sauWebApp')
       {value: 9999, label: '1,000-9,999'},
       {value: 999999, label: '10,000-999,999'},
       {value: 9999999, label: '1,000,000-9,999,999'},
-      {value: 12999999, label: '10,000,000-12,999,999'},
+      {value: 12999999, label: '10,000,000-12,999,999'}
     ];
 
     return {
