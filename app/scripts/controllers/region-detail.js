@@ -290,7 +290,9 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
 
       if ($scope.region.name === 'global') {
-        $location.path('/' + $scope.region.name, false);
+        if ($location.path() !== '/global') {
+          $location.path('/global', false);
+        }
       } else {
         var newPath = '/' + $scope.region.name + '/' + $scope.formModel.region_id;
         if (newPath !== $location.path()) {
