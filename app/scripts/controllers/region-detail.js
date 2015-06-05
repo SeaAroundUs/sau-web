@@ -286,6 +286,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
             $scope.feature.data.c_code + '&sb=1&disabled=1&fsb=0&custom=1';
         });
       } else if ($scope.region.name === 'global') {
+        //TODO get geojson
         $scope.faos.data = [
           { id: 1, name: 'EEZs of the world' },
           { id: 2, name: 'High Seas of the world' }
