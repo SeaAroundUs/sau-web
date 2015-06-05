@@ -28,7 +28,7 @@ angular.module('sauWebApp')
       }
     };
 
-    var id = ($scope.region && $scope.region.name_id) || $routeParams.id;
+    var id = ($scope.region && $scope.region.name_id) || ($routeParams.id || 1);
 
     $scope.openDownloadDataModal = function() {
       $modal.open({

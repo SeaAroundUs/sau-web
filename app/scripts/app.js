@@ -138,6 +138,21 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'global';}}
       })
+      .when('/global/exploited-organisms', {
+        templateUrl: 'views/exploited-organisms.html',
+        controller: 'ExploitedOrganismsCtrl',
+        resolve: {region: function() {return 'global';}}
+      })
+      .when('/global/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'global';}}
+      })
+      .when('/global/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'global';}}
+      })
       .when('/taxa/:taxon', {
         templateUrl: 'views/key-info-on-taxon.html',
         controller: 'KeyInfoOnTaxonCtrl'

@@ -88,13 +88,16 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
       biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
       biodiversityLME: {title: 'Biodiversity', template: 'views/region-detail/biodiversity-lme.html'},
+      biodiversityGlobal: {title: 'Biodiversity', template: 'views/region-detail/biodiversity-global.html'},
       ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
       ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
       ecosystemsHighSeas: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-highseas.html'},
+      ecosystemsGlobal: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-global.html'},
       governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
       indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
       indicatorsLME: {title: 'Indicators', template: 'views/region-detail/indicators-lme.html'},
       indicatorsHighSeas: {title: 'Indicators', template: 'views/region-detail/indicators-highseas.html'},
+      indicatorsGlobal: {title: 'Indicators', template: 'views/region-detail/indicators-global.html'},
       productionInfo: {title: 'Production Info', template: 'views/region-detail/production-info.html'},
       otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
       feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
@@ -138,8 +141,9 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     if ($scope.region.name === 'global') {
       $scope.tabs = [
         tabs.catchInfo,
-        tabs.biodiversity,
-        tabs.ecosystems,
+        tabs.biodiversityGlobal,
+        tabs.ecosystemsGlobal,
+        tabs.indicatorsGlobal,
         tabs.otherTopics
         // tabs.feedback
       ];

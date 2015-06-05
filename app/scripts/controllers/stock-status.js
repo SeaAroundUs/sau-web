@@ -5,12 +5,13 @@
 
 angular.module('sauWebApp')
   .controller('StockStatusCtrl', function ($scope, $routeParams, $modal, sauAPI, externalURLs, region) {
+    var regionId = $routeParams.id || 1;
     $scope.data = {};
     $scope.regionName = region;
-    $scope.region = sauAPI.Region.get({region: region, region_id: $routeParams.id});
+    $scope.region = sauAPI.Region.get({region: region, region_id: regionId});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
-    var data = sauAPI.StockStatusData.get({region: region, region_id: $routeParams.id}, function() {
+    var data = sauAPI.StockStatusData.get({region: region, region_id: regionId}, function() {
       $scope.showDownload = true;
       angular.forEach(data.data, function(data_set, key) {
         $scope.data[key] = data_set;
@@ -62,7 +63,7 @@ angular.module('sauWebApp')
         '/stock-status',
         '/?format=csv',
         '&region_id=',
-        $routeParams.id
+        regionId
       ];
 
       $modal.open({
