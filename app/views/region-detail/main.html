@@ -38,7 +38,7 @@
                 <sau-legend ng-if="region.name !== 'mariculture'" legend-keys="legendKeys"></sau-legend>
                 <p ng-hide="region.name === 'mariculture' || region.name === 'lme'" class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime
-                    boundaries<span ng-hide="region.name === 'mariculture'"> (see <method anchor="15"></method>)</span>.
+                    boundaries.
                 </p>
                 <sau-legend-mariculture ng-show="region.name === 'mariculture'"></sau-legend-mariculture>
                 <p ng-hide="region.name === 'mariculture'" class="external-links">
