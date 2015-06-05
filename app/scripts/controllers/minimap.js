@@ -96,6 +96,8 @@ angular.module('sauWebApp')
               var f = L.geoJson($scope.feature.data.geojson);
               var bounds = f.getBounds();
               map.fitBounds(bounds);
+            } else {
+              map.setZoom(1);
             }
           });
         });
