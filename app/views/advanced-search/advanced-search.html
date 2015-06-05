@@ -28,9 +28,9 @@
 		<div class="panel-footer">
 			<!-- center this inside the footer -->
 			<div class="text-center">
-				<button class="btn btn-primary">View graph</button>
+				<button class="btn btn-primary" ng-class="{'disabled': !enableViewGraph}">View graph</button>
 				<span class="or-separator">or</span>
-				<button class="btn btn-primary">Download data</button>
+				<button class="btn btn-primary"  ng-class="{'disabled': !enableDownloadData}">Download data</button>
 			</div>
 		</div>
 	</div>

@@ -7,7 +7,7 @@
 
 	<div class="row">
 		<div class="col-sm-6">
-			<sau-multi-select label-key="title" data="eezList.data" search-placeholder="Search EEZ regions" selected="selectedEEZs"></sau-multi-select>
+			<sau-multi-select label-key="title" data="eezList.data" search-placeholder="Search EEZ regions" selected="selectedEEZs" change="queryChanged()"></sau-multi-select>
 		</div>
 		<div class="col-sm-6">
 			<sau-selected-options label-key="title" title="Selected EEZ regions" selected="selectedEEZs"></sau-selected-options>
@@ -18,7 +18,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="dimensionInput">Dimension</label>
-				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension"></select>
+				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension" ng-change="queryChanged()"></select>
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="measureInput">Measure</label>
-				<select id="measureInput" class="form-control" ng-options="measure.label for measure in measures" ng-model="selectedMeasure"></select>
+				<select id="measureInput" class="form-control" ng-options="measure.label for measure in measures" ng-model="selectedMeasure" ng-change="queryChanged()"></select>
 			</div>
 		</div>
 	</div>
@@ -36,7 +36,7 @@
 		<div class="col-sm-6">
 			<div class="form-group">
 				<label for="limitInput">Legend limit</label>
-				<select id="limitInput" class="form-control" ng-options="limit.label for limit in limits" ng-model="selectedLimit"></select>
+				<select id="limitInput" class="form-control" ng-options="limit.label for limit in limits" ng-model="selectedLimit" ng-change="queryChanged()"></select>
 			</div>
 		</div>
 

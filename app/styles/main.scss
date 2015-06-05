@@ -318,6 +318,16 @@ button {
   border-radius: 0 !important;
 }
 
+//Makes the text on all "btn" styled buttons white.
+.btn.disabled {
+  color: white;
+}
+
+//Keep the white "btn" default styled button from having white text.
+.btn.btn-default.disabled {
+  color: grey;
+}
+
 .error {
   color: red;
   text-align: center;
