@@ -1,15 +1,23 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $location, advSearchQueryState, $window, sauAPI) {
+angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $location, advSearchQueryState, $window, sauAPI, $modal) {
 
   //Tied to the "view graph" button
   $scope.viewGraph = function() {
-    $location.url($scope.queryState.graphDataUrl)
+    $location.url($scope.queryState.graphDataUrl);
   };
 
   //Tied to the "download data" button
   $scope.downloadData = function() {
-    $window.open(sauAPI.apiURL + $scope.queryState.downloadDataUrl);
+    $modal.open({
+      templateUrl: 'views/download-data-modal.html',
+      controller: 'DownloadDataModalCtrl',
+      resolve: {
+        dataUrl: function() {
+          return sauAPI.apiURL + $scope.queryState.downloadDataUrl;
+        }
+      }
+    });
   };
 
   //The active child controller uses the "advSearchQueryState" service to communicate with this controller.
