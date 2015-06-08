@@ -5,7 +5,7 @@
 /* global nv */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga, downloadDataUrl) {
 
     function init() {
       $scope.declarationYear = {enabled: true};
@@ -269,26 +269,19 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     }
 
     function updateDataDownloadUrl() {
-      var params = [
-        sauAPI.apiURL,
-        $scope.region.name,
-        '/',
-        $scope.formModel.measure.value,
-        '/',
-        $scope.formModel.dimension.value,
-        '/?format=csv&limit=',
-        $scope.formModel.limit.value,
-        '&region_id=',
-        $scope.formModel.region_id,
-        '&sciname=',
-        !!$scope.useScientificNames
-      ];
-
+      var urlConfig = {
+        regionType: $scope.region.name,
+        measure: $scope.formModel.measure.value,
+        dimension: $scope.formModel.dimension.value,
+        limit: $scope.formModel.limit.value,
+        useScientificName: !!$scope.useScientificNames,
+        regionIds: [$scope.formModel.region_id]
+      };
       if ($scope.mapLayers.selectedFAO) {
-        params.push('&fao_id=', $scope.mapLayers.selectedFAO);
+        urlConfig.faoId = $scope.mapLayers.selectedFAO;
       }
 
-      var url = params.join('');
+      var url = sauAPI.apiURL + downloadDataUrl.createRegionUrl(urlConfig);
 
       $scope.updateDataDownloadUrl(url);
     }

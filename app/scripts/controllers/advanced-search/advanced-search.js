@@ -1,21 +1,22 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope) {
+angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $location, advSearchQueryState, $window, sauAPI) {
 
-	/* Child controllers should call this function in order to control
-	the state of the graph button from their perspective. */
-	$scope.isQueryGraphable = function (isGraphable) {
-		$scope.enableViewGraph = isGraphable;
-	};
+  //Tied to the "view graph" button
+  $scope.viewGraph = function() {
+    $location.url($scope.queryState.graphDataUrl)
+  };
 
-	/* Child controllers should call this function in order to control
-	the state of the download data button from their perspective. */
-	$scope.isQueryDownloadable = function (isDownloadable) {
-		$scope.enableDownloadData = isDownloadable;
-	}
+  //Tied to the "download data" button
+  $scope.downloadData = function() {
+    $window.open(sauAPI.apiURL + $scope.queryState.downloadDataUrl);
+  };
 
-	//Tied to the "view graph" button.
-	$scope.enableViewGraph = false;
-	//Tied to the "download data" button.
-	$scope.enableDownloadData = false;
+  //The active child controller uses the "advSearchQueryState" service to communicate with this controller.
+  //Assigning it to the $scope object so that variable changes are $watch-able
+  $scope.queryState = advSearchQueryState;
+  //Tied to the "view graph" button.
+  $scope.enableViewGraph = false;
+  //Tied to the "download data" button.
+  $scope.enableDownloadData = false;
 });
