@@ -110,6 +110,8 @@ angular.module('sauWebApp')
           });
           var bounds = L.latLngBounds(points);
           $timeout(function(){
+            map.fitBounds(bounds);
+            /*
             map.eachLayer(function(l){
               if (l.feature && l.feature.properties) {
                 if(l.feature.properties.region_id === $scope.formModel.region_id) {
@@ -119,6 +121,7 @@ angular.module('sauWebApp')
                 }
               }
             });
+            */
           });
         });
       });
