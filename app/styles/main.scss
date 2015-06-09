@@ -403,3 +403,10 @@ button {
   padding: 20px;
   border: none;
 }
+
+.side-option {
+  @media (min-width: $screen-sm) {
+    position: relative;
+    top: 22px;
+  }
+}

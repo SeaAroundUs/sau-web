@@ -11,7 +11,7 @@ angular.module('sauWebApp')
   .factory('regionDimensions', function () {
 
     var defaultDimensions = [
-      {label: 'Taxon', value: 'taxon'},
+      {label: 'Taxon', value: 'taxon', scientificNameOption: true},
       {label: 'Commercial groups', value: 'commercialgroup'},
       {label: 'Functional groups', value: 'functionalgroup'},
       {label: 'Fishing country', value: 'country'},

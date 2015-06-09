@@ -21,6 +21,11 @@
 				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension" ng-change="queryChanged()"></select>
 			</div>
 		</div>
+		<div class="col-sm-6 side-option" ng-show="selectedDimension.scientificNameOption">
+			<div>
+				<input type="checkbox" id="scientificNameInput" ng-model="useScientificName" ng-change="queryChanged()"> Use scientific name
+			</div>
+		</div>
 	</div>
 
 	<div class="row">
@@ -40,7 +45,7 @@
 			</div>
 		</div>
 
-		<div class="col-sm-6 help-text hidden-xs">
+		<div class="col-sm-6 help-text side-option">
 			<p>Limit the number of dimensions shown on the graph.</p>
 		</div>
 	</div>

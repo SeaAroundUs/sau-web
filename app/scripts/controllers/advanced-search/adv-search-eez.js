@@ -36,7 +36,7 @@ angular.module('sauWebApp').controller('AdvSearchEEZCtrl', function ($scope, sau
       measure: $scope.selectedMeasure.value,
       dimension: $scope.selectedDimension.value,
       limit: $scope.selectedLimit.value,
-      useScientificNames: true, //we should make this configurable in the UI
+      useScientificNames: $scope.useScientificName, //we should make this configurable in the UI
       regionIds: getSelectedRegionIds()
     };
     advSearchQueryState.downloadDataUrl = downloadDataUrl.createRegionUrl(urlConfig);
