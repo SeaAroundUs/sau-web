@@ -21,6 +21,7 @@ angular.module('sauWebApp')
       eez: defaultLimits,
       lme: defaultLimits,
       highseas: defaultLimits,
-      mariculture: defaultLimits
+      mariculture: defaultLimits,
+      global: defaultLimits
     };
   });

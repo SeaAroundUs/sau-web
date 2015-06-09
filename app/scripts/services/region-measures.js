@@ -19,6 +19,7 @@ angular.module('sauWebApp')
       eez: defaultMeasures,
       lme: defaultMeasures,
       highseas: defaultMeasures,
-      mariculture: defaultMeasures
+      mariculture: defaultMeasures,
+      global: defaultMeasures
     };
   });

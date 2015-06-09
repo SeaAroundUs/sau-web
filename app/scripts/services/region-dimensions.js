@@ -31,6 +31,7 @@ angular.module('sauWebApp')
       eez: defaultDimensions,
       lme: defaultDimensions,
       highseas: defaultDimensions,
-      mariculture: mariculture
+      mariculture: mariculture,
+      global: defaultDimensions
     };
   });
