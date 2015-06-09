@@ -257,6 +257,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         } else {
           chartTitle += 'waters of ' + $scope.feature.data.title;
         }
+        if ($scope.mapLayers.selectedFAO) {
+          $scope.faos.data.forEach(function(fao) {
+            if (fao.id === $scope.mapLayers.selectedFAO) {
+              chartTitle += ' - ' + fao.name;
+            }
+          });
+        }
         $scope.updateChartTitle(chartTitle);
       });
     }
