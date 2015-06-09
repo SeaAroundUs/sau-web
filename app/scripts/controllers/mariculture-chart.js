@@ -15,7 +15,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         type: 'stackedAreaChart',
         height: 504,
         margin : {
-          right: 0,
+          right: 20,
           bottom: 16
         },
         x: function(d){return d[0];},
@@ -25,7 +25,7 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         showControls: false,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020]
         },
         yAxis: {
           showMaxMin: false,
