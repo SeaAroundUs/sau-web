@@ -2,6 +2,7 @@
 
 /* global angular */
 /* global d3 */
+/* global nv */
 
 angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, sauChartUtils) {
@@ -12,6 +13,56 @@ angular.module('sauWebApp')
     };
 
     $scope.api = {};
+
+    $scope.declarationYear = {enabled: true};
+    if ($scope.region.name === 'eez') {
+      $scope.declarationYear.show = true;
+    }
+
+    $scope.drawDeclarationYear = function() {
+      $scope.declarationYear.enabled = true;
+      $timeout(function() {
+        $scope.feature.$promise.then(function(){
+          var decYear = Math.max(1950, $scope.feature.data.declaration_year);
+          var chart = $scope.api.getScope().chart;
+          var container = d3.select('.chart-container svg .nv-stackedarea');
+          container.select('#declaration-year').remove();
+          var x = chart.xAxis.scale()(decYear);
+          var g = container.append('g');
+          g.attr('id', 'declaration-year');
+          g.append('line')
+            .attr({
+              x1: x,
+              y1: 0.0,
+              x2: x,
+              y2: chart.yAxis.scale()(0)
+            })
+            .style('stroke', '#2daf51')
+            .style('stroke-width', '1');
+
+          g.append('text')
+            .attr({
+              fill: '#000',
+              style: 'font-style: italic;',
+              transform: 'translate('+(x+15)+',150) rotate(270,0,0)'
+            })
+            .text('EEZ declaration year: ' + decYear);
+        });
+      });
+    };
+    $scope.hideDeclarationYear = function() {
+      $scope.declarationYear.enabled = false;
+      d3.select('.chart-container svg .nv-stackedarea g#declaration-year')
+        .remove();
+    };
+    $scope.updateDeclarationYear = function() {
+      if ($scope.declarationYear.show && $scope.declarationYear.enabled) {
+        $scope.drawDeclarationYear();
+      } else if ($scope.declarationYear.show && (!$scope.declarationYear.enabled)) {
+        $scope.hideDeclarationYear();
+      }
+    };
+    nv.utils.windowResize($scope.updateDeclarationYear);
 
     var updateData = function() {
       var data = sauAPI.MultinationalFootprintData.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO}, function() {
@@ -54,6 +105,8 @@ angular.module('sauWebApp')
             })
             .text('Maximum fraction ' + $scope.maximumFraction);
         });
+
+        $scope.updateDeclarationYear();
       },
       function() { //Error MNF data response
         $scope.noData = true;

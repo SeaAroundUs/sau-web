@@ -5,8 +5,16 @@
 
 	<div ng-hide="noData" class="chart-container form-inline" spinner>
     	<div class="pull-right header-links">
-			<!--<span ng-show="showDecisionRule"><a ng-click="toggleDecisionRule()">Hide decision rule</a></span>
-			<span ng-show="!showDecisionRule"><a ng-click="toggleDecisionRule()">Show decision rule</a></span>-->
+
+      <span ng-show="(!declarationYear.enabled) && declarationYear.show">
+        <a ng-click="drawDeclarationYear()">Show declaration year</a>
+        <br />
+      </span>
+      <span ng-show="declarationYear.enabled && declarationYear.show">
+        <a ng-click="hideDeclarationYear()">Hide declaration year</a>
+        <br />
+      </span>
+
 			<method anchor="13"></method>
 		</div>
     	<nvd3 api="api" options="options" data="data"></nvd3>
