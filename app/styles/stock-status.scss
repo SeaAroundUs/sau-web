@@ -38,4 +38,8 @@
   #methods a {
     font-weight: bold;
   }
+
+  svg g.nv-areaWrap {
+    pointer-events: none;
+  }
 }
