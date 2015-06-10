@@ -5,7 +5,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   $scope.queryChanged = function() {
     updateQueryUrls();
     updateSubmitButtons();
-  }
+  };
 
   function updateSubmitButtons() {
     advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length === 1);
@@ -61,6 +61,9 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   $scope.selectedMeasure = $scope.measures[0];
   $scope.limits = regionDimensionLimits[$scope.searchOn];
   $scope.selectedLimit = $scope.limits[0];
+
+  //UI stuff that is specific to each region type.
+  //This object allows us to re-use this controller to make it generic for EEZ, LME, etc.
   $scope.regionTypeData = {
     eez: {
       regionListTitle: 'EEZ Regions',

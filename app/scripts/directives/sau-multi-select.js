@@ -15,8 +15,7 @@ angular.module('sauWebApp')
         searchPlaceholder: '@',
         labelKey: '@',
         data: '=',
-        selected: '=',
-        change: '&'
+        selected: '='
       }
     };
   });

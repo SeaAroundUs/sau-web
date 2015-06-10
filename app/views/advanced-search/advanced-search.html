@@ -2,13 +2,14 @@
 	<h1>Advanced Search</h1>
 	<p> Use our <strong>advanced search</strong> feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
 	<div class="sau-panel">
-		<div class="panel-header">
 
+		<!-- PAGE HEADER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+		<div class="panel-header">
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label for="searchParamSelect">Search on</label>
-						<select id="searchParamSelect" class="form-control" ng-model="searchOn">
+						<select id="searchParamSelect" class="form-control" ng-model="searchOn" ng-init="searchOn = 'eez'">
 							<option value="eez">EEZ</option>
 							<option value="lme">LME</option>
 						</select>
@@ -22,17 +23,13 @@
 		</div>
 
 		<!-- EEZ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<div class="panel-body" ng-controller="AdvSearchDefaultQueryCtrl" ng-if="searchOn === 'eez'">
-			<div ng-include="'views/advanced-search/adv-search-default-query.html'"></div>
-		</div>
+		<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'eez'"></div>
 
 		<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<div class="panel-body" ng-controller="AdvSearchDefaultQueryCtrl" ng-if="searchOn === 'lme'">
-			<div ng-include="'views/advanced-search/adv-search-default-query.html'"></div>
-		</div>
+		<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'lme'"></div>
 
+		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
-			<!-- center this inside the footer -->
 			<div class="text-center">
 				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
 				<span class="or-separator">or</span>
