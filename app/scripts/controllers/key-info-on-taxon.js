@@ -63,7 +63,7 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
         type: 'discreteBarChart',
         height: 500,
         margin: {
-          right: 100,
+          right: 120,
           bottom: 100
         },
         x: function(d) { return $filter('capitalize')(d.label); },
@@ -140,22 +140,18 @@ angular.module('sauWebApp').controller('KeyInfoOnTaxonCtrl',
 
       lineG = chart.append('g');
 
-      wfLines.forEach(function(line, i) {
+      wfLines.forEach(function(line) {
         lineG.append('line')
           .attr(line.attr)
           .style('stroke', line.color)
           .style('stroke-width', 1);
 
-        lineLabelTranslate = 'translate('+ (line.attr.x2 - 10) + ',';
-        if (i === 4) {
-          lineLabelTranslate += (line.attr.y2 - 2) + ')';
-        } else {
-          lineLabelTranslate += (line.attr.y2 + 12) + ')';
-        }
+        lineLabelTranslate = 'translate('+ (line.attr.x2 + 5) + ',';
+        lineLabelTranslate += (line.attr.y2 + 5) + ')';
 
         lineG.append('text')
           .attr('transform', lineLabelTranslate)
-          .attr('text-anchor', 'end')
+          .attr('text-anchor', 'start')
           .attr('style', 'font-style:italic;')
           .text(line.label);
       });
