@@ -2,9 +2,9 @@
 
 /**
  * @ngdoc service
- * @name sauWebApp.advSearchQueryState
+ * @name sauWebApp.advSearchService
  * @description
- * # advSearchQueryState
+ * # advSearchService
  * This service helps the advanced search controller and its child controller (with specific query ui) to communicate.
  * Useing a service to facilitate communication between a parent and child scope is the preferred way, rather than
  * having the child access the parent controller's model via $parent or inherited scope properties.
@@ -13,12 +13,17 @@
  * http://www.quora.com/What-is-the-best-way-to-communicate-between-nested-controllers-in-AngularJS
  */
 angular.module('sauWebApp')
-  .factory('advSearchQueryState', function () {
+  .factory('advSearchService', function () {
 
-    return {
-      isQueryGraphable: false,
-      isQueryDownloadable: false,
-      graphDataUrl: '',
-      downloadDataUrl: ''
+    var advSearchService = {
+      state: {
+        isQueryGraphable: false,
+        isQueryDownloadable: false,
+        graphDataUrl: '',
+        downloadDataUrl: '',
+        searchOn: ''
+      }
     };
+
+    return advSearchService;
   });
