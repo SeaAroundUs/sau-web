@@ -8,8 +8,9 @@ angular.module('sauWebApp')
   .controller('MultinationalFootprintCtrl', function ($scope, $routeParams, $timeout, sauAPI, sauChartUtils) {
 
     var getChartTitle = function() {
-      if (!$scope.feature || !$scope.feature.data) { return '';}
-      return 'Primary Production Required for catches in the waters of ' + $scope.feature.data.title;
+      if (!$scope.feature || !$scope.feature.data) { return ''; }
+      return 'Primary Production Required for catches in ' +
+        ($scope.feature.data.title ? 'the waters of ' + $scope.feature.data.title : 'the global ocean');
     };
 
     $scope.api = {};
