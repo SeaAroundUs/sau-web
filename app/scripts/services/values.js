@@ -84,7 +84,7 @@ angular.module('sauWebApp')
   })
   .value('externalURLs',
     {
-      manual: '/reference.html',
+      manual: '/data/reference.html',
       sspMethods: '/stock-status-plots-method/',
       s3Root: 'https://s3-us-west-2.amazonaws.com/'
     });
