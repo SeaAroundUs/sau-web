@@ -21,13 +21,13 @@
 				<div class="clearfix"></div>
 			</div>
 		</div>
+		<div class="panel-body">
+			<!-- EEZ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'eez'"></div>
 
-		<!-- EEZ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'eez'"></div>
-
-		<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-		<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'lme'"></div>
-
+			<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'lme'"></div>
+		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
 			<div class="text-center">

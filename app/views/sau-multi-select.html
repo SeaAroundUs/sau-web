@@ -1,6 +1,6 @@
 <div class="sau-multi-select form-group">
 	<input type="search" class="form-control bottomless-search-box" placeholder="{{searchPlaceholder}}" ng-model="searchTerm">
 	<div>
-		<select multiple class="form-control squared-topped-select" ng-options="option.{{labelKey}} for option in data | filter: {title : searchTerm}" ng-model="selected"></select>
+		<select multiple class="form-control squared-topped-select" ng-options="option.{{labelKey}} for option in data | filter: {title : searchTerm}" ng-model="selected" ng-change="onSelect(event)"></select>
 	</div>
 </div>
