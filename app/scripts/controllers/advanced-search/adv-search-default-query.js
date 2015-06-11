@@ -2,16 +2,19 @@
 
 angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, downloadDataUrl) {
 
+  //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
     updateQueryUrls();
     updateSubmitButtons();
   };
 
+  //Tells the parent controller what the state of the query buttons should be (via a service)
   function updateSubmitButtons() {
     advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length === 1);
     advSearchService.state.isQueryDownloadable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
   }
 
+  //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
 
     if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
@@ -53,6 +56,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     return selectedRegionIds;
   }
 
+  //These are mostly used to populate the UI components with UI data.
   $scope.selectedRegions = [];
   $scope.regionList = sauAPI.Regions.get({region: $scope.searchOn, nospatial: true});
   $scope.dimensions = regionDimensions[$scope.searchOn];
@@ -77,5 +81,6 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     }
   };
 
+  //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);
 });
