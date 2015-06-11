@@ -32,6 +32,7 @@ angular.module('sauWebApp')
       lme: defaultDimensions,
       highseas: defaultDimensions,
       mariculture: mariculture,
-      global: defaultDimensions
+      global: defaultDimensions,
+      rfmo: defaultDimensions
     };
   });

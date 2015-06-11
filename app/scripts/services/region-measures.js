@@ -20,6 +20,7 @@ angular.module('sauWebApp')
       lme: defaultMeasures,
       highseas: defaultMeasures,
       mariculture: defaultMeasures,
-      global: defaultMeasures
+      global: defaultMeasures,
+      rfmo: defaultMeasures
     };
   });
