@@ -9,7 +9,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label for="searchParamSelect">Search on</label>
-						<select id="searchParamSelect" class="form-control" ng-model="searchOn" ng-init="searchOn = 'eez'">
+						<select id="searchParamSelect" class="form-control" ng-model="section" ng-init="section = 'eez'">
 							<option value="eez">EEZ</option>
 							<option value="lme">LME</option>
 						</select>
@@ -23,10 +23,10 @@
 		</div>
 		<div class="panel-body">
 			<!-- EEZ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'eez'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'eez'"></div>
 
 			<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="searchOn === 'lme'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'lme'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

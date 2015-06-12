@@ -1,16 +1,16 @@
 <div ng-controller="AdvSearchDefaultQueryCtrl">
 	<div class="row">
 		<div class="col-xs-12">
-			<label for="regionSelect">{{regionTypeData[searchOn].regionListTitle}}</label>
+			<label for="regionSelect">{{sectionConfig[section].regionListTitle}}</label>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-sm-6">
-			<sau-multi-select limit="regionTypeData[searchOn].selectionLimit" label-key="title" data="regionList.data" search-placeholder="{{regionTypeData[searchOn].searchPlaceholder}}" selected="selectedRegions"></sau-multi-select>
+			<sau-multi-select limit="sectionConfig[section].selectionLimit" label-key="title" data="regionList.data" search-placeholder="{{sectionConfig[section].searchPlaceholder}}" selected="selectedRegions"></sau-multi-select>
 		</div>
 		<div class="col-sm-6">
-			<sau-selected-options label-key="title" title="{{regionTypeData[searchOn].selectedListTitle}} ({{selectedRegions.length}}/{{regionTypeData[searchOn].selectionLimit}})" selected="selectedRegions"></sau-selected-options>
+			<sau-selected-options label-key="title" title="{{sectionConfig[section].selectedListTitle}} ({{selectedRegions.length}}/{{sectionConfig[section].selectionLimit}})" selected="selectedRegions"></sau-selected-options>
 		</div>
 	</div>
 

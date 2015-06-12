@@ -21,7 +21,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
       //Update the variables that configure the GRAPH search query.
       var strBuilder = [
         '/',
-        $scope.searchOn,
+        $scope.section,
         '/',
         $scope.selectedRegions[0].id,
         '?chart=catch-chart',
@@ -37,7 +37,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
     //Update the variables that configure the CSV search query.
     var urlConfig = {
-      regionType: $scope.searchOn,
+      regionType: $scope.section,
       measure: $scope.selectedMeasure.value,
       dimension: $scope.selectedDimension.value,
       limit: $scope.selectedLimit.value,
@@ -58,17 +58,17 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedRegions = [];
-  $scope.regionList = sauAPI.Regions.get({region: $scope.searchOn, nospatial: true});
-  $scope.dimensions = regionDimensions[$scope.searchOn];
+  $scope.regionList = sauAPI.Regions.get({region: $scope.section, nospatial: true});
+  $scope.dimensions = regionDimensions[$scope.section];
   $scope.selectedDimension = $scope.dimensions[0];
-  $scope.measures = regionMeasures[$scope.searchOn];
+  $scope.measures = regionMeasures[$scope.section];
   $scope.selectedMeasure = $scope.measures[0];
-  $scope.limits = regionDimensionLimits[$scope.searchOn];
+  $scope.limits = regionDimensionLimits[$scope.section];
   $scope.selectedLimit = $scope.limits[0];
 
-  //UI stuff that is specific to each region type.
-  //This object allows us to re-use this controller to make it generic for EEZ, LME, etc.
-  $scope.regionTypeData = {
+  //UI stuff that is specific to each advanced search section.
+  //This object allows us to re-use this controller to make it generic for various advanced search sections, etc.
+  $scope.sectionConfig = {
     eez: {
       regionListTitle: 'EEZ Regions',
       selectedListTitle: 'Selected EEZ regions',
