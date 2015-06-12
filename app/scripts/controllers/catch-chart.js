@@ -181,6 +181,13 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         }
         $scope.noData = false;
 
+        // [SAU-1136] prepend data empty 1950 data if it starts after 1950
+        data.data.forEach(function(stack) {
+          if (stack.values[0][0] !== 1950) {
+            stack.values.unshift([1950, null]);
+          }
+        });
+
         // chart ordering by label
         if (orderedLabels[data_options.dimension]) {
           dataHash = data.data.reduce(function(dh, datum) {
