@@ -73,13 +73,13 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
       regionListTitle: 'EEZ Regions',
       selectedListTitle: 'Selected EEZ regions',
       searchPlaceholder: 'Search EEZ regions',
-      limit: 10
+      selectionLimit: 10
     },
     lme: {
       regionListTitle: 'LME Regions',
       selectedListTitle: 'Selected LME regions',
       searchPlaceholder: 'Search LME regions',
-      limit: 10
+      selectionLimit: 10
     }
   };
 

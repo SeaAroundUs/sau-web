@@ -10,28 +10,58 @@
 angular.module('sauWebApp')
   .factory('regionDimensions', function () {
 
-    var defaultDimensions = [
-      {label: 'Taxon', value: 'taxon', scientificNameOption: true},
-      {label: 'Commercial groups', value: 'commercialgroup'},
-      {label: 'Functional groups', value: 'functionalgroup'},
-      {label: 'Fishing country', value: 'country'},
-      // {label: 'Gear', value: 'gear'},
-      {label: 'Fishing sector', value: 'sector'},
-      {label: 'Catch type', value: 'catchtype', overrideLabel: 'Type'},
-      {label: 'Reporting status', value: 'reporting-status'}
-    ];
+    var taxon = {
+      label: 'Taxon',
+      value: 'taxon',
+      scientificNameOption: true,
+      showDimensionLimit: true
+    };
 
-    var mariculture = [
-      {label: 'Taxon', value: 'taxon'},
-      {label: 'Commercial groups', value: 'commercialgroup'},
-      {label: 'Functional groups', value: 'functionalgroup'}
-    ];
+    var commercialGroup = {
+      label: 'Commercial groups',
+      value: 'commercialgroup',
+      showDimensionLimit: false
+    };
+
+    var functionalGroup = {
+      label: 'Functional groups',
+      value: 'functionalgroup',
+      showDimensionLimit: true
+    };
+
+    var fishingCountry = {
+      label: 'Fishing country',
+      value: 'country',
+      showDimensionLimit: true
+    };
+
+    var fishingSector = {
+      label: 'Fishing sector',
+      value: 'sector',
+      showDimensionLimit: false
+    };
+
+    var catchType = {
+      label: 'Catch type',
+      value: 'catchtype',
+      overrideLabel: 'Type',
+      showDimensionLimit: false
+    };
+
+    var reportingStatus = {
+      label: 'Reporting status',
+      value: 'reporting-status',
+      showDimensionLimit: false
+    };
+
+    var defaultDimensions = [ taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    var maricultureDimensions = [taxon, commercialGroup, functionalGroup];
 
     return {
       eez: defaultDimensions,
       lme: defaultDimensions,
       highseas: defaultDimensions,
-      mariculture: mariculture,
+      mariculture: maricultureDimensions,
       global: defaultDimensions,
       rfmo: defaultDimensions
     };

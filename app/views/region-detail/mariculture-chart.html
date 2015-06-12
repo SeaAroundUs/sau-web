@@ -13,7 +13,7 @@
             <label for="dimension">Dimension</label>
             <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-show="formModel.dimension.showDimensionLimit">
             <label for="limit">Limit</label>
             <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
         </div>

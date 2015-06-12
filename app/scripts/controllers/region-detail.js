@@ -192,6 +192,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.tabs[0].active = true;
     }
 
+    //TODO Move this data into chart controllers, as not all region-detail views are applicable to this data.
     $scope.dimensions = regionDimensions[$scope.region.name];
     $scope.measures = regionMeasures[$scope.region.name];
     $scope.limits = regionDimensionLimits[$scope.region.name];
