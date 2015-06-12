@@ -21,7 +21,7 @@ angular.module('sauWebApp')
     var lme = [
       { pattern: 'images/legend/lme.png', label: 'LME' },
       { pattern: 'images/legend/other_lme.png', label: 'Other LME' },
-      { pattern: 'images/legend/high_seas.png', label: 'High seas' }
+      { pattern: 'images/legend/high_seas.png', label: 'Non-LME waters' }
     ];
 
     var highseas = [
