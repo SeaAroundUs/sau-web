@@ -104,12 +104,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.metricLinks = {
-      'EEZ area': externalURLs.manual + '#15',
-      'Shelf Area': externalURLs.manual + '#15',
-      'Inshore Fishing Area (IFA)': externalURLs.manual,
-      'Coral Reefs': externalURLs.manual + '#2',
-      'Seamounts': externalURLs.manual + '#22',
-      'Primary production': externalURLs.manual + '#3'
+      'EEZ area': externalURLs.areaDef + '#_Toc421807899',
+      'LME area': externalURLs.areaDef + '#_Toc421807917',
+      'Shelf Area': externalURLs.areaDef + '#_Toc421807905',
+      'Inshore Fishing Area (IFA)': externalURLs.areaDef + '#_Toc421807906',
+      'Coral Reefs': externalURLs.areaDef + '#_Toc421807907',
+      'Seamounts': externalURLs.areaDef + '#_Toc421807908',
+      'Primary production': externalURLs.areaDef + '#_Toc421807913'
     };
 
     $scope.mapLayers = {

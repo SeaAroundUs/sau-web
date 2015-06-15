@@ -43,18 +43,17 @@
                 <sau-legend-mariculture ng-show="region.name === 'mariculture'"></sau-legend-mariculture>
                 <p ng-hide="region.name === 'mariculture'" class="external-links">
                     <a ng-hide="region.name === 'lme'" target="_blank" href="/wp-content/uploads/2015/04/fao.jpg">FAO Areas</a>
-                    <a ng-hide="region.name === 'lme'" target="_blank" ng-href="{{eezManualURL}}">EEZ Boundary explanation</a>
+                    <a ng-hide="region.name === 'lme'" target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807903">EEZ Boundary explanation</a>
                 </p>
             </div>
             <div ng-if="region.name !== 'mariculture'" class="padded content metrics">
                 <table>
                     <tr ng-repeat="metric in feature.data.metrics" ng-hide="metric.hide">
-                        <td ng-if="metric.title !== 'LME area'"><a ng-href="{{ metricLinks[metric.title] }}" target="_blank">{{metric.title}}</a></td>
-                        <td ng-if="metric.title === 'LME area'"><a tabindex="0" popover-placement="right" popover-trigger="focus" popover-html="Surface areas are expressed in km<sup>2</sup> and were obtained by overlaying a global 2-minute cell ESRI GRID of surface area values with a matching ESRI GRID of LME areas prepared from shapefiles available from <a target='_blank' href='http://www.lme.noaa.gov'>www.lme.noaa.gov</a>. For each LME the intersecting surface area based on the 2-minute raster was extracted and summed.">{{metric.title}}</a></td>
+                        <td><a ng-href="{{ metricLinks[metric.title] }}" target="_blank">{{metric.title}}</a></td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
-                        <td><a tabindex="0" popover-placement="right" popover-trigger="focus" popover="This reflects the year in which this EEZ was officially declared, or in cases where no EEZ has been formally declared, we took the year 1982 (conclusion of the UNCLOS Convention) as the assumed declaration year. For years prior to the EEZ declaration year, we treat these water as open access, high seas equivalent.">EEZ declaration year</a></td>
+                        <td><a target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807904">EEZ declaration year</a></td>
                         <td>{{feature.data.declaration_year}}</td>
                     </tr>
                 </table>

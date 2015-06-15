@@ -85,6 +85,7 @@ angular.module('sauWebApp')
   .value('externalURLs',
     {
       manual: '/data/reference.html',
+      areaDef: '/sea-around-us-area-parameters-and-definitions/',
       sspMethods: '/stock-status-plots-method/',
       s3Root: 'https://s3-us-west-2.amazonaws.com/'
     });
