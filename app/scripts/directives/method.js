@@ -7,6 +7,9 @@
           case '13':
             scope.url = '/catch-reconstruction-and-allocation-methods/';
             break;
+          case '23':
+            scope.url = '/fisheries-subsidies/';
+            break;
           case 'estuaries':
             scope.url = '/about-estuaries-database/';
             break;
