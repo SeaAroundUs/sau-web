@@ -54,8 +54,9 @@
         <p ng-hide="feature.data.reconstruction_documents && feature.data.reconstruction_documents.length > 0"><i>Not available</i></p>
         <under-review eez="formModel.region_id"></under-review>
       </div>
-      <div class="recon-ref" ng-show="region.name ==='lme'"></div>
-      <h3>Reference</h3>
-      <p><a href="http://lme.edc.uri.edu/" target="_blank">Profile (NOAA)</a></p>
+      <div class="lme-ref" ng-show="region.name ==='lme'">
+        <h3>Reference</h3>
+        <p><a href="http://lme.edc.uri.edu/" target="_blank">LME Profile (NOAA)</a></p>
+      </div>
     </div>
 </div>
