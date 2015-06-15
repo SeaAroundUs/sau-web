@@ -5,7 +5,7 @@
 /* global nv */
 
 angular.module('sauWebApp').controller('CatchChartCtrl',
-  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga, downloadDataUrl) {
+  function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga, createQueryUrl) {
 
     function init() {
       $scope.declarationYear = {enabled: true};
@@ -288,7 +288,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         urlConfig.faoId = $scope.mapLayers.selectedFAO;
       }
 
-      var url = sauAPI.apiURL + downloadDataUrl.createRegionUrl(urlConfig);
+      var url = sauAPI.apiURL + createQueryUrl.forRegionCsv(urlConfig);
 
       $scope.updateDataDownloadUrl(url);
     }

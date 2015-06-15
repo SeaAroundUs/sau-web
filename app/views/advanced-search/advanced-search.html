@@ -12,6 +12,7 @@
 						<select id="searchParamSelect" class="form-control" ng-model="section" ng-init="section = 'eez'">
 							<option value="eez">EEZ</option>
 							<option value="lme">LME</option>
+							<!--<option value="fishingCountry">Fishing Country</option>-->
 						</select>
 					</div>
 				</div>
@@ -27,6 +28,9 @@
 
 			<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'lme'"></div>
+
+			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fishingCountry'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

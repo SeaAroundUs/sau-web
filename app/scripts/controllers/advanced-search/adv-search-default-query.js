@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, downloadDataUrl) {
+angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -17,34 +17,23 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
 
-    if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
-      //Update the variables that configure the GRAPH search query.
-      var strBuilder = [
-        '/',
-        $scope.section,
-        '/',
-        $scope.selectedRegions[0].id,
-        '?chart=catch-chart',
-        '&dimension=',
-        $scope.selectedDimension.value,
-        '&measure=',
-        $scope.selectedMeasure.value,
-        '&limit=',
-        $scope.selectedLimit.value
-      ];
-      advSearchService.state.graphDataUrl = strBuilder.join('');
-    }
-
-    //Update the variables that configure the CSV search query.
+    //Update the variables that configure the search query.
     var urlConfig = {
       regionType: $scope.section,
       measure: $scope.selectedMeasure.value,
       dimension: $scope.selectedDimension.value,
       limit: $scope.selectedLimit.value,
-      useScientificNames: $scope.useScientificName, //we should make this configurable in the UI
+      useScientificNames: $scope.useScientificName,
       regionIds: getSelectedRegionIds()
     };
-    advSearchService.state.downloadDataUrl = downloadDataUrl.createRegionUrl(urlConfig);
+
+    //Create the CSV URL.
+    advSearchService.state.downloadDataUrl = createQueryUrl.forRegionCsv(urlConfig);
+
+    //Create the chart URL.
+    if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
+      advSearchService.state.graphDataUrl = createQueryUrl.forRegionCatchChart(urlConfig);
+    }
   }
 
   //Make an array of all the region IDs from the user's selected list of regions.
@@ -70,15 +59,21 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   //This object allows us to re-use this controller to make it generic for various advanced search sections, etc.
   $scope.sectionConfig = {
     eez: {
-      regionListTitle: 'EEZ Regions',
+      regionListTitle: 'EEZ regions',
       selectedListTitle: 'Selected EEZ regions',
       searchPlaceholder: 'Search EEZ regions',
       selectionLimit: 10
     },
     lme: {
-      regionListTitle: 'LME Regions',
+      regionListTitle: 'LME regions',
       selectedListTitle: 'Selected LME regions',
       searchPlaceholder: 'Search LME regions',
+      selectionLimit: 10
+    },
+    fishingCountry: {
+      regionListTitle: 'Fishing countries',
+      selectedListTitle: 'Selected fishing countries',
+      searchPlaceholder: 'Search fishing counties',
       selectionLimit: 10
     }
   };
