@@ -7,6 +7,9 @@
           case '13':
             scope.url = '/catch-reconstruction-and-allocation-methods/';
             break;
+          case 'estuaries':
+            scope.url = '/about-estuaries-database/';
+            break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }
