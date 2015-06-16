@@ -13,6 +13,9 @@
           case 'estuaries':
             scope.url = '/about-estuaries-database/';
             break;
+          case 'multinational-footprint':
+            scope.url = '/multinational-footprint-method';
+            break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }
