@@ -16,6 +16,9 @@
           case 'multinational-footprint':
             scope.url = '/multinational-footprint-method';
             break;
+          case 'marine-trophic-index':
+            scope.url = '/mti-fib-rmti/';
+            break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }
