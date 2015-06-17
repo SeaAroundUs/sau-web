@@ -37,7 +37,7 @@
         }
       };
 
-      $scope.$watch('showHabitatIndex', drawChart);
+      $scope.$watch('taxon.showHabitatIndex', drawChart, true);
       $scope.$watch('taxon', function(taxon) {
         if (!taxon) {
           return;

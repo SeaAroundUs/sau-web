@@ -1,7 +1,5 @@
-<div class="habitat-index" ng-show="taxon.has_habitat_index">
-  <a ng-hide="showHabitatIndex" ng-click="showHabitatIndex=true">Show habitat index</a>
-  <a ng-show="showHabitatIndex" ng-click="showHabitatIndex=false">Hide habitat index</a>
-  <div class="habitat-index-chart" ng-show="showHabitatIndex">
+<div class="habitat-index">
+  <div class="habitat-index-chart" ng-show="taxon.showHabitatIndex">
     <div class="chart-title">
       Habitat association indexes for {{taxon.scientific_name}} ({{taxon.common_name}})
     </div>

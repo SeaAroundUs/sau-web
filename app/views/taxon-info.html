@@ -71,7 +71,16 @@
 		<tr>
 			<td class="table-key">Distribution map:</td>
 			<!--  <td class="table-value">{{taxon.distributionMap}}</td> -->
-			<td class="table-value"><span class="disabled">GIS map</span></td>
+			<td class="table-value">
+        <span class="disabled">GIS map; </span>
+        <span ng-show="taxon.has_habitat_index">
+          <a ng-hide="taxon.showHabitatIndex" ng-click="taxon.showHabitatIndex=true">Show habitat index</a>
+          <a ng-show="taxon.showHabitatIndex" ng-click="taxon.showHabitatIndex=false">Hide habitat index</a>
+        </span>
+        <span ng-show="!taxon.has_habitat_index">
+          <span class="disabled">Show habitat index</span>
+        </span>
+      </td>
 		</tr>
 		<tr ng-show="taxon.habitatAssociationIndexes">
 			<td class="table-key">Habitat association indexes:</td>
@@ -79,3 +88,5 @@
 		</tr>
 	</table>
 </div>
+<habitat-index taxon="taxon"></habitat-index>
+
