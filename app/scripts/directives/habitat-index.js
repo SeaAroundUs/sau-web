@@ -11,8 +11,8 @@
 
       $scope.legend = [
         { label: 'Biological', color: $scope.colors.red },
-        { label: 'Depth related', color: $scope.colors.blue },
-        { label: 'Distance from shore', color: $scope.colors.green }
+        { label: 'Depth related', color: $scope.colors.green },
+        { label: 'Distance from shore', color: $scope.colors.blue }
       ];
 
       $scope.options = {
