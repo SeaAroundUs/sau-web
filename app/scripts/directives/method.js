@@ -19,6 +19,9 @@
           case 'marine-trophic-index':
             scope.url = '/mti-fib-rmti/';
             break;
+          case 'catch-reconstruction-and-allowcation-methods/taxon-distributions':
+            scope.url = '/catch-reconstruction-and-allocation-methods/#_Toc421534359';
+            break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }
