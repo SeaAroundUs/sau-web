@@ -336,7 +336,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     function getUseScientificNameFromURL() {
       //Reads the URL param value of "sciname" and determines its truthiness, converting it to a boolean.
       var sciNameUrlValue = $location.search().sciname;
-      return sciNameUrlValue && sciNameUrlValue != "false" && Number(sciNameUrlValue) != 0;
+      return sciNameUrlValue && sciNameUrlValue !== 'false' && Number(sciNameUrlValue) !== 0;
     }
 
     //Swaps out a new chart on the page based on what's in the URL Params.
