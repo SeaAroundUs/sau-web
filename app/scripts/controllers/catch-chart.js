@@ -16,13 +16,18 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
       $scope.$watch('mapLayers.selectedFAO', onFormModelChange);
-      $scope.$watch('useScientificNames', updateDataDownloadUrl);
-      $scope.$on('toggleTaxonNames', $scope.updateDeclarationYear);
       $scope.$watch('options', function(newOptions) {
         $timeout(function() { $scope.api.refresh(newOptions); $scope.updateDeclarationYear(); });
       }, true);
+
       updateDataDownloadUrl();
     }
+
+    $scope.toggleTaxonNames = function() {
+      $scope.formModel.useScientificName = !$scope.formModel.useScientificName;
+      sauChartUtils.toggleTaxonNames($scope);
+      $scope.updateDeclarationYear();
+    };
 
     $scope.dropdownGA = function(label, value) {
       ga.sendEvent({
@@ -222,9 +227,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
 
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
-        if ($scope.useScientificNames) {
-          $scope.toggleTaxonNames();
-          $scope.useScientificNames = true;
+
+        //When we get the data, it comes down as common name, so we need to rewrite the taxon names to be scientific.
+        if ($scope.formModel.useScientificName) {
+          sauChartUtils.toggleTaxonNames($scope);
         }
         $scope.updateDeclarationYear();
         //Raises the ceiling of of the catch chart by 10%.
@@ -240,8 +246,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       });
       spinnerState.loading = true;
     }
-
-    $scope.toggleTaxonNames = sauChartUtils.toggleTaxonNames($scope);
 
     function updateYLabel() {
       /* not sure why options is not updating on $scope.formModel change */
@@ -281,7 +285,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         measure: $scope.formModel.measure.value,
         dimension: $scope.formModel.dimension.value,
         limit: $scope.formModel.limit.value,
-        useScientificName: !!$scope.useScientificNames,
+        useScientificName: $scope.formModel.useScientificName,
         regionIds: [$scope.formModel.region_id]
       };
       if ($scope.mapLayers.selectedFAO) {
@@ -296,7 +300,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     function updateURL() {
       $location.search({chart: 'catch-chart',
         dimension: $scope.formModel.dimension.value,
-        measure: $scope.formModel.measure.value
+        measure: $scope.formModel.measure.value,
+        sciname: $scope.formModel.useScientificName
       }).replace();
     }
 

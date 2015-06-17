@@ -31,8 +31,8 @@
       <span ng-show="(!declarationYear.enabled) && declarationYear.show"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
       <span ng-show="declarationYear.enabled && declarationYear.show"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
 
-      <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
-      <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
+      <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
+      <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
 
       <method anchor="13"></method><br />
     </div>

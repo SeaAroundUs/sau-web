@@ -23,7 +23,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
       measure: $scope.selectedMeasure.value,
       dimension: $scope.selectedDimension.value,
       limit: $scope.selectedLimit.value,
-      useScientificNames: $scope.useScientificName,
+      useScientificName: $scope.useScientificName,
       regionIds: getSelectedRegionIds()
     };
 
@@ -54,6 +54,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   $scope.selectedMeasure = $scope.measures[0];
   $scope.limits = regionDimensionLimits[$scope.section];
   $scope.selectedLimit = $scope.limits[0];
+  $scope.useScientificName = false;
 
   //UI stuff that is specific to each advanced search section.
   //This object allows us to re-use this controller to make it generic for various advanced search sections, etc.

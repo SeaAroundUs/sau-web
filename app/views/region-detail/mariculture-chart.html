@@ -18,8 +18,8 @@
             <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
         </div>
         <div class="pull-right header-links">
-            <span ng-show="useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
-            <span ng-show="!useScientificNames && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
+            <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
+            <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
         </div>
         <div>
             <nvd3 options="options" data="data" api="api"></nvd3>

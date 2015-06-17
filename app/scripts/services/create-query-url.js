@@ -33,7 +33,7 @@ angular.module('sauWebApp')
           '/?format=csv&limit=',
           config.limit,
           '&sciname=',
-          config.useScientificNames
+          config.useScientificName
         ];
 
         if (config.faoId) {
@@ -71,7 +71,9 @@ angular.module('sauWebApp')
           '&measure=',
           config.measure,
           '&limit=',
-          config.limit
+          config.limit,
+          '&sciname=',
+          config.useScientificName
         ];
         return strBuilder.join('');
       }

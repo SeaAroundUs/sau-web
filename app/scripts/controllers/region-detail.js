@@ -37,7 +37,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if ($location.search().chart) {
         setChartFromURLParams();
       } else {
-        $location.search({chart: getChartIdFromURL()}).replace();
+        $location.search({chart: getDefaultChartId()}).replace();
       }
     }
 
@@ -203,7 +203,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       dimension: getDimensionObjectByValue(getDimensionFromURL()),
       measure: getMeasureObjectByValue(getMeasureFromURL()),
       limit : $scope.limits[1],
-      region_id: parseInt(region_id)
+      region_id: parseInt(region_id),
+      useScientificName: getUseScientificNameFromURL()
     };
 
     $scope.faos = $q.defer();
@@ -314,11 +315,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $location.search(searchArgs);
     };
 
-    function getChartIdFromURL() {
-      var fallbackChart = $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
-      return $location.search().chart || fallbackChart;
-    }
-
     function getDimensionFromURL() {
       var dimensionObj = getDimensionObjectByValue($location.search().dimension);
       if (dimensionObj) {
@@ -337,13 +333,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
     }
 
+    function getUseScientificNameFromURL() {
+      //Reads the URL param value of "sciname" and determines its truthiness, converting it to a boolean.
+      var sciNameUrlValue = $location.search().sciname;
+      return sciNameUrlValue && sciNameUrlValue != "false" && Number(sciNameUrlValue) != 0;
+    }
+
     //Swaps out a new chart on the page based on what's in the URL Params.
     function setChartFromURLParams() {
-      var currChart = getChartIdFromURL();
+      var currChart = $location.search().chart || getDefaultChartId();
       $scope.chartTemplateUrl = 'views/region-detail/' + currChart + '.html';
       if (currChart === 'catch-chart') {
         $scope.formModel.dimension = getDimensionObjectByValue(getDimensionFromURL());
         $scope.formModel.measure = getMeasureObjectByValue(getMeasureFromURL());
+        $scope.formModel.useScientificName = getUseScientificNameFromURL();
       }
     }
 
@@ -361,6 +364,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         if (i.value === value) { measure = i; }
       });
       return measure;
+    }
+
+    function getDefaultChartId() {
+      return $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
     }
 
     init();

@@ -52,6 +52,11 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
       }
     };
 
+    $scope.toggleTaxonNames = function() {
+      $scope.formModel.useScientificName = !$scope.formModel.useScientificName;
+      sauChartUtils.toggleTaxonNames($scope);
+    };
+
     $scope.colors = colorbrewer;
 
     $scope.color = $scope.colors.Spectral;
@@ -78,9 +83,8 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
         spinnerState.loading = false;
         $scope.$parent.$parent.showDownload = true;
-        if ($scope.useScientificNames) {
-          $scope.toggleTaxonNames();
-          $scope.useScientificNames = true;
+        if ($scope.formModel.useScientificName) {
+          sauChartUtils.toggleTaxonNames($scope);
         }
       }, function() {
         $scope.noData = true;
@@ -88,8 +92,6 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
       });
       spinnerState.loading = true;
     }
-
-    $scope.toggleTaxonNames = sauChartUtils.toggleTaxonNames($scope);
 
     function updateYLabel() {
       /* not sure why options is not updating on $scope.formModel change */
@@ -133,6 +135,8 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
         $scope.selectedProvince.feature.entity_id,
         '?format=csv&limit=',
         $scope.formModel.limit.value,
+        '&sciname=',
+        $scope.formModel.useScientificName
       ].join('');
 
       if ($scope.selectedProvince.feature.region_id) {
