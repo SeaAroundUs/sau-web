@@ -39,6 +39,12 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       } else {
         $location.search({chart: getDefaultChartId()}).replace();
       }
+
+      if ($scope.region.name === 'eez') {
+        sauAPI.CountryProfile.get({region_id: $routeParams.id}, function(data) {
+          $scope.profile = data.data;
+        });
+      }
     }
 
     $scope.getFeatures = function() {
