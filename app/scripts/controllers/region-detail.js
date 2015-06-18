@@ -39,12 +39,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       } else {
         $location.search({chart: getDefaultChartId()}).replace();
       }
-
-      if ($scope.region.name === 'eez') {
-        sauAPI.CountryProfile.get({region_id: $routeParams.id}, function(data) {
-          $scope.profile = data.data;
-        });
-      }
     }
 
     $scope.getFeatures = function() {
@@ -284,6 +278,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
+    $scope.$watch('formModel.region_id', getCountryProfile);
+
     $scope.$watch('mapLayers.selectedFAO', $scope.updateRegion);
 
     $scope.ecopathURL = null;
@@ -374,6 +370,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     function getDefaultChartId() {
       return $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
+    }
+
+    function getCountryProfile() {
+      if ($scope.region.name === 'eez' && $scope.formModel.region_id) {
+        sauAPI.CountryProfile.get({region_id: $scope.formModel.region_id}, function(data) {
+          $scope.profile = data.data;
+        });
+      }
     }
 
     init();
