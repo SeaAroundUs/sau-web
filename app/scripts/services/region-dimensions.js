@@ -64,6 +64,7 @@ angular.module('sauWebApp')
       mariculture: maricultureDimensions,
       global: defaultDimensions,
       rfmo: defaultDimensions,
-      fishingCountry: defaultDimensions
+      fishingCountry: defaultDimensions,
+      multi: defaultDimensions
     };
   });

@@ -1,5 +1,6 @@
 (function(angular) {
   'use strict';
+
   angular.module('sauWebApp').directive('underReview',
     function() {
       var eezs = [
@@ -45,12 +46,15 @@
         968,
         972
       ];
+
       var message = '<p class="under-review">** Data under review</p>';
 
       return {
         link: function(scope, ele) {
           scope.$watch('eez', function() {
-            if (eezs.indexOf(scope.eez) !== -1) {
+            var ids = [].concat(scope.eez);
+            var markedIds = ids.filter(function(id) { return eezs.indexOf(id) !== -1; });
+            if (markedIds.length > 0) {
               ele.html(message);
             } else {
               ele.html('');

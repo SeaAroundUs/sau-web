@@ -1,0 +1,49 @@
+<div class="clearfix catch">
+  <p ng-if="region.name !== 'eez'">
+    Please select a link below or use the dropdown menu above to choose a catch or landed value time series to view.
+    You can choose various 'dimensions' (Taxon, Commercial group, Functional group, Country, Sector, Catch type,
+    Reporting Status) and 'measures' (Tonnage, Landed value), and select the level of taxonomic details you want to view
+    the data at. Please note that the data we present (‘reconstructed data’) are a combination of official reported data
+    and reconstructed estimates of unreported data (including major discards), with reference to individual EEZs.
+    Official reported data are
+    <a popover="National data are used for some countries" popover-trigger="mouseenter">mainly</a> extracted from
+    the Food and Agriculture Organization of the United Nations (FAO) FishStat database (found
+    <a href="http://www.fao.org/fishery/statistics/en" target="_blank">here</a>). Data can be downloaded by the selected
+    parameters. <b>For background information on the reconstruction data used, please see the documentation associated
+    with the individual EEZs associated with the area presented here.</b>
+  </p>
+
+    <div class="col col-sm-7">
+        <h3>Tonnage by</h3>
+        <p ng-repeat="dim in dimensions">
+            <a ng-click="setURLParams({chart: 'multi-chart', dimension: dim.value, measure: 'tonnage'})"
+               scroll-click="region-title"
+               ga-event="{category: 'CatchInfo', action: 'Link', label: 'Tonnage by ' + dim.label}">{{dim.label}}</a>
+        </p>
+
+        <h3 class="values-by">Values by</h3>
+        <p ng-repeat="dim in dimensions">
+            <a ng-click="setURLParams({chart: 'multi-chart', dimension: dim.value, measure: 'value'})"
+               scroll-click="region-title"
+               ga-event="{category: 'CatchInfo', action: 'Link', label: 'Value by ' + dim.label}">{{dim.label}}</a>
+        </p>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="recon-ref" ng-if="selectedRegions.type === 'eez'">
+        <h3>Reconstruction Reference</h3>
+        <p ng-repeat="doc in selectedRegions.references">
+          <a target="_blank" ng-href="{{doc.url}}"
+             ga-event="{category: 'PDF', action: 'Reconstruction Reference', Label: doc.name}">
+            <i class="fa fa-file-pdf-o red"></i> {{doc.name | breakUnderscores}}
+          </a>
+        </p>
+        <p ng-hide="selectedRegions.references.length > 0"><i>Not available</i></p>
+        <under-review eez="selectedRegions.ids"></under-review>
+      </div>
+      <div class="lme-ref" ng-if="selectedRegions.type ==='lme'">
+        <h3>Reference</h3>
+        <p><a href="http://lme.edc.uri.edu/" target="_blank">LME profile (NOAA)</a></p>
+      </div>
+    </div>
+</div>
