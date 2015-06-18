@@ -1,7 +1,7 @@
 <div class="habitat-index">
   <div class="habitat-index-chart" ng-show="taxon.showHabitatIndex">
     <div class="chart-title">
-      Habitat association indexes for {{taxon.scientific_name}} ({{taxon.common_name}})
+      Habitat association indexes for <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})
     </div>
     <nvd3 options="options" data="data" api="api"></nvd3>
     <div class="legend">
