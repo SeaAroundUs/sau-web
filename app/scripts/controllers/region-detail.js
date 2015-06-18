@@ -278,7 +278,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.$watch('formModel.region_id', $scope.updateRegion);
 
-    $scope.$watch('formModel.region_id', getCountryProfile);
+    $scope.$watch('feature.data.country_id', getCountryProfile, true);
 
     $scope.$watch('mapLayers.selectedFAO', $scope.updateRegion);
 
@@ -373,8 +373,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     }
 
     function getCountryProfile() {
-      if ($scope.region.name === 'eez' && $scope.formModel.region_id) {
-        sauAPI.CountryProfile.get({region_id: $scope.formModel.region_id}, function(data) {
+      if ($scope.region.name === 'eez' && $scope.feature.data && $scope.feature.data.country_id) {
+        sauAPI.CountryProfile.get({region_id: $scope.feature.data.country_id}, function(data) {
           $scope.profile = data.data;
         });
       }
