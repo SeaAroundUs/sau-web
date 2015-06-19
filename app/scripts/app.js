@@ -111,7 +111,6 @@ angular
         templateUrl: 'views/procedures-and-outcomes.html',
         controller: 'ProceduresAndOutcomesCtrl'
       })
-      /*
       .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -154,7 +153,6 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'global';}}
       })
-      */
       .when('/taxa/:taxon', {
         templateUrl: 'views/key-info-on-taxon.html',
         controller: 'KeyInfoOnTaxonCtrl'
