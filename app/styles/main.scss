@@ -51,10 +51,6 @@ body {
   padding-top: 0px;
   padding-bottom: 20px;
   background: #f0f0f0;
-  /* prevent half-pixel blur */
-  -webkit-transform-style: preserve-3d;
-  -moz-transform-style: preserve-3d;
-  transform-style: preserve-3d;
 }
 
 /* Global header defaults */
