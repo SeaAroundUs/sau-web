@@ -23,6 +23,7 @@ angular.module('sauWebApp')
       highseas: defaultLimits,
       mariculture: defaultLimits,
       global: defaultLimits,
-      rfmo: defaultLimits
+      rfmo: defaultLimits,
+      fishingCountry: defaultLimits
     };
   });

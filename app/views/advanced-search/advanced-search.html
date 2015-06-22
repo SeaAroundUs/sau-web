@@ -13,6 +13,7 @@
 							<option value="eez">EEZ(s)</option>
 							<option value="lme">LME(s)</option>
 							<option value="eezAndBorderingEezs">EEZ & bordering EEZs</option>
+							<option value="fishingCountry">Fishing countries</option>
 						</select>
 					</div>
 				</div>
@@ -29,8 +30,11 @@
 			<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'lme'"></div>
 
-			<!-- EEZ and Bordering EEZs - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<!-- EEZ and Bordering EEZs - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-eez-bordering.html'" ng-if="section === 'eezAndBorderingEezs'"></div>
+
+			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-fishing-country.html'" ng-if="section === 'fishingCountry'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

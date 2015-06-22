@@ -1,0 +1,53 @@
+<div ng-controller="AdvSearchFishingCountryCtrl">
+	<div class="row">
+		<div class="col-xs-12">
+			<label for="regionSelect">Fishing countries</label>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<sau-multi-select limit="selectionLimit" label-key="name" data="countryList.data" search-placeholder="Search Fishing countries" selected="selectedCountries"></sau-multi-select>
+		</div>
+		<div class="col-sm-6">
+			<sau-selected-options label-key="name" title="Selected fishing countries ({{selectedCountries.length}}/{{selectionLimit}})" selected="selectedCountries"></sau-selected-options>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label for="dimensionInput">Dimension</label>
+				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension" ng-change="queryChanged()"></select>
+
+			</div>
+		</div>
+		<div class="col-sm-6 side-option" ng-show="selectedDimension.scientificNameOption">
+			<div>
+				<input type="checkbox" id="scientificNameInput" ng-model="useScientificName" ng-change="queryChanged()"> Use scientific name
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label for="measureInput">Measure</label>
+				<select id="measureInput" class="form-control" ng-options="measure.label for measure in measures" ng-model="selectedMeasure" ng-change="queryChanged()"></select>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" ng-show="selectedDimension.showDimensionLimit">
+		<div class="col-sm-6">
+			<div class="form-group">
+				<label for="limitInput">Legend limit</label>
+				<select id="limitInput" class="form-control" ng-options="limit.label for limit in limits" ng-model="selectedLimit" ng-change="queryChanged()"></select>
+			</div>
+		</div>
+
+		<div class="col-sm-6 help-text side-option">
+			<p>Limit the number of dimensions shown on the graph.</p>
+		</div>
+	</div>
+</div>

@@ -21,6 +21,7 @@ angular.module('sauWebApp')
       highseas: defaultMeasures,
       mariculture: defaultMeasures,
       global: defaultMeasures,
-      rfmo: defaultMeasures
+      rfmo: defaultMeasures,
+      fishingCountry: defaultMeasures
     };
   });
