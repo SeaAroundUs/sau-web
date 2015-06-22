@@ -33,6 +33,7 @@
         834,
         895,
         896,
+        897, // SAU-1207 Kerguelen Island
         911,
         916,
         917,
@@ -42,7 +43,7 @@
         940,
         954,
         968,
-        972,
+        972
       ];
       var message = '<p class="under-review">** Data under review</p>';
 
