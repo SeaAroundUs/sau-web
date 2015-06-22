@@ -32,7 +32,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
     //Create the chart URL.
     if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
-      advSearchService.state.graphDataUrl = createQueryUrl.forRegionCatchChart(urlConfig);
+      advSearchService.state.graphPageUrl = createQueryUrl.forRegionCatchChart(urlConfig);
     }
   }
 
@@ -45,9 +45,28 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     return selectedRegionIds;
   }
 
+  //UI stuff that is specific to each advanced search section.
+  //This object allows us to re-use this controller to make it generic for a few advanced search sections.
+  $scope.sectionConfig = {
+    eez: {
+      regionType: 'eez',
+      regionListTitle: 'EEZ regions',
+      selectedListTitle: 'Selected EEZ regions',
+      searchPlaceholder: 'Search EEZ regions',
+      selectionLimit: 10
+    },
+    lme: {
+      regionType: 'lme',
+      regionListTitle: 'LME regions',
+      selectedListTitle: 'Selected LME regions',
+      searchPlaceholder: 'Search LME regions',
+      selectionLimit: 10
+    }
+  };
+
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedRegions = [];
-  $scope.regionList = sauAPI.Regions.get({region: $scope.section, nospatial: true});
+  $scope.regionList = sauAPI.Regions.get({region: $scope.sectionConfig[$scope.section].regionType, nospatial: true})
   $scope.dimensions = regionDimensions[$scope.section];
   $scope.selectedDimension = $scope.dimensions[0];
   $scope.measures = regionMeasures[$scope.section];
@@ -55,29 +74,6 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   $scope.limits = regionDimensionLimits[$scope.section];
   $scope.selectedLimit = $scope.limits[0];
   $scope.useScientificName = false;
-
-  //UI stuff that is specific to each advanced search section.
-  //This object allows us to re-use this controller to make it generic for various advanced search sections, etc.
-  $scope.sectionConfig = {
-    eez: {
-      regionListTitle: 'EEZ regions',
-      selectedListTitle: 'Selected EEZ regions',
-      searchPlaceholder: 'Search EEZ regions',
-      selectionLimit: 10
-    },
-    lme: {
-      regionListTitle: 'LME regions',
-      selectedListTitle: 'Selected LME regions',
-      searchPlaceholder: 'Search LME regions',
-      selectionLimit: 10
-    },
-    fishingCountry: {
-      regionListTitle: 'Fishing countries',
-      selectedListTitle: 'Selected fishing countries',
-      searchPlaceholder: 'Search fishing counties',
-      selectionLimit: 10
-    }
-  };
 
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);

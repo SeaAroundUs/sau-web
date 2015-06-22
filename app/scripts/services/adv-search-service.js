@@ -6,7 +6,7 @@
  * @description
  * # advSearchService
  * This service helps the advanced search controller and its child controller (with specific query ui) to communicate.
- * Useing a service to facilitate communication between a parent and child scope is the preferred way, rather than
+ * Using a service to facilitate communication between a parent and child scope is the preferred way, rather than
  * having the child access the parent controller's model via $parent or inherited scope properties.
  * Both controllers depend on the service, and it makes
 
@@ -19,7 +19,7 @@ angular.module('sauWebApp')
       state: {
         isQueryGraphable: false,
         isQueryDownloadable: false,
-        graphDataUrl: '',
+        graphPageUrl: '',
         downloadDataUrl: '',
         searchOn: ''
       }

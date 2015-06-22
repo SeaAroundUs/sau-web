@@ -14,7 +14,8 @@ angular.module('sauWebApp')
       scope: {
         selected: '=',
         title: '@',
-        labelKey: '@'
+        labelKey: '@',
+        hideSelectHint: '='
       },
       link: function postLink(scope) {
         var platform = $window.navigator.platform.toLowerCase();
