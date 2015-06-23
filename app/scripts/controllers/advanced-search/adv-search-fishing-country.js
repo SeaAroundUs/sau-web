@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, createQueryUrl) {
+angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function ($scope, sauAPI, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -17,6 +17,13 @@ angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function (
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
 
+    if (!$scope.selectedDimension ||
+        !$scope.selectedMeasure ||
+        !$scope.selectedLimit ||
+        $scope.selectedCountries.length === 0) {
+      return;
+    }
+
     //Update the variables that configure the search query.
     var urlConfig = {};
 
@@ -30,13 +37,6 @@ angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function (
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedCountries = [];
   $scope.countryList = sauAPI.GeoList.get({ nospatial: true });
-  $scope.dimensions = regionDimensions['fishingCountry'];
-  $scope.selectedDimension = $scope.dimensions[0];
-  $scope.measures = regionMeasures['fishingCountry'];
-  $scope.selectedMeasure = $scope.measures[0];
-  $scope.limits = regionDimensionLimits['fishingCountry'];
-  $scope.selectedLimit = $scope.limits[0];
-  $scope.useScientificName = false;
   $scope.selectionLimit = 10;
 
   $scope.$watch('selectedCountries', $scope.queryChanged);

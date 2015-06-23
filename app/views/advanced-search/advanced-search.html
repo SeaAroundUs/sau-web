@@ -8,12 +8,13 @@
 			<div class="row">
 				<div class="col-sm-6">
 					<div class="form-group">
-						<label for="searchParamSelect">Search on</label>
-						<select id="searchParamSelect" class="form-control" ng-model="section" ng-init="section = 'eez'">
+						<label class="param-label">Search on</label>
+						<select class="form-control" ng-model="section" ng-init="section = 'eez'">
 							<option value="eez">EEZ(s)</option>
 							<option value="lme">LME(s)</option>
 							<option value="eezAndBorderingEezs">EEZ & bordering EEZs</option>
 							<option value="fishingCountry">Fishing countries</option>
+							<!--<option value="country">Country</option>-->
 						</select>
 					</div>
 				</div>
@@ -35,6 +36,9 @@
 
 			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-fishing-country.html'" ng-if="section === 'fishingCountry'"></div>
+
+			<!-- Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<!--<div ng-include="'views/advanced-search/adv-search-country.html'" ng-if="section === 'country'"></div>-->
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

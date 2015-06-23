@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, createQueryUrl) {
+angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($scope, sauAPI, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -16,6 +16,13 @@ angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($s
 
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
+
+    if (!$scope.selectedDimension ||
+        !$scope.selectedMeasure ||
+        !$scope.selectedLimit ||
+        $scope.selectedEezs.length === 0) {
+      return;
+    }
 
     //Update the variables that configure the search query.
     var urlConfig = {};
@@ -40,13 +47,6 @@ angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($s
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedEezs = [];
   $scope.eezList = sauAPI.Regions.get({region: 'eez', nospatial: true});
-  $scope.dimensions = regionDimensions['eez'];
-  $scope.selectedDimension = $scope.dimensions[0];
-  $scope.measures = regionMeasures['eez'];
-  $scope.selectedMeasure = $scope.measures[0];
-  $scope.limits = regionDimensionLimits['eez'];
-  $scope.selectedLimit = $scope.limits[0];
-  $scope.useScientificName = false;
 
   $scope.$watch('selectedEezs', requestBorderingEezs);
   $scope.$watch('selectedEezs', $scope.queryChanged);

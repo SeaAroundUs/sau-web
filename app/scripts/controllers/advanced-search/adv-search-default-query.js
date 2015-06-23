@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, createQueryUrl) {
+angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -16,6 +16,13 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
+
+    if (!$scope.selectedDimension ||
+        !$scope.selectedMeasure ||
+        !$scope.selectedLimit ||
+        $scope.selectedRegions.length === 0) {
+      return;
+    }
 
     //Update the variables that configure the search query.
     var urlConfig = {
@@ -67,13 +74,6 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedRegions = [];
   $scope.regionList = sauAPI.Regions.get({region: $scope.sectionConfig[$scope.section].regionType, nospatial: true})
-  $scope.dimensions = regionDimensions[$scope.section];
-  $scope.selectedDimension = $scope.dimensions[0];
-  $scope.measures = regionMeasures[$scope.section];
-  $scope.selectedMeasure = $scope.measures[0];
-  $scope.limits = regionDimensionLimits[$scope.section];
-  $scope.selectedLimit = $scope.limits[0];
-  $scope.useScientificName = false;
 
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);

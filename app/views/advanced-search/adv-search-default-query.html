@@ -1,7 +1,7 @@
 <div ng-controller="AdvSearchDefaultQueryCtrl">
 	<div class="row">
 		<div class="col-xs-12">
-			<label for="regionSelect">{{sectionConfig[section].regionListTitle}}</label>
+			<label for="regionSelect" class="param-label">{{sectionConfig[section].regionListTitle}}</label>
 		</div>
 	</div>
 
@@ -14,40 +14,9 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-sm-6">
-			<div class="form-group">
-				<label for="dimensionInput">Dimension</label>
-				<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension" ng-change="queryChanged()"></select>
+	<adv-search-dimension-param region-id="sectionConfig[section].regionType" selected-dimension="selectedDimension" use-scientific-name="useScientificName" model-changed="queryChanged()"></adv-search-dimension-param>
 
-			</div>
-		</div>
-		<div class="col-sm-6 side-option" ng-show="selectedDimension.scientificNameOption">
-			<div>
-				<input type="checkbox" id="scientificNameInput" ng-model="useScientificName" ng-change="queryChanged()"> Use scientific name
-			</div>
-		</div>
-	</div>
+	<adv-search-measure-param region-id="sectionConfig[section].regionType" selected-measure="selectedMeasure" model-changed="queryChanged()"></adv-search-measure-param>
 
-	<div class="row">
-		<div class="col-sm-6">
-			<div class="form-group">
-				<label for="measureInput">Measure</label>
-				<select id="measureInput" class="form-control" ng-options="measure.label for measure in measures" ng-model="selectedMeasure" ng-change="queryChanged()"></select>
-			</div>
-		</div>
-	</div>
-
-	<div class="row" ng-show="selectedDimension.showDimensionLimit">
-		<div class="col-sm-6">
-			<div class="form-group">
-				<label for="limitInput">Legend limit</label>
-				<select id="limitInput" class="form-control" ng-options="limit.label for limit in limits" ng-model="selectedLimit" ng-change="queryChanged()"></select>
-			</div>
-		</div>
-
-		<div class="col-sm-6 help-text side-option">
-			<p>Limit the number of dimensions shown on the graph.</p>
-		</div>
-	</div>
+	<adv-search-dimension-limit-param region-id="sectionConfig[section].regionType" selected-limit="selectedLimit" model-changed="queryChanged()" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
 </div>
