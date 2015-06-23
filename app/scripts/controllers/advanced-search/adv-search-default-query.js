@@ -10,7 +10,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
   //Tells the parent controller what the state of the query buttons should be (via a service)
   function updateSubmitButtons() {
-    advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length === 1);
+    advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
     advSearchService.state.isQueryDownloadable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
   }
 
@@ -38,9 +38,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     advSearchService.state.downloadDataUrl = createQueryUrl.forRegionCsv(urlConfig);
 
     //Create the chart URL.
-    if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
-      advSearchService.state.graphPageUrl = createQueryUrl.forRegionCatchChart(urlConfig);
-    }
+    advSearchService.state.graphPageUrl = createQueryUrl.forRegionCatchChart(urlConfig);
   }
 
   //Make an array of all the region IDs from the user's selected list of regions.

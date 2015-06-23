@@ -60,12 +60,29 @@ angular.module('sauWebApp')
       forRegionCatchChart(exampleConfig);
       */
       forRegionCatchChart: function(config) {
-        var strBuilder = [
-          '/',
-          config.regionType,
-          '/',
-          config.regionIds[0],
-          '?chart=catch-chart',
+        var strBuilder;
+
+        //Catch chart for one region.
+        if (config.regionIds.length === 1) {
+          strBuilder = [
+            '/',
+            config.regionType,
+            '/',
+            config.regionIds[0],
+            '?chart=catch-chart',
+          ];
+        //Catch chart for multiple regions.
+        } else {
+          strBuilder = [
+            '/result/?id=',
+            config.regionIds.join(','),
+            '&region=',
+            config.regionType
+          ];
+        }
+
+        //Shared URL params, whether single or multi region.
+        strBuilder = strBuilder.concat([
           '&dimension=',
           config.dimension,
           '&measure=',
@@ -74,7 +91,7 @@ angular.module('sauWebApp')
           config.limit,
           '&sciname=',
           config.useScientificName
-        ];
+        ]);
         return strBuilder.join('');
       }
     };
