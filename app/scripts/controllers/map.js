@@ -17,7 +17,8 @@ angular.module('sauWebApp')
                                     leafletData,
                                     leafletBoundsHelpers,
                                     region,
-                                    spinnerState) {
+                                    spinnerState,
+                                    createDisputedAreaPopup) {
 
     $scope.region = {name: region};
 
@@ -41,10 +42,9 @@ angular.module('sauWebApp')
       var featureLayers = layers.filter(function(l) {return l.feature;});
 
       if (featureLayers.length > 1) {
-        var content = 'Area disputed by (';
-        content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
-        content += ')';
-        $scope.map.openPopup(content, latlng);
+        var popup = createDisputedAreaPopup($scope.region.name, featureLayers);
+        popup.setLatLng(latlng);
+        $scope.map.openPopup(popup);
       } else {
         var feature = featureLayers[0].feature;
         $scope.regionSelect(feature.properties.region_id);
