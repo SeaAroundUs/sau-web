@@ -96,7 +96,6 @@ angular
         controller: 'ExploitedOrganismsCtrl',
         resolve: {region: function() {return 'lme';}}
       })
-      /*
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -112,7 +111,6 @@ angular
         templateUrl: 'views/procedures-and-outcomes.html',
         controller: 'ProceduresAndOutcomesCtrl'
       })
-      */
       .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
