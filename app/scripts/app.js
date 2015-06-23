@@ -194,6 +194,12 @@ angular
         templateUrl: 'views/advanced-search/advanced-search.html',
         controller: 'AdvancedSearchCtrl'
       })
+      .when('/result/', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'multi';}}
+      })
       .otherwise({
         redirectTo: '/'
       });

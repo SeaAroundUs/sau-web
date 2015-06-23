@@ -24,6 +24,7 @@ angular.module('sauWebApp')
       mariculture: defaultLimits,
       global: defaultLimits,
       rfmo: defaultLimits,
-      fishingCountry: defaultLimits
+      fishingCountry: defaultLimits,
+      multi: defaultLimits
     };
   });
