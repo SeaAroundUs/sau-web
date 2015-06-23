@@ -1,0 +1,15 @@
+<span class="dropdown" dropdown id="auth-button">
+    <a href class="dropdown-toggle" dropdown-toggle>
+        <span ng-show="user" ng-bind="user.display"></span>
+        <span ng-hide="user">Not logged in</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" ng-show="user">
+        <li><a href="#/me">Settings</a></li>
+        <li><a href ng-click="logOut()">Log out</a></li>
+    </ul>
+    <ul class="dropdown-menu" ng-hide="user">
+        <li><a href ng-click="logIn()">Log in</a></li>
+        <li><a href="#/signup">Sign up</a></li>
+    </ul>
+</span>

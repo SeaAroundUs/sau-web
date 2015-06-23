@@ -222,6 +222,30 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'multi';}}
       })
+      .when('/signup/', {
+        templateUrl: 'views/auth/signup.html',
+        controller: 'SignUpCtrl',
+      })
+      .when('/activate/', {
+        templateUrl: 'views/auth/activate-request.html',
+        controller: 'ActivateRequestCtrl'
+      })
+      .when('/activate/:code', {
+        templateUrl: 'views/auth/activate.html',
+        controller: 'ActivateCtrl'
+      })
+      .when('/me', {
+        templateUrl: 'views/auth/account-settings.html',
+        controller: 'AccountSettingsCtrl'
+      })
+      .when('/password-reset', {
+        templateUrl: 'views/auth/password-reset.html',
+        controller: 'PasswordResetCtrl'
+      })
+      .when('/new-password/:code', {
+        templateUrl: 'views/auth/new-password.html',
+        controller: 'NewPasswordCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -241,4 +265,8 @@ angular
       }
       return original.apply($location, [path]);
     };
+
+    $rootScope.$on('logOut', function() {
+      $location.path('/').replace();
+    });
   }]);

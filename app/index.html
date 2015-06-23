@@ -43,6 +43,7 @@
     <link rel="stylesheet" href="styles/sau-selected-options.css" />
     <link rel="stylesheet" href="styles/procedure-outcome.css" />
     <link rel="stylesheet" href="styles/internal-fishing-access.css" />
+    <link rel="stylesheet" href="styles/login-modal.css" />
     <!-- endbuild -->
 
     <!-- old browser detection -->
@@ -107,6 +108,7 @@
                 <img class="pull-right" src="images/logo_cbd.gif" alt="Vulcan logo">
               </a>
             </div>
+            <auth-status-button class="pull-right"></auth-status-button>
 
             <ul class="nav nav-pills top-header">
               <li role="presentation" ng-repeat="t in templates">
@@ -241,6 +243,13 @@
     <script src="scripts/controllers/advanced-search/adv-search-country.js"></script>
     <script src="scripts/controllers/multi-chart.js"></script>
     <script src="scripts/controllers/internal-fishing-access.js"></script>
+    <script src="scripts/controllers/auth/signup.js"></script>
+    <script src="scripts/controllers/auth/login-modal.js"></script>
+    <script src="scripts/controllers/auth/activate-request.js"></script>
+    <script src="scripts/controllers/auth/activate.js"></script>
+    <script src="scripts/controllers/auth/account-settings.js"></script>
+    <script src="scripts/controllers/auth/password-reset.js"></script>
+    <script src="scripts/controllers/auth/new-password.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -260,6 +269,7 @@
     <script src="scripts/directives/under-review.js"></script>
     <script src="scripts/directives/habitat-index.js"></script>
     <script src="scripts/directives/adv-search-directives.js"></script>
+    <script src="scripts/directives/auth-directives.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/filters/significantdigits.js"></script>
@@ -287,6 +297,8 @@
     <script src="scripts/services/region-toggles.js"></script>
     <script src="scripts/services/disputed-area-popup.js"></script>
     <script src="scripts/services/fishing-access-service.js"></script>
+    <script src="scripts/services/auth-service.js"></script>
+    <script src="scripts/services/auth-api.js"></script>
 
     <script src="scripts/directives/sau-multi-select.js"></script>
     <script src="scripts/directives/sau-selected-options.js"></script>

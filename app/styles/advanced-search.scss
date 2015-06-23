@@ -1,48 +1,12 @@
-$major-margin: 20px;
-$minor-margin: 10px;
-$column-padding: 10px; //I want the bootstrap column padding to be 10px not 15px.
-
 #advanced-search {
-	max-width: 618px + (2 * $major-margin);
-	margin: 0 auto;
-	padding-top: 0px; //Doesn't need margin because the Header text has a gap.
-	padding-bottom: $major-margin;
-	padding-left: $major-margin;
-	padding-right: $major-margin;
-
-	.help-text {
-		color: #808080;
-		font-size: 12px;
-	}
-
-	//Change the bootstrap columns on this page to be 10px padded rather than the 15px default.
-	.row > div[class*="col-"] {
-		padding-left: $column-padding;
-		padding-right: $column-padding;
-	}
-
-	.form-control {
-		color: black;
-	}
-
-	select, input {
-		border-color: #aaaaaa;
-		border-radius: 0;
-	}
-
 	.or-separator {
-		padding-left: $minor-margin;
-		padding-right: $minor-margin;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 
 	.panel-footer {
 		.btn {
 			width: 140px;
 		}
-	}
-
-	label.param-label {
-		font-size: 16px;
-		font-weight: bold;
 	}
 }

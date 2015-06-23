@@ -1,0 +1,6 @@
+<div class="page-controller saustrap">
+	<h1>Account Activation</h1>
+	<p ng-show="activationState === 0">Activating your account...</p>
+	<p ng-show="activationState > 0">Account activated! Redirecting...</p>
+	<p ng-show="activationState < 0">{{errorMessage}}</p>
+</div>
