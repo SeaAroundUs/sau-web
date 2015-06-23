@@ -47,4 +47,11 @@ angular.module('sauWebApp')
         scope.selectedLimit = scope.limits[0];
       }
     };
+  })
+  .directive('advSearchSectionTitle', function() {
+    return {
+      templateUrl: 'views/advanced-search/adv-search-section-title.html',
+      restrict: 'E',
+      transclude: true
+    };
   });

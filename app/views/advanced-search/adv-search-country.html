@@ -1,12 +1,12 @@
-<div ng-controller="AdvSearchEEZBorderingCtrl">
-	<adv-search-section-title>EEZ regions</adv-search-section-title>
+<div ng-controller="AdvSearchCountryCtrl">
+	<adv-search-section-title>Countries</adv-search-section-title>
 
 	<div class="row">
 		<div class="col-sm-6">
-			<sau-multi-select limit="1" label-key="title" data="eezList.data" search-placeholder="Search EEZ regions" selected="selectedEezs"></sau-multi-select>
+			<sau-multi-select limit="1" label-key="name" data="countryList.data" search-placeholder="Search countries" selected="selectedCountries"></sau-multi-select>
 		</div>
 		<div class="col-sm-6">
-			<sau-selected-options label-key="title" title="Bordering EEZs" selected="borderingEezs.data" hide-select-hint="true"></sau-selected-options>
+			<sau-selected-options label-key="name" title="EEZs in country" selected="eezsInCountry" hide-select-hint="true"></sau-selected-options>
 		</div>
 	</div>
 
