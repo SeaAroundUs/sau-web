@@ -200,6 +200,10 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'multi';}}
       })
+      .when('/signup/', {
+        templateUrl: 'views/auth/signup.html',
+        controller: 'SignUpCtrl',
+      })
       .otherwise({
         redirectTo: '/'
       });

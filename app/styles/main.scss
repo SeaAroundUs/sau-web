@@ -417,3 +417,52 @@ button {
 .dropdown-menu {
   min-width: 100px;
 }
+
+.help-text {
+  color: #808080;
+  font-size: 12px;
+}
+
+.error-text {
+  color: #E5868B !important;
+}
+
+.page-controller {
+  max-width: 658px;
+  margin: 0 auto;
+  padding-top: 0px; //Doesn't need margin because the Header text has a gap.
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  //Change the bootstrap columns on this page to be 10px padded rather than the 15px default.
+  .row > div[class*="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .form-control {
+    color: black;
+  }
+
+  select, input {
+    border-color: #aaaaaa;
+    border-radius: 0;
+  }
+
+  label.param-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  form {
+    input.ng-invalid.ng-touched {
+      border-color: #E5868B;
+      border-width: 2px;
+    }
+
+    input.ng-valid.ng-touched {
+      //border-color: #78FA89;
+    }
+  }
+}
