@@ -1,0 +1,41 @@
+<div class="modal-content saustrap" id="login-modal">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h2>Log In</h2>
+    </div>
+    <form novalidate name="form">
+        <div class="modal-body">
+            <div class="form-group">
+                <label class="param-label">Email address</label>
+                <span ng-show="form.email.$touched">
+                    <span class="error-text" ng-show="form.email.$error.required">*</span>
+                </span>
+                <input type="email" class="form-control" ng-model="user.email" placeholder="Email address" name="email" required>
+                <div class="" ng-show="form.email.$touched && form.email.$error.required">
+                    <span class="help-text error-text">Please specify your email address.</span>
+                </div>
+                <div class="" ng-show="form.email.$touched && form.email.$error.email">
+                    <span class="help-text error-text">This is not a valid email address.</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="param-label">Password</label>
+                <span ng-show="form.password.$touched">
+                    <span class="error-text" ng-show="form.password.$error.required">*</span>
+                </span>
+                <input type="password" class="form-control" ng-model="user.password" placeholder="Password" name="password" required>
+                <div class="" ng-show="form.password.$touched && form.password.$error.required">
+                    <span class="help-text error-text">Please enter your password.</span>
+                </div>
+            </div>
+            <div>
+                <a href="#">Forgot your password?</a>
+            </div>
+            <div ng-show="errorMessage">{{errorMessage}}</div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" ng-class="{'disabled': form.$pristine || form.$invalid || logInResponse.pending}"class="btn btn-primary" ng-click="logIn(user)">Log in</button>
+            <button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </form>
+</div>

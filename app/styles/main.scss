@@ -418,13 +418,46 @@ button {
   min-width: 100px;
 }
 
-.help-text {
-  color: #808080;
-  font-size: 12px;
-}
+/* This is a class I (Eric) created, meant to wrap entire pages or modals, with re-useable styles.
+I am putting these styles inside of "saustrap" so that I don't accidentally change existing styles
+throughout the site. This should prevent a QA nightmare.
 
-.error-text {
-  color: #E5868B !important;
+If you'd like to mimic the styles on a page I created (such as advanced search, signup, or login),
+then just wrap your html in "saustrap", then use any of these styles. */
+.saustrap {
+  .help-text {
+    color: #808080;
+    font-size: 12px;
+  }
+
+  .error-text {
+    color: #E5868B !important;
+  }
+
+  label.param-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    color: black;
+  }
+
+  select, input {
+    border-color: #aaaaaa;
+    border-radius: 0;
+  }
+
+  form {
+    input.ng-invalid.ng-touched {
+      border-color: #E5868B;
+      border-width: 2px;
+    }
+
+    input.ng-valid.ng-touched {
+      //border-color: #78FA89;
+    }
+  }
 }
 
 .page-controller {
@@ -439,30 +472,5 @@ button {
   .row > div[class*="col-"] {
     padding-left: 10px;
     padding-right: 10px;
-  }
-
-  .form-control {
-    color: black;
-  }
-
-  select, input {
-    border-color: #aaaaaa;
-    border-radius: 0;
-  }
-
-  label.param-label {
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  form {
-    input.ng-invalid.ng-touched {
-      border-color: #E5868B;
-      border-width: 2px;
-    }
-
-    input.ng-valid.ng-touched {
-      //border-color: #78FA89;
-    }
   }
 }

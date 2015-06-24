@@ -19,7 +19,7 @@ angular.module('sauWebApp')
       }
     };
   })
-  .directive('authStatusButton', function(authService) {
+  .directive('authStatusButton', function(authService, $modal) {
     return {
       restrict: 'E',
       templateUrl: 'views/auth/auth-status-button.html',
@@ -27,7 +27,18 @@ angular.module('sauWebApp')
 
         scope.logOut = function() {
           authService.logOut();
-        }
+        };
+
+        scope.logIn = function() {
+          //Open a modal that allows the user to log in.
+          $modal.open({
+            templateUrl: 'views/auth/login-modal.html',
+            controller: 'LoginModalCtrl',
+            resolve: {
+              nothing: 'something'
+            }
+          });
+        };
 
         function updateButtonState() {
           scope.username = authService.username;
