@@ -6,14 +6,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label class="param-label">Full name</label>
+					<!--<label class="param-label">Full name</label>
 					<span ng-show="form.fullName.$touched">
 						<span class="error-text" ng-show="form.fullName.$error.required">*</span>
-					</span>
+					</span>-->
 					<input type="text" class="form-control" ng-model="user.fullName" placeholder="Full name" name="fullName" required>
 				</div>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.fullName.$touched">
+			<div class="col-sm-6 form-group" ng-show="form.fullName.$touched">
 				<span class="help-text error-text" ng-show="form.fullName.$error.required">
 					Please provide your full name.
 				</span>
@@ -22,14 +22,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label class="param-label">Organization</label>
+					<!--<label class="param-label">Organization</label>
 					<span ng-show="form.organization.$touched">
 						<span class="error-text" ng-show="form.organization.$error.required">*</span>
-					</span>
+					</span>-->
 					<input type="text" class="form-control" ng-model="user.organization" placeholder="Organization" name="organization" required>
 				</div>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.organization.$touched">
+			<div class="col-sm-6 form-group" ng-show="form.organization.$touched">
 				<span class="help-text error-text" ng-show="form.organization.$error.required">
 					Please specify the organization you are with.
 				</span>
@@ -38,34 +38,34 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label class="param-label">Email address</label>
+					<!--<label class="param-label">Email address</label>
 					<span ng-show="form.email.$touched">
 						<span class="error-text" ng-show="form.email.$error.required || form.email.$error.email">*</span>
-					</span>
+					</span>-->
 					<input type="email" class="form-control" ng-model="user.email" placeholder="Email address" name="email" required>
 				</div>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-hide="form.email.$touched && (form.email.$error.required || form.email.$error.email)">
+			<div class="col-sm-6 form-group" ng-hide="form.email.$touched && (form.email.$error.required || form.email.$error.email)">
 				<span class="help-text">We will never share your email address with anyone. Please see our <a href="#">privacy policy</a>.</span>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.email.$touched && form.email.$error.required">
+			<div class="col-sm-6 form-group" ng-show="form.email.$touched && form.email.$error.required">
 				<span class="help-text error-text">Please specify your email address.</span>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.email.$touched && form.email.$error.email">
+			<div class="col-sm-6 form-group" ng-show="form.email.$touched && form.email.$error.email">
 				<span class="help-text error-text">This is not a valid email address.</span>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label class="param-label">Password</label>
+					<!--<label class="param-label">Password</label>
 					<span ng-show="form.password.$touched">
 						<span class="error-text" ng-show="form.password.$error.required">*</span>
-					</span>
+					</span>-->
 					<input type="password" class="form-control" ng-model="user.password" placeholder="Password" name="password" required>
 				</div>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.password.$touched">
+			<div class="col-sm-6 form-group" ng-show="form.password.$touched">
 				<span class="help-text error-text" ng-show="form.password.$error.required">
 					Please provide a password.
 				</span>
@@ -74,14 +74,14 @@
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<label class="param-label">Confirm password</label>
+					<!--<label class="param-label">Confirm password</label>
 					<span ng-show="form.confirmPassword.$touched">
 						<span class="error-text" ng-show="form.confirmPassword.$error.required || form.confirmPassword.$error.compareTo">*</span>
-					</span>
+					</span>-->
 					<input type="password" class="form-control" ng-model="user.confirmPassword" placeholder="Confirm password" name="confirmPassword" required compare-to="user.password">
 				</div>
 			</div>
-			<div class="col-sm-6 side-option form-group" ng-show="form.confirmPassword.$touched">
+			<div class="col-sm-6 form-group" ng-show="form.confirmPassword.$touched">
 				<span class="help-text error-text" ng-show="form.confirmPassword.$error.required">
 					Please type your password again for comparison.
 				</span>

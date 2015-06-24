@@ -6,10 +6,10 @@
     <form novalidate name="form">
         <div class="modal-body">
             <div class="form-group">
-                <label class="param-label">Email address</label>
+                <!--<label class="param-label">Email address</label>
                 <span ng-show="form.email.$touched">
                     <span class="error-text" ng-show="form.email.$error.required">*</span>
-                </span>
+                </span>-->
                 <input type="email" class="form-control" ng-model="user.email" placeholder="Email address" name="email" required>
                 <div class="" ng-show="form.email.$touched && form.email.$error.required">
                     <span class="help-text error-text">Please specify your email address.</span>
@@ -19,10 +19,10 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="param-label">Password</label>
+                <!--<label class="param-label">Password</label>
                 <span ng-show="form.password.$touched">
                     <span class="error-text" ng-show="form.password.$error.required">*</span>
-                </span>
+                </span>-->
                 <input type="password" class="form-control" ng-model="user.password" placeholder="Password" name="password" required>
                 <div class="" ng-show="form.password.$touched && form.password.$error.required">
                     <span class="help-text error-text">Please enter your password.</span>
