@@ -458,6 +458,10 @@ then just wrap your html in "saustrap", then use any of these styles. */
       //border-color: #78FA89;
     }
   }
+
+  .honeypot {
+    display: none;
+  }
 }
 
 .page-controller {

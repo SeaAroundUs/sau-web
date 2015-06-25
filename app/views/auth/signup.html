@@ -3,29 +3,47 @@
 	<p>Create an account to gain access to certain data sets. If you already have an account, please log in instead.</p>
 
 	<form name="form" novalidate>
+		<!-- FIRST NAME -->
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<!--<label class="param-label">Full name</label>
-					<span ng-show="form.fullName.$touched">
-						<span class="error-text" ng-show="form.fullName.$error.required">*</span>
-					</span>-->
-					<input type="text" class="form-control" ng-model="user.fullName" placeholder="Full name" name="fullName" required>
+					<input type="text" class="form-control" ng-model="user.firstName" placeholder="First name" name="firstName" required>
 				</div>
 			</div>
-			<div class="col-sm-6 form-group" ng-show="form.fullName.$touched">
-				<span class="help-text error-text" ng-show="form.fullName.$error.required">
-					Please provide your full name.
+			<div class="col-sm-6 form-group" ng-show="form.firstName.$touched">
+				<span class="help-text error-text" ng-show="form.firstName.$error.required">
+					Please provide your first name.
 				</span>
 			</div>
 		</div>
+
+		<!-- MIDDLE INITIAL (HONEYPOT)-->
+		<div class="row honeypot">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="user.middleInitial" placeholder="Middle initial" name="middleInitial">
+				</div>
+			</div>
+		</div>
+
+		<!-- LAST NAME -->
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<!--<label class="param-label">Organization</label>
-					<span ng-show="form.organization.$touched">
-						<span class="error-text" ng-show="form.organization.$error.required">*</span>
-					</span>-->
+					<input type="text" class="form-control" ng-model="user.lastName" placeholder="Last name" name="lastName" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="form.lastName.$touched">
+				<span class="help-text error-text" ng-show="form.lastName.$error.required">
+					Please provide your last name.
+				</span>
+			</div>
+		</div>
+
+		<!-- ORGANIZATION -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
 					<input type="text" class="form-control" ng-model="user.organization" placeholder="Organization" name="organization" required>
 				</div>
 			</div>
@@ -35,13 +53,11 @@
 				</span>
 			</div>
 		</div>
+
+		<!-- EMAIL ADDRESS -->
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<!--<label class="param-label">Email address</label>
-					<span ng-show="form.email.$touched">
-						<span class="error-text" ng-show="form.email.$error.required || form.email.$error.email">*</span>
-					</span>-->
 					<input type="email" class="form-control" ng-model="user.email" placeholder="Email address" name="email" required>
 				</div>
 			</div>
@@ -55,13 +71,11 @@
 				<span class="help-text error-text">This is not a valid email address.</span>
 			</div>
 		</div>
+
+		<!-- PASSWORD -->
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<!--<label class="param-label">Password</label>
-					<span ng-show="form.password.$touched">
-						<span class="error-text" ng-show="form.password.$error.required">*</span>
-					</span>-->
 					<input type="password" class="form-control" ng-model="user.password" placeholder="Password" name="password" required>
 				</div>
 			</div>
@@ -71,13 +85,11 @@
 				</span>
 			</div>
 		</div>
+
+		<!-- CONFIRM PASSWORD -->
 		<div class="row">
 			<div class="col-sm-6">
 				<div class="form-group">
-					<!--<label class="param-label">Confirm password</label>
-					<span ng-show="form.confirmPassword.$touched">
-						<span class="error-text" ng-show="form.confirmPassword.$error.required || form.confirmPassword.$error.compareTo">*</span>
-					</span>-->
 					<input type="password" class="form-control" ng-model="user.confirmPassword" placeholder="Confirm password" name="confirmPassword" required compare-to="user.password">
 				</div>
 			</div>
@@ -90,6 +102,8 @@
 				</span>
 			</div>
 		</div>
+
+		<!-- AGREEMENT -->
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="checkbox">
