@@ -15,7 +15,7 @@ angular.module('sauWebApp').controller('SignUpCtrl', function ($scope, authServi
     $scope.signUpResponse = authService.signUp(user);
     $scope.signUpResponse.then(
       function(response) {
-        $location.path('/').replace();
+        $location.path('/activate').replace();
       },
       function(error) {
         $scope.errorMessage = error;

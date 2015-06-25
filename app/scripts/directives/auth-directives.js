@@ -41,7 +41,7 @@ angular.module('sauWebApp')
         };
 
         function updateButtonState() {
-          scope.username = authService.username;
+          scope.email = authService.user ? authService.user.email : undefined;
           scope.isAuthenticated = authService.isAuthenticated;
         }
 

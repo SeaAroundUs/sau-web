@@ -1,11 +1,11 @@
 <span class="dropdown" dropdown id="auth-button">
     <a href class="dropdown-toggle" dropdown-toggle>
-        <span ng-show="isAuthenticated">{{username}}</span>
+        <span ng-show="isAuthenticated">{{email}}</span>
         <span ng-hide="isAuthenticated">Not logged in</span>
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" ng-show="isAuthenticated">
-        <li><a href="#">Settings</a></li>
+        <li><a href="#/me">Settings</a></li>
         <li><a href ng-click="logOut()">Log out</a></li>
     </ul>
     <ul class="dropdown-menu" ng-hide="isAuthenticated">

@@ -1,0 +1,117 @@
+<div class="page-controller saustrap">
+	<h1>Account Settings</h1>
+	<h2>Your Information</h2>
+	<form novalidate name="infoForm">
+		<!-- FIRST NAME -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="user.firstName" placeholder="First name" name="firstName" ng-change="infoInputChanged()" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="infoForm.firstName.$touched">
+				<span class="help-text error-text" ng-show="infoForm.firstName.$error.required">
+					Please provide your first name.
+				</span>
+			</div>
+		</div>
+
+		<!-- LAST NAME -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="user.lastName" placeholder="Last name" name="lastName" ng-change="infoInputChanged()" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="infoForm.lastName.$touched">
+				<span class="help-text error-text" ng-show="infoForm.lastName.$error.required">
+					Please provide your last name.
+				</span>
+			</div>
+		</div>
+
+		<!-- ORGANIZATION -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="text" class="form-control" ng-model="user.organization" placeholder="Organization" name="organization" ng-change="infoInputChanged()" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="infoForm.organization.$touched">
+				<span class="help-text error-text" ng-show="infoForm.organization.$error.required">
+					Please specify the organization you are with.
+				</span>
+			</div>
+		</div>
+
+		<!-- SUBMIT -->
+		<div class="row">
+			<div class="col-sm-3">
+				<button class="btn btn-primary btn-block" ng-class="{'disabled': infoForm.$pristine || infoForm.$invalid || updateInfoPromise.pending}" type="submit" ng-click="updateInfo(user)">Update info</button>
+			</div>
+			<div class="col-xs-9">
+				<p ng-show="updateInfoErrorMessage" class="help-text error-text">{{updateInfoErrorMessage}}</p>
+				<p ng-show="infoUpdated" class="help-text">Info updated</p>
+			</div>
+		</div>
+	</form>
+	<hr />
+	<h2>Change Your Password</h2>
+	<form novalidate name="passwordForm">
+		<!-- OLD PASSWORD -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="password" class="form-control" ng-model="oldPassword" placeholder="Old password" name="oldPassword" ng-change="passwordInputChanged()" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="passwordForm.oldPassword.$touched">
+				<span class="help-text error-text" ng-show="passwordForm.oldPassword.$error.required">
+					Please enter your old password.
+				</span>
+			</div>
+		</div>
+
+		<!-- NEW PASSWORD -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="password" class="form-control" ng-model="newPassword" placeholder="New password" name="newPassword" ng-change="passwordInputChanged()" required>
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="passwordForm.newPassword.$touched">
+				<span class="help-text error-text" ng-show="passwordForm.newPassword.$error.required">
+					Please enter a new password.
+				</span>
+			</div>
+		</div>
+
+		<!-- CONFIRM NEW PASSWORD -->
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="form-group">
+					<input type="password" class="form-control" ng-model="confirmNewPassword" placeholder="Confirm new password" name="confirmNewPassword" ng-change="passwordInputChanged()" required compare-to="newPassword">
+				</div>
+			</div>
+			<div class="col-sm-6 form-group" ng-show="passwordForm.confirmNewPassword.$touched">
+				<span class="help-text error-text" ng-show="passwordForm.confirmNewPassword.$error.required">
+					Please retype your new password again for comparison.
+				</span>
+				<span class="help-text error-text" ng-show="passwordForm.confirmNewPassword.$error.compareTo">
+					Your passwords do not match.
+				</span>
+			</div>
+		</div>
+
+		<!-- SUBMIT -->
+		<div class="row">
+			<div class="col-sm-3">
+				<button class="btn btn-primary btn-block" ng-class="{'disabled': passwordForm.$pristine || passwordForm.$invalid || updatePasswordPromise.pending}" type="submit" ng-click="updatePassword(oldPassword, newPassword)">Update password</button>
+			</div>
+			<div class="col-xs-9">
+				<p ng-show="updatePasswordErrorMessage" class="help-text error-text">{{updatePasswordErrorMessage}}</p>
+				<p ng-show="passwordUpdated" class="help-text">Password updated</p>
+			</div>
+		</div>
+	</form>
+</div>

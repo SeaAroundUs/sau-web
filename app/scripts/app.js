@@ -208,6 +208,14 @@ angular
         templateUrl: 'views/auth/activate-request.html',
         controller: 'ActivateRequstCtrl'
       })
+      .when('/activate/:code', {
+        templateUrl: 'views/auth/activate.html',
+        controller: 'ActivateCtrl'
+      })
+      .when('/me', {
+        templateUrl: 'views/auth/account-settings.html',
+        controller: 'AccountSettingsCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -227,4 +235,8 @@ angular
       }
       return original.apply($location, [path]);
     };
+
+    $rootScope.$on('logOut', function() {
+      $location.path('/').replace();
+    });
   }]);

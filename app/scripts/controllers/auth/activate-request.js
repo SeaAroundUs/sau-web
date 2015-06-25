@@ -3,12 +3,20 @@
 angular.module('sauWebApp').controller('ActivateRequstCtrl', function ($scope, authService) {
 
   function init() {
-    $scope.activationEmailRequested = false;
+    $scope.activationEmailRequest = 0; //Not requested
   }
 
   $scope.requestActivationEmail = function() {
-    $scope.activationEmailRequested = true;
-    authService.requestActivationEmail(authService.user.email);
+    $scope.activationEmailRequest = 1; //Requested
+    authService.requestActivationEmail(authService.user.email).then(requestEmailResponse, requestEmailError);
+  }
+
+  function requestEmailResponse(response) {
+  	$scope.activationEmailRequest = 2; //Request success
+  }
+
+  function requestEmailError(error) {
+  	$scope.activationEmailRequest = -1; //Request failure.
   }
 
   init();
