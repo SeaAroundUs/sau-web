@@ -9,6 +9,10 @@
  */
 angular.module('sauWebApp')
   .controller('LoginModalCtrl', function ($scope, $modalInstance, authService) {
+    function init() {
+      //Register an event, and automatically deregister it when this scope is destroyed.
+      $scope.$on('$destroy', $scope.$on('$locationChangeStart', handleLocationChange));
+    }
     $scope.logIn = function(user) {
       $scope.errorMessage = '';
       $scope.logInResponse = authService.logIn(user);
@@ -23,4 +27,10 @@ angular.module('sauWebApp')
     $scope.cancel = function() {
       $modalInstance.dismiss('cancel');
     };
+
+    function handleLocationChange() {
+      $modalInstance.dismiss('cancel');
+    }
+
+    init();
   });

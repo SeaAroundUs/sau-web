@@ -167,6 +167,27 @@ angular.module('sauWebApp')
 
         deferred.pending = true;
         return deferred;
+      },
+      requestNewPassword: function(email) {
+        console.log('Requesting new password for ' + email);
+        var me = this;
+        var deferred = $q(function (resolve, reject) {
+          if (me.isAuthenticated) {
+            reject('Cannot request a new password for a logged-in user. Use the updatePassword endpoint.');
+          }
+          $timeout(function() {
+            if (Math.random() > 0.5) {
+              deferred.pending = false;
+              resolve('Success');
+            } else {
+              deferred.pending = false;
+              reject('EXAMPLE Email address not found.');
+            }
+          }, 1000);
+        });
+
+        deferred.pending = true;
+        return deferred;
       }
     };
 

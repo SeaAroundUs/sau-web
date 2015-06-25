@@ -216,6 +216,10 @@ angular
         templateUrl: 'views/auth/account-settings.html',
         controller: 'AccountSettingsCtrl'
       })
+      .when('/password-reset', {
+        templateUrl: 'views/auth/password-reset.html',
+        controller: 'PasswordResetCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
