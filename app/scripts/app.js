@@ -204,6 +204,10 @@ angular
         templateUrl: 'views/auth/signup.html',
         controller: 'SignUpCtrl',
       })
+      .when('/activate/', {
+        templateUrl: 'views/auth/activate-request.html',
+        controller: 'ActivateRequstCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
