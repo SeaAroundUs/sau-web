@@ -3,7 +3,7 @@
 angular.module('sauWebApp').controller('AccountSettingsCtrl', function ($scope, authService, $location) {
 
   function init() {
-    if (!authService.isAuthenticated) {
+    if (!authService.user) {
       //TODO Take the user to a login page instead of the home page.
       $location.path('/')
     } else {
@@ -18,15 +18,15 @@ angular.module('sauWebApp').controller('AccountSettingsCtrl', function ($scope, 
 
   $scope.updateInfo = function(user) {
     $scope.updateInfoErrorMessage = '';
-    $scope.updateInfoPromise = authService.updateInfo(user);
+    $scope.updateInfoPromise = authService.updateInfo(user).then(authService.updateUser);
     $scope.updateInfoPromise.then(updateInfoSuccess, updateInfoError);
     $scope.infoForm.$setPristine();
     $scope.infoForm.$setUntouched();
-  }
+  };
 
   $scope.infoInputChanged = function() {
     $scope.infoUpdated = false;
-  }
+  };
 
   $scope.updatePassword = function(oldPassword, newPassword) {
     $scope.updatePasswordErrorMessage = '';
@@ -34,11 +34,11 @@ angular.module('sauWebApp').controller('AccountSettingsCtrl', function ($scope, 
     $scope.updatePasswordPromise.then(updatePasswordSuccess, updatePasswordError);
     $scope.passwordForm.$setPristine();
     $scope.passwordForm.$setUntouched();
-  }
+  };
 
   $scope.passwordInputChanged = function() {
     $scope.passwordUpdated = false;
-  }
+  };
 
   function updateInfoSuccess(response) {
     $scope.infoUpdated = true;

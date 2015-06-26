@@ -33,7 +33,7 @@ angular.module('sauWebApp')
       },
 
       updateInfo: function(user) {
-        angular.noop(user); //TODO
+        return authAPI.UpdateInfo.get(user).$promise;
       },
 
       updatePassword: function(oldPassword, newPassword) {
