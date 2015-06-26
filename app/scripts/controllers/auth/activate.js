@@ -3,17 +3,20 @@
 angular.module('sauWebApp').controller('ActivateCtrl', function ($scope, authService, $routeParams, $location, $timeout) {
 
   function init() {
-    if (!$routeParams.code) {
+    var email = $location.search().email;
+    if (!$routeParams.code && email) {
       $location.path('/').replace();
     } else {
-      authService.activate($routeParams.code).then(activateResponse, activateError);
+      authService.activate($routeParams.code, email).then(activateResponse, activateError);
     }
   }
 
-  function activateResponse(response) {
+  function activateResponse() {
     $scope.activationState = 1;
+    authService.updateUser();
 
     var redirectPromise = $timeout(function() {
+      $location.search({});
       $location.path('/');
     }, 1000);
 

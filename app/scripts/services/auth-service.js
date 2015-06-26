@@ -9,9 +9,8 @@
  */
 angular.module('sauWebApp')
   .factory('authService', function ($timeout, $q, $rootScope, authAPI) {
-    return {
-      isAuthenticated: false,
-      user: null,
+    var authService = {
+      user: false,
 
       signUp: function(user) {
         return authAPI.Register.get(user).$promise;
@@ -26,7 +25,7 @@ angular.module('sauWebApp')
       },
 
       activate: function(code, email) {
-        return authAPI.Activate.get({activationCode: code, email: email}).$promise;
+        return authAPI.Activate.get({activationToken: code, email: email}).$promise;
       },
 
       requestActivationEmail: function(email) {
@@ -45,8 +44,14 @@ angular.module('sauWebApp')
         return authAPI.RequestNewPassword.get({email: email}).$promise;
       },
 
-      status: function() {
-        return authAPI.Status.get().$promise;
+      updateUser: function() {
+        return authAPI.Status.get(function(result) {
+          authService.user = result.user;
+        }, function() {
+          authService.user = false;
+        });
       }
     };
+
+    return authService;
   });

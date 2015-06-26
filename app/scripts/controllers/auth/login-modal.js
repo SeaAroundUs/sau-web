@@ -13,10 +13,12 @@ angular.module('sauWebApp')
       //Register an event, and automatically deregister it when this scope is destroyed.
       $scope.$on('$destroy', $scope.$on('$locationChangeStart', handleLocationChange));
     }
+
     $scope.logIn = function(user) {
       $scope.errorMessage = '';
       $scope.logInResponse = authService.logIn(user);
-      $scope.logInResponse.then(function(response) {
+      $scope.logInResponse.then(function() {
+        authService.updateUser();
         $modalInstance.dismiss('logIn');
       },
       function(error) {
