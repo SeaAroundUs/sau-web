@@ -27,7 +27,7 @@ angular.module('sauWebApp')
       link: function(scope) {
 
         scope.logOut = function() {
-          authService.logOut();
+          authService.logOut().then(authService.updateUser);
         };
 
         scope.logIn = function() {
@@ -41,7 +41,12 @@ angular.module('sauWebApp')
           });
         };
 
-        scope.user = authService.user;
+        scope.$watch(function() { return authService.user; }, function() {
+          scope.user = authService.user;
+        }, function() {
+          scope.user = false;
+        });
+
         authService.updateUser();
       }
     };

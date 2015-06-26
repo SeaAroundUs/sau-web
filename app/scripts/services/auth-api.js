@@ -5,7 +5,10 @@ angular.module('sauWebApp')
     var resourceFactory = function(authPath) {
       return $resource(SAU_CONFIG.authURL + authPath,
         {},
-        {get: {method: 'GET', cache: false}, post: {method: 'POST', cache: false}}
+        {
+          get: {method: 'GET', cache: false, withCredentials: true},
+          post: {method: 'POST', cache: false, withCredentials: true}
+        }
       );
     };
 
