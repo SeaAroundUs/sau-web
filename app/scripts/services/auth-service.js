@@ -34,11 +34,11 @@ angular.module('sauWebApp')
       },
 
       updateInfo: function(user) {
-        //TODO
+        angular.noop(user); //TODO
       },
 
       updatePassword: function(oldPassword, newPassword) {
-        //TODO
+        angular.noop(oldPassword, newPassword); //TODO
       },
 
       requestNewPassword: function(email) {

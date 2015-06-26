@@ -206,7 +206,7 @@ angular
       })
       .when('/activate/', {
         templateUrl: 'views/auth/activate-request.html',
-        controller: 'ActivateRequstCtrl'
+        controller: 'ActivateRequestCtrl'
       })
       .when('/activate/:code', {
         templateUrl: 'views/auth/activate.html',

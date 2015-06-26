@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('ActivateRequstCtrl', function ($scope, authService) {
+angular.module('sauWebApp').controller('ActivateRequestCtrl', function ($scope, authService) {
 
   function init() {
     $scope.activationEmailRequest = 0; //Not requested
