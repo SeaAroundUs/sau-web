@@ -37,7 +37,10 @@ angular.module('sauWebApp')
       },
 
       updatePassword: function(oldPassword, newPassword) {
-        angular.noop(oldPassword, newPassword); //TODO
+        return authAPI.UpdatePassword.get({
+          oldPassword: oldPassword,
+          newPassword: newPassword
+        }).$promise;
       },
 
       requestNewPassword: function(email) {

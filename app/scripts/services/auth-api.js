@@ -20,6 +20,7 @@ angular.module('sauWebApp')
       RequestActivationEmail: resourceFactory('resend-activation-email/'),
       RequestNewPassword: resourceFactory('password-reset/'),
       UpdateInfo: resourceFactory('update-info/'),
+      UpdatePassword: resourceFactory('update-password/'),
       Status: resourceFactory('status/')
     };
   });
