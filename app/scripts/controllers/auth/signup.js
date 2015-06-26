@@ -18,6 +18,9 @@ angular.module('sauWebApp').controller('SignUpCtrl', function ($scope, authServi
         $location.path('/activate').replace();
       },
       function(error) {
+        if (error.code === 401) {
+          $scope.errorCode = error.code;
+        }
         $scope.errorMessage = error;
       });
   }

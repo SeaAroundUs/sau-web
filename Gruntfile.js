@@ -52,6 +52,7 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://' + apiHostPort + '/api/v1/',
+            authURL: 'http://' + apiHostPort + '/account/',
             buildNumber: buildNumber
           }
         }
@@ -60,6 +61,7 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/api/v1/',
+            authURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/account/',
             buildNumber: buildNumber
           }
         }
@@ -68,6 +70,7 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://sau-web-lb-p-922647076.us-west-2.elb.amazonaws.com/api/v1/',
+            authURL: 'http://sau-web-lb-p-922647076.us-west-2.elb.amazonaws.com/account/',
             buildNumber: buildNumber
           }
         }
@@ -76,6 +79,7 @@ module.exports = function (grunt) {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
+            authURL: 'http://sau-web-mt-env.elasticbeanstalk.com/account/',
             buildNumber: buildNumber
           },
         }
