@@ -20,14 +20,17 @@ angular.module('sauWebApp')
     };
   })
 
-  .directive('authStatusButton', function(authService, $modal) {
+  .directive('authStatusButton', function(authService, $modal, $location) {
     return {
       restrict: 'E',
       templateUrl: 'views/auth/auth-status-button.html',
       link: function(scope) {
 
         scope.logOut = function() {
-          authService.logOut().then(authService.updateUser);
+          authService.logOut().then(function() {
+            authService.updateUser();
+            $location.path('/');
+          });
         };
 
         scope.logIn = function() {
