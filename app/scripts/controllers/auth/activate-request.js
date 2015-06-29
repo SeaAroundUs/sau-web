@@ -8,7 +8,7 @@ angular.module('sauWebApp').controller('ActivateRequestCtrl', function ($scope, 
 
   $scope.requestActivationEmail = function() {
     $scope.activationEmailRequest = 1; //Requested
-    authService.requestActivationEmail(authService.user.email).then(requestEmailResponse, requestEmailError);
+    authService.requestActivationEmail(authService.user.email).$promise.then(requestEmailResponse, requestEmailError);
   }
 
   function requestEmailResponse(response) {
@@ -17,6 +17,11 @@ angular.module('sauWebApp').controller('ActivateRequestCtrl', function ($scope, 
 
   function requestEmailError(error) {
   	$scope.activationEmailRequest = -1; //Request failure.
+    $scope.errorMessage = errorMessages[error.status.toString()] || errorMessages['default'];
+  }
+
+  var errorMessages = {
+    'default': 'There was a problem requesting another activation email. Please try again later.'
   }
 
   init();

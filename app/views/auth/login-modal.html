@@ -23,7 +23,7 @@
             <div>
                 <a href="#/password-reset">Forgot password</a> | <a href="#/signup">Sign up</a>
             </div>
-            <div ng-show="errorMessage">{{errorMessage}}</div>
+            <div ng-show="errorMessage" class="error-text">{{errorMessage}}</div>
         </div>
         <div class="modal-footer">
             <button type="submit" ng-class="{'disabled': form.$pristine || form.$invalid || logInResponse.pending}"class="btn btn-primary" ng-click="logIn(user)">Log in</button>

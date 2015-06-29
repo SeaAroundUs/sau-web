@@ -5,5 +5,5 @@
 	<p>Try waiting a minute, then check again. You can also look in your spam folder or <a href ng-click="requestActivationEmail()">request another activation email</a>.</p>
 	<p ng-show="activationEmailRequest === 1">Requesting another activation email...</p>
 	<p ng-show="activationEmailRequest === 2">You've requested another activation email. Please check your inbox.</p>
-	<p ng-show="activationEmailRequest < 0">There was a problem requesting another activation email. Please try again later.</p>
+	<p ng-show="activationEmailRequest < 0" class="error-text">{{errorMessage}}</p>
 </div>

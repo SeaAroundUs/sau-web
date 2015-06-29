@@ -13,17 +13,20 @@ angular.module('sauWebApp').controller('SignUpCtrl', function ($scope, authServi
   $scope.signUp = function(user) {
     $scope.errorMessage = '';
     $scope.signUpResponse = authService.signUp(user);
-    $scope.signUpResponse.then(
+    $scope.signUpResponse.$promise.then(
       function(response) {
         $location.path('/activate').replace();
       },
       function(error) {
-        if (error.code === 401) {
-          $scope.errorCode = error.code;
-        }
-        $scope.errorMessage = error;
+        $scope.errorMessage = errorMessages[error.status.toString()] || errorMessages['default'];
       });
   }
+
+  var errorMessages = {
+    '400': 'This email address already has an account.',
+    '418': 'I\'m a teapot.',
+    'default': 'There was a problem signing up. Please try again.'
+  };
 
   init();
 });

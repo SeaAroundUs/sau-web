@@ -27,7 +27,7 @@ angular.module('sauWebApp')
       link: function(scope) {
 
         scope.logOut = function() {
-          authService.logOut().then(function() {
+          authService.logOut().$promise.then(function() {
             authService.updateUser();
             $location.path('/');
           });

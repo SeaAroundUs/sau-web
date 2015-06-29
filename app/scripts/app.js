@@ -220,6 +220,10 @@ angular
         templateUrl: 'views/auth/password-reset.html',
         controller: 'PasswordResetCtrl'
       })
+      .when('/new-password/:code', {
+        templateUrl: 'views/auth/new-password.html',
+        controller: 'NewPasswordCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });

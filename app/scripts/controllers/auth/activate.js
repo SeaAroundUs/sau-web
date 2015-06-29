@@ -7,7 +7,7 @@ angular.module('sauWebApp').controller('ActivateCtrl', function ($scope, authSer
     if (!$routeParams.code && email) {
       $location.path('/').replace();
     } else {
-      authService.activate($routeParams.code, email).then(activateResponse, activateError);
+      authService.activate($routeParams.code, email).$promise.then(activateResponse, activateError);
     }
   }
 
@@ -27,11 +27,15 @@ angular.module('sauWebApp').controller('ActivateCtrl', function ($scope, authSer
   }
 
   function activateError(error) {
-    $scope.errorMessage = error;
     $scope.activationState = -1;
+    $scope.errorMessage = errorMessages[error.status.toString()] || errorMessages['default'];
   }
 
   $scope.activationState = 0;
+  var errorMessages = {
+    '400': 'We could not activate any account using the activation code provided. Please make sure your URL matches the one provided in your email.',
+    'default': 'We\'re sorry, there was a problem activating your account.'
+  };
 
   init();
 });

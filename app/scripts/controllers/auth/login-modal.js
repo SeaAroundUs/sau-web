@@ -17,12 +17,12 @@ angular.module('sauWebApp')
     $scope.logIn = function(user) {
       $scope.errorMessage = '';
       $scope.logInResponse = authService.logIn(user);
-      $scope.logInResponse.then(function() {
+      $scope.logInResponse.$promise.then(function() {
         authService.updateUser();
         $modalInstance.dismiss('logIn');
       },
       function(error) {
-        $scope.errorMessage = error;
+        $scope.errorMessage = errorMessages[error.status.toString()] || errorMessages['default'];
       });
     };
 
@@ -33,6 +33,12 @@ angular.module('sauWebApp')
     function handleLocationChange() {
       $modalInstance.dismiss('cancel');
     }
+
+    var errorMessages = {
+      '400': 'Account must be activated before logging in.',
+      '401': 'Invalid username or password.',
+      'default': 'We\'re sorry, there was a problem activating your account.'
+    };
 
     init();
   });
