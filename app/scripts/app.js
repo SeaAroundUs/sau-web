@@ -111,6 +111,16 @@ angular
         templateUrl: 'views/procedures-and-outcomes.html',
         controller: 'ProceduresAndOutcomesCtrl'
       })
+      .when('/rfmo/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'rfmo';}}
+      })
+      .when('/rfmo/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'rfmo';}}
+      })
       .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',

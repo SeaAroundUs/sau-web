@@ -13,10 +13,12 @@ angular.module('sauWebApp').factory('regionTabs', function() {
     ecosystemsHighSeas: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-highseas.html'},
     ecosystemsGlobal: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-global.html'},
     governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
+    governanceRFMO: {title: 'Governance', template: 'views/region-detail/governance-rfmo.html'},
     indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
     indicatorsLME: {title: 'Indicators', template: 'views/region-detail/indicators-lme.html'},
     indicatorsHighSeas: {title: 'Indicators', template: 'views/region-detail/indicators-highseas.html'},
     indicatorsGlobal: {title: 'Indicators', template: 'views/region-detail/indicators-global.html'},
+    indicatorsRFMO: {title: 'Indicators', template: 'views/region-detail/indicators-rfmo.html'},
     productionInfo: {title: 'Production Info', template: 'views/region-detail/production-info.html'},
     otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
     feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
@@ -40,7 +42,8 @@ angular.module('sauWebApp').factory('regionTabs', function() {
         case 'rfmo':
           regionTabs = [
             tabs.catchInfo,
-            tabs.governance
+            tabs.governanceRFMO,
+            tabs.indicatorsRFMO
           ];
           break;
 

@@ -30,6 +30,10 @@
 
       highseas: angular.extend({}, defaultToggles, {}),
 
+      rfmo: angular.extend({}, defaultToggles, {
+        showFAOAndLegend: false
+      }),
+
       global: angular.extend({}, defaultToggles, {
         showGlobalSubRegion: true
       }),
