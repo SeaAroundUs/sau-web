@@ -3,7 +3,7 @@
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, $timeout,
             sauAPI, insetMapLegendData, $modal, region, regionDimensions, regionMeasures,
-            regionDimensionLimits, regionTabs, metricLinks, regionToggles) {
+            regionDimensionLimits, regionTabs, metricLinks, regionToggles, externalURLs) {
 
     $scope.toggles = regionToggles.getToggles(region);
 
@@ -192,6 +192,13 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
             $scope.feature.data.metrics = $scope.feature.data.metrics.filter(function(metric) {
               return metric.title !== 'Inshore Fishing Area (IFA)';
             });
+
+            $scope.rfmoLinks = {
+              reportURL: externalURLs.s3Root +
+                'legacy.seaaroundus/rfmo/FCWorkingPaper_RFMOs_CullisSuzukiPauly_2009.pdf',
+              publicationURL: externalURLs.s3Root +
+                'legacy.seaaroundus/rfmo/Cullis-Suzuki%26Pauly-2010-RFMO.pdf'
+            };
           }
         });
       }

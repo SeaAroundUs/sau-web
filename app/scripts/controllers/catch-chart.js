@@ -265,6 +265,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
         var chartTitle = $scope.formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
         if ($scope.region.name === 'global') {
           chartTitle += 'global ocean';
+        } else if ($scope.region.name === 'rfmo') {
+          chartTitle = $scope.feature.data.long_title + ' (' + $scope.feature.data.title + ')';
         } else {
           chartTitle += 'waters of ' + $scope.feature.data.title;
         }
