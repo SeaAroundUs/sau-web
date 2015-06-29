@@ -188,6 +188,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
             // fishbase id is same as our id, fake it
             $scope.feature.data.fishbase_id = $scope.feature.data.id;
           }
+          if ($scope.region.name === 'rfmo') {
+            $scope.feature.data.metrics = $scope.feature.data.metrics.filter(function(metric) {
+              return metric.title !== 'Inshore Fishing Area (IFA)';
+            });
+          }
         });
       }
 
