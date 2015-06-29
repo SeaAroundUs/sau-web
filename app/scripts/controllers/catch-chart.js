@@ -267,6 +267,8 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
           chartTitle += 'global ocean';
         } else if ($scope.region.name === 'rfmo') {
           chartTitle = $scope.feature.data.long_title + ' (' + $scope.feature.data.title + ')';
+        } else if ($scope.region.name === 'highseas') {
+          chartTitle += 'non-EEZ waters of the ' + $scope.feature.data.title;
         } else {
           chartTitle += 'waters of ' + $scope.feature.data.title;
         }
