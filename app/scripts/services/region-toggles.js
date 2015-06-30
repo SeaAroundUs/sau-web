@@ -35,6 +35,7 @@
       }),
 
       global: angular.extend({}, defaultToggles, {
+        showMiniMap: false,
         showGlobalSubRegion: true
       }),
 
