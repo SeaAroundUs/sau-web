@@ -122,11 +122,13 @@ angular.module('sauWebApp')
       $q.all([mapPromise, featuresPromise]).then(function(result) {
         var features = result[1];
 
-        features.data.features = features.data.features.map(function(feature) {
-          var oldTitle = feature.properties.title;
-          feature.properties.title = feature.properties.long_title + ' (' + oldTitle + ')';
-          return feature;
-        });
+        if ($scope.region.name === 'rfmo') {
+          features.data.features = features.data.features.map(function(feature) {
+            var oldTitle = feature.properties.title;
+            feature.properties.title = feature.properties.long_title + ' (' + oldTitle + ')';
+            return feature;
+          });
+        }
 
         angular.extend($scope, {
           geojson: {
