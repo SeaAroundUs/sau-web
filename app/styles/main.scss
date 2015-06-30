@@ -133,17 +133,22 @@ label {
   #search {
     position: absolute;
     z-index: 1;
-    left: calc(50% - 250px);
+    left: calc(50% - 300px);
     div#search-inner {
-      width: 500px;
+      width: 600px;
       background-color: $darkBlue;
       padding: 10px 10px 15px;
       position: relative;
+
       div.ui-select-container {
         width: 100%;
         padding: 5px 15px;
-        background-color:none;
+        background: none;
         color: black;
+      }
+
+      span {
+        overflow: hidden;
       }
     }
   }

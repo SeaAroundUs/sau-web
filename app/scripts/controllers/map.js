@@ -119,13 +119,22 @@ angular.module('sauWebApp')
       var mapPromise = leafletData.getMap('mainmap');
       var featuresPromise = $scope.features.$promise;
 
-      $q.all([mapPromise, featuresPromise]).then(function() {
+      $q.all([mapPromise, featuresPromise]).then(function(result) {
+        var features = result[1];
+
+        features.data.features = features.data.features.map(function(feature) {
+          var oldTitle = feature.properties.title;
+          feature.properties.title = feature.properties.long_title + ' (' + oldTitle + ')';
+          return feature;
+        });
+
         angular.extend($scope, {
           geojson: {
             data: $scope.features.data,
-            style: mapConfig.defaultStyle,
+            style: mapConfig.defaultStyle
           }
         });
+
         $timeout(function() {
           spinnerState.loading = false;
           mapPromise.$$state.value.invalidateSize();
