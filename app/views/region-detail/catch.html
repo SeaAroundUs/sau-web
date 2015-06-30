@@ -26,7 +26,7 @@
     with the individual EEZs associated with the area presented here.</b>
   </p>
 
-    <div class="col col-sm-7">
+    <div ng-class="{ 'col-sm-7': region.name !== 'rfmo', 'col-sm-5': region.name === 'rfmo' }">
         <h3>Tonnage by</h3>
         <p ng-repeat="dim in dimensions">
             <a ng-click="setURLParams({chart: 'catch-chart', dimension: dim.value, measure: 'tonnage'})"
@@ -42,7 +42,7 @@
         </p>
     </div>
 
-    <div class="col-sm-5">
+    <div ng-class="{ 'col-sm-5': region.name !== 'rfmo', 'col-sm-7': region.name === 'rfmo' }">
       <div class="recon-ref" ng-show="region.name === 'eez'">
         <h3>Reconstruction Reference</h3>
         <p ng-repeat="doc in feature.data.reconstruction_documents">
