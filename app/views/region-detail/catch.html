@@ -60,9 +60,7 @@
       </div>
       <div class="rfmo-ref" ng-show="region.name === 'rfmo'">
         <p><a ng-href="{{ rfmoLinks.reportURL }}" target="_blank">
-          Cullis-Suzuki S and Pauly D (2009) Evaluating global regional fisheries management organizations:
-          Methodology and scoring. Fisheries Centre Working Paper #2009-12, Fisheries Centre, University of
-          British Columbia, Vancouver. 66 p.
+          <i class="fa fa-file-pdf-o red"></i> {{rfmoLinks.reportURL | fileOfUrl | breakUnderscores}}
         </a></p>
         <p><span class="disabled">
           Cullis-Suzuki S and Pauly D (2010) Failing the high seas: A global evaluation of regional fisheries
