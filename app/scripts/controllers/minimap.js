@@ -13,6 +13,10 @@ angular.module('sauWebApp')
       }
     });
 
+    $scope.faoLayers = [];
+    /** @type {Boolean} Used to determine whether the Rrose popup should open when hovering over a region. */
+    var isDisputedAreaPopupOpen = false;
+
     // add IFA boundaries
     var getIFA = function() {
       $scope.ifa = sauAPI.IFA.get({region_id: $scope.formModel.region_id}, function() {
@@ -126,9 +130,6 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.faoLayers = [];
-    var isDisputedAreaPopupOpen = false;
-
     var drawFAO = function() {
       $scope.removeFAO();
 
@@ -167,9 +168,12 @@ angular.module('sauWebApp')
     $scope.features.$promise.then(function() {
       // add features layer when loaded, then load IFA and FAO so they get painted on top
       leafletData.getMap('minimap').then(function(map) {
+
+        //Whenever a map popup closes, set unset a flag that indicates such.
         map.on('popupclose', function() {
           isDisputedAreaPopupOpen = false;
         });
+
         L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {
