@@ -28,8 +28,8 @@
     </div>
     <div class="pull-right header-links">
 
-      <span ng-show="(!declarationYear.enabled) && declarationYear.show"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
-      <span ng-show="declarationYear.enabled && declarationYear.show"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
+      <span ng-show="(!declarationYear.visible) && declarationYear.exists"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
+      <span ng-show="declarationYear.visible && declarationYear.exists"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
 
       <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
       <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>

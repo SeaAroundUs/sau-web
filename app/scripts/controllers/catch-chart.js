@@ -8,10 +8,10 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
   function ($scope, $rootScope, $filter, $location, $timeout, sauAPI, spinnerState, sauChartUtils, ga, createQueryUrl) {
 
     function init() {
-      $scope.declarationYear = {enabled: true};
-      if ($scope.region.name === 'eez') {
-        $scope.declarationYear.show = true;
-      }
+      $scope.declarationYear = {
+        visible: false,
+        exists: $scope.region.name === 'eez'
+      };
 
       $scope.$watch('formModel', onFormModelChange, true);
       $scope.$watch('color', $scope.updateColor);
@@ -38,7 +38,7 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
     };
 
     $scope.drawDeclarationYear = function() {
-      $scope.declarationYear.enabled = true;
+      $scope.declarationYear.visible = true;
       $timeout(function() {
         $scope.feature.$promise.then(function(){
           var decYear = Math.max(1950, $scope.feature.data.declaration_year);
@@ -69,14 +69,14 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       });
     };
     $scope.hideDeclarationYear = function() {
-      $scope.declarationYear.enabled = false;
+      $scope.declarationYear.visible = false;
       d3.select('.chart-container svg .nv-stackedarea g#declaration-year')
         .remove();
     };
     $scope.updateDeclarationYear = function() {
-      if ($scope.declarationYear.show && $scope.declarationYear.enabled) {
+      if ($scope.declarationYear.exists && $scope.declarationYear.visible) {
         $scope.drawDeclarationYear();
-      } else if ($scope.declarationYear.show && (!$scope.declarationYear.enabled)){
+      } else if ($scope.declarationYear.exists && (!$scope.declarationYear.visible)){
         $scope.hideDeclarationYear();
       }
     };
