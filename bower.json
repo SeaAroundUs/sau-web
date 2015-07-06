@@ -16,7 +16,7 @@
     "angular-bootstrap": "0.12.1",
     "angular-ui-bootstrap-bower": "0.12.1",
     "nvd3-community": "1.7.0",
-    "angular-nvd3": "https://github.com/klangfarbe/angular-nvd3.git#~0.1.0",
+    "angular-nvd3": "https://github.com/SeaAroundUs/angular-nvd3.git#6f2affa821b7b5093237153b786de2e3604b7979",
     "colorbrewer2": "*",
     "angular-cache": "3.2.5",
     "simple-statistics": "0.9.1",
