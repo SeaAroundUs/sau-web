@@ -56,10 +56,10 @@ angular.module('sauWebApp')
           var popup = createDisputedAreaPopup($scope.region.name, featureLayers);
 
           ga.sendEvent({
-              category: 'MiniMap Click',
-              action: $scope.region.name.toUpperCase(),
-              label: '(Disputed)'}
-          );
+            category: 'MiniMap Click',
+            action: $scope.region.name.toUpperCase(),
+            label: '(Disputed)'
+          });
 
           popup.setLatLng(latlng);
           map.openPopup(popup);
@@ -68,8 +68,8 @@ angular.module('sauWebApp')
           ga.sendEvent({
             category: 'MiniMap Click',
             action: $scope.region.name.toUpperCase(),
-            label: feature.properties.title}
-          );
+            label: feature.properties.title
+          });
 
           $scope.formModel.region_id = feature.properties.region_id;
           $scope.styleSelectedFeature();

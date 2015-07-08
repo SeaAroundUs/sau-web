@@ -3,7 +3,8 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapMaricultureCtrl', function ($scope, $rootScope, $q, $timeout, $location, sauAPI, mapConfig, leafletBoundsHelpers, leafletData, sauD3Utils) {
+  .controller('MiniMapMaricultureCtrl', function ($scope, $rootScope, $q, $timeout, $location, sauAPI, mapConfig,
+                                                  leafletBoundsHelpers, leafletData, sauD3Utils, ga) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -14,6 +15,12 @@ angular.module('sauWebApp')
     });
 
     var geojsonClick = function(feature) {
+      ga.sendEvent({
+        category: 'MiniMap Click',
+        action: 'Mariculture',
+        label: feature.country_name + ' (' + feature.title + ')'
+      });
+
       $scope.selectedProvince.feature = feature;
       $scope.$apply();
     };
