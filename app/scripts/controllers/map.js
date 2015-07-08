@@ -18,7 +18,8 @@ angular.module('sauWebApp')
                                     leafletBoundsHelpers,
                                     region,
                                     spinnerState,
-                                    createDisputedAreaPopup) {
+                                    createDisputedAreaPopup,
+                                    ga) {
 
     $scope.region = {name: region};
 
@@ -43,10 +44,24 @@ angular.module('sauWebApp')
 
       if (featureLayers.length > 1) {
         var popup = createDisputedAreaPopup($scope.region.name, featureLayers);
+
+        ga.sendEvent({
+          category: 'MainMap Click',
+          action: $scope.region.name.toUpperCase(),
+          label: '(Disputed)'
+        });
+
         popup.setLatLng(latlng);
         $scope.map.openPopup(popup);
       } else {
         var feature = featureLayers[0].feature;
+
+        ga.sendEvent({
+          category: 'MainMap Click',
+          action: $scope.region.name.toUpperCase(),
+          label: feature.properties.title
+        });
+
         $scope.regionSelect(feature.properties.region_id);
       }
     };
