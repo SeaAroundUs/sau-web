@@ -4,7 +4,8 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers, leafletData, createDisputedAreaPopup) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers,
+                                       leafletData, createDisputedAreaPopup, ga) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -57,6 +58,13 @@ angular.module('sauWebApp')
           map.openPopup(popup);
           isDisputedAreaPopupOpen = true;
         } else {
+          var props = feature.properties;
+          ga.sendEvent({
+            category: 'MiniMap Click',
+            action: props.region.toUpperCase(),
+            label: props.title}
+          );
+
           $scope.formModel.region_id = feature.properties.region_id;
           $scope.styleSelectedFeature();
 
