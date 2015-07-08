@@ -33,6 +33,15 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
+    $scope.dropDownSelect = function(props) {
+      ga.sendEvent({
+        category: 'MainMap DropDown Select',
+        action: $scope.region.name.toUpperCase(),
+        label: props.title
+      });
+      $scope.regionSelect(props.region_id);
+    };
+
     $scope.regionSelect = function(region_id) {
       $location.path('/' + $scope.region.name + '/' + region_id);
     };

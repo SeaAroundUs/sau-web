@@ -9,7 +9,7 @@
 
 <div id="search">
     <div id="search-inner">
-        <ui-select search-enabled="true" ng-right-click-disable on-select="regionSelect($item.properties.region_id)" ng-model="hoverRegion" theme="bootstrap">
+        <ui-select search-enabled="true" ng-right-click-disable on-select="dropDownSelect($item.properties)" ng-model="hoverRegion" theme="bootstrap">
           <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
           <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
             <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
