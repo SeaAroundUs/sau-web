@@ -177,7 +177,13 @@ angular.module('sauWebApp').controller('MultiChartCtrl',
           $scope.formModel.dimension.label :
           $scope.formModel.dimension.overrideLabel;
         var chartTitle = $scope.formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
-        chartTitle += 'waters of selected ' + $location.search().region.toUpperCase() + 's';
+
+        if ($location.search().region === 'highseas') {
+          chartTitle += 'non-eez waters of selected high seas regions';
+        } else {
+          chartTitle += 'waters of selected ' + $location.search().region + 's';
+        }
+
         $scope.updateChartTitle(chartTitle);
 
       }, function() {
