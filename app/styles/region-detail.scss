@@ -5,7 +5,6 @@
     color: black;
 
     .download-div {
-      display: table;
       text-align: right;
 
       button {
@@ -36,6 +35,8 @@
     }
     .title.row {
         margin-top: 30px;
+        margin-left: 55px;
+        margin-right: 55px;
     }
     div.content {
         background-color: white;

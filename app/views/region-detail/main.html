@@ -1,10 +1,13 @@
 <div class="region-detail {{region.name}}">
     <div class="title row">
-        <h1 id="region-title" class="region-title pull-left" ng-bind="chartTitle"></h1>
-        <div class="download-div pull-right">
-          <button ng-show="showDownload" class="btn btn-primary" ng-click="openDownloadDataModal()"
-                  ga-event="downloadModalGA">Download Data</button>
-          <feedback></feedback>
+        <div class="col-md-10">
+            <h1 id="region-title" class="region-title" ng-bind="chartTitle"></h1>
+        </div>
+        <div class="col-md-2">
+            <div class="download-div pull-right">
+                <button ng-show="showDownload" class="btn btn-primary" ng-click="openDownloadDataModal()" ga-event="downloadModalGA">Download Data</button>
+                <feedback></feedback>
+            </div>
         </div>
     </div>
 
