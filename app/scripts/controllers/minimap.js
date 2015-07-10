@@ -62,8 +62,14 @@ angular.module('sauWebApp')
           });
 
           popup.setLatLng(latlng);
-          map.openPopup(popup);
-          isDisputedAreaPopupOpen = true;
+          //I have to open the disputed area popup on a timeout due to a bug that occurs in Chrome on Windows (only).
+          //If a popup closes and then opens in the same tick, then the "popupclose" event doesn't fire.
+          //If the popupclose event doesn't fire, then the hover popup won't close, resulting in both popups being open at the same time.
+          $timeout(function() {
+            map.openPopup(popup);
+            isDisputedAreaPopupOpen = true;
+          });
+
         } else {
           ga.sendEvent({
             category: 'MiniMap Click',
