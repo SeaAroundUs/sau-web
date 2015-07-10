@@ -15,6 +15,7 @@ angular.module('sauWebApp')
       Region: resourceFactory(':region/:region_id'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
+      AccessAgreementInternal: resourceFactory('eez/:region_id/access-agreement-internal/'),
       CountryProfile: resourceFactory('country/:region_id'),
       Mariculture: resourceFactory('mariculture/:region_id'),
       MaricultureData: resourceFactory('mariculture/:dimension/:entity_id'),

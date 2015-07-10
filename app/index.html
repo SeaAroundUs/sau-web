@@ -42,6 +42,7 @@
     <link rel="stylesheet" href="styles/sau-multi-select.css" />
     <link rel="stylesheet" href="styles/sau-selected-options.css" />
     <link rel="stylesheet" href="styles/procedure-outcome.css" />
+    <link rel="stylesheet" href="styles/internal-fishing-access.css" />
     <!-- endbuild -->
 
     <!-- old browser detection -->
@@ -124,6 +125,12 @@
               Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.php">here</a>
               to navigate to our site that does not require Javascript.
             </noscript>
+          </div>
+
+          <!-- This is the equivelant of a 404, used when a route change fails. -->
+          <div style="padding: 0 50px" ng-show="routeError" ng-cloak>
+            <h1>There's nothing here</h1>
+            <p>It looks like there is no web page at this address. If you copied and pasted a URL, please make sure it is correct.</p>
           </div>
 
           <div id="footer" class="clearfix">
@@ -233,6 +240,7 @@
     <script src="scripts/controllers/advanced-search/adv-search-fishing-country.js"></script>
     <script src="scripts/controllers/advanced-search/adv-search-country.js"></script>
     <script src="scripts/controllers/multi-chart.js"></script>
+    <script src="scripts/controllers/internal-fishing-access.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -278,6 +286,7 @@
     <script src="scripts/services/metric-links.js"></script>
     <script src="scripts/services/region-toggles.js"></script>
     <script src="scripts/services/disputed-area-popup.js"></script>
+    <script src="scripts/services/fishing-access-service.js"></script>
 
     <script src="scripts/directives/sau-multi-select.js"></script>
     <script src="scripts/directives/sau-selected-options.js"></script>

@@ -6,6 +6,7 @@
     .controller('RootCtrl', function ($scope, $location) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
+        $scope.routeError = false;
         $scope.showCBDLogo = location.$$route &&
           (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
            location.$$route.controller === 'MarineTrophicIndexSearchCtrl');
@@ -17,6 +18,10 @@
           $scope.templates[0].class = 'selected';
           $scope.templates[3].class = '';
         }
+      });
+
+      $scope.$on('$routeChangeError', function(event, current, previous, rejection) {
+        $scope.routeError = true;
       });
 
       var hiddenData = {

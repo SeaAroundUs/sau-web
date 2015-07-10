@@ -22,6 +22,9 @@
           case 'catch-reconstruction-and-allocation-methods/taxon-distributions':
             scope.url = '/catch-reconstruction-and-allocation-methods/#_Toc421534359';
             break;
+          case 'catch-reconstruction-and-allocation-methods/foreign-fishing-access':
+            scope.url = '/catch-reconstruction-and-allocation-methods/#_Toc421534365';
+            break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }
