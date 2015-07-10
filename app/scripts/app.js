@@ -70,6 +70,18 @@ angular
         controller: 'EstuariesCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/internal-fishing-access', {
+        templateUrl: 'views/internal-fishing-access.html',
+        controller: 'InternalFishingAccessCtrl',
+        resolve: {
+          agreements: function($route, sauAPI) {
+            return sauAPI.AccessAgreementInternal.get({'region_id': $route.current.params.id}).$promise;
+          },
+          region: function($route, sauAPI) {
+            return sauAPI.Region.get({'region': 'eez', 'region_id': $route.current.params.id}).$promise;
+          }
+        }
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
