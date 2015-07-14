@@ -25,11 +25,11 @@ angular.module('sauWebApp')
   })
   .factory('fishingAccess', function() {
     return {
-      getFishingCountries: function(apiResponse) {
+      getFishingCountries: function(agreements) {
         var a = [];
-        for (var i = 0; i < apiResponse.data.length; i++) {
-          if (a.indexOf(apiResponse.data[i].fishing_name) === -1) {
-            a.push(apiResponse.data[i].fishing_name);
+        for (var i = 0; i < agreements.length; i++) {
+          if (a.indexOf(agreements[i].fishing_name) === -1) {
+            a.push(agreements[i].fishing_name);
           }
         }
         return a.sort();
