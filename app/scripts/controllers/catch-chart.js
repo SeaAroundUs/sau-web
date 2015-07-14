@@ -193,7 +193,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             window.prerenderReady = true;
           });
 
-
           // chart ordering home country, then host country
         } else if (data_options.dimension === 'country') {
           data.data.forEach(function(country) {
