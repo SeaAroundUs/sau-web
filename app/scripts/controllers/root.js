@@ -20,7 +20,7 @@
         }
       });
 
-      $scope.$on('$routeChangeError', function(event, current, previous, rejection) {
+      $scope.$on('$routeChangeError', function() {
         $scope.routeError = true;
       });
 
