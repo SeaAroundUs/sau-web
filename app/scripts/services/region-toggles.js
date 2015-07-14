@@ -28,7 +28,9 @@
         showFAOEEZLinks: false
       }),
 
-      highseas: angular.extend({}, defaultToggles, {}),
+      highseas: angular.extend({}, defaultToggles, {
+        showFAOEEZLinks: false
+      }),
 
       rfmo: angular.extend({}, defaultToggles, {
         showFAOAndLegend: false
