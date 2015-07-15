@@ -1,7 +1,9 @@
 <div class="container" id="marine-trophic-index">
     <div class="title row">
       <h2 id="mti-title" class="pull-left">
-        Marine Trophic Index of the catch in the waters of <span ng-bind="region.data.title"></span>
+        Marine Trophic Index of the catch in the waters of
+        <span ng-bind="region.data.title"></span>
+        <span ng-show="regionType === 'global'">the Global Ocean</span>
         {{ withExclusions? " with exclusions" : "" }}
       </h2>
       <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
