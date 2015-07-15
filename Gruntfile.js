@@ -60,8 +60,8 @@ module.exports = function (grunt) {
       qa: {
         constants: {
           SAU_CONFIG: {
-            apiURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/api/v1/',
-            authURL: 'http://sau-web-mt-qa-env.elasticbeanstalk.com/account/',
+            apiURL: 'http://sau-web-lb-qa-892050803.us-west-2.elb.amazonaws.com/api/v1/',
+            authURL: 'http://sau-web-lb-qa-892050803.us-west-2.elb.amazonaws.com/account/',
             buildNumber: buildNumber
           }
         }
