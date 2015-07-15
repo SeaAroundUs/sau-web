@@ -18,12 +18,12 @@ angular.module('sauWebApp')
      * @param  {Any} value The agreement data item.
      * @return {Boolean} True if the agreement should be shown in the table. False otherwise.
      */
-    $scope.hidePreFishingCountries = function (agreement) {
-      return $scope.filterFishingCountriesPre[$scope.fishingCountries.pre.indexOf(agreement.fishing_name)];
+    $scope.filterPreAgreements = function (agreement) {
+      return isAgreementVisible(agreement, 'pre');
     };
 
-    $scope.hidePostFishingCountries = function (agreement) {
-      return $scope.filterFishingCountriesPost[$scope.fishingCountries.post.indexOf(agreement.fishing_name)];
+    $scope.filterPostAgreements = function (agreement) {
+      return isAgreementVisible(agreement, 'post');
     };
 
     /**
@@ -32,9 +32,25 @@ angular.module('sauWebApp')
      */
     $scope.setAllCountriesVisibility = function(countries, visible) {
       for (var i = 0; i < countries.length; i++) {
-        countries[i] = visible;
+        countries[i].visible = visible;
       }
     };
+
+    /**
+     * Determines if an agreement should be visible, based on the checkbox data.
+     * @param  {Object}  agreement Agreement data object
+     * @param  {string}  category  "pre" or "post"
+     * @return {Boolean}           Whether or not this agreement should be visible in the category's table.
+     */
+    function isAgreementVisible(agreement, category) {
+      for (var i = 0; i < $scope.fishingCountries[category].length; i++) {
+        var country = $scope.fishingCountries[category][i];
+        if (country.name === agreement.fishing_name) {
+          return country.visible;
+        }
+      }
+      return false;
+    }
 
     /** @type {String} Used to display the name of this EEZ. */
     $scope.regionName = region.data.title;
@@ -51,16 +67,4 @@ angular.module('sauWebApp')
       pre: fishingAccess.getFishingCountries($scope.agreements.pre),
       post: fishingAccess.getFishingCountries($scope.agreements.post)
     };
-
-    var i;
-    /** @type {Array} A boolean value mapping to the fishingCountries array, which represents that country's visibility in the table. */
-    $scope.filterFishingCountriesPre = [];
-    for (i = 0; i < $scope.fishingCountries.pre.length; i++) {
-      $scope.filterFishingCountriesPre[i] = true;
-    }
-
-    $scope.filterFishingCountriesPost = [];
-    for (i = 0; i < $scope.fishingCountries.post.length; i++) {
-      $scope.filterFishingCountriesPost[i] = true;
-    }
   });

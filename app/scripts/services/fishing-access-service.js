@@ -26,13 +26,26 @@ angular.module('sauWebApp')
   .factory('fishingAccess', function() {
     return {
       getFishingCountries: function(agreements) {
+
+        //Go through all the agreements and create a sorted array of countries.
         var a = [];
         for (var i = 0; i < agreements.length; i++) {
           if (a.indexOf(agreements[i].fishing_name) === -1) {
             a.push(agreements[i].fishing_name);
           }
         }
-        return a.sort();
+        a.sort();
+
+        //Give our list of countries a visibility flag for filtering the fishing access tables.
+        var b = [];
+        for (i = 0; i < a.length; i++) {
+          b.push({
+            name: a[i],
+            visible: true
+          });
+        }
+
+        return b;
       }
     };
   });

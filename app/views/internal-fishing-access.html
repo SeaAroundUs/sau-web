@@ -11,11 +11,11 @@
 					<div class="dropdown-toggle" dropdown-toggle>Fishing Country <i class="fa fa-sort-desc filter-arrow"></i></div>
 					<div class="dropdown-menu" ng-click="preventPopupAutoClose($event)">
 						<div class="bulk-toggle-controls">
-							<a href ng-click="setAllCountriesVisibility(filterFishingCountriesPost, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(filterFishingCountriesPost, false)">Select none</a>
+							<a href ng-click="setAllCountriesVisibility(fishingCountries.post, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(fishingCountries.post, false)">Select none</a>
 						</div>
 						<ul class="list-unstyled">
 							<li ng-repeat="x in fishingCountries.post" class="fishing-country-toggle">
-								<label><input type="checkbox" ng-model="filterFishingCountriesPost[$index]"> {{x}}</label>
+								<label><input type="checkbox" ng-model="x.visible"> {{x.name}}</label>
 							</li>
 						</ul>
 					</div>
@@ -30,7 +30,7 @@
 			<th>Target Group</th>
 			<th>Source Link</th>
 		</tr>
-		<tr ng-repeat="x in agreements.post | filter: hidePostFishingCountries">
+		<tr ng-repeat="x in agreements.post | filter: filterPostAgreements">
 			<td>{{x.fishing_name}}</td>
 			<td>{{x.notes}}</td>
 			<td>{{agreementFishingAccessTypes[x.fishing_access]}}</td>
@@ -57,11 +57,11 @@
 					<div class="dropdown-toggle" dropdown-toggle>Fishing Country <i class="fa fa-sort-desc filter-arrow"></i></div>
 					<div class="dropdown-menu" ng-click="preventPopupAutoClose($event)">
 						<div class="bulk-toggle-controls">
-							<a href ng-click="setAllCountriesVisibility(filterFishingCountriesPre, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(filterFishingCountriesPre, false)">Select none</a>
+							<a href ng-click="setAllCountriesVisibility(fishingCountries.pre, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(fishingCountries.pre, false)">Select none</a>
 						</div>
 						<ul class="list-unstyled">
 							<li ng-repeat="x in fishingCountries.pre" class="fishing-country-toggle">
-								<label><input type="checkbox" ng-model="filterFishingCountriesPre[$index]"> {{x}}</label>
+								<label><input type="checkbox" ng-model="x.visible"> {{x.name}}</label>
 							</li>
 						</ul>
 					</div>
@@ -76,7 +76,7 @@
 			<th>Target Group</th>
 			<th>Source Link</th>
 		</tr>
-		<tr ng-repeat="x in agreements.pre | filter: hidePreFishingCountries">
+		<tr ng-repeat="x in agreements.pre | filter: filterPreAgreements">
 			<td>{{x.fishing_name}}</td>
 			<td>{{x.notes}}</td>
 			<td>{{agreementFishingAccessTypes[x.fishing_access]}}</td>
