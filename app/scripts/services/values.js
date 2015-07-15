@@ -80,6 +80,16 @@ angular.module('sauWebApp')
           attribution: ''
         }
       }
+    },
+    worldBounds: {
+      southWest: {
+        lat: -90,
+        lng: -190
+      },
+      northEast: {
+        lat: 90,
+        lng: 190
+      }
     }
   })
   .value('externalURLs',

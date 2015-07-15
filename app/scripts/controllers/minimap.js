@@ -15,6 +15,7 @@ angular.module('sauWebApp')
     });
 
     $scope.faoLayers = [];
+    $scope.maxbounds = mapConfig.worldBounds;
     /** @type {Boolean} Used to determine whether the Rrose popup should open when hovering over a region. */
     var isDisputedAreaPopupOpen = false;
 

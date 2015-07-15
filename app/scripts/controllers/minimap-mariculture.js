@@ -11,7 +11,8 @@ angular.module('sauWebApp')
       layers: {
         baselayers: mapConfig.baseLayers
       },
-      provinceLayers: []
+      provinceLayers: [],
+      maxbounds: mapConfig.worldBounds
     });
 
     var geojsonClick = function(feature) {
