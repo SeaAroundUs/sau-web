@@ -21,7 +21,6 @@ angular.module('sauWebApp')
     $scope.filterPreAgreements = function (agreement) {
       return isAgreementVisible(agreement, 'pre');
     };
-
     $scope.filterPostAgreements = function (agreement) {
       return isAgreementVisible(agreement, 'post');
     };
