@@ -15,7 +15,7 @@ angular.module('sauWebApp')
     function createOverlappingAreaPopup(regionType, featureLayers, prefix) {
       var content = prefix;
       content += featureLayers.map(function(l) {return createRegionDetailLink(regionType, l.feature.properties.region_id, l.feature.properties.title);}).join(', ');
-      return new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false }).setContent(content);
+      return new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false, xEdge: 175, yEdge: 135 }).setContent(content);
     }
 
     function createRegionDetailLink(regionType, regionId, regionName) {
