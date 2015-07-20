@@ -8,13 +8,6 @@ angular.module('sauWebApp')
       '3': 'unilateral',
       '4': 'reciprocal'
     })
-  .value('agreementFishingAccessTypes',
-    {
-      'AA': 'actual',
-      'OA': 'observed agreement',
-      'OF': 'observed fishing',
-      'IF': 'illegal fishing'
-    })
   .value('agreementTypes',
   {
     '1': 'bilateral',

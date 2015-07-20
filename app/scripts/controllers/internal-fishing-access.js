@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .controller('InternalFishingAccessCtrl', function($scope, $location, $anchorScroll, agreements, region, agreementAccessTypes, agreementFishingAccessTypes, agreementTypes, fishingAccess) {
+  .controller('InternalFishingAccessCtrl', function($scope, $location, $anchorScroll, agreements, region,
+                                                    agreementAccessTypes, agreementTypes, fishingAccess) {
     /**
      * Fixes a bug with the Bootstrap-UI Dropdown component where the popup closes when you click inside of it.
      * See https://github.com/angular-ui/bootstrap/issues/3854
@@ -57,8 +58,6 @@ angular.module('sauWebApp')
     $scope.agreements = agreements.data;
     /** @type {Enum} See the requirements doc. */
     $scope.agreementAccessTypes = agreementAccessTypes;
-    /** @type {Enum} See the requirements doc. */
-    $scope.agreementFishingAccessTypes = agreementFishingAccessTypes;
     /** @type {Enum} See the requirements doc. */
     $scope.agreementTypes = agreementTypes;
     /** @type {Array} Alphabetical list of the countries that have an agreement with this EEZ. */
