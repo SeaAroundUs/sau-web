@@ -41,7 +41,7 @@
 			</tr>
 			<tr ng-repeat="x in agreements.post | filter: filterPostAgreements">
 				<td>{{x.fishing_name}}</td>
-				<td>{{x.notes}}</td>
+				<td>{{x.title}}</td>
 				<td>{{x.fishing_access}}</td>
 				<td>{{agreementAccessTypes[x.access_type]}}</td>
 				<td>{{agreementTypes[x.agreement_type]}}</td>
@@ -96,7 +96,7 @@
 			</tr>
 			<tr ng-repeat="x in agreements.pre | filter: filterPreAgreements">
 				<td>{{x.fishing_name}}</td>
-				<td>{{x.notes}}</td>
+				<td>{{x.title}}</td>
 				<td>{{x.fishing_access}}</td>
 				<td>{{agreementAccessTypes[x.access_type]}}</td>
 				<td>{{agreementTypes[x.agreement_type]}}</td>
