@@ -124,6 +124,8 @@ angular.module('sauWebApp')
       $scope.region.name = region;
       $location.path('/' + $scope.region.name, false);
       $scope.getFeatures();
+      //Close any map "popups" when changing region maps.
+      $scope.map.closePopup();
     };
 
     $scope.changeRegionGlobal = function() {
