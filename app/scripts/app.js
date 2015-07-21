@@ -222,7 +222,8 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'multi';}}
       })
-      .when('/signup/', {
+      //RE-ENABLE WHEN IMPLEMENTING AUTH
+      /*.when('/signup/', {
         templateUrl: 'views/auth/signup.html',
         controller: 'SignUpCtrl',
       })
@@ -245,7 +246,7 @@ angular
       .when('/new-password/:code', {
         templateUrl: 'views/auth/new-password.html',
         controller: 'NewPasswordCtrl'
-      })
+      })*/
       .otherwise({
         redirectTo: '/'
       });
