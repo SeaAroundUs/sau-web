@@ -1,0 +1,55 @@
+<div id="region-data-catch-chart">
+  <div ng-show="noData" class="chart-container no-data">
+    <p ng-bind="noDataMessage"></p>
+  </div>
+
+  <div ng-hide="noData" class="chart-container form-inline" spinner>
+    <i class="fa fa-spinner fa-spin loading fa-5x"></i>
+
+    <div class="form-group">
+      <label for="dimension">Dimension</label>
+      <select ng-model="formModel.dimension"
+              ng-options="opt as opt.label for opt in dimensions"
+              ng-change="dropdownGA('Dimension', formModel.dimension.label)"
+              class="form-control" id="dimension"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="measure">Measure</label>
+      <select ng-model="formModel.measure"
+              ng-options="opt as opt.label for (measure, opt) in measures"
+              ng-change="dropdownGA('Measure', formModel.measure.label)"
+              class="form-control" id="measure"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="limit">Limit</label>
+      <select ng-model="formModel.limit"
+              ng-options="opt as opt.label for opt in limits"
+              ng-change="dropdownGA('Limit', formModel.limit.label)"
+              class="form-control" id="limit"></select>
+    </div>
+
+    <div class="form-group">
+      <label for="color">Color scheme</label>
+      <select ng-model="color"
+              ng-options="c for (c,value) in colors"
+              ng-change="dropdownGA('Color')"
+              class="form-control" id="color"></select>
+    </div>
+
+    <div class="pull-right header-links">
+      <span ng-show="(!declarationYear.visible) && declarationYear.exists"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
+      <span ng-show="declarationYear.visible && declarationYear.exists"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
+
+      <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
+      <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
+
+      <method anchor="13"></method><br />
+    </div>
+
+    <div>
+      <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
+    </div>
+  </div>
+</div>

@@ -155,8 +155,8 @@ angular
         resolve: {region: function() {return 'highseas';}}
       })
       .when('/global', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
+        templateUrl: 'views/region-data/main.html',
+        controller: 'RegionDataCtrl',
         reloadOnSearch: false,
         resolve: {region: function() {return 'global';}}
       })
