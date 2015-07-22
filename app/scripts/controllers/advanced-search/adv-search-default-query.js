@@ -55,16 +55,16 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   $scope.sectionConfig = {
     eez: {
       regionType: 'eez',
-      regionListTitle: 'EEZ regions',
-      selectedListTitle: 'Selected EEZ regions',
-      searchPlaceholder: 'Search EEZ regions',
+      regionListTitle: 'EEZs',
+      selectedListTitle: 'Selected EEZs',
+      searchPlaceholder: 'Search EEZs',
       selectionLimit: 10
     },
     lme: {
       regionType: 'lme',
-      regionListTitle: 'LME regions',
-      selectedListTitle: 'Selected LME regions',
-      searchPlaceholder: 'Search LME regions',
+      regionListTitle: 'LMEs',
+      selectedListTitle: 'Selected LMEs',
+      searchPlaceholder: 'Search LMEs',
       selectionLimit: 10
     }
   };
