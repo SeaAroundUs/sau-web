@@ -21,6 +21,8 @@ angular.module('sauWebApp')
                                     createDisputedAreaPopup,
                                     ga) {
 
+    var geoJSONLayer;
+
     $scope.region = {name: region};
 
     if ($routeParams.id || $location.path() === '/global') {
@@ -137,8 +139,6 @@ angular.module('sauWebApp')
       return viewLocation === $location.path();
     };
 
-    $scope.geojson = {};
-
     $scope.getFeatures = function() {
       spinnerState.loading = true;
       $scope.features = sauAPI.Regions.get({region:$scope.region.name});
@@ -156,11 +156,41 @@ angular.module('sauWebApp')
           });
         }
 
-        angular.extend($scope, {
-          geojson: {
-            data: $scope.features.data,
-            style: mapConfig.defaultStyle
+        leafletData.getMap('mainmap').then(function(map) {
+          if (geoJSONLayer) {
+            map.removeLayer(geoJSONLayer);
           }
+
+          angular.extend($scope, {
+            geojson: {
+              data: $scope.features.data,
+              style: mapConfig.defaultStyle
+            }
+          });
+
+          var geoJSONOptions = {
+            style: mapConfig.defaultStyle,
+            /*
+            onEachFeature: function (feature, layer) {
+              layer.on({
+                click: function (event) {
+                  geojsonClick(feature, event.latlng);
+                },
+                mouseover: function (event) {
+                  geojsonMouseover(event, feature, map);
+                },
+                mousemove: function (event) {
+                  geojsonMouseover(event, feature, map);
+                },
+                mouseout: function (event) {
+                  geojsonMouseout(event, feature, map);
+                }
+              });
+            }*/
+          };
+
+          geoJSONLayer = L.geoJson($scope.features.data, geoJSONOptions);
+          geoJSONLayer.addTo(map);
         });
 
         $timeout(function() {
