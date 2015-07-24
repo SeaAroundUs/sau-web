@@ -39,7 +39,7 @@
 				<th>Target Group</th>
 				<th>Source Link</th>
 			</tr>
-			<tr ng-repeat="x in agreements.post | filter: filterPostAgreements">
+			<tr ng-repeat="x in agreements.post | filter: filterPostAgreements | orderBy: 'fishing_name'">
 				<td>{{x.fishing_name}}</td>
 				<td>{{x.title}}</td>
 				<td>{{x.fishing_access}}</td>
@@ -94,7 +94,7 @@
 				<th>Target Group</th>
 				<th>Source Link</th>
 			</tr>
-			<tr ng-repeat="x in agreements.pre | filter: filterPreAgreements">
+			<tr ng-repeat="x in agreements.pre | filter: filterPreAgreements | orderBy: 'fishing_name'">
 				<td>{{x.fishing_name}}</td>
 				<td>{{x.title}}</td>
 				<td>{{x.fishing_access}}</td>
