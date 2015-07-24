@@ -1,0 +1,18 @@
+<div ng-controller="AdvSearchFishingCountryCtrl">
+	<adv-search-section-title>Fishing countries</adv-search-section-title>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<sau-multi-select limit="selectionLimit" label-key="name" data="countryList.data" search-placeholder="Search Fishing countries" selected="selectedCountries"></sau-multi-select>
+		</div>
+		<div class="col-sm-6">
+			<sau-selected-options label-key="name" title="Selected fishing countries ({{selectedCountries.length}}/{{selectionLimit}})" selected="selectedCountries"></sau-selected-options>
+		</div>
+	</div>
+
+	<adv-search-dimension-param region-id="'fishingCountry'" selected-dimension="selectedDimension" use-scientific-name="useScientificName" model-changed="queryChanged()"></adv-search-dimension-param>
+
+	<adv-search-measure-param region-id="'fishingCountry'" selected-measure="selectedMeasure" model-changed="queryChanged()"></adv-search-measure-param>
+
+	<adv-search-dimension-limit-param region-id="'fishingCountry'" selected-limit="selectedLimit" model-changed="queryChanged()" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+</div>

@@ -2,14 +2,14 @@
     <span> Show Search Region: </span>
     <a ng-class="{ active: region.name=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
     <a ng-class="{ active: region.name=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
-    <!-- <a ng-class="{ active: region.name=='rfmo'}" class="btn btn-default disabled" ng-click="" role="button">RFMO</a> -->
+    <a ng-class="{ active: region.name=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
     <a ng-class="{ active: region=='highseas'}" class="btn btn-default disabled" ng-click="changeRegion('highseas')" role="button">High Seas</a>
     <a ng-class="{ active: region.name=='global'}" class="btn btn-default disabled" ng-click="changeRegionGlobal()" role="button">Global</a>
 </div>
 
 <div id="search">
     <div id="search-inner">
-        <ui-select search-enabled="true" ng-right-click-disable on-select="regionSelect($item.properties.region_id)" ng-model="hoverRegion" theme="bootstrap">
+        <ui-select search-enabled="true" ng-right-click-disable on-select="dropDownSelect($item.properties)" ng-model="hoverRegion" theme="bootstrap">
           <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
           <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
             <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>

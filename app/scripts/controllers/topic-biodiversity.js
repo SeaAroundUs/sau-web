@@ -10,7 +10,8 @@
 
     $scope.regions = [
       {title: 'EEZ', value: 'eez'},
-      {title: 'LME', value: 'lme'}
+      {title: 'LME', value: 'lme'},
+      {title: 'RFMO', value: 'rfmo'}
     ];
 
     $scope.selectedRegion = $scope.regions[0];
@@ -21,6 +22,12 @@
 
       var data = sauAPI.Regions.get({region: $scope.selectedRegion.value, nospatial: true}, function() {
         $scope.subregions = data.data;
+        if ($scope.regionName === 'rfmo') {
+          data.data = data.data.map(function(datum) {
+            datum.title = datum.long_title + ' (' + datum.title + ')';
+            return datum;
+          });
+        }
         $scope.subregions.unshift({title: '-- All regions --', id: 0});
         $scope.selectedSubregion = data.data[0];
       });

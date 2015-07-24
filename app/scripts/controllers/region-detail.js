@@ -2,7 +2,10 @@
 
 angular.module('sauWebApp').controller('RegionDetailCtrl',
   function ($scope, $rootScope, $q, $routeParams, mapConfig, $location, $window, $timeout,
-            sauAPI, insetMapLegendData, externalURLs, $modal, region, regionDimensions, regionMeasures, regionDimensionLimits) {
+            sauAPI, insetMapLegendData, $modal, region, regionDimensions, regionMeasures,
+            regionDimensionLimits, regionTabs, metricLinks, regionToggles, externalURLs) {
+
+    $scope.toggles = regionToggles.getToggles(region);
 
     $scope.region = {name: region};
     $scope.showDownload = false;
@@ -36,13 +39,19 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
       if ($location.search().chart) {
         setChartFromURLParams();
+      } else if ($scope.region.name === 'multi') {
+        $location.search({
+          chart: getDefaultChartId(),
+          region: $location.search().region,
+          id: $location.search().id
+        }).replace();
       } else {
         $location.search({chart: getDefaultChartId()}).replace();
       }
     }
 
     $scope.getFeatures = function() {
-      if (region === 'mariculture') {
+      if ($scope.region.name === 'mariculture') {
 
         $scope.countryFeatures = sauAPI.Regions.get({region: 'mariculture'});
         $scope.features = sauAPI.Mariculture.get({region_id: $scope.formModel.region_id});
@@ -65,6 +74,9 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           $scope.noData = true;
         });
 
+      } else if ($scope.region.name === 'multi') {
+        angular.noop(); //TODO ?
+
       } else {
         $scope.features = sauAPI.Regions.get({region:$scope.region.name});
         $scope.features.$promise.then(function(data) {
@@ -84,34 +96,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       zoom: 3
     };
 
-    var tabs = {
-      catchInfo: {title: 'Catch Info', template:'views/region-detail/catch.html'},
-      biodiversity: {title: 'Biodiversity', template: 'views/region-detail/biodiversity.html'},
-      biodiversityLME: {title: 'Biodiversity', template: 'views/region-detail/biodiversity-lme.html'},
-      biodiversityGlobal: {title: 'Biodiversity', template: 'views/region-detail/biodiversity-global.html'},
-      ecosystems: {title: 'Ecosystems', template: 'views/region-detail/ecosystems.html'},
-      ecosystemsLME: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-lme.html'},
-      ecosystemsHighSeas: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-highseas.html'},
-      ecosystemsGlobal: {title: 'Ecosystems', template: 'views/region-detail/ecosystems-global.html'},
-      governance: {title: 'Governance', template: 'views/region-detail/governance.html'},
-      indicators: {title: 'Indicators', template: 'views/region-detail/indicators.html'},
-      indicatorsLME: {title: 'Indicators', template: 'views/region-detail/indicators-lme.html'},
-      indicatorsHighSeas: {title: 'Indicators', template: 'views/region-detail/indicators-highseas.html'},
-      indicatorsGlobal: {title: 'Indicators', template: 'views/region-detail/indicators-global.html'},
-      productionInfo: {title: 'Production Info', template: 'views/region-detail/production-info.html'},
-      otherTopics: {title: 'Other Topics', template: 'views/region-detail/other-topics.html'},
-      feedback: {title: 'Feedback', template: 'views/region-detail/feedback.html'}
-    };
-
-    $scope.metricLinks = {
-      'EEZ area': externalURLs.areaDef + '#_Toc421807899',
-      'LME area': externalURLs.areaDef + '#_Toc421807917',
-      'Shelf Area': externalURLs.areaDef + '#_Toc421807905',
-      'Inshore Fishing Area (IFA)': externalURLs.areaDef + '#_Toc421807906',
-      'Coral Reefs': externalURLs.areaDef + '#_Toc421807907',
-      'Seamounts': externalURLs.areaDef + '#_Toc421807908',
-      'Primary production': externalURLs.areaDef + '#_Toc421807913'
-    };
+    $scope.metricLinks = metricLinks;
 
     $scope.mapLayers = {
       selectedFAO: undefined,
@@ -121,7 +106,6 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       $scope.mapLayers.selectedFAO = fao.id;
     };
 
-    $scope.eezManualURL = externalURLs.manual + '#15';
     $scope.apiOrigin = (function() {
       var pathArray = sauAPI.apiURL.split('/');
       return pathArray[0] + '//' + pathArray[2];
@@ -139,58 +123,24 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
     $scope.legendKeys = insetMapLegendData[$scope.region.name];
 
-    if ($scope.region.name === 'global') {
-      $scope.tabs = [
-        tabs.catchInfo,
-        tabs.biodiversityGlobal,
-        tabs.ecosystemsGlobal,
-        tabs.indicatorsGlobal,
-        tabs.otherTopics
-      ];
-    } else if ($scope.region.name === 'rfmo') {
-      $scope.tabs = [
-        tabs.catchInfo,
-        tabs.governance
-      ];
-    } else if ($scope.region.name === 'lme') {
-      $scope.tabs = [
-        tabs.catchInfo,
-        tabs.biodiversityLME,
-        tabs.ecosystemsLME,
-        tabs.indicatorsLME
-      ];
-    } else if ($scope.region.name === 'highseas') {
-      $scope.tabs = [
-        tabs.catchInfo,
-        tabs.ecosystemsHighSeas,
-        tabs.indicatorsHighSeas
-      ];
-    } else if ($scope.region.name === 'mariculture') {
-      $scope.tabs = [
-        tabs.productionInfo
-      ];
-    } else {
-      $scope.tabs = [
-        tabs.catchInfo,
-        tabs.biodiversity,
-        tabs.ecosystems,
-        tabs.governance,
-        tabs.indicators
-      ];
-    }
+    $scope.tabs = regionTabs.getRegionTabs($scope.region.name);
 
-    for (var i=0; i<$scope.tabs.length; i++) {
-      $scope.tabs[i].active = false;
-    }
-    if ($routeParams.tab) {
-      // allow ?tab=N to select the Nth tab on load. Until we can
-      // fully support tabs changing this query parameter,
-      // just immediately drop the parameter from the search
-      // args to avoid confusion with the URL.  --jls
-      $scope.tabs[$routeParams.tab].active = true;
-      $location.search('tab', null);
-    } else {
-      $scope.tabs[0].active = true;
+    if ($scope.tabs.length) {
+      for (var i=0; i<$scope.tabs.length; i++) {
+        $scope.tabs[i].active = false;
+      }
+
+      if ($routeParams.tab) {
+        // allow ?tab=N to select the Nth tab on load. Until we can
+        // fully support tabs changing this query parameter,
+        // just immediately drop the parameter from the search
+        // args to avoid confusion with the URL.  --jls
+        $scope.tabs[$routeParams.tab].active = true;
+        $location.search('tab', null);
+
+      } else {
+        $scope.tabs[0].active = true;
+      }
     }
 
     //TODO Move this data into chart controllers, as not all region-detail views are applicable to this data.
@@ -227,12 +177,28 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
       if ($scope.region.name === 'mariculture') {
         $scope.feature = sauAPI.Region.get({region: 'mariculture', region_id: $scope.formModel.region_id});
+
+      } else if ($scope.region.name === 'multi') {
+        //TODO ?
+
       } else {
         $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO});
         $scope.feature.$promise.then(function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
             $scope.feature.data.fishbase_id = $scope.feature.data.id;
+          }
+          if ($scope.region.name === 'rfmo') {
+            $scope.feature.data.metrics = $scope.feature.data.metrics.filter(function(metric) {
+              return metric.title !== 'Inshore Fishing Area (IFA)';
+            });
+
+            $scope.rfmoLinks = {
+              reportURL: externalURLs.s3Root +
+                'legacy.seaaroundus/rfmo/FCWorkingPaper_RFMOs_CullisSuzukiPauly_2009.pdf',
+              publicationURL: externalURLs.s3Root +
+                'legacy.seaaroundus/rfmo/Cullis-Suzuki%26Pauly-2010-RFMO.pdf'
+            };
           }
         });
       }
@@ -266,6 +232,33 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         if ($location.path() !== '/global') {
           $location.path('/global', false);
         }
+
+      } else if ($scope.region.name === 'multi') {
+        var regionType = $location.search().region;
+        var regionIds = $location.search().id.split(',');
+        var regionDetailPromises = regionIds.reduce(function(promises, regionId) {
+          promises.push(sauAPI.Region.get({region: regionType, region_id: regionId }).$promise);
+          return promises;
+        }, []);
+
+        $scope.selectedRegions = {
+          type: regionType,
+          ids: regionIds.map(function(id) { return parseInt(id); }),
+          details: [],
+          references: []
+        };
+
+        $q.all(regionDetailPromises).then(function(result) {
+          $scope.selectedRegions.details = result.map(function(detail) {
+            return { id: detail.data.id, name: detail.data.title, url: '/#/' + regionType + '/' + detail.data.id };
+          });
+
+          $scope.selectedRegions.references = result.reduce(function(reference, detail) {
+            reference = reference.concat(detail.data.reconstruction_documents);
+            return reference;
+          }, []);
+        });
+
       } else {
         var newPath = '/' + $scope.region.name + '/' + $scope.formModel.region_id;
         if (newPath !== $location.path()) {
@@ -314,7 +307,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     };
 
     $scope.setURLParams = function(searchArgs) {
-      $location.search(searchArgs);
+      $location.search(angular.extend({}, $location.search(), searchArgs));
     };
 
     function getDimensionFromURL() {
@@ -345,7 +338,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     function setChartFromURLParams() {
       var currChart = $location.search().chart || getDefaultChartId();
       $scope.chartTemplateUrl = 'views/region-detail/' + currChart + '.html';
-      if (currChart === 'catch-chart') {
+      if (currChart === 'catch-chart' || currChart === 'multi-chart') {
         $scope.formModel.dimension = getDimensionObjectByValue(getDimensionFromURL());
         $scope.formModel.measure = getMeasureObjectByValue(getMeasureFromURL());
         $scope.formModel.useScientificName = getUseScientificNameFromURL();
@@ -369,7 +362,20 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     }
 
     function getDefaultChartId() {
-      return $scope.region.name === 'mariculture' ? 'mariculture-chart' : 'catch-chart';
+      var chartId;
+
+      switch ($scope.region.name) {
+        case 'mariculture':
+          chartId = 'mariculture-chart';
+          break;
+        case 'multi':
+          chartId = 'multi-chart';
+          break;
+        default:
+          chartId = 'catch-chart';
+      }
+
+      return chartId;
     }
 
     function getCountryProfile() {

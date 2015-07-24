@@ -4,7 +4,7 @@ angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $
 
   //Tied to the "view graph" button
   $scope.viewGraph = function() {
-    $location.url($scope.queryState.graphDataUrl);
+    $location.url($scope.queryState.graphPageUrl);
   };
 
   //Tied to the "download data" button

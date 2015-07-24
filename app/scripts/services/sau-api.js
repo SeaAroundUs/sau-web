@@ -15,6 +15,26 @@ angular.module('sauWebApp')
       Region: resourceFactory(':region/:region_id'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
+      AccessAgreementInternal: $resource(SAU_CONFIG.apiURL + 'eez/:region_id/access-agreement-internal/',
+        {},
+        {
+          get: {
+            method: 'GET',
+            cache: true,
+            transformResponse: function(response) {
+              //TEMPORARY: Deleting all Pre-EEZ declaration-year agreements.
+              //Revert this change (blame) when UBC is ready to show that data.
+              response = JSON.parse(response);
+              response.data.pre.length = 0;
+              return response;
+            }
+          },
+          post: {
+            method: 'POST',
+            cache: true
+          }
+        }
+      ),
       CountryProfile: resourceFactory('country/:region_id'),
       Mariculture: resourceFactory('mariculture/:region_id'),
       MaricultureData: resourceFactory('mariculture/:dimension/:entity_id'),

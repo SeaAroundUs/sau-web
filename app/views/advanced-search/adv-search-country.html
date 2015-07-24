@@ -1,0 +1,18 @@
+<div ng-controller="AdvSearchCountryCtrl">
+	<adv-search-section-title>Countries</adv-search-section-title>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<sau-multi-select limit="1" label-key="name" data="countryList.data" search-placeholder="Search countries" selected="selectedCountries"></sau-multi-select>
+		</div>
+		<div class="col-sm-6">
+			<sau-selected-options label-key="name" title="EEZs in country" selected="eezsInCountry" hide-select-hint="true"></sau-selected-options>
+		</div>
+	</div>
+
+	<adv-search-dimension-param region-id="'eez'" selected-dimension="selectedDimension" use-scientific-name="useScientificName" model-changed="queryChanged()"></adv-search-dimension-param>
+
+	<adv-search-measure-param region-id="'eez'" selected-measure="selectedMeasure" model-changed="queryChanged()"></adv-search-measure-param>
+
+	<adv-search-dimension-limit-param region-id="'eez'" selected-limit="selectedLimit" model-changed="queryChanged()" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+</div>

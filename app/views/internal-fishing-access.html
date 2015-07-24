@@ -1,0 +1,113 @@
+<div id="internal-fishing-access">
+	<h1 ng-show="!!regionName">Foreign fishing access in the waters of {{regionName}}</h1>
+	<p id="main-text"> The foreign fishing access database, initially derived from the fishing agreement database of FAO (1999), contains observed foreign fishing records, and fishing agreements and treaties that were signed by fishing countries and the host countries in whose EEZs the foreign fleets were allowed to fish. In addition, the database also includes the start and end year of agreements and/or observed access. The type of access is also specified as ‘assumed unilateral’, ‘assumed reciprocal’, ‘unilateral’ or ‘reciprocal’. Also, the type of agreement is recorded in the database and the agreement can be classified into bilateral agreements such as partnership, multilateral agreements such as international conventions or agreements with regional fisheries organizations, private, licensing or exploratory agreements. Additional information contained in this database relates to the type of taxa likely targeted by foreign fleets (e.g., tuna vs. demersal taxa). <method anchor="catch-reconstruction-and-allocation-methods/foreign-fishing-access"></method></p>
+
+	<div ng-show="agreements.post.length > 0">
+		<div id="post-eez-table-title" class="table-title">
+			<span class="active-title">Post-EEZ Declaration Year Agreements</span>
+			<span ng-show="agreements.pre.length > 0">
+				<span class="pipe">|</span>
+				<span class="inactive-title">
+					<a scroll-click="pre-eez-table-title" style="cursor:pointer">Pre-EEZ Declaration Year Agreements</a>
+				</span>
+			</span>
+		</div>
+
+		<table id="post-declaration-year-table" class="table table-responsive table-bordered table-striped">
+			<tr class="header-row">
+				<th class="fishing-country-cell">
+					<div class="dropdown" dropdown auto-close="outsideClick">
+						<div class="dropdown-toggle" dropdown-toggle>Fishing Country <i class="fa fa-sort-desc filter-arrow"></i></div>
+						<div class="dropdown-menu" ng-click="preventPopupAutoClose($event)">
+							<div class="bulk-toggle-controls">
+								<a href ng-click="setAllCountriesVisibility(fishingCountries.post, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(fishingCountries.post, false)">Select none</a>
+							</div>
+							<ul class="list-unstyled">
+								<li ng-repeat="x in fishingCountries.post" class="fishing-country-toggle">
+									<label><input type="checkbox" ng-model="x.visible"> {{x.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</th>
+				<th style="min-width: 300px">Title</th>
+				<th>Fishing Access</th>
+				<th>Access Type</th>
+				<th>Agreement Type</th>
+				<th>Start Year</th>
+				<th>End Year</th>
+				<th>Target Group</th>
+				<th>Source Link</th>
+			</tr>
+			<tr ng-repeat="x in agreements.post | filter: filterPostAgreements | orderBy: 'fishing_name'">
+				<td>{{x.fishing_name}}</td>
+				<td>{{x.title}}</td>
+				<td>{{x.fishing_access}}</td>
+				<td>{{agreementAccessTypes[x.access_type]}}</td>
+				<td>{{agreementTypes[x.agreement_type]}}</td>
+				<td>{{x.start_year}}</td>
+				<td>{{x.end_year}}</td>
+				<td>Data not available</td>
+				<td>
+					<a ng-href="{{x.source_link}}" target="_blank" ng-show="!!x.source_link">Link</a>
+					<span ng-show="!x.source_link">No link</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div ng-show="agreements.pre.length > 0">
+		<div id="pre-eez-table-title" class="table-title">
+			<span ng-show="agreements.post.length > 0">
+				<span class="inactive-title">
+					<a scroll-click="post-eez-table-title" style="cursor:pointer">Post-EEZ Declaration Year Agreements</a>
+				</span>
+				<span class="pipe">|</span>
+			</span>
+			<span class="active-title">Pre-EEZ Declaration Year Agreements</span>
+		</div>
+
+		<p id="pre-eez-text">As a default, we treat all EEZ-equivalent waters prior to the declaration of an EEZ as ‘open access’ to all countries. Here we present information that modifies this open access.</p>
+
+		<table id="pre-declaration-year-table" class="table table-responsive table-bordered table-striped">
+			<tr class="header-row">
+				<th class="fishing-country-cell">
+					<div class="dropdown" dropdown auto-close="outsideClick">
+						<div class="dropdown-toggle" dropdown-toggle>Fishing Country <i class="fa fa-sort-desc filter-arrow"></i></div>
+						<div class="dropdown-menu" ng-click="preventPopupAutoClose($event)">
+							<div class="bulk-toggle-controls">
+								<a href ng-click="setAllCountriesVisibility(fishingCountries.pre, true)">Select all</a><span class="pipe">|</span><a href ng-click="setAllCountriesVisibility(fishingCountries.pre, false)">Select none</a>
+							</div>
+							<ul class="list-unstyled">
+								<li ng-repeat="x in fishingCountries.pre" class="fishing-country-toggle">
+									<label><input type="checkbox" ng-model="x.visible"> {{x.name}}</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</th>
+				<th style="min-width: 300px">Title</th>
+				<th>Fishing Access</th>
+				<th>Access Type</th>
+				<th>Agreement Type</th>
+				<th>Start Year</th>
+				<th>End Year</th>
+				<th>Target Group</th>
+				<th>Source Link</th>
+			</tr>
+			<tr ng-repeat="x in agreements.pre | filter: filterPreAgreements | orderBy: 'fishing_name'">
+				<td>{{x.fishing_name}}</td>
+				<td>{{x.title}}</td>
+				<td>{{x.fishing_access}}</td>
+				<td>{{agreementAccessTypes[x.access_type]}}</td>
+				<td>{{agreementTypes[x.agreement_type]}}</td>
+				<td>{{x.start_year}}</td>
+				<td>{{x.end_year}}</td>
+				<td>Data not available</td>
+				<td>
+					<a ng-href="{{x.source_link}}" target="_blank" ng-show="!!x.source_link">Link</a>
+					<span ng-show="!x.source_link">No link</span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

@@ -4,7 +4,8 @@
 /* global L */
 
 angular.module('sauWebApp')
-  .controller('MiniMapCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers, leafletData) {
+  .controller('MiniMapCtrl', function ($scope, $rootScope, $q, $timeout, sauAPI, mapConfig, leafletBoundsHelpers,
+                                       leafletData, createDisputedAreaPopup, ga) {
 
     angular.extend($scope, {
       defaults: mapConfig.defaults,
@@ -12,6 +13,11 @@ angular.module('sauWebApp')
         baselayers: mapConfig.baseLayers
       }
     });
+
+    $scope.faoLayers = [];
+    $scope.maxbounds = mapConfig.worldBounds;
+    /** @type {Boolean} Used to determine whether the Rrose popup should open when hovering over a region. */
+    var isDisputedAreaPopupOpen = false;
 
     // add IFA boundaries
     var getIFA = function() {
@@ -30,16 +36,16 @@ angular.module('sauWebApp')
         return;
       }
       style = style || mapConfig.defaultStyle;
-      if(feature.properties.region_id === $scope.formModel.region_id) {
-        layer.setStyle(mapConfig.selectedStyle);
-      } else {
-        layer.setStyle(style);
+      if(feature && feature.properties.region_id === $scope.formModel.region_id) {
+        style = mapConfig.selectedStyle;
       }
+      layer.setStyle(style);
     };
 
     var geojsonClick = function(feature, latlng) {
       /* handle clicks on overlapping layers */
       leafletData.getMap('minimap').then(function(map) {
+        map.closePopup();
 
         var layers = leafletPip.pointInLayer(latlng, map);
         var featureLayers = layers.filter(function(l) {
@@ -48,13 +54,30 @@ angular.module('sauWebApp')
         });
 
         if (featureLayers.length > 1) {
-          var content = 'Area disputed by (';
-          content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
-          content += ')';
-          leafletData.getMap('minimap').then(function(map) {
-            map.openPopup(content, latlng);
+          var popup = createDisputedAreaPopup($scope.region.name, featureLayers);
+
+          ga.sendEvent({
+            category: 'MiniMap Click',
+            action: $scope.region.name.toUpperCase(),
+            label: '(Disputed)'
           });
+
+          popup.setLatLng(latlng);
+          //I have to open the disputed area popup on a timeout due to a bug that occurs in Chrome on Windows (only).
+          //If a popup closes and then opens in the same tick, then the "popupclose" event doesn't fire.
+          //If the popupclose event doesn't fire, then the hover popup won't close, resulting in both popups being open at the same time.
+          $timeout(function() {
+            map.openPopup(popup);
+            isDisputedAreaPopupOpen = true;
+          });
+
         } else {
+          ga.sendEvent({
+            category: 'MiniMap Click',
+            action: $scope.region.name.toUpperCase(),
+            label: feature.properties.title
+          });
+
           $scope.formModel.region_id = feature.properties.region_id;
           $scope.styleSelectedFeature();
 
@@ -69,18 +92,23 @@ angular.module('sauWebApp')
           }
         }
       });
-
     };
 
-    var geojsonMouseout = function(map) {
-      map.closePopup();
+    var geojsonMouseout = function(event, feature, map) {
+      styleLayer(feature, event.layer);
+      if (!isDisputedAreaPopupOpen) {
+        map.closePopup();
+      }
     };
 
-    var geojsonMouseover = function(ev, feature, map) {
-      new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
-      .setContent(feature.properties.title)
-      .setLatLng(ev.latlng)
-      .openOn(map);
+    var geojsonMouseover = function(event, feature, map) {
+      event.layer.setStyle(mapConfig.highlightStyle);
+      if (!isDisputedAreaPopupOpen) {
+        new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
+        .setContent(feature.properties.title)
+        .setLatLng(event.latlng)
+        .openOn(map);
+      }
     };
 
     leafletData.getMap('minimap').then(function(map) {
@@ -123,8 +151,6 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.faoLayers = [];
-
     var drawFAO = function() {
       $scope.removeFAO();
 
@@ -164,21 +190,26 @@ angular.module('sauWebApp')
       // add features layer when loaded, then load IFA and FAO so they get painted on top
       leafletData.getMap('minimap').then(function(map) {
 
+        //Whenever a map popup closes, set unset a flag that indicates such.
+        map.on('popupclose', function() {
+          isDisputedAreaPopupOpen = false;
+        });
+
         L.geoJson($scope.features.data.features, {
           style: mapConfig.defaultStyle,
           onEachFeature: function(feature, layer) {
             layer.on({
-              click: function(e) {
-                geojsonClick(feature, e.latlng);
+              click: function(event) {
+                geojsonClick(feature, event.latlng);
               },
-              mouseover: function(e) {
-                geojsonMouseover(e, feature, map);
+              mouseover: function(event) {
+                geojsonMouseover(event, feature, map);
               },
-              mousemove: function(e) {
-                geojsonMouseover(e, feature, map);
+              mousemove: function(event) {
+                geojsonMouseover(event, feature, map);
               },
-              mouseout: function() {
-                geojsonMouseout(map);
+              mouseout: function(event) {
+                geojsonMouseout(event, feature, map);
               }
             });
           }

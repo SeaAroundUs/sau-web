@@ -15,13 +15,13 @@ angular.module('sauWebApp')
 
     $scope.api = {};
 
-    $scope.declarationYear = {enabled: true};
-    if ($scope.region.name === 'eez') {
-      $scope.declarationYear.show = true;
-    }
+    $scope.declarationYear = {
+      visible: false,
+      exists: $scope.region.name === 'eez'
+    };
 
     $scope.drawDeclarationYear = function() {
-      $scope.declarationYear.enabled = true;
+      $scope.declarationYear.visible = true;
       $timeout(function() {
         $scope.feature.$promise.then(function(){
           var decYear = Math.max(1950, $scope.feature.data.declaration_year);
@@ -52,14 +52,14 @@ angular.module('sauWebApp')
       });
     };
     $scope.hideDeclarationYear = function() {
-      $scope.declarationYear.enabled = false;
+      $scope.declarationYear.visible = false;
       d3.select('.chart-container svg .nv-stackedarea g#declaration-year')
         .remove();
     };
     $scope.updateDeclarationYear = function() {
-      if ($scope.declarationYear.show && $scope.declarationYear.enabled) {
+      if ($scope.declarationYear.exists && $scope.declarationYear.visible) {
         $scope.drawDeclarationYear();
-      } else if ($scope.declarationYear.show && (!$scope.declarationYear.enabled)) {
+      } else if ($scope.declarationYear.exists && (!$scope.declarationYear.visible)) {
         $scope.hideDeclarationYear();
       }
     };

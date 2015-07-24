@@ -17,7 +17,9 @@ angular.module('sauWebApp')
                                     leafletData,
                                     leafletBoundsHelpers,
                                     region,
-                                    spinnerState) {
+                                    spinnerState,
+                                    createDisputedAreaPopup,
+                                    ga) {
 
     $scope.region = {name: region};
 
@@ -31,6 +33,15 @@ angular.module('sauWebApp')
       L.esri.basemapLayer('OceansLabels').addTo(map);
     });
 
+    $scope.dropDownSelect = function(props) {
+      ga.sendEvent({
+        category: 'MainMap DropDown Select',
+        action: $scope.region.name.toUpperCase(),
+        label: props.title
+      });
+      $scope.regionSelect(props.region_id);
+    };
+
     $scope.regionSelect = function(region_id) {
       $location.path('/' + $scope.region.name + '/' + region_id);
     };
@@ -41,12 +52,25 @@ angular.module('sauWebApp')
       var featureLayers = layers.filter(function(l) {return l.feature;});
 
       if (featureLayers.length > 1) {
-        var content = 'Area disputed by (';
-        content += featureLayers.map(function(l) {return l.feature.properties.title;}).join(', ');
-        content += ')';
-        $scope.map.openPopup(content, latlng);
+        var popup = createDisputedAreaPopup($scope.region.name, featureLayers);
+
+        ga.sendEvent({
+          category: 'MainMap Click',
+          action: $scope.region.name.toUpperCase(),
+          label: '(Disputed)'
+        });
+
+        popup.setLatLng(latlng);
+        $scope.map.openPopup(popup);
       } else {
         var feature = featureLayers[0].feature;
+
+        ga.sendEvent({
+          category: 'MainMap Click',
+          action: $scope.region.name.toUpperCase(),
+          label: feature.properties.title
+        });
+
         $scope.regionSelect(feature.properties.region_id);
       }
     };
@@ -100,6 +124,8 @@ angular.module('sauWebApp')
       $scope.region.name = region;
       $location.path('/' + $scope.region.name, false);
       $scope.getFeatures();
+      //Close any map "popups" when changing region maps.
+      $scope.map.closePopup();
     };
 
     $scope.changeRegionGlobal = function() {
@@ -119,13 +145,24 @@ angular.module('sauWebApp')
       var mapPromise = leafletData.getMap('mainmap');
       var featuresPromise = $scope.features.$promise;
 
-      $q.all([mapPromise, featuresPromise]).then(function() {
+      $q.all([mapPromise, featuresPromise]).then(function(result) {
+        var features = result[1];
+
+        if ($scope.region.name === 'rfmo') {
+          features.data.features = features.data.features.map(function(feature) {
+            var oldTitle = feature.properties.title;
+            feature.properties.title = feature.properties.long_title + ' (' + oldTitle + ')';
+            return feature;
+          });
+        }
+
         angular.extend($scope, {
           geojson: {
             data: $scope.features.data,
-            style: mapConfig.defaultStyle,
+            style: mapConfig.defaultStyle
           }
         });
+
         $timeout(function() {
           spinnerState.loading = false;
           mapPromise.$$state.value.invalidateSize();

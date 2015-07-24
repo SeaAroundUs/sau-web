@@ -1,5 +1,6 @@
 (function(angular) {
   'use strict';
+
   angular.module('sauWebApp').directive('underReview',
     function(sauAPI) {
       var message = '<p class="under-review">** Data under review</p>';

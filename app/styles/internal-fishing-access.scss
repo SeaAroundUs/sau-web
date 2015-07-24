@@ -1,0 +1,98 @@
+#internal-fishing-access {
+
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  #main-text {
+    line-height: 1.7;
+    padding-bottom: 20px;
+  }
+
+  #pre-eez-text {
+
+  }
+
+  #post-declaration-year-table {
+    margin-bottom: 64px;
+  }
+
+  #pre-declaration-year-table {
+
+  }
+
+  .table-title {
+    .active-title {
+      font-weight: bold;
+    }
+
+    .inactive-title {
+
+    }
+
+    padding-bottom: 10px;
+  }
+
+  th {
+    vertical-align: middle;
+  }
+
+  .pipe {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  tr:nth-child(odd)>td,
+  tr:nth-child(odd)>th {
+    background-color: #ffffff;
+  }
+
+  tr:nth-child(even)>td,
+  tr:nth-child(even)>th {
+    background-color: #f1f1f1;
+  }
+
+  td, th {
+    border-top: none;
+    border-bottom: none;
+    padding: 10px;
+  }
+
+  td {
+    line-height: 1.7;
+    font-size: smaller;
+    //This max-width is a hack to keep the table from overflowing past 100%
+    //when there is a large amount of content in a td. Not sure why
+    //it does that, but this fixes that.
+    max-width: 800px;
+  }
+
+  .fishing-country-cell {
+    min-width: 108px;
+    cursor: pointer;
+  }
+
+  .filter-arrow {
+    float: right !important;
+    position: relative;
+    bottom: 12px;
+  }
+
+  .dropdown-menu {
+    padding: 20px 20px 10px 20px;
+    font-weight: normal;
+    width: 230px;
+  }
+
+  .bulk-toggle-controls {
+    padding-bottom: 10px;
+  }
+
+  .fishing-country-toggle {
+    padding-bottom: 1px;
+    font-size: smaller;
+  }
+}

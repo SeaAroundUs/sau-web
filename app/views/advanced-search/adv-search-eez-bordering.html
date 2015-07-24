@@ -1,0 +1,18 @@
+<div ng-controller="AdvSearchEEZBorderingCtrl">
+	<adv-search-section-title>EEZ regions</adv-search-section-title>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<sau-multi-select limit="1" label-key="title" data="eezList.data" search-placeholder="Search EEZ regions" selected="selectedEezs"></sau-multi-select>
+		</div>
+		<div class="col-sm-6">
+			<sau-selected-options label-key="title" title="Bordering EEZs" selected="borderingEezs.data" hide-select-hint="true"></sau-selected-options>
+		</div>
+	</div>
+
+	<adv-search-dimension-param region-id="'eez'" selected-dimension="selectedDimension" use-scientific-name="useScientificName" model-changed="queryChanged()"></adv-search-dimension-param>
+
+	<adv-search-measure-param region-id="'eez'" selected-measure="selectedMeasure" model-changed="queryChanged()"></adv-search-measure-param>
+
+	<adv-search-dimension-limit-param region-id="'eez'" selected-limit="selectedLimit" model-changed="queryChanged()" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+</div>

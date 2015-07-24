@@ -41,6 +41,9 @@
     <link rel="stylesheet" href="styles/advanced-search.css" />
     <link rel="stylesheet" href="styles/sau-multi-select.css" />
     <link rel="stylesheet" href="styles/sau-selected-options.css" />
+    <link rel="stylesheet" href="styles/procedure-outcome.css" />
+    <link rel="stylesheet" href="styles/internal-fishing-access.css" />
+    <link rel="stylesheet" href="styles/login-modal.css" />
     <!-- endbuild -->
 
     <!-- old browser detection -->
@@ -105,6 +108,8 @@
                 <img class="pull-right" src="images/logo_cbd.gif" alt="Vulcan logo">
               </a>
             </div>
+            <!-- RE-ENABLE WHEN IMPLEMENTING AUTH -->
+            <!--auth-status-button class="pull-right"></auth-status-button-->
 
             <ul class="nav nav-pills top-header">
               <li role="presentation" ng-repeat="t in templates">
@@ -118,11 +123,17 @@
             Data not yet available
           </div>
 
-          <div id="main_view" ng-view="" ng-hide="hideView">
+          <div id="main_view" ng-view="" autoscroll="true" ng-hide="hideView">
             <noscript>
               Your browser does not support Javascript or has it disabled. Click <a href="/simple-site.php">here</a>
               to navigate to our site that does not require Javascript.
             </noscript>
+          </div>
+
+          <!-- This is the equivelant of a 404, used when a route change fails. -->
+          <div style="padding: 0 50px" ng-show="routeError" ng-cloak>
+            <h1>There's nothing here</h1>
+            <p>It looks like there is no web page at this address. If you copied and pasted a URL, please make sure it is correct.</p>
           </div>
 
           <div id="footer" class="clearfix">
@@ -130,6 +141,7 @@
               © 2015 Sea Around Us
             </div>
             <div id="legal" class="pull-right">
+              <a href="/citation-policy/">Citation Policy</a>
               <!--
               <a class="" href="#">Privacy Policies</a>
               <span class="separator">|</span>
@@ -227,6 +239,18 @@
     <script src="scripts/controllers/expedition.js"></script>
     <script src="scripts/controllers/advanced-search/advanced-search.js"></script>
     <script src="scripts/controllers/advanced-search/adv-search-default-query.js"></script>
+    <script src="scripts/controllers/advanced-search/adv-search-eez-bordering.js"></script>
+    <script src="scripts/controllers/advanced-search/adv-search-fishing-country.js"></script>
+    <script src="scripts/controllers/advanced-search/adv-search-country.js"></script>
+    <script src="scripts/controllers/multi-chart.js"></script>
+    <script src="scripts/controllers/internal-fishing-access.js"></script>
+    <script src="scripts/controllers/auth/signup.js"></script>
+    <script src="scripts/controllers/auth/login-modal.js"></script>
+    <script src="scripts/controllers/auth/activate-request.js"></script>
+    <script src="scripts/controllers/auth/activate.js"></script>
+    <script src="scripts/controllers/auth/account-settings.js"></script>
+    <script src="scripts/controllers/auth/password-reset.js"></script>
+    <script src="scripts/controllers/auth/new-password.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -245,12 +269,15 @@
     <script src="scripts/directives/ga-event.js"></script>
     <script src="scripts/directives/under-review.js"></script>
     <script src="scripts/directives/habitat-index.js"></script>
+    <script src="scripts/directives/adv-search-directives.js"></script>
+    <script src="scripts/directives/auth-directives.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/filters/significantdigits.js"></script>
     <script src="scripts/filters/capitalize.js"></script>
     <script src="scripts/filters/break-underscores.js"></script>
     <script src="scripts/filters/fishbase-country-id.js"></script>
+    <script src="scripts/filters/file-of-url.js"></script>
 
     <script src="scripts/services/sau-api.js"></script>
     <script src="scripts/services/sau-d3-utils.js"></script>
@@ -266,6 +293,13 @@
     <script src="scripts/services/region-measures.js"></script>
     <script src="scripts/services/region-dimension-limits.js"></script>
     <script src="scripts/services/create-query-url.js"></script>
+    <script src="scripts/services/region-tabs.js"></script>
+    <script src="scripts/services/metric-links.js"></script>
+    <script src="scripts/services/region-toggles.js"></script>
+    <script src="scripts/services/disputed-area-popup.js"></script>
+    <script src="scripts/services/fishing-access-service.js"></script>
+    <script src="scripts/services/auth-service.js"></script>
+    <script src="scripts/services/auth-api.js"></script>
 
     <script src="scripts/directives/sau-multi-select.js"></script>
     <script src="scripts/directives/sau-selected-options.js"></script>

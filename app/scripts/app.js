@@ -70,6 +70,18 @@ angular
         controller: 'EstuariesCtrl',
         resolve: {region: function() {return 'eez';}}
       })
+      .when('/eez/:id/internal-fishing-access', {
+        templateUrl: 'views/internal-fishing-access.html',
+        controller: 'InternalFishingAccessCtrl',
+        resolve: {
+          agreements: function($route, sauAPI) {
+            return sauAPI.AccessAgreementInternal.get({'region_id': $route.current.params.id}).$promise;
+          },
+          region: function($route, sauAPI) {
+            return sauAPI.Region.get({'region': 'eez', 'region_id': $route.current.params.id}).$promise;
+          }
+        }
+      })
       .when('/lme', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -112,8 +124,16 @@ angular
         templateUrl: 'views/procedures-and-outcomes.html',
         controller: 'ProceduresAndOutcomesCtrl'
       })
-      */
-      /*
+      .when('/rfmo/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'rfmo';}}
+      })
+      .when('/rfmo/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'rfmo';}}
+      })
       .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -198,6 +218,37 @@ angular
         templateUrl: 'views/advanced-search/advanced-search.html',
         controller: 'AdvancedSearchCtrl'
       })
+      .when('/result/', {
+        templateUrl: 'views/region-detail/main.html',
+        controller: 'RegionDetailCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'multi';}}
+      })
+      //RE-ENABLE WHEN IMPLEMENTING AUTH
+      /*.when('/signup/', {
+        templateUrl: 'views/auth/signup.html',
+        controller: 'SignUpCtrl',
+      })
+      .when('/activate/', {
+        templateUrl: 'views/auth/activate-request.html',
+        controller: 'ActivateRequestCtrl'
+      })
+      .when('/activate/:code', {
+        templateUrl: 'views/auth/activate.html',
+        controller: 'ActivateCtrl'
+      })
+      .when('/me', {
+        templateUrl: 'views/auth/account-settings.html',
+        controller: 'AccountSettingsCtrl'
+      })
+      .when('/password-reset', {
+        templateUrl: 'views/auth/password-reset.html',
+        controller: 'PasswordResetCtrl'
+      })
+      .when('/new-password/:code', {
+        templateUrl: 'views/auth/new-password.html',
+        controller: 'NewPasswordCtrl'
+      })*/
       .otherwise({
         redirectTo: '/'
       });
@@ -217,4 +268,8 @@ angular
       }
       return original.apply($location, [path]);
     };
+
+    $rootScope.$on('logOut', function() {
+      $location.path('/').replace();
+    });
   }]);

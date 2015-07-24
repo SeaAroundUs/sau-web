@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, regionDimensions, regionMeasures, regionDimensionLimits, advSearchService, createQueryUrl) {
+angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -10,12 +10,19 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
 
   //Tells the parent controller what the state of the query buttons should be (via a service)
   function updateSubmitButtons() {
-    advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length === 1);
+    advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
     advSearchService.state.isQueryDownloadable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
   }
 
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
   function updateQueryUrls() {
+
+    if (!$scope.selectedDimension ||
+        !$scope.selectedMeasure ||
+        !$scope.selectedLimit ||
+        $scope.selectedRegions.length === 0) {
+      return;
+    }
 
     //Update the variables that configure the search query.
     var urlConfig = {
@@ -31,9 +38,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     advSearchService.state.downloadDataUrl = createQueryUrl.forRegionCsv(urlConfig);
 
     //Create the chart URL.
-    if ($scope.selectedRegions.length === 1) { //condition is TEMPORARY until we start supporing multi-region graph pages.
-      advSearchService.state.graphDataUrl = createQueryUrl.forRegionCatchChart(urlConfig);
-    }
+    advSearchService.state.graphPageUrl = createQueryUrl.forRegionCatchChart(urlConfig);
   }
 
   //Make an array of all the region IDs from the user's selected list of regions.
@@ -45,39 +50,28 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
     return selectedRegionIds;
   }
 
-  //These are mostly used to populate the UI components with UI data.
-  $scope.selectedRegions = [];
-  $scope.regionList = sauAPI.Regions.get({region: $scope.section, nospatial: true});
-  $scope.dimensions = regionDimensions[$scope.section];
-  $scope.selectedDimension = $scope.dimensions[0];
-  $scope.measures = regionMeasures[$scope.section];
-  $scope.selectedMeasure = $scope.measures[0];
-  $scope.limits = regionDimensionLimits[$scope.section];
-  $scope.selectedLimit = $scope.limits[0];
-  $scope.useScientificName = false;
-
   //UI stuff that is specific to each advanced search section.
-  //This object allows us to re-use this controller to make it generic for various advanced search sections, etc.
+  //This object allows us to re-use this controller to make it generic for a few advanced search sections.
   $scope.sectionConfig = {
     eez: {
-      regionListTitle: 'EEZ regions',
-      selectedListTitle: 'Selected EEZ regions',
-      searchPlaceholder: 'Search EEZ regions',
+      regionType: 'eez',
+      regionListTitle: 'EEZs',
+      selectedListTitle: 'Selected EEZs',
+      searchPlaceholder: 'Search EEZs',
       selectionLimit: 10
     },
     lme: {
-      regionListTitle: 'LME regions',
-      selectedListTitle: 'Selected LME regions',
-      searchPlaceholder: 'Search LME regions',
-      selectionLimit: 10
-    },
-    fishingCountry: {
-      regionListTitle: 'Fishing countries',
-      selectedListTitle: 'Selected fishing countries',
-      searchPlaceholder: 'Search fishing counties',
+      regionType: 'lme',
+      regionListTitle: 'LMEs',
+      selectedListTitle: 'Selected LMEs',
+      searchPlaceholder: 'Search LMEs',
       selectionLimit: 10
     }
   };
+
+  //These are mostly used to populate the UI components with UI data.
+  $scope.selectedRegions = [];
+  $scope.regionList = sauAPI.Regions.get({region: $scope.sectionConfig[$scope.section].regionType, nospatial: true})
 
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);

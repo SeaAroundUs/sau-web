@@ -133,17 +133,22 @@ label {
   #search {
     position: absolute;
     z-index: 1;
-    left: calc(50% - 250px);
+    left: calc(50% - 300px);
     div#search-inner {
-      width: 500px;
+      width: 600px;
       background-color: $darkBlue;
       padding: 10px 10px 15px;
       position: relative;
+
       div.ui-select-container {
         width: 100%;
         padding: 5px 15px;
-        background-color:none;
+        background: none;
         color: black;
+      }
+
+      span {
+        overflow: hidden;
       }
     }
   }
@@ -405,5 +410,76 @@ button {
   @media (min-width: $screen-sm) {
     position: relative;
     top: 22px;
+  }
+}
+
+#auth-button {
+  margin-right: 70px;
+  position: relative;
+  bottom: 8px;
+}
+
+.dropdown-menu {
+  min-width: 100px;
+}
+
+/* This is a class I (Eric) created, meant to wrap entire pages or modals, with re-useable styles.
+I am putting these styles inside of "saustrap" so that I don't accidentally change existing styles
+throughout the site. This should prevent a QA nightmare.
+
+If you'd like to mimic the styles on a page I created (such as advanced search, signup, or login),
+then just wrap your html in "saustrap", then use any of these styles. */
+.saustrap {
+  .help-text {
+    color: #808080;
+    font-size: 12px;
+  }
+
+  .error-text {
+    color: #E5868B !important;
+  }
+
+  label.param-label {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .form-control {
+    color: black;
+  }
+
+  select, input {
+    border-color: #aaaaaa;
+    border-radius: 0;
+  }
+
+  form {
+    input.ng-invalid.ng-touched {
+      border-color: #E5868B;
+      border-width: 2px;
+    }
+
+    input.ng-valid.ng-touched {
+      //border-color: #78FA89;
+    }
+  }
+
+  .honeypot {
+    display: none;
+  }
+}
+
+.page-controller {
+  max-width: 658px;
+  margin: 0 auto;
+  padding-top: 0px; //Doesn't need margin because the Header text has a gap.
+  padding-bottom: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+
+  //Change the bootstrap columns on this page to be 10px padded rather than the 15px default.
+  .row > div[class*="col-"] {
+    padding-left: 10px;
+    padding-right: 10px;
   }
 }

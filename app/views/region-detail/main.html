@@ -1,10 +1,13 @@
 <div class="region-detail {{region.name}}">
     <div class="title row">
-        <h1 id="region-title" class="region-title pull-left" ng-bind="chartTitle"></h1>
-        <div class="download-div pull-right">
-          <button ng-show="showDownload" class="btn btn-primary" ng-click="openDownloadDataModal()"
-                  ga-event="downloadModalGA">Download Data</button>
-          <feedback></feedback>
+        <div class="col-md-10">
+            <h1 id="region-title" class="region-title" ng-bind="chartTitle"></h1>
+        </div>
+        <div class="col-md-2">
+            <div class="download-div pull-right">
+                <button ng-show="showDownload" class="btn btn-primary" ng-click="openDownloadDataModal()" ga-event="downloadModalGA">Download Data</button>
+                <feedback></feedback>
+            </div>
         </div>
     </div>
 
@@ -18,38 +21,56 @@
 
     <div class="two-columns row">
         <div class="map-cells col-sm-5">
-            <div ng-if="region.name==='mariculture'" class="content minimap" ng-controller="MiniMapMaricultureCtrl">
+            <div ng-if="toggles.showMaricultureMiniMap" class="content minimap" ng-controller="MiniMapMaricultureCtrl">
                 <leaflet layers="layers" disabled-geojson="geojson" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
-            <div ng-if="region.name!=='mariculture'" class="content minimap" ng-controller="MiniMapCtrl">
+
+            <div ng-if="toggles.showMiniMap" class="content minimap" ng-controller="MiniMapCtrl">
                 <leaflet layers="layers" id="minimap" maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>
             </div>
-            <div class="padded content">
-                <div ng-show="faos && region.name === 'eez'">
+
+            <div class="padded content" ng-if="toggles.showFAOAndLegend">
+                <div ng-show="faos && toggles.showFAOs">
                     <h3>Select FAO area boundaries</h3>
                     <a ng-click="selectFAO(0)" scroll-click="region-title">All</a>
                     <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
                 </div>
-                <div class="global-fao" ng-show="region.name === 'global'">
+
+                <div class="global-fao" ng-if="toggles.showGlobalSubRegion">
                   <h3>Select</h3>
                   <a ng-click="selectFAO(0)" scroll-click="region-title">All</a>
                   <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
                 </div>
-                <sau-legend ng-if="region.name !== 'mariculture'" legend-keys="legendKeys"></sau-legend>
-                <p ng-hide="region.name === 'mariculture' || region.name === 'lme'" class="disclaimer">
+
+                <sau-legend ng-if="toggles.showLegend" legend-keys="legendKeys"></sau-legend>
+
+                <p ng-if="toggles.showDisclaimer" class="disclaimer">
                     <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an authority on the delimitation of the international maritime
                     boundaries.
                 </p>
-                <sau-legend-mariculture ng-show="region.name === 'mariculture'"></sau-legend-mariculture>
-                <p ng-hide="region.name === 'mariculture'" class="external-links">
-                    <a ng-hide="region.name === 'lme'" target="_blank" href="/eez/FAOarea.htm">FAO Areas</a>
-                    <a ng-hide="region.name === 'lme'" target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807903">EEZ Boundary explanation</a>
+
+                <sau-legend-mariculture ng-if="toggles.showMaricultureLegend"></sau-legend-mariculture>
+
+                <p ng-if="toggles.showFAOEEZLinks" class="external-links">
+                    <a target="_blank" href="/eez/FAOarea.htm">FAO Areas</a>
+                    <a target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807903">EEZ Boundary explanation</a>
                 </p>
             </div>
-            <div ng-if="region.name !== 'mariculture'" class="padded content metrics">
+
+            <div ng-if="toggles.showMultiRegionList" class="padded content">
+              <h3>Selected {{selectedRegions.type | uppercase }}s</h3>
+              <p ng-repeat="region in selectedRegions.details"><a ng-href="{{ region.url }}" ng-bind="region.name"></a></p>
+            </div>
+
+            <div ng-if="toggles.showMetrics" class="padded content metrics">
                 <table>
                     <tr ng-repeat="metric in feature.data.metrics" ng-hide="metric.hide">
-                        <td><a ng-href="{{ metricLinks[metric.title] }}" target="_blank">{{metric.title}}</a></td>
+                        <td ng-if="metricLinks[metric.title]">
+                          <a ng-href="{{ metricLinks[metric.title] }}" ng-bind="metric.title" target="_blank"></a>
+                        </td>
+                        <td ng-if="!metricLinks[metric.title]">
+                          <span ng-bind="metric.title"></span>
+                        </td>
                         <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
                     </tr>
                     <tr ng-if="region.name === 'eez'">
@@ -63,7 +84,8 @@
         <div class="right col-sm-7">
             <div class="tabset region-detail-tabs">
                 <tabset class="">
-                  <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active">
+                  <tab ng-repeat="tab in tabs" heading="{{tab.title}}" active="tab.active"
+                       ga-event="{category: 'Tab', action: 'Click', label: tab.title}">
                     <div class="padded" ng-include="tab.template"></div>
                   </tab>
                 </tabset>

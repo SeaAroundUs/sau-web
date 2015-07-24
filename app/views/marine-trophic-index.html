@@ -1,7 +1,9 @@
 <div class="container" id="marine-trophic-index">
     <div class="title row">
       <h2 id="mti-title" class="pull-left">
-        Marine Trophic Index of the catch of <span ng-bind="region.data.title"></span>
+        Marine Trophic Index of the catch in the waters of
+        <span ng-bind="region.data.title"></span>
+        <span ng-show="regionType === 'global'">the Global Ocean</span>
         {{ withExclusions? " with exclusions" : "" }}
       </h2>
       <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
@@ -99,10 +101,6 @@
     <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
 
     <div class="row links">
-      <span ng-repeat="doc in region.data.reconstruction_documents">
-        <a target="_blank" ng-href="{{apiOrigin + doc.path}}"><i class="fa fa-file-pdf-o red"></i> {{doc.title}}</a> |
-      </span>
-      <span ng-hide="region.data.reconstruction_documents" class="disabled"><i class="fa fa-file-pdf-o red"></i> Download PDF |</span>
       <method anchor="marine-trophic-index"></method>
       | <a href="/regional-mti-tools/">Regional MTI tools</a>
       | <a href="http://www.fishingdown.org/CaseStudies.aspx" target="_blank">www.fishingdown.org</a>

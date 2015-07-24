@@ -53,7 +53,7 @@
         estuariesData.$promise.then(function() {
           var bounds = null;
           map.eachLayer(function(l) {
-            if(l.feature && estuariesData.data.region_ids.indexOf(l.feature.properties.region_id) >= 0) {
+            if(l.feature && l.feature.properties.region_id === Number(id)) {
               l.setStyle(mapConfig.highlightStyle);
               if (bounds) {
                 bounds.extend(l.getBounds());
