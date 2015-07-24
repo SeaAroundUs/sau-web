@@ -64,6 +64,10 @@
   td {
     line-height: 1.7;
     font-size: smaller;
+    //This max-width is a hack to keep the table from overflowing past 100%
+    //when there is a large amount of content in a td. Not sure why
+    //it does that, but this fixes that.
+    max-width: 800px;
   }
 
   .fishing-country-cell {
