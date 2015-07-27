@@ -1,0 +1,54 @@
+<div id="region-data">
+  <div class="row">
+    <region-data-title class="col-md-10"></region-data-title>
+    <div class="col-md-2 text-right">
+      <download-button class="download-button"></download-button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div ng-if="region.name === 'global'" class="sub-region-selector col-md-11">
+      <a ng-click="region.faoId = null" ng-class="{ selected: !region.faoId }">Global Ocean</a> |
+      <a ng-click="region.faoId = 2" ng-class="{ selected: region.faoId === 2 }">High Seas</a> |
+      <a ng-click="region.faoId = 1" ng-class="{ selected: region.faoId === 1 }">EEZs</a>
+    </div>
+    <div class="col-md-1 text-right">
+      <feedback></feedback>
+    </div>
+  </div>
+
+  <div class="row col-md-12">
+    <region-data-catch-chart region="region"></region-data-catch-chart>
+    <region-data-disclaimer region="region"></region-data-disclaimer>
+  </div>
+
+  <div class="row">
+    <div class="col-md-5">
+      <region-data-metrics region="region"></region-data-metrics>
+    </div>
+
+    <div class="col-md-7">
+      <region-data-more region="region"></region-data-more>
+    </div>
+  </div>
+
+  <div ng-if="region.name === 'global'" class="global-extras">
+    <div class="row">
+      <h2 class="col-md-11">Percent of landings in EEZs vs. High Seas</h2>
+
+      <div class="col-md-1 method">
+        <method anchor="13"></method>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-7">
+        <img src="/images/eezs-vs-highseas.gif" />
+      </div>
+
+      <div class="col-md-5">
+        <high-seas-vs-eezs></high-seas-vs-eezs>
+      </div>
+    </div>
+  </div>
+</div>

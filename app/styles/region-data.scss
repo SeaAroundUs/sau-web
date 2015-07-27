@@ -1,0 +1,43 @@
+@import 'global';
+
+#region-data {
+  padding: 0 40px;
+
+  h1 {
+    font-weight: bold;
+    margin-bottom: 25px;
+  }
+
+  p.disclaimer {
+    margin-bottom: 20px;
+  }
+
+  button.download-button {
+    margin-top: 20px;
+    visibility: hidden;
+
+    &.visible {
+      visibility: visible;
+    }
+  }
+
+  .sub-region-selector {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+
+    a.selected {
+      cursor: auto;
+      color: #333;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .global-extras {
+    .method {
+      padding-top: 25px;
+    }
+  }
+}
