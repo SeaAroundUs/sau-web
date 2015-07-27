@@ -133,7 +133,7 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'rfmo';}}
       })
-      /*.when('/highseas', {
+      .when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
         reloadOnSearch: false,
