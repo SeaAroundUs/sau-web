@@ -18,7 +18,10 @@
   </div>
 
   <div class="row col-md-12">
-    <region-data-catch-chart region="region"></region-data-catch-chart>
+    <region-data-catch-chart
+      region="region" ng-if="chart === 'catch-chart'"></region-data-catch-chart>
+    <region-data-multinational-footprint
+      region="region" ng-if="chart === 'multinational-footprint'"></region-data-multinational-footprint>
     <region-data-disclaimer region="region"></region-data-disclaimer>
   </div>
 

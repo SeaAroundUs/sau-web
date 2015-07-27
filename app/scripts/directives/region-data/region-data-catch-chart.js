@@ -60,7 +60,7 @@ angular.module('sauWebApp')
       };
 
       // get chart data
-      $scope.data = getChartData();
+      getChartData();
 
 
       /*
@@ -126,7 +126,7 @@ angular.module('sauWebApp')
       }
 
       function updateURL() {
-        if ($location.path() === '/global') { //TODO other chart types here
+        if ($location.path() === '/global') { //TODO other regions here
           $location.search({
             chart: 'catch-chart',
             dimension: $scope.formModel.dimension.value,

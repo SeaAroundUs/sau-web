@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .factory('regionDataCatchChartTitleGenerator', function($rootScope) {
+  .factory('regionDataCatchChartTitleGenerator', function($rootScope, faos) {
     return {
       clearTitle: function() {
         $rootScope.$broadcast('updateChartTitle', '');
       },
 
       updateTitle: function(data, formModel, region) {
+        var faoName;
         var dimensionLabel = formModel.dimension.overrideLabel === undefined ?
           formModel.dimension.label :
           formModel.dimension.overrideLabel;
@@ -26,15 +27,15 @@ angular.module('sauWebApp')
           chartTitle += 'waters of ' + data.title;
         }
 
-        if (region.faoId) {
-          region.faos.forEach(function(fao) { //TODO need update here
-            if (fao.id === region.faoId) {
-              chartTitle += ' - ' + fao.name;
-            }
-          });
+        if (region.faoId && (faoName = faos.getFAOName(region.name, region.id, region.faoId))) {
+          chartTitle += ' - ' + faoName;
         }
 
         $rootScope.$broadcast('updateChartTitle', chartTitle);
+      },
+
+      setTitle: function(newTitle) {
+        $rootScope.$broadcast('updateChartTitle', newTitle);
       }
     };
   });

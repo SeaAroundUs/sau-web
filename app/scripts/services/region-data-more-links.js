@@ -32,7 +32,7 @@ angular.module('sauWebApp')
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
             { text: 'Stock status plots', url: '#/global/stock-status' },
-            { text: 'Multinational footprint', url: '' },
+            { text: 'Multinational footprint', url: '#/global?chart=multinational-footprint' },
             { text: 'Marine trophic index', url: '#/global/marine-trophic-index' }
           ]
         }

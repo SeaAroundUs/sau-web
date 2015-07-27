@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp')
   .factory('faos', function() {
-    return {
+    var methods = {
       getFAOsByRegion: function(region, id) {
         if (region === 'global') {
           return [
@@ -17,6 +17,21 @@ angular.module('sauWebApp')
         } else {
           return [];
         }
+      },
+
+      getFAOName: function(region, id, faoId) {
+        var idx;
+        var faos = methods.getFAOsByRegion(region, id);
+
+        for (idx in faos) {
+          if (faos[idx].id === faoId) {
+            return faos[idx].name;
+          }
+        }
+
+        return null;
       }
     };
+
+    return methods;
   });
