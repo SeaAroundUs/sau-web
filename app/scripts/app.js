@@ -108,7 +108,6 @@ angular
         controller: 'ExploitedOrganismsCtrl',
         resolve: {region: function() {return 'lme';}}
       })
-      /*
       .when('/rfmo', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
@@ -134,7 +133,7 @@ angular
         controller: 'StockStatusCtrl',
         resolve: {region: function() {return 'rfmo';}}
       })
-      .when('/highseas', {
+      /*.when('/highseas', {
         templateUrl: 'views/map.html',
         controller: 'MapCtrl',
         reloadOnSearch: false,
