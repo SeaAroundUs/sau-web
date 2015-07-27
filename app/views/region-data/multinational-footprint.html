@@ -1,0 +1,20 @@
+<div id="region-data-catch-chart">
+  <div ng-show="noData" class="chart-container no-data">
+    <p ng-bind="noDataMessage"></p>
+  </div>
+
+  <div ng-hide="noData" class="chart-container form-inline" spinner>
+    <i class="fa fa-spinner fa-spin loading fa-5x"></i>
+
+    <div class="pull-right header-links">
+      <span ng-show="(!declarationYear.visible) && declarationYear.exists"><a ng-click="drawDeclarationYear()">Show declaration year</a><br /></span>
+      <span ng-show="declarationYear.visible && declarationYear.exists"><a ng-click="hideDeclarationYear()">Hide declaration year</a><br /></span>
+
+      <method anchor="13"></method><br />
+    </div>
+
+    <div>
+      <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
+    </div>
+  </div>
+</div>

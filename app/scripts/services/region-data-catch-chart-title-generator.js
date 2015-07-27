@@ -35,6 +35,10 @@ angular.module('sauWebApp')
         }
 
         $rootScope.$broadcast('updateChartTitle', chartTitle);
+      },
+
+      setTitle: function(newTitle) {
+        $rootScope.$broadcast('updateChartTitle', newTitle);
       }
     };
   });
