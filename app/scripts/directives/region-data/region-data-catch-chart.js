@@ -164,9 +164,6 @@ angular.module('sauWebApp')
             'sector': ['Industrial', 'Artisanal', 'Subsistence', 'Recreational'],
             'reporting-status': ['Reported', 'Unreported']
           };
-          var homeCountry = [];
-          var hostCountry = [];
-          var otherCountries = [];
           var tempData = [];
           var dataHash = {};
 
@@ -195,19 +192,6 @@ angular.module('sauWebApp')
               }
             });
             data = tempData;
-
-            // chart ordering home country, then host country
-          } else if (dataOptions.dimension === 'country') {
-            data.forEach(function(country) {
-              if (country.key === data.host_country) {
-                hostCountry[0] = country;
-              } else if (country.key === data.home_country) {
-                homeCountry[0] = country;
-              } else {
-                otherCountries.push(country);
-              }
-            });
-            data = homeCountry.concat(hostCountry.concat(otherCountries));
           }
 
           // expose the data to the scope
