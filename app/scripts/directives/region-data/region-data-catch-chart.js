@@ -85,7 +85,7 @@ angular.module('sauWebApp')
           dimension: getDimension(),
           measure: getMeasure(),
           limit: $scope.limits[1],
-          region_id: parseInt($scope.region.id),
+          region_id: $scope.region.ids,
           useScientificName: getUseScientificName()
         };
       }
@@ -126,17 +126,14 @@ angular.module('sauWebApp')
       }
 
       function updateURL() {
-        if ($location.path() === '/global') { //TODO other regions here
-          $location.search({
-            chart: 'catch-chart',
-            dimension: $scope.formModel.dimension.value,
-            measure: $scope.formModel.measure.value,
-            sciname: $scope.formModel.useScientificName
-          }).replace();
+        $location.search({
+          chart: 'catch-chart',
+          dimension: $scope.formModel.dimension.value,
+          measure: $scope.formModel.measure.value,
+          sciname: $scope.formModel.useScientificName
+        }).replace();
 
-        } else {
-          $location.search({}).replace();
-        }
+        //TODO clear params when leaving page
       }
 
       function getChartData() {
@@ -215,7 +212,7 @@ angular.module('sauWebApp')
           sauChartUtils.calculateYAxisCeiling($scope, null, 0.1);
 
           // update chart title
-          regionDataCatchChartTitleGenerator.updateTitle(data, $scope.formModel, $scope.region);
+          regionDataCatchChartTitleGenerator.updateTitle($scope.formModel, $scope.region);
 
           // update download url
           updateDataDownloadURL();

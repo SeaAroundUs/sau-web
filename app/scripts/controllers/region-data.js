@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .controller('RegionDataCtrl', function($scope, $location, region, faos) {
-    var id = 1; //TODO
+  .controller('RegionDataCtrl', function($scope, $location, $routeParams, region, faos) {
+    var ids = region === 'global' ? [1] : $routeParams.ids.split(',').map(function(id) { return parseInt(id); });
 
     $scope.$on('$locationChangeSuccess', function() {
       $scope.chart = getChartType();
@@ -12,9 +12,10 @@ angular.module('sauWebApp')
       chart: getChartType(),
       region: {
         name: region,
-        id: id,
+        id: ids.length > 1 ? null : ids[0],
+        ids: ids,
         faoId: null,
-        faos: faos.getFAOsByRegion(region, id)
+        faos: ids.length > 1 ? [] : faos.getFAOsByRegion(region, ids[0])
       }
     });
 

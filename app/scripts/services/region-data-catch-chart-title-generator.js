@@ -1,37 +1,59 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .factory('regionDataCatchChartTitleGenerator', function($rootScope, faos) {
+  .factory('regionDataCatchChartTitleGenerator', function($rootScope, $q, faos, sauAPI) {
     return {
       clearTitle: function() {
         $rootScope.$broadcast('updateChartTitle', '');
       },
 
-      updateTitle: function(data, formModel, region) {
-        var faoName;
+      updateTitle: function(formModel, region) {
+        var faoName, promiseData;
         var dimensionLabel = formModel.dimension.overrideLabel === undefined ?
           formModel.dimension.label :
           formModel.dimension.overrideLabel;
         var chartTitle = formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
+        var regionData = region.id ?
+          sauAPI.Region.get({ region: region.name, region_id: region.id, nospatial: true }).$promise :
+          $q.defer();
 
-        if (region.name === 'global') {
-          chartTitle += 'Global Ocean';
+        if (!region.id) {
+          if (region.name === 'fishing-entity') {
+            promiseData = { data: { title: 'selected fishing entities' }};
 
-        } else if (region.name === 'rfmo') {
-          chartTitle += data.long_title + ' (' + data.title + ')';
+          } else {
+            promiseData = { data: { title: 'selected regions' }};
+          }
 
-        } else if (region.name === 'highseas') {
-          chartTitle += 'non-EEZ waters of the ' + data.title;
-
-        } else {
-          chartTitle += 'waters of ' + data.title;
+          regionData.resolve(promiseData);
+          regionData = regionData.promise;
         }
 
-        if (region.faoId && (faoName = faos.getFAOName(region.name, region.id, region.faoId))) {
-          chartTitle += ' - ' + faoName;
-        }
+        regionData.then(function(data) {
+          data = data.data;
 
-        $rootScope.$broadcast('updateChartTitle', chartTitle);
+          if (region.name === 'global') {
+            chartTitle += 'Global Ocean';
+
+          } else if (region.name === 'rfmo') {
+            chartTitle += data.long_title + ' (' + data.title + ')';
+
+          } else if (region.name === 'highseas') {
+            chartTitle += 'non-EEZ waters of the ' + data.title;
+
+          } else if (region.name === 'fishing-entity') {
+            chartTitle = chartTitle.replace(' in the ', '') + ' by ' + data.title;
+
+          } else {
+            chartTitle += 'waters of ' + data.title;
+          }
+
+          if (region.faoId && (faoName = faos.getFAOName(region.name, region.id, region.faoId))) {
+            chartTitle += ' - ' + faoName;
+          }
+
+          $rootScope.$broadcast('updateChartTitle', chartTitle);
+        });
       },
 
       setTitle: function(newTitle) {

@@ -21,16 +21,19 @@
     }
   }
 
-  .sub-region-selector {
-    font-size: 1.1em;
+  .sub-title {
     margin-bottom: 5px;
 
-    a.selected {
-      cursor: auto;
-      color: #333;
+    .sub-region-selector {
+      font-size: 1.1em;
 
-      &:hover {
-        text-decoration: none;
+      a.selected {
+        cursor: auto;
+        color: #333;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
     }
   }

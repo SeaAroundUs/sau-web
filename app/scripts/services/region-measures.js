@@ -23,6 +23,7 @@ angular.module('sauWebApp')
       global: defaultMeasures,
       rfmo: defaultMeasures,
       fishingCountry: defaultMeasures,
+      'fishing-entity': defaultMeasures,
       multi: defaultMeasures
     };
   });

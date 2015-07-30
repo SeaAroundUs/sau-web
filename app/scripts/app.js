@@ -202,6 +202,17 @@ angular
         });
     }
 
+    // Fishing Entity routes
+    if (togglesProvider.$get().isEnabled('fishingEntity')) {
+      $routeProvider
+        .when('/fishing-entity/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fishing-entity';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {

@@ -25,6 +25,7 @@ angular.module('sauWebApp')
       global: defaultLimits,
       rfmo: defaultLimits,
       fishingCountry: defaultLimits,
+      'fishing-entity': defaultLimits,
       multi: defaultLimits
     };
   });
