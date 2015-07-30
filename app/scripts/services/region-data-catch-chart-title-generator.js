@@ -14,7 +14,7 @@ angular.module('sauWebApp')
           formModel.dimension.overrideLabel;
         var chartTitle = formModel.measure.titleLabel + ' ' + dimensionLabel + ' in the ';
         var regionData = region.id ?
-          sauAPI.Region.get({ region: region.name, region_id: region.id, nospatial: true }).$promise :
+          sauAPI.Region.get({ region: region.name, region_id: region.id }).$promise :
           $q.defer();
 
         if (!region.id) {

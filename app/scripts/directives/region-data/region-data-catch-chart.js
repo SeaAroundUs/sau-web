@@ -113,7 +113,7 @@ angular.module('sauWebApp')
           dimension: $scope.formModel.dimension.value,
           limit: $scope.formModel.limit.value,
           useScientificName: $scope.formModel.useScientificName,
-          regionIds: [$scope.formModel.region_id],
+          regionIds: $scope.region.ids,
           faoId: $scope.region.faoId
         };
         var url = sauAPI.apiURL + createQueryUrl.forRegionCsv(urlConfig);

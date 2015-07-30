@@ -1,11 +1,36 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('regionDataMore', function($sce, $timeout, regionDataMoreLinks) {
+  .directive('regionDataMore', function($sce, $timeout, $interpolate, regionDataMoreLinks, sauAPI) {
     return {
       link: function(scope, ele) {
-        scope.moreData = regionDataMoreLinks.getLinks(scope.region);
+        var params;
+
         scope.trustAsHtml = $sce.trustAsHtml;
+
+        scope.$watch('region', updateScope);
+
+        function updateScope() {
+          scope.moreData = regionDataMoreLinks.getLinks(scope.region);
+
+          // handle url interpolation with region data
+          if (scope.region.id) {
+            params = { region: scope.region.name, region_id: scope.region.id };
+            sauAPI.Region.get(params, function(res) {
+              scope.moreData = scope.moreData.map(function(section) {
+                if (section.links) {
+                  section.links.map(function(link) {
+                    if (link.ngUrl) {
+                      link.url = $interpolate(link.ngUrl, false, null, true)(res.data);
+                    }
+                    return link;
+                  });
+                }
+                return section;
+              });
+            });
+          }
+        }
 
         $timeout(function() {
           var popup = angular.element('<div class="important-note-popup">' +
@@ -25,6 +50,8 @@ angular.module('sauWebApp')
             popup.toggleClass('hidden');
           });
         });
+
+        //TODO crawl the links and add target blank to external ones
       },
       replace: true,
       restrict: 'E',

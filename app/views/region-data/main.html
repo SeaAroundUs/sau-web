@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="row sub-title">
+  <div class="row">
     <div ng-if="region.name === 'global'" class="sub-region-selector col-md-11">
       <a ng-click="region.faoId = null" ng-class="{ selected: !region.faoId }">Global Ocean</a> |
       <a ng-click="region.faoId = 2" ng-class="{ selected: region.faoId === 2 }">High Seas</a> |
@@ -27,6 +27,8 @@
 
   <div class="row">
     <div class="col-md-5">
+      <region-data-map region="region"></region-data-map>
+      <region-data-legend region="region"></region-data-legend>
       <region-data-metrics region="region"></region-data-metrics>
     </div>
 

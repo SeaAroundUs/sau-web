@@ -36,6 +36,20 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', url: '#/global/marine-trophic-index' }
           ]
         }
+      ],
+      'fishing-entity': [
+        {
+          section: 'Governance',
+          links: [
+            { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
+            { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
+            {
+              text: 'Treaties & conventions',
+              ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
+                'Country={{ country_id | fishbaseCountryId }}'
+            }
+          ]
+        }
       ]
     };
 

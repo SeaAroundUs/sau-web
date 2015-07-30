@@ -1,5 +1,5 @@
 <div id="region-data-more">
-  <h3>More data for the selected region:</h3>
+  <h3>More data:</h3>
   <p ng-repeat="section in moreData">
     <span ng-bind-html="trustAsHtml(section.section)" class="section"></span>
     <span ng-if="section.links" ng-repeat="link in section.links" class="link">
