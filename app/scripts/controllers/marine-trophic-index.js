@@ -1,6 +1,7 @@
 'use strict';
 
 /* global angular */
+/* global d3 */
 
 angular.module('sauWebApp')
   .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, $filter, $q, sauAPI, region) {
@@ -26,6 +27,34 @@ angular.module('sauWebApp')
       } else if (floatTE > 0.3) {
         $scope.fib.transferEfficiency = 0.3;
       }
+    };
+
+    $scope.rmti_options = {
+      chart: {
+        type: 'lineChart',
+        height: 250,
+        margin : {
+          top: 20,
+          right: 20,
+          bottom: 60,
+          left: 85
+        },
+        x: function(d){ return d[0]; },
+        y: function(d){ return d[1]; },
+        useInteractiveGuideline: true,
+        xAxis: {
+          axisLabel: 'Time (ms)'
+        },
+        yDomain: [2,5],
+        yAxis: {
+          axisLabel: 'RMTI',
+          tickFormat: function(d){
+            return d3.format('1d')(d);
+          },
+          // axisLabelDistance: 0
+        },
+        showLegend: false
+      },
     };
 
     var id = ($scope.region && $scope.region.name_id) || ($routeParams.id || 1);
@@ -66,9 +95,17 @@ angular.module('sauWebApp')
 
       $scope.fib.year = $scope.fib.year || $scope.years[0];
 
+      $scope.rmti_data = [];
+
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
-        $scope[time_series.key] = [time_series];
+
+        if (time_series.key.startsWith('RMTI_')) {
+          // var series = {'key': time_series.key, 'values': [time_series]};
+          $scope.rmti_data.push(time_series);
+        } else {
+          $scope[time_series.key] = [time_series];
+        }
 
         angular.forEach(time_series.values, function(dataRow) {
           var year = dataRow[0];
