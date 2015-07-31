@@ -10,8 +10,27 @@ angular.module('sauWebApp')
 
         scope.$watch('region', updateScope);
 
+        $timeout(function() {
+          var popup = angular.element('<div class="important-note-popup">' +
+            '<div class="blue-bar"><span class="x"><i class="fa fa-times"></i></span></div>' +
+            '<i class="fa fa-exclamation-triangle"></i> ' +
+            regionDataMoreLinks.getImportantNote(scope.region) +
+            '</div>'
+          );
+
+          ele.find('#important-note').append(popup);
+
+          popup.find('.x').on('click', function () {
+            popup.addClass('hidden');
+          });
+
+          ele.find('#important-link').on('click', function () {
+            popup.toggleClass('hidden');
+          });
+        });
+
         function updateScope() {
-          scope.moreData = regionDataMoreLinks.getLinks(scope.region);
+          scope.moreData = angular.copy(regionDataMoreLinks.getLinks(scope.region));
 
           // handle url interpolation with region data
           if (scope.region.id) {
@@ -31,25 +50,6 @@ angular.module('sauWebApp')
             });
           }
         }
-
-        $timeout(function() {
-          var popup = angular.element('<div class="important-note-popup">' +
-            '<div class="blue-bar"><span class="x"><i class="fa fa-times"></i></span></div>' +
-            '<i class="fa fa-exclamation-triangle"></i> ' +
-            regionDataMoreLinks.getImportantNote(scope.region) +
-            '</div>'
-          );
-
-          ele.find('#important-note').append(popup);
-
-          popup.find('.x').on('click', function() {
-            popup.addClass('hidden');
-          });
-
-          ele.find('#important-link').on('click', function() {
-            popup.toggleClass('hidden');
-          });
-        });
 
         //TODO crawl the links and add target blank to external ones
       },
