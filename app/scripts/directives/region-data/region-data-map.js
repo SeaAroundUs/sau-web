@@ -22,6 +22,11 @@ angular.module('sauWebApp')
 
     return {
       controller: controller,
+      link: function(scope, ele) {
+        if (scope.region.name === 'global') {
+          ele.remove();
+        }
+      },
       restrict: 'E',
       scope: { region: '=' },
       template: '<leaflet layers="layers" id="region-data-minimap" ' +

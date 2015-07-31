@@ -11,7 +11,7 @@ angular.module('sauWebApp')
             var params = { region: scope.region.name, region_id: scope.region.id };
             sauAPI.Region.get(params, function(res) {
               // hide for no metrics
-              if (!res.metrics || res.metrics.length === 0) {
+              if (!res.data.metrics || res.data.metrics.length === 0) {
                 return ele.remove();
               }
 
