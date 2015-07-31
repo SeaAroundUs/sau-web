@@ -11,8 +11,7 @@ angular.module('sauWebApp')
         faoLayers: [],
         maxbounds: mapConfig.worldBounds,
         center: { lat: 0, lng: 0, zoom: 3 },
-        layers: { baselayers: mapConfig.baseLayers },
-        style: mapConfig.defaultStyle
+        layers: { baselayers: mapConfig.baseLayers }
       });
 
       leafletData.getMap('region-data-minimap').then(function(map) {
@@ -28,8 +27,9 @@ angular.module('sauWebApp')
       function updateGeoJSON(res) {
         leafletData.getMap('region-data-minimap').then(function(map) {
           if (res.data && res.data.geojson) {
-            var f = L.geoJson(res.data.geojson);
+            var f = L.geoJson(res.data.geojson, { style: mapConfig.countryStyle });
             var bounds = f.getBounds();
+            f.addTo(map);
             map.fitBounds(bounds);
           } else {
             map.setZoom(1);
