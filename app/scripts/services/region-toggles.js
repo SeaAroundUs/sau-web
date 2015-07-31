@@ -58,6 +58,10 @@
         showMetrics: false
       }),
 
+      'fishing-entity': angular.extend({}, defaultToggles, {
+        showLegend: false
+      }),
+
       default: defaultToggles
     };
 

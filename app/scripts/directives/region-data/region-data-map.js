@@ -24,6 +24,7 @@ angular.module('sauWebApp')
         sauAPI.Region.get({ region: region.name, region_id: region.id }, updateGeoJSON);
       });
 
+      //TODO probably needs updating for other geoJSON types (EEZ, IFA, etc)
       function updateGeoJSON(res) {
         leafletData.getMap('region-data-minimap').then(function(map) {
           if (res.data && res.data.geojson) {
