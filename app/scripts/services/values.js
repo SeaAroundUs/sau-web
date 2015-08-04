@@ -84,11 +84,11 @@ angular.module('sauWebApp')
     worldBounds: {
       southWest: {
         lat: -90,
-        lng: -190
+        lng: -180
       },
       northEast: {
         lat: 90,
-        lng: 190
+        lng: 180
       }
     }
   })

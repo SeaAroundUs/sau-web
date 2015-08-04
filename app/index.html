@@ -44,6 +44,7 @@
     <link rel="stylesheet" href="styles/procedure-outcome.css" />
     <link rel="stylesheet" href="styles/internal-fishing-access.css" />
     <link rel="stylesheet" href="styles/login-modal.css" />
+    <link rel="stylesheet" href="styles/spatial-catch.css" />
     <!-- endbuild -->
 
     <!-- old browser detection -->
@@ -206,6 +207,8 @@
     <script src="bower_components/angulartics/src/angulartics-marketo.js"></script>
     <script src="bower_components/angulartics/src/angulartics-intercom.js"></script>
     <script src="bower_components/rrose/rrose-src.js"></script>
+    <script src="bower_components/proj4/dist/proj4.js"></script>
+    <script src="bower_components/Proj4Leaflet/src/proj4leaflet.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -251,6 +254,7 @@
     <script src="scripts/controllers/auth/account-settings.js"></script>
     <script src="scripts/controllers/auth/password-reset.js"></script>
     <script src="scripts/controllers/auth/new-password.js"></script>
+    <script src="scripts/controllers/spatial-catch.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -300,6 +304,7 @@
     <script src="scripts/services/fishing-access-service.js"></script>
     <script src="scripts/services/auth-service.js"></script>
     <script src="scripts/services/auth-api.js"></script>
+    <script src="scripts/services/cell-tile-layer.js"></script>
 
     <script src="scripts/directives/sau-multi-select.js"></script>
     <script src="scripts/directives/sau-selected-options.js"></script>

@@ -247,6 +247,10 @@ angular
         templateUrl: 'views/auth/new-password.html',
         controller: 'NewPasswordCtrl'
       })*/
+      .when('/spatial-catch', {
+        templateUrl: 'views/spatial-catch.html',
+        controller: 'SpatialCatchMapCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
