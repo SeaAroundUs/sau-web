@@ -41,12 +41,14 @@ L.tileLayer.cellLayer = function(cellDegrees) {
       imageData.data[i+2] = cellColorData[pos+2];
       imageData.data[i+3] = cellColorData[pos+3];
 
-      //var isRed = tileCoord.x === 0 && tileCoord.y === 0;
-      /*var isRed = true;
-      imageData.data[i] = isRed ? 255 : 0;
-      imageData.data[i+1] = 0;
-      imageData.data[i+2] = 0;
-      imageData.data[i+3] = isRed ? 255 : 0;*/
+      //Make the tiles borders red for debugging.
+      var isRed = canvasPixel < 256 || canvasPixel % 256 === 255 || canvasPixel % 256 === 0 || canvasPixel > 256 * 255;
+      if (isRed) {
+        imageData.data[i] = 255;
+        imageData.data[i+1] = 0;
+        imageData.data[i+2] = 0;
+        imageData.data[i+3] = 30;
+      }
     }
 
     context.putImageData(imageData, 0, 0);
@@ -88,7 +90,7 @@ L.tileLayer.cellLayer = function(cellDegrees) {
   };
 
   layer._tileCornerPt = function () {
-    return layer._map.latLngToLayerPoint(L.latLng(90, -180));
+    return layer._map.latLngToLayerPoint(L.latLng(0, 0));
   };
 
   layer._fromCornerTile = function (layerPt) {
