@@ -1,18 +1,30 @@
 'use strict';
 /* global L */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, $window, mapConfig, leafletData) {
+  function ($scope, $window, mapConfig, leafletData, countries110, testData) {
     //Reference to global object 'L'
     //var L = $window.L;
 
     /*var crs = new L.Proj.CRS('ESRI:53009', '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs', {
+      origin: [0, 0],
       resolutions: [
         156543.03392800014,
         78271.51696399994,
         39135.75848200009,
         19567.87924099992,
         9783.93962049996
-      ],
+      ]
+    });*/
+
+    /*crs = new L.Proj.CRS('EPSG:3857', '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
+      origin: [0, 0],
+      resolutions: [
+        156543.03392800014,
+        78271.51696399994,
+        39135.75848200009,
+        19567.87924099992,
+        9783.93962049996
+      ]
     });*/
 
     // RT90 with map's pixel origin at RT90 coordinate (0, 0)
@@ -25,51 +37,35 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     );*/
 
-    //Congigure Leaflet map
-    $scope.leaflet = {
-      layers: {
-        baselayers: mapConfig.baseLayers
-      },
-      maxbounds: mapConfig.worldBounds,
-      geojson: {},
-      center: {
-        lat: 0,
-        lng: 0,
-        zoom: 2
-      },
-      defaults: {
-        minZoom: 1,
-        tileLayerOptions: {
-          noWrap: true,
-          detectRetina: true,
-          reuseTiles: true
-        },
+    var map = L.map('cell-map', {
+      zoom: 0,
+      minZoom: 0,
+      maxZoom: 4
+    }).setView([0, 0], 2);
+
+    L.geoJson(countries110, {
+      style: function () {
+        return mapConfig.countryStyle;
       }
-    };
+    }).addTo(map);
 
-    leafletData.getMap('map').then(function(map) {
-      //$scope.map = map;
+    var layer = L.tileLayer.cellLayer(0.5);
+    var cellData = new Uint8ClampedArray(layer.numCells * 4);
+    var color = [228, 135, 242, 255]; //Purp
 
-      /*L.esri.tiledMapLayer('http://tiles1.arcgis.com/tiles/BG6nSlhZSAWtExvp/arcgis/rest/services/coordsys_Mollweide/MapServer',
-      {
-        maxZoom: 4,
-        minZoom: 0,
-      }).addTo(map);*/
-
-      L.esri.basemapLayer('Oceans').addTo(map);
-      L.esri.basemapLayer('OceansLabels').addTo(map);
-
-      var layer = L.tileLayer.cellLayer(0.5);
-      var cellData = new Uint8ClampedArray(layer.numCells * 4);
-      for (var i = 0; i < cellData.length; i += 4) {
-        var isRed = Math.random() < 0.001;
-        cellData[i] = isRed ? 255 : 0;
-        cellData[i + 1] = 0;
-        cellData[i + 2] = 0;
-        cellData[i + 3] = isRed ? 255 : 0;
+    //thresholds
+    for (var i = 0; i < testData.data.length; i ++) {
+      //Cells in this threshold
+      var pct = (5 - testData.data[i].threshold) / 5;
+      for (var j = 0; j < testData.data[i].array_agg.length; j++) {
+        var cell = testData.data[i].array_agg[j];
+        cellData[cell*4] = (255 - color[0]) * pct + color[0];
+        cellData[cell*4 + 1] = (255 - color[1]) * pct + color[1];
+        cellData[cell*4 + 2] = (255 - color[2]) * pct + color[2];
+        cellData[cell*4 + 3] = 255;
       }
-      layer.setCells(cellData);
-      map.addLayer(layer);
-    });
+    }
+    layer.setCells(cellData);
+    map.addLayer(layer);
   });
 

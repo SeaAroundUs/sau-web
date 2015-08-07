@@ -29,6 +29,7 @@ L.tileLayer.cellLayer = function(cellDegrees) {
     var imageData = context.getImageData(0, 0, 256, 256);
 
     var tileCorner = L.point(tileCoord.x * 256, tileCoord.y * 256).add(layer._tileCornerPt());
+
     for (var i = 0; i < imageData.data.length; i += 4) {
       var canvasPixel = i / 4;
       var layerPoint = L.point(canvasPixel % 256, Math.floor(canvasPixel / 256)).add(tileCorner);
@@ -39,6 +40,13 @@ L.tileLayer.cellLayer = function(cellDegrees) {
       imageData.data[i+1] = cellColorData[pos+1];
       imageData.data[i+2] = cellColorData[pos+2];
       imageData.data[i+3] = cellColorData[pos+3];
+
+      //var isRed = tileCoord.x === 0 && tileCoord.y === 0;
+      /*var isRed = true;
+      imageData.data[i] = isRed ? 255 : 0;
+      imageData.data[i+1] = 0;
+      imageData.data[i+2] = 0;
+      imageData.data[i+3] = isRed ? 255 : 0;*/
     }
 
     context.putImageData(imageData, 0, 0);
@@ -60,12 +68,23 @@ L.tileLayer.cellLayer = function(cellDegrees) {
   };
 
   layer._reset = function (event) {
+    /*var s = '';
+    for (var i = 0; i < 10000; i++) {
+      var randomCellId = Math.ceil(Math.random() * layer.numCells);
+      var latlng = layer._latLngOfCellId(randomCellId);
+      s += (randomCellId + ':' + latlng.lat + ',' + latlng.lng + '\n');
+    }
+    console.log(s);*/
+
     return L.TileLayer.Canvas.prototype._reset.call(layer, event);
   };
 
   layer._onClick = function (event) {
     layer.clickPoint = event.layerPoint;
-    console.log('clicked point: ' + layer._fromCornerTile(layer.clickPoint));
+    //console.log('clicked point: ' + layer._fromCornerTile(layer.clickPoint));
+    var cellId = layer._cellIdAtLatLng(event.latlng);
+    console.log('cell id: ' + cellId + ' at ' + event.latlng + ', to ' + layer._latLngOfCellId(cellId));
+    //console.log('clicked latlong: ' + event.latlng + ', ' + event.layerPoint);
   };
 
   layer._tileCornerPt = function () {
@@ -83,7 +102,16 @@ L.tileLayer.cellLayer = function(cellDegrees) {
     var cellCol = Math.floor((latLng.lng + 180) / cellDegrees);
 
     //Convert cell's x,y coord to a single-dimensional value.
-    return cellRow * layer.numCellColumns + cellCol;
+    //Cell Ids start at one.
+    return cellRow * layer.numCellColumns + cellCol + 1;
+  };
+
+  layer._latLngOfCellId = function (cellId) {
+    var col = cellId % layer.numCellColumns;
+    var row = Math.floor(cellId / layer.numCellColumns);
+    var lat = 90 - (row * cellDegrees) - 0.25;
+    var lng = -180 + (col * cellDegrees) - 0.25;
+    return L.latLng(lat, lng);
   };
 
   return layer;
