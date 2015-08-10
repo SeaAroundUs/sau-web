@@ -20,7 +20,11 @@ angular.module('sauWebApp')
       });
 
       $scope.$watch('region', function(region) {
-        sauAPI.Region.get({ region: region.name, region_id: region.id }, updateGeoJSON);
+        sauAPI.Region.get(
+          { region: region.name, region_id: region.id },
+          updateGeoJSON,
+          function() { $scope.disabled = true; }
+        );
       });
 
       //TODO probably needs updating for other geoJSON types (EEZ, IFA, etc)
@@ -31,8 +35,11 @@ angular.module('sauWebApp')
             var bounds = f.getBounds();
             f.addTo(map);
             map.fitBounds(bounds);
+            $scope.disabled = false;
           } else {
             map.setZoom(1);
+            $scope.disabled = true;
+            console.log($scope);
           }
         });
       }
@@ -53,6 +60,7 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: { region: '=' },
       template: '<leaflet layers="layers" id="region-data-minimap" ' +
-        'maxbounds="maxbounds" center="center" defaults="defaults"></leaflet>'
+        'maxbounds="maxbounds" center="center" defaults="defaults" ' +
+        'ng-class="{\'disabled\': disabled}"></leaflet>'
     };
   });
