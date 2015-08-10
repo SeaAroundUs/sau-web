@@ -161,9 +161,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
       var data = sauAPI.Data.get(data_options, function() {
         var dataHash;
         var tempData = [];
-        var homeCountry = [];
-        var hostCountry = [];
-        var otherCountries = [];
         var orderedLabels = {
           'catchtype': ['Landings', 'Discards'],
           'sector': ['Industrial', 'Artisanal', 'Subsistence', 'Recreational'],
@@ -189,25 +186,6 @@ angular.module('sauWebApp').controller('CatchChartCtrl',
             }
           });
           $scope.data = tempData;
-          $timeout(function() {
-            window.prerenderReady = true;
-          });
-
-          // chart ordering home country, then host country
-        } else if (data_options.dimension === 'country') {
-          data.data.forEach(function(country) {
-            if (country.key === data.host_country) {
-              hostCountry[0] = country;
-            } else if (country.key === data.home_country) {
-              homeCountry[0] = country;
-            } else {
-              otherCountries.push(country);
-            }
-          });
-          $scope.data = homeCountry.concat(hostCountry.concat(otherCountries));
-          $timeout(function() {
-            window.prerenderReady = true;
-          });
 
         // default chart ordering
         } else {
