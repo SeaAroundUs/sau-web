@@ -16,7 +16,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     }).addTo(map);
 
-    var layer = L.tileLayer.cellLayer(0.5);
+    var layer = L.tileLayer.cellLayer({cellDegrees: 0.5});
     var cellData = new Uint8ClampedArray(layer.numCells * 4);
     var color = [228, 135, 242, 255]; //Purp
 
