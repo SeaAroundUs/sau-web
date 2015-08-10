@@ -5,44 +5,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //Reference to global object 'L'
     //var L = $window.L;
 
-    var crs = new L.Proj.CRS('ESRI:53009', '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs', {
-      origin: [0, 0],
-      resolutions: [
-        39135.75848200009,
-        19567.87924099992,
-        9783.93962049996,
-        4891.96981024998,
-        2445.98490512499
-      ]
-    });
+    var crs = new L.Proj.CRS('ESRI:53009', '+proj=moll +lon_0=0 +x_0=0 +y_0=0 +a=6371000 +b=6371000 +units=m +no_defs',
+      { resolutions: [40000, 20000, 10000, 5000] });
 
-    /*crs = new L.Proj.CRS('EPSG:3857', '+proj=merc +lon_0=0 +k=1 +x_0=0 +y_0=0 +a=6378137 +b=6378137 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
-      origin: [0, 0],
-      resolutions: [
-        156543.03392800014,
-        78271.51696399994,
-        39135.75848200009,
-        19567.87924099992,
-        9783.93962049996
-      ]
-    });*/
-
-    // RT90 with map's pixel origin at RT90 coordinate (0, 0)
-    /*var crs = new L.Proj.CRS('EPSG:2400',
-      '+lon_0=15.808277777799999 +lat_0=0.0 +k=1.0 +x_0=1500000.0 ' +
-      '+y_0=0.0 +proj=tmerc +ellps=bessel +units=m ' +
-      '+towgs84=414.1,41.3,603.1,-0.855,2.141,-7.023,0 +no_defs',
-      {
-        resolutions: [8192, 4096, 2048], // 3 example zoom level resolutions
-      }
-    );*/
-
-    var map = L.map('cell-map', {
-      zoom: 0,
-      minZoom: 0,
-      maxZoom: 4,
-      crs: crs
-    }).setView([0, 0], 0);
+    var map = L.map('cell-map', { crs: crs }).setView([0, 0], 0);
 
     L.geoJson(countries110, {
       style: function () {
