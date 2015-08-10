@@ -39,7 +39,6 @@ angular.module('sauWebApp')
           } else {
             map.setZoom(1);
             $scope.disabled = true;
-            console.log($scope);
           }
         });
       }
