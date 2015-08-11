@@ -8,7 +8,6 @@
         updateHref();
 
         function updateHref() {
-          console.log($location);
           scope.url = '/feedback/?referringURL=/data/%23' + encodeURIComponent($location.$$url);
         }
       },
