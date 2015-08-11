@@ -42,7 +42,7 @@ angular.module('sauWebApp')
             chartTitle += 'non-EEZ waters of the ' + data.title;
 
           } else if (region.name === 'fishing-entity') {
-            chartTitle = chartTitle.replace(' in the ', '') + ' by ' + data.title;
+            chartTitle = chartTitle.replace(' in the ', '') + ' of fishing country ' + data.title;
 
           } else {
             chartTitle += 'waters of ' + data.title;
