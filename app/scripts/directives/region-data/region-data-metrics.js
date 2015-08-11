@@ -4,11 +4,16 @@ angular.module('sauWebApp')
   .directive('regionDataMetrics', function(sauAPI, metricLinks) {
     return {
       link: function(scope, ele) {
-        scope.$watch('region', updateScope);
+        scope.$watch('region', updateScope, true);
 
         function updateScope() {
           if (scope.region.id) {
-            var params = { region: scope.region.name, region_id: scope.region.id };
+            var params = {
+              region: scope.region.name,
+              region_id: scope.region.id,
+              fao_id: scope.region.faoId
+            };
+
             sauAPI.Region.get(params, function(res) {
               // hide for no metrics
               if (!res.data.metrics || res.data.metrics.length === 0) {
