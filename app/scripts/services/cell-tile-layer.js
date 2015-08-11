@@ -3,7 +3,12 @@
 /* global L */
 
 L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
-  options: {cellDegrees: 0.5},
+  options: {
+    cellDegrees: 0.5,
+    continuousWorld: true,
+    noWrap: true,
+    debugTiles: false
+  },
   initialize: function () {
     this.numCellColumns = 360 / this.options.cellDegrees;
     this.numCellRows = 180 / this.options.cellDegrees;
@@ -34,46 +39,28 @@ L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
       imageData.data[i+1] = this.cellColorData[pos+1];
       imageData.data[i+2] = this.cellColorData[pos+2];
       imageData.data[i+3] = this.cellColorData[pos+3];
+    }
 
-      //Make the tiles borders red for debugging.
-      var isRed = canvasPixel < 256 || canvasPixel % 256 === 255 || canvasPixel % 256 === 0 || canvasPixel > 256 * 255;
-      if (isRed) {
-        imageData.data[i] = 255;
-        imageData.data[i+1] = 0;
-        imageData.data[i+2] = 0;
-        imageData.data[i+3] = 30;
+    if (this.options.debugTiles) {
+      for (var i = 0; i < imageData.data.length; i += 4) {
+        //Make the tiles borders red for debugging.
+        var isRed = canvasPixel < 256 || canvasPixel % 256 === 255 || canvasPixel % 256 === 0 || canvasPixel > 256 * 255;
+        if (isRed) {
+          imageData.data[i] = 255;
+          imageData.data[i+1] = 0;
+          imageData.data[i+2] = 0;
+          imageData.data[i+3] = 30;
+        }
       }
     }
 
     context.putImageData(imageData, 0, 0);
   },
-  onAdd: function (map) {
-    this._map = map;
-    map.on('viewreset', this._reset, this);
-    map.on('click', this._onClick, this);
-
-    return L.TileLayer.Canvas.prototype.onAdd.call(this, map);
-  },
-  onRemove: function (map) {
-    map.off('viewreset', this._reset, this);
-    map.off('click', this._onClick, this);
-
-    return L.TileLayer.Canvas.prototype.onRemove.call(this, map);
-  },
-  _reset: function (event) {
-    return L.TileLayer.Canvas.prototype._reset.call(this, event);
-  },
-  _onClick: function (event) {
-    this.clickPoint = event.layerPoint;
-    //console.log('clicked point: ' + layer._fromCornerTile(layer.clickPoint));
-    var cellId = this._cellIdAtLatLng(event.latlng);
-    console.log('cell id: ' + cellId + ' at ' + event.latlng + ', to ' + this._latLngOfCellId(cellId));
-  },
   _tileCornerPt: function () {
     return this._map.latLngToLayerPoint(L.latLng(0, 0));
   },
   _fromCornerTile: function (layerPt) {
-    return layerPt.subtract(layer._tileCornerPt());
+    return layerPt.subtract(this._tileCornerPt());
   },
   _cellIdAtLatLng: function (latLng) {
     //Lat is between 90 and -90
@@ -94,7 +81,6 @@ L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
   }
 });
 
-
 L.tileLayer.cellLayer = function() {
   return new L.TileLayer.CellLayer();
-}
+};
