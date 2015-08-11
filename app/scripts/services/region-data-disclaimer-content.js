@@ -3,7 +3,7 @@
 angular.module('sauWebApp')
   .factory('regionDataDisclaimerContent', function() {
     var disclaimers = {
-      global: '<b>NOTE</b>: The data we present (\'reconstructed data\') combine official reported data and ' +
+      global: '<b>Note</b>: The data we present (\'reconstructed data\') combine official reported data and ' +
       'reconstructed estimates of unreported data (including major discards), with reference to ' +
       'individual EEZs. Official reported data are <a popover-html="National data are used for some countries.">' +
       'mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) ' +
