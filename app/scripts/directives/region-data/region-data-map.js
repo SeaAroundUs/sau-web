@@ -47,8 +47,8 @@ angular.module('sauWebApp')
     return {
       controller: controller,
       link: function(scope, ele) {
-        // don't show on global
-        if (scope.region.name === 'global') {
+        // don't show on global or fishing-entity
+        if (['global', 'fishing-entity'].indexOf(scope.region.name) !== -1) {
           ele.remove();
 
         // don't show for multiple ids
