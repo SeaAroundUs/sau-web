@@ -1,13 +1,15 @@
 'use strict';
 
 /* global L */
+/* global setTimeout */
 
 L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
   options: {
     cellDegrees: 0.5,
     continuousWorld: true,
     noWrap: true,
-    debugTiles: false
+    debugTiles: false,
+    async: true
   },
   initialize: function () {
     this.numCellColumns = 360 / this.options.cellDegrees;
@@ -28,33 +30,7 @@ L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
     var imageData = context.getImageData(0, 0, 256, 256);
 
     var tileCorner = L.point(tileCoord.x * 256, tileCoord.y * 256).add(this._tileCornerPt());
-
-    for (var i = 0; i < imageData.data.length; i += 4) {
-      var canvasPixel = i / 4;
-      var layerPoint = L.point(canvasPixel % 256, Math.floor(canvasPixel / 256)).add(tileCorner);
-      var latLng = this._map.layerPointToLatLng(layerPoint);
-      var cellId = this._cellIdAtLatLng(latLng);
-      var pos = cellId * 4;
-      imageData.data[i] = this.cellColorData[pos];
-      imageData.data[i+1] = this.cellColorData[pos+1];
-      imageData.data[i+2] = this.cellColorData[pos+2];
-      imageData.data[i+3] = this.cellColorData[pos+3];
-    }
-
-    if (this.options.debugTiles) {
-      for (var i = 0; i < imageData.data.length; i += 4) {
-        //Make the tiles borders red for debugging.
-        var isRed = canvasPixel < 256 || canvasPixel % 256 === 255 || canvasPixel % 256 === 0 || canvasPixel > 256 * 255;
-        if (isRed) {
-          imageData.data[i] = 255;
-          imageData.data[i+1] = 0;
-          imageData.data[i+2] = 0;
-          imageData.data[i+3] = 30;
-        }
-      }
-    }
-
-    context.putImageData(imageData, 0, 0);
+    this._asyncDrawTile(this, 0, imageData, tileCorner, canvas);
   },
   _tileCornerPt: function () {
     return this._map.latLngToLayerPoint(L.latLng(0, 0));
@@ -78,6 +54,44 @@ L.TileLayer.CellLayer = L.TileLayer.Canvas.extend({
     var lat = 90 - (row * this.options.cellDegrees) - 0.25;
     var lng = -180 + (col * this.options.cellDegrees) - 0.25;
     return L.latLng(lat, lng);
+  },
+  _asyncDrawTile: function (thiz, startIndex, imageData, tileCorner, canvas) {
+    var duration = 0;
+    var now = Date.now();
+
+    for (var i = startIndex; i < imageData.data.length; i += 4) {
+      var canvasPixel = i / 4;
+      var layerPoint = L.point(canvasPixel % 256, Math.floor(canvasPixel / 256)).add(tileCorner);
+      var latLng = thiz._map.layerPointToLatLng(layerPoint);
+      var cellId = thiz._cellIdAtLatLng(latLng);
+      var pos = cellId * 4;
+      imageData.data[i] = thiz.cellColorData[pos];
+      imageData.data[i+1] = thiz.cellColorData[pos+1];
+      imageData.data[i+2] = thiz.cellColorData[pos+2];
+      imageData.data[i+3] = thiz.cellColorData[pos+3];
+
+      //Draw red borders around tiles for debugging.
+      if (thiz.options.debugTiles) {
+        var isRed = canvasPixel < 256 || canvasPixel % 256 === 255 || canvasPixel % 256 === 0 || canvasPixel > 256 * 255;
+        if (isRed) {
+          imageData.data[i] = 255;
+          imageData.data[i+1] = 0;
+          imageData.data[i+2] = 0;
+          imageData.data[i+3] = 30;
+        }
+      }
+
+      duration += Date.now() - now;
+      now = Date.now();
+      if (duration > 33) {
+        duration = 0;
+        setTimeout(thiz._asyncDrawTile, 1, thiz, i+4, imageData, tileCorner, canvas);
+        break;
+      }
+    }
+
+    canvas.getContext('2d').putImageData(imageData, 0, 0);
+    thiz.tileDrawn(canvas);
   }
 });
 
