@@ -15,6 +15,7 @@ angular.module('sauWebApp')
       Region: resourceFactory(':region/:region_id'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
+      AccessAgreementExternal: resourceFactory('fishing-entity/:region_id/access-agreement-external/'),
       AccessAgreementInternal: $resource(SAU_CONFIG.apiURL + 'eez/:region_id/access-agreement-internal/',
         {},
         {

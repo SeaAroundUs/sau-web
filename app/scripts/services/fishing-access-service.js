@@ -39,6 +39,17 @@ angular.module('sauWebApp')
         }
 
         return b;
+      },
+
+      getEEZs: function(agreements) {
+        return agreements.reduce(function(eezs, agreement) {
+          if (eezs.indexOf(agreement.eez_name) === -1) {
+            eezs.push(agreement.eez_name);
+          }
+          return eezs;
+        }, []).map(function(agreement) {
+          return { name: agreement, visible: true };
+        });
       }
     };
   });

@@ -47,7 +47,8 @@ angular.module('sauWebApp')
               text: 'Treaties & conventions',
               ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
-            }
+            },
+            { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }
       ]

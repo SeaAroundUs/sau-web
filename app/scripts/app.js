@@ -210,6 +210,18 @@ angular
           controller: 'RegionDataCtrl',
           reloadOnSearch: false,
           resolve: {region: function() {return 'fishing-entity';}}
+        })
+        .when('/fishing-entity/:id/external-fishing-access', {
+          templateUrl: 'views/external-fishing-access.html',
+          controller: 'ExternalFishingAccessCtrl',
+          resolve: {
+            agreements: function ($route, sauAPI) {
+              return sauAPI.AccessAgreementExternal.get({'region_id': $route.current.params.id}).$promise;
+            },
+            region: function ($route, sauAPI) {
+              return sauAPI.Region.get({'region': 'fishing-entity', 'region_id': $route.current.params.id}).$promise;
+            }
+          }
         });
     }
 
