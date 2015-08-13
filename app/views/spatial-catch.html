@@ -76,8 +76,24 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12">
-			<i class="fa fa-plus-square expand-collapse-button"></i><span class="expand-collapse-label">Global taxon distribution</span>
+				<span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution</span></span>
 			</div>
+		</div>
+		<div class="row" ng-show="showTaxonDistributionBar">
+			<div class="col-md-10">
+				<ui-select id="selectDistributionTaxon" multiple ng-model="query.distributionTaxon" class="query-select">
+					<ui-select-match placeholder="Select taxa">{{$item.name}}</ui-select-match>
+					<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
+						<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+					</ui-select-choices>
+				</ui-select>
+			</div>
+			<div class="col-md-2 text-right">
+				<a href="#">Show scientific names</a>
+			</div>
+		</div>
+		<div class="timeline">
+
 		</div>
 		<div id="cell-map"></div>
 	</div>
