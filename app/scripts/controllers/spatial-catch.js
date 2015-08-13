@@ -1,11 +1,15 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes) {
+
+    //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
+    $scope.reportingStatuses = reportingStatuses;
+    $scope.catchTypes = catchTypes;
 
     d3.json('countries.json', function(error, countries) {
       var map = d3.geo.GridMap;
@@ -31,22 +35,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       map.setDataUnsparseTypedArray(cellData);
     });
-
-    $scope.reportingStatuses = [
-      { name: 'Reported'},
-      { name: 'Unreported'}
-    ];
-
-    $scope.catchTypes = [
-      { name: 'Landings'},
-      { name: 'Discards'}
-    ];
-
-    $scope.catchesBy = [
-      'Taxa',
-      'Commercial groups',
-      'Functional groups'
-    ];
 
     function lighten(color, pct) {
       return (255 - color) * pct + color;
