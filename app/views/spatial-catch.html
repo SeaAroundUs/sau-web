@@ -8,7 +8,7 @@
 	<div class="sau-panel">
 		<div id="query-inputs" class="row">
 			<form novalidate>
-				<div class="col-md-2">
+				<div class="col-md-4">
 					<label for="selectFishingCountries">Fishing countries</label>
 					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select">
 						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
@@ -17,16 +17,67 @@
 						</ui-select-choices>
 					</ui-select>
 				</div>
+				<div class="col-md-2 catches-by-query">
+					<label for="selectCatchesBy">Catches by</label>
+					<select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy" ng-init="query.catchesBy='taxa'">
+						<option value="taxa">Taxon</option>
+						<option value="commercial groups">Commercial group</option>
+						<option value="functional groups">Functional group</option>
+					</select>
+				</div>
+				<div class="col-md-2 catches-by-query">
+					<div ng-show="query.catchesBy === 'taxa'">
+						<label for="selectTaxa">Taxon/taxa</label>
+						<ui-select id="selectTaxa" multiple ng-model="query.taxa" class="query-select">
+							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
+								<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+					<div ng-show="query.catchesBy === 'commercial groups'">
+						<label for="selectTaxa">Commercial group(s)</label>
+						<ui-select id="selectTaxa" multiple ng-model="query.commercialGroups" class="query-select">
+							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="commercialGroup in commercialGroups | filter: $select.search track by commercialGroup.name">
+								<span ng-bind-html="commercialGroup.name | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+					<div ng-show="query.catchesBy === 'functional groups'">
+						<label for="selectTaxa">Functional group(s)</label>
+						<ui-select id="selectTaxa" multiple ng-model="query.functionalGroups" class="query-select">
+							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+							<ui-select-choices repeat="functionalGroup in functionalGroups | filter: $select.search track by functionalGroup.name">
+								<span ng-bind-html="functionalGroup.name | highlight: $select.search"></span>
+							</ui-select-choices>
+						</ui-select>
+					</div>
+				</div>
 				<div class="col-md-2">
-					<label for="selectTaxa">Taxa</label>
-					<ui-select id="selectTaxa" multiple ng-model="query.taxa" class="query-select">
+					<label for="selectReportingStatus">Reporting status(es)</label>
+					<ui-select id="selectReportingStatus" multiple ng-model="query.reportingStatuses" class="query-select">
 						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-						<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
-							<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+						<ui-select-choices repeat="status in reportingStatuses | filter: $select.search track by status.name">
+							<span ng-bind-html="status.name | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-2">
+					<label for="selectCatchType">Catch type(s)</label>
+					<ui-select id="selectCatchType" multiple ng-model="query.catchTypes" class="query-select">
+						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+						<ui-select-choices repeat="catchType in catchTypes | filter: $select.search track by catchType.name">
+							<span ng-bind-html="catchType.name | highlight: $select.search"></span>
 						</ui-select-choices>
 					</ui-select>
 				</div>
 			</form>
+		</div>
+		<div class="row">
+			<div class="col-xs-12">
+			<i class="fa fa-plus-square expand-collapse-button"></i><span class="expand-collapse-label">Global taxon distribution</span>
+			</div>
 		</div>
 		<div id="cell-map"></div>
 	</div>

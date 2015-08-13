@@ -49,6 +49,46 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       { name: 'I'},
     ];
 
+    $scope.commercialGroups = [
+      { name: 'A'},
+      { name: 'B'},
+      { name: 'C'},
+      { name: 'D'},
+      { name: 'E'},
+      { name: 'F'},
+      { name: 'G'},
+      { name: 'H'},
+      { name: 'I'},
+    ];
+
+    $scope.functionalGroups = [
+      { name: 'A'},
+      { name: 'B'},
+      { name: 'C'},
+      { name: 'D'},
+      { name: 'E'},
+      { name: 'F'},
+      { name: 'G'},
+      { name: 'H'},
+      { name: 'I'},
+    ];
+
+    $scope.reportingStatuses = [
+      { name: 'Reported'},
+      { name: 'Unreported'}
+    ];
+
+    $scope.catchTypes = [
+      { name: 'Landings'},
+      { name: 'Discards'}
+    ];
+
+    $scope.catchesBy = [
+      'Taxa',
+      'Commercial groups',
+      'Functional groups'
+    ];
+
     function lighten(color, pct) {
       return (255 - color) * pct + color;
     }

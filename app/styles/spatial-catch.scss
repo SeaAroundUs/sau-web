@@ -11,8 +11,23 @@
     height: 550px;
   }
 
+  .row {
+  	padding-left: 8px;
+  	padding-right: 8px;
+  }
+
   #query-inputs {
   	padding-top: 20px;
+
+  	.col-md-2, .col-md-4 {
+  		padding-left: 8px;
+  		padding-right: 8px;
+  		padding-bottom: 8px;
+  	}
+
+  	.catches-by-query {
+  		background-color: #f1f1f1;
+  	}
   }
 
   label {
@@ -21,13 +36,20 @@
   	padding-bottom: 3px;
   }
 
-  .query-select {
-  	height: 40px;
+  .query-select, .form-control {
   	border-color: #979797;
-
+  	height: 31px;
   	input {
-  		margin-top: 4px;
   		margin-left: 9px;
   	}
   }
+
+  .col-md-* {
+  	padding-left: 8px;
+  	padding-right: 8px;
+  }
+
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+	  line-height: 1;
+	}
 }
