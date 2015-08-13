@@ -5,8 +5,29 @@
 		<li><a href="#">View Graph</a></li>
 	</ul>
 	<p id="main-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor sodales pretium. Morbi cursus viverra est, eget maximus enim tincidunt quis. Praesent malesuada ex quis nunc semper, non pellentesque ex consectetur.</p>
-	<!--<leaflet id="map" layers="leaflet.layers" maxbounds="leaflet.maxbounds" geojson="leaflet.geojson" center="leaflet.center" defaults="leaflet.defaults" width="100%" height="660"></leaflet>-->
 	<div class="sau-panel">
+		<div id="query-inputs" class="row">
+			<form novalidate>
+				<div class="col-md-2">
+					<label for="selectFishingCountries">Fishing countries</label>
+					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select">
+						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+						<ui-select-choices repeat="country in fishingCountries | filter: $select.search track by country.name">
+							<span ng-bind-html="country.name | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+				<div class="col-md-2">
+					<label for="selectTaxa">Taxa</label>
+					<ui-select id="selectTaxa" multiple ng-model="query.taxa" class="query-select">
+						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
+						<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
+							<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+						</ui-select-choices>
+					</ui-select>
+				</div>
+			</form>
+		</div>
 		<div id="cell-map"></div>
 	</div>
 </div>

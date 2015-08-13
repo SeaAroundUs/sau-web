@@ -28,6 +28,27 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       map.setDataUnsparseTypedArray(cellData);
     });
 
+    $scope.fishingCountries = [
+      { name: 'A'},
+      { name: 'B'},
+      { name: 'C'},
+      { name: 'D'},
+      { name: 'E'},
+      { name: 'F'}
+    ];
+
+    $scope.taxa = [
+      { name: 'A'},
+      { name: 'B'},
+      { name: 'C'},
+      { name: 'D'},
+      { name: 'E'},
+      { name: 'F'},
+      { name: 'G'},
+      { name: 'H'},
+      { name: 'I'},
+    ];
+
     function lighten(color, pct) {
       return (255 - color) * pct + color;
     }
