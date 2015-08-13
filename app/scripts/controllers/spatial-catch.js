@@ -1,7 +1,12 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, $window, mapConfig, countries110, testData) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups) {
+    $scope.fishingCountries = fishingCountries.data;
+    $scope.taxa = taxa.data;
+    $scope.commercialGroups = commercialGroups.data;
+    $scope.functionalGroups = functionalGroups.data;
+
     d3.json('countries.json', function(error, countries) {
       var map = d3.geo.GridMap;
       map.init('#cell-map', [720, 360], {
@@ -26,51 +31,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       map.setDataUnsparseTypedArray(cellData);
     });
-
-    $scope.fishingCountries = [
-      { name: 'A'},
-      { name: 'B'},
-      { name: 'C'},
-      { name: 'D'},
-      { name: 'E'},
-      { name: 'F'}
-    ];
-
-    $scope.taxa = [
-      { name: 'A'},
-      { name: 'B'},
-      { name: 'C'},
-      { name: 'D'},
-      { name: 'E'},
-      { name: 'F'},
-      { name: 'G'},
-      { name: 'H'},
-      { name: 'I'},
-    ];
-
-    $scope.commercialGroups = [
-      { name: 'A'},
-      { name: 'B'},
-      { name: 'C'},
-      { name: 'D'},
-      { name: 'E'},
-      { name: 'F'},
-      { name: 'G'},
-      { name: 'H'},
-      { name: 'I'},
-    ];
-
-    $scope.functionalGroups = [
-      { name: 'A'},
-      { name: 'B'},
-      { name: 'C'},
-      { name: 'D'},
-      { name: 'E'},
-      { name: 'F'},
-      { name: 'G'},
-      { name: 'H'},
-      { name: 'I'},
-    ];
 
     $scope.reportingStatuses = [
       { name: 'Reported'},

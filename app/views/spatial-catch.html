@@ -11,9 +11,9 @@
 				<div class="col-md-4">
 					<label for="selectFishingCountries">Fishing countries</label>
 					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select">
-						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-						<ui-select-choices repeat="country in fishingCountries | filter: $select.search track by country.name">
-							<span ng-bind-html="country.name | highlight: $select.search"></span>
+						<ui-select-match placeholder="Select">{{$item.title}}</ui-select-match>
+						<ui-select-choices repeat="country in fishingCountries | filter: $select.search track by country.id">
+							<span ng-bind-html="country.title | highlight: $select.search"></span>
 						</ui-select-choices>
 					</ui-select>
 				</div>
@@ -29,9 +29,9 @@
 					<div ng-show="query.catchesBy === 'taxa'">
 						<label for="selectTaxa">Taxon/taxa</label>
 						<ui-select id="selectTaxa" multiple ng-model="query.taxa" class="query-select">
-							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-							<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
-								<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+							<ui-select-match placeholder="Select">{{$item.common_name}}</ui-select-match>
+							<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.taxon_key">
+								<span ng-bind-html="taxon.common_name | highlight: $select.search"></span>
 							</ui-select-choices>
 						</ui-select>
 					</div>
@@ -39,7 +39,7 @@
 						<label for="selectTaxa">Commercial group(s)</label>
 						<ui-select id="selectTaxa" multiple ng-model="query.commercialGroups" class="query-select">
 							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-							<ui-select-choices repeat="commercialGroup in commercialGroups | filter: $select.search track by commercialGroup.name">
+							<ui-select-choices repeat="commercialGroup in commercialGroups | filter: $select.search track by commercialGroup.commercial_group_id">
 								<span ng-bind-html="commercialGroup.name | highlight: $select.search"></span>
 							</ui-select-choices>
 						</ui-select>
@@ -47,9 +47,9 @@
 					<div ng-show="query.catchesBy === 'functional groups'">
 						<label for="selectTaxa">Functional group(s)</label>
 						<ui-select id="selectTaxa" multiple ng-model="query.functionalGroups" class="query-select">
-							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-							<ui-select-choices repeat="functionalGroup in functionalGroups | filter: $select.search track by functionalGroup.name">
-								<span ng-bind-html="functionalGroup.name | highlight: $select.search"></span>
+							<ui-select-match placeholder="Select">{{$item.description}}</ui-select-match>
+							<ui-select-choices repeat="functionalGroup in functionalGroups | filter: $select.search track by functionalGroup.functional_group_id">
+								<span ng-bind-html="functionalGroup.description | highlight: $select.search"></span>
 							</ui-select-choices>
 						</ui-select>
 					</div>
@@ -82,9 +82,9 @@
 		<div class="row" ng-show="showTaxonDistributionBar">
 			<div class="col-md-10">
 				<ui-select id="selectDistributionTaxon" multiple ng-model="query.distributionTaxon" class="query-select">
-					<ui-select-match placeholder="Select taxa">{{$item.name}}</ui-select-match>
-					<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.name">
-						<span ng-bind-html="taxon.name | highlight: $select.search"></span>
+					<ui-select-match placeholder="Select taxa">{{$item.common_name}}</ui-select-match>
+					<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.taxon_key">
+						<span ng-bind-html="taxon.common_name | highlight: $select.search"></span>
 					</ui-select-choices>
 				</ui-select>
 			</div>

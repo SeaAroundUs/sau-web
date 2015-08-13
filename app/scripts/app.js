@@ -249,7 +249,21 @@ angular
       })*/
       .when('/spatial-catch', {
         templateUrl: 'views/spatial-catch.html',
-        controller: 'SpatialCatchMapCtrl'
+        controller: 'SpatialCatchMapCtrl',
+        resolve: {
+          taxa: function (sauAPI) {
+            return sauAPI.Taxa.get().$promise;
+          },
+          fishingCountries: function (sauAPI) {
+            return sauAPI.FishingEntities.get().$promise;
+          },
+          commercialGroups: function (sauAPI) {
+            return sauAPI.CommercialGroups.get().$promise;
+          },
+          functionalGroups: function (sauAPI) {
+            return sauAPI.FunctionalGroups.get().$promise;
+          }
+        }
       })
       .otherwise({
         redirectTo: '/'
