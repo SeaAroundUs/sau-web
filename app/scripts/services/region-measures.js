@@ -24,6 +24,7 @@ angular.module('sauWebApp')
       rfmo: defaultMeasures,
       fishingCountry: defaultMeasures,
       'fishing-entity': defaultMeasures,
+      'country-eezs': defaultMeasures,
       multi: defaultMeasures
     };
   });

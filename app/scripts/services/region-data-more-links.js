@@ -12,6 +12,8 @@ angular.module('sauWebApp')
       'think are useable. Select an indicator to view analysis based on Sea Around Us and other data.'
     };
 
+    importantNotes['country-eezs'] = importantNotes.global;
+
     var links = {
       global: [
         {
@@ -37,6 +39,7 @@ angular.module('sauWebApp')
           ]
         }
       ],
+
       'fishing-entity': [
         {
           section: 'Governance',
@@ -49,6 +52,51 @@ angular.module('sauWebApp')
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
+          ]
+        }
+      ],
+
+      'country-eezs': [
+        {
+          section: 'EEZs in this country',
+          eachOf: 'eezs',
+          url: '#/eez/{{ eez_id }}',
+          text: '{{ eez_name }}'
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            { text: 'Ecopath models', url: '' },
+            { text: 'Estuaries', url: '' },
+            { text: 'Fish parameters', url: '' }
+          ]
+        },
+        {
+          section: 'Governance', // TODO
+          links: [
+            { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
+            {
+              text: 'Internal fishing access agreements',
+              ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/'
+            },
+            { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
+            {
+              text: 'Treaties & conventions',
+              ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
+              'Country={{ country_id | fishbaseCountryId }}'
+            }
+          ]
+        },
+        { // TODO
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', url: '' },
+            { text: 'Multinational footprint', url: '' },
+            { text: 'Marine trophic index', url: '' }
           ]
         }
       ]

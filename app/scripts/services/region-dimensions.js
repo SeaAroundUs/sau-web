@@ -67,6 +67,7 @@ angular.module('sauWebApp')
       rfmo: defaultDimensions,
       fishingCountry: defaultDimensions,
       'fishing-entity': fishingEntityDimensions,
+      'country-eezs': defaultDimensions,
       multi: defaultDimensions
     };
   });

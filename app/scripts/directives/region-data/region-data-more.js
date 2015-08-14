@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('regionDataMore', function($sce, $timeout, $interpolate, regionDataMoreLinks, sauAPI) {
+  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, regionDataMoreLinks, sauAPI) {
     return {
       link: function(scope, ele) {
         var params;
@@ -37,14 +37,23 @@ angular.module('sauWebApp')
             params = { region: scope.region.name, region_id: scope.region.id };
             sauAPI.Region.get(params, function(res) {
               scope.moreData = scope.moreData.map(function(section) {
-                if (section.links) {
-                  section.links.map(function(link) {
+                if (section.links && section.links.length) {
+                  section.links.forEach(function(link) {
                     if (link.ngUrl) {
                       link.url = $interpolate(link.ngUrl, false, null, true)(res.data);
                     }
-                    return link;
                   });
+
+                } else if (section.eachOf) {
+                  section.links = res.data[section.eachOf].reduce(function(links, item) {
+                    links.push({
+                      text: $interpolate(section.text, false, null, true)(item),
+                      url: $interpolate(section.url, false, null, true)(item)
+                    });
+                    return links;
+                  }, []);
                 }
+
                 return section;
               });
             });
