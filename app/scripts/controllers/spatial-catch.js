@@ -11,11 +11,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
 
-    d3.json('countries.json', function(error, countries) {
+    d3.json('countries.topojson', function(error, countries) {
       var map = d3.geo.GridMap;
       map.init('#cell-map', [720, 360], {
         projection: d3.geo.mollweide(),
-        countries: countries
+        countries: countries,
+        landColor: 'rgba(251, 250, 243, 1)',
+        seaColor: 'rgba(181, 224, 249, 1)'
       });
 
       var cellData = new Uint8ClampedArray(720 * 360 * 4);
