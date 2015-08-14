@@ -10,7 +10,7 @@
 			<form novalidate>
 				<div class="col-md-4">
 					<label for="selectFishingCountries">Fishing countries</label>
-					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select">
+					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select" on-remove="queryChanged()" on-select="queryChanged()">
 						<ui-select-match placeholder="Select">{{$item.title}}</ui-select-match>
 						<ui-select-choices repeat="country in fishingCountries | filter: $select.search track by country.id">
 							<span ng-bind-html="country.title | highlight: $select.search"></span>
@@ -94,6 +94,9 @@
 		</div>
 		<div class="timeline">
 
+		</div>
+		<div class="row" ng-show="isQueryDirty">
+			<div class="col-xs-12"><button type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
 		</div>
 		<div id="cell-map"></div>
 	</div>
