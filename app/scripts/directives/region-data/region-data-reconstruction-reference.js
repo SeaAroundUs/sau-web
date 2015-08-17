@@ -23,14 +23,15 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
           ele.remove();
         }
       }
-    },
+    }, //Reconstruction reference(s):
     replace: true,
     restrict: 'E',
     scope: {
       region: '='
     },
     template: '<div id="reconstruction-reference">' +
-      '<h3>Reconstruction reference(s):</h3>' +
+      '<h3 ng-pluralize count="references.length" ' +
+        'when="{\'1\': \'Reconstruction reference:\', \'other\': \'Reconstruction references:\'}"></h3>' +
       '<span ng-repeat="ref in references" class="reference">' +
         '<a ng-href="{{ ref.url }}"><i class="fa fa-file-pdf-o red"></i> {{ ref.name | breakUnderscores }}</a>' +
       '</span></div>'
