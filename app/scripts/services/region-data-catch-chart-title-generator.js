@@ -19,7 +19,7 @@ angular.module('sauWebApp')
 
         if (!region.id) {
           if (region.name === 'fishing-entity') {
-            promiseData = { data: { title: 'selected fishing entities' }};
+            promiseData = { data: { title: 'selected fishing countries' }};
 
           } else {
             promiseData = { data: { title: 'selected regions' }};
@@ -42,7 +42,7 @@ angular.module('sauWebApp')
             chartTitle += 'non-EEZ waters of the ' + data.title;
 
           } else if (region.name === 'fishing-entity') {
-            chartTitle = chartTitle.replace(' in the ', '') + ' of fishing country ' + data.title;
+            chartTitle = chartTitle.replace(' in the ', '') + ' by the fleets of ' + data.title;
 
           } else {
             chartTitle += 'waters of ' + data.title;
