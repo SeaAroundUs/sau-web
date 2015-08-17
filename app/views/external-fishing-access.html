@@ -2,7 +2,11 @@
 	<h1 ng-show="!!regionName">{{ regionName }} foreign fishing access agreements by EEZ</h1>
 	<p id="main-text"> The foreign fishing access database, initially derived from the fishing agreement database of FAO (1999), contains observed foreign fishing records, and fishing agreements and treaties that were signed by fishing countries and the host countries in whose EEZs the foreign fleets were allowed to fish. In addition, the database also includes the start and end year of agreements and/or observed access. The type of access is also specified as ‘assumed unilateral’, ‘assumed reciprocal’, ‘unilateral’ or ‘reciprocal’. Also, the type of agreement is recorded in the database and the agreement can be classified into bilateral agreements such as partnership, multilateral agreements such as international conventions or agreements with regional fisheries organizations, private, licensing or exploratory agreements. Additional information contained in this database relates to the type of taxa likely targeted by foreign fleets (e.g., tuna vs. demersal taxa). <method anchor="catch-reconstruction-and-allocation-methods/foreign-fishing-access"></method></p>
 
-	<div ng-show="agreements.length > 0">
+  <div ng-if="agreements.length === 0" class="no-data">
+    No external fishing access agreement data are available.
+  </div>
+
+  <div ng-show="agreements.length > 0">
 		<div id="fishing-entity-table-title" class="table-title">
 			<span class="active-title">Agreements</span>
 		</div>
