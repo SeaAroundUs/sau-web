@@ -6,8 +6,11 @@
   }
 
   span.link {
+    display: inline-block;
+
     &:after {
-      content: ' | ';
+      content: '|';
+      padding: 0 4px 0 1px;
     }
 
     &:last-child:after {
