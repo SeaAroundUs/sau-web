@@ -9,6 +9,7 @@
   #cell-map {
     width: 100%;
     height: 550px;
+    position: relative;
   }
 
   .row {
@@ -82,7 +83,6 @@
     border-top: 1px solid #979797;
     border-bottom: 1px solid #979797;
     background-color: #E2EAF3;
-    margin-bottom: 8px;
   }
 
   .form-inline {
@@ -110,5 +110,26 @@
   .legend-measure {
     font-size: smaller;
     padding-top: 8px;
+  }
+
+  #cell-map-loading-overlay {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.40);
+    position: absolute;
+
+    p {
+      text-align: center;
+      font-weight: 400;
+      color: #ffffff;
+      font-size: 20px;
+      position: absolute;
+      top: 30px;
+      width: 100%;
+    }
+  }
+
+  #update-map-button {
+    margin-top: 8px;
   }
 }

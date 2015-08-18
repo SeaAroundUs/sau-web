@@ -96,9 +96,13 @@
 
 		</div>
 		<div class="row" ng-show="isQueryDirty()">
-			<div class="col-xs-12"><button type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
+			<div class="col-xs-12"><button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
 		</div>
-		<div id="cell-map"></div>
+		<div id="cell-map">
+			<div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
+				<p>{{loadingText}}</p>
+			</div>
+		</div>
 		<div class="row compare-bar" ng-show="comparableTypes && comparableTypes.length > 0">
 			<div class="col-xs-12">
 				<form class="form-inline">

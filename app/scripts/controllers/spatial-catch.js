@@ -1,13 +1,14 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
       updateComparableTypeList();
       assignDefaultComparison();
       assignColorsToComparees();
+      $scope.loadingText = "Downloading cells";
 
       var queryParams = {};
       if (query.fishingCountries && query.fishingCountries.length > 0) {
@@ -17,7 +18,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         queryParams.year = query.year;
       }
 
-      $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, handleSpatialCatchDataResponse);
+      $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, drawCellData);
     };
 
     $scope.queryChanged = function () {
@@ -61,44 +62,48 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return s;
     }
 
-    function handleSpatialCatchDataResponse () {
-      drawCellData();
-    }
-
     function drawCellData() {
-      var response = $scope.spatialCatchData;
+      $scope.isRendering = true;
+      $scope.loadingText = "Rendering";
+      //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
+      //put up a loading screen.
+      $timeout(function() {
+        var response = $scope.spatialCatchData;
 
-      if (!response || !response.data || response.data.length < 1) {
-        return;
-      }
-
-      var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
-      for (var i = 0; i < response.data.length; i++) {
-        var cellBlob = response.data[i];
-        var color = colorAssignment.getDefaultColor();
-        if ($scope.isQueryComparable()) {
-          color = colorAssignment.colorOf([cellBlob[$scope.comparableType.serverId]]);
+        if (!response || !response.data || response.data.length < 1) {
+          return;
         }
-        var pct = (5 - cellBlob.threshold) / 5;
-        for (var j = 0; j < cellBlob.cells.length; j++) {
-          var cell = cellBlob.cells[j];
-          //Don't use a color blend mode for cell's the first color.
-          if (cellData[cell*4 + 3] === 0) {
-            cellData[cell*4] = lightenChannel(color[0], pct);
-            cellData[cell*4 + 1] = lightenChannel(color[1], pct);
-            cellData[cell*4 + 2] = lightenChannel(color[2], pct);
-            cellData[cell*4 + 3] = 255;
-          //Multiply the colors for layered cells.
-          } else {
-            cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
-            cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
-            cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
-            cellData[cell*4 + 3] = 255;
+
+        var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
+        for (var i = 0; i < response.data.length; i++) {
+          var cellBlob = response.data[i];
+          var color = colorAssignment.getDefaultColor();
+          if ($scope.isQueryComparable()) {
+            color = colorAssignment.colorOf([cellBlob[$scope.comparableType.serverId]]);
+          }
+          var pct = (5 - cellBlob.threshold) / 5;
+          for (var j = 0; j < cellBlob.cells.length; j++) {
+            var cell = cellBlob.cells[j];
+            //Don't use a color blend mode for cell's the first color.
+            if (cellData[cell*4 + 3] === 0) {
+              cellData[cell*4] = lightenChannel(color[0], pct);
+              cellData[cell*4 + 1] = lightenChannel(color[1], pct);
+              cellData[cell*4 + 2] = lightenChannel(color[2], pct);
+              cellData[cell*4 + 3] = 255;
+            //Multiply the colors for layered cells.
+            } else {
+              cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
+              cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
+              cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
+              cellData[cell*4 + 3] = 255;
+            }
           }
         }
-      }
 
-      d3.geo.GridMap.setDataUnsparseTypedArray(cellData);
+        d3.geo.GridMap.setDataUnsparseTypedArray(cellData);
+      }, 50).then(function () {
+        $scope.isRendering = false;
+      });
     }
 
     function multiplyChannel(top, bottom) {
