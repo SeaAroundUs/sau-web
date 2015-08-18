@@ -281,6 +281,27 @@ angular
         resolve: {region: function() {return 'multi';}}
       });
 
+    //Spatial catch routes
+    $routeProvider
+      .when('/spatial-catch', {
+        templateUrl: 'views/spatial-catch.html',
+        controller: 'SpatialCatchMapCtrl',
+        resolve: {
+          taxa: function (sauAPI) {
+            return sauAPI.Taxa.get().$promise;
+          },
+          fishingCountries: function (sauAPI) {
+            return sauAPI.FishingEntities.get().$promise;
+          },
+          commercialGroups: function (sauAPI) {
+            return sauAPI.CommercialGroups.get().$promise;
+          },
+          functionalGroups: function (sauAPI) {
+            return sauAPI.FunctionalGroups.get().$promise;
+          }
+        }
+      });
+
     // user auth routes
     if (togglesProvider.$get().isEnabled('auth')) {
       $routeProvider

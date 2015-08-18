@@ -1,0 +1,114 @@
+#spatial-catch {
+  max-width: 1080px;
+
+  #main-text {
+    line-height: 1.7;
+    padding-bottom: 20px;
+  }
+
+  #cell-map {
+    width: 100%;
+    height: 550px;
+  }
+
+  .row {
+  	padding-left: 8px;
+  	padding-right: 8px;
+    margin-bottom: 8px;
+  }
+
+  #query-inputs {
+  	padding-top: 20px;
+
+  	.col-md-2, .col-md-4 {
+  		padding-left: 8px;
+  		padding-right: 8px;
+  		padding-bottom: 8px;
+  	}
+
+  	.catches-by-query {
+  		background-color: #f1f1f1;
+  	}
+  }
+
+  .small-label {
+  	font-size: smaller;
+  	font-weight: bold;
+  	padding-bottom: 3px;
+  }
+
+  label {
+    font-size: 14px;
+    font-weight: bold;
+    padding-right: 8px;
+  }
+
+  .query-select, .form-control {
+  	border-color: #979797;
+  	height: 31px;
+  	input {
+  		margin-left: 9px;
+  	}
+  }
+
+  .col-md-* {
+  	padding-left: 8px;
+  	padding-right: 8px;
+  }
+
+  //Vertically centers the little "x" close button on the ui-select tags
+  .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {
+	  line-height: 1;
+	}
+
+  .expand-collapse-button {
+    color: #1879BB;
+    cursor: pointer;
+
+    .expand-collapse-icon {
+      padding-right: 8px;
+      font-size: 18px;
+    }
+
+    .expand-collapse-label {
+      color: #1879BB;
+      position: relative;
+      bottom: 1px;
+    }
+  }
+
+  .timeline {
+    height: 78px;
+    border-top: 1px solid #979797;
+    border-bottom: 1px solid #979797;
+    background-color: #E2EAF3;
+    margin-bottom: 8px;
+  }
+
+  .form-inline {
+    select {
+      width: 150px;
+    }
+  }
+
+  .compare-bar {
+    border-top: 1px solid black;
+    padding-top: 24px;
+    padding-bottom: 8px;
+  }
+
+  .legend-color-bar {
+    height: 22px;
+  }
+
+  .legend-color-swatch {
+    width: 20%;
+    height: 100%;
+    background-color: #F68E1E;
+  }
+
+  .legend-measure {
+    font-size: smaller;
+    padding-top: 8px;
+  }
+}

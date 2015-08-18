@@ -47,6 +47,7 @@ angular.module('sauWebApp')
       ExploitedOrganismsData: resourceFactory(':region/exploited-organisms/'),
       ExploitedOrganismsList: resourceFactory('exploited-organisms/'),
       EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),
+      Taxa: resourceFactory('taxa/'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),
@@ -55,6 +56,10 @@ angular.module('sauWebApp')
       SubsidyReference: resourceFactory('subsidy-reference/:id'),
       Expeditions: resourceFactory('expeditions/:subview/:id'),
       UnderReview: resourceFactory('under-review/'),
+      FishingEntities: resourceFactory('fishing-entity/'),
+      CommercialGroups: resourceFactory('commercial-group/'),
+      FunctionalGroups: resourceFactory('functional-group/'),
+      SpatialCatchData: resourceFactory('spatial-catch/cells'),
 
       apiURL: SAU_CONFIG.apiURL
     };
