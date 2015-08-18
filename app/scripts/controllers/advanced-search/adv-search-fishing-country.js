@@ -43,7 +43,7 @@ angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function (
 
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedCountries = [];
-  $scope.countryList = sauAPI.GeoList.get({ nospatial: true });
+  $scope.countryList = sauAPI.FishingEntities.get({ nospatial: true });
   $scope.selectionLimit = 10;
 
   $scope.$watch('selectedCountries', $scope.queryChanged);
@@ -52,7 +52,7 @@ angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function (
   function getSelectedCountryIds() {
     var selectedCountryIds = [];
     for (var i = 0; i < $scope.selectedCountries.length; i++) {
-      selectedCountryIds.push($scope.selectedCountries[i].jurisdiction_id);
+      selectedCountryIds.push($scope.selectedCountries[i].id);
     }
     return selectedCountryIds;
   }
