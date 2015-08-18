@@ -62,13 +62,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function handleSpatialCatchDataResponse () {
-      console.log('Got response');
-
       drawCellData();
     }
 
     function drawCellData() {
       var response = $scope.spatialCatchData;
+
+      if (!response || !response.data || response.data.length < 1) {
+        return;
+      }
+
       var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
       for (var i = 0; i < response.data.length; i++) {
         var cellBlob = response.data[i];
@@ -159,7 +162,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
 
+    $scope.$watch('comparableType', assignDefaultComparison);
     $scope.$watch('comparableType', assignColorsToComparees);
+    $scope.$watch('comparableType', drawCellData);
 
     var allComparableTypes = [
       {

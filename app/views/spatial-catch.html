@@ -103,15 +103,14 @@
 			<div class="col-xs-12">
 				<form class="form-inline">
 					<label for="compareInput">Compare</label>
-					<select id="compareInput" placeholder="Select" class="form-control" ng-model="comparableType" ng-options="item.name for item in comparableTypes"></select>
+					<select id="compareInput" placeholder="Select" class="form-control" ng-model="comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
 				</form>
 			</div>
 		</div>
 		<div class="row" ng-show="isQueryComparable()">
-			<div class="col-md-3" ng-repeat="comparee in getComparees()">
+			<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees()">
 				<spatial-catch-legend-key key-name="comparee[comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
 			</div>
-
 		</div>
 	</div>
 </div>
