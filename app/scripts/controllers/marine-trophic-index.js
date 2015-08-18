@@ -9,6 +9,7 @@ angular.module('sauWebApp')
     $scope.years = [];
     $scope.regionType = region;
     $scope.noData = false;
+    $scope.rmtiAPI = null;
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
@@ -29,7 +30,13 @@ angular.module('sauWebApp')
       }
     };
 
-    $scope.rmti_options = {
+    var rmtiTooltip = function(key,x,y,e) {
+      var s = '<h2>' + e.point[0] + '</h2>' +
+        '<p>' + e.point[1] + '</p>';
+      return s;
+    };
+
+    $scope.rmtiOptions = {
       chart: {
         type: 'lineChart',
         height: 250,
@@ -39,11 +46,17 @@ angular.module('sauWebApp')
           bottom: 60,
           left: 85
         },
+        color: [
+          'rgb(248, 105, 42)',
+          'rgb(85, 187, 245)',
+          'rgb(50, 67, 179)'
+        ],
         x: function(d){ return d[0]; },
         y: function(d){ return d[1]; },
-        useInteractiveGuideline: true,
+        useInteractiveGuideline: false,
+        tooltipContent: rmtiTooltip,
         xAxis: {
-          axisLabel: 'Time (ms)'
+          axisLabel: 'Year'
         },
         yDomain: [2,5],
         yAxis: {
@@ -53,6 +66,7 @@ angular.module('sauWebApp')
           },
           // axisLabelDistance: 0
         },
+        showYAxis: 9,
         showLegend: false
       },
     };
@@ -95,14 +109,14 @@ angular.module('sauWebApp')
 
       $scope.fib.year = $scope.fib.year || $scope.years[0];
 
-      $scope.rmti_data = [];
+      $scope.rmtiData = [];
 
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
 
         if (time_series.key.startsWith('RMTI_')) {
           // var series = {'key': time_series.key, 'values': [time_series]};
-          $scope.rmti_data.push(time_series);
+          $scope.rmtiData.push(time_series);
         } else {
           $scope[time_series.key] = [time_series];
         }
@@ -117,6 +131,8 @@ angular.module('sauWebApp')
           }
         });
       });
+      // reverse RMTI order
+      $scope.rmtiData.sort(function(a,b) {return a.key < b.key; } );
     };
 
     // compute data with exclusions from species table

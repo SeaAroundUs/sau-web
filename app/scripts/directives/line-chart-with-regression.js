@@ -16,7 +16,7 @@ angular.module('sauWebApp')
     $scope.options = {
       chart: {
         type: 'lineChart',
-        height: 250,
+        height: 200,
         margin : {
           top: 20,
           right: 20,

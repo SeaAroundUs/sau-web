@@ -1,13 +1,27 @@
 <div class="container" id="marine-trophic-index">
+    <h1>Region-based MTI: Using the MTI to unmask fisheries expansion</h1>
+    <p>The Marine Trophic Index (MTI), which tracks the mean trophic level of fishery catches from an ecosystem, adequately tracks changes in mean trophic level of an ensemble of exploited species in response to fishing pressure. However, one of the disadvantages of this indicator is that declines in trophic level can be masked by geographic expansion and/or the development of offshore fisheries, where higher trophic levels of newly accessed resources can overwhelm fishing-down effects closer inshore.</p>
+
+    <p>Here, we show that the MTI should not be used without accounting for changes in the spatial and bathymetric reach of the fishing fleet, and we develop a new index that accounts for the potential geographic expansion of fisheries, called the region-based MTI (RMTI). To calculate the RMTI, the potential catch that can be obtained given the observed trophic structure of the actual catch is used to assess the fisheries in an inital (usually coastal) region. Actual catch exceeeding potential catch, indicates exploitation of a new fishing region. The MTI of the new region can then be calculated and subsequent regions are determined in a sequential manner. This method improves upon the use of the Fishing-in-Balance (FiB) index in conjunction with the original MTI calculated over the whole time series because assumptions of fleet and stock stationarity over the entire time series and geographic area are removed. We illustrate the utility of the RMTI with simulated examples and actual data, and generalize these results. For more information and tools, refer to the <a >Regional MTI tools page</a> or <a href="">fishingdown.org</a>.
+    </p>
+    </p>
     <div class="title row">
       <h2 id="mti-title" class="pull-left">
-        Marine Trophic Index of the catch in the waters of
+        Regional Marine Trophic Index of the catch in the waters of
         <span ng-bind="region.data.title"></span>
         <span ng-show="regionType === 'global'">the Global Ocean</span>
         {{ withExclusions? " with exclusions" : "" }}
       </h2>
-      <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
+      <div class='menu pull-right'>
+        <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
               ga-event="downloadModalGA" ng-hide="noData">Download Data</button>
+        <p>
+          <feedback></feedback>
+        </p>
+        <p>
+          <a target="_blank" href="http://www.seaaroundus.org/regional-mti-tools/">Method</a>
+        </p>
+      </div>
     </div>
 
   <div ng-show="noData">
@@ -15,50 +29,68 @@
   </div>
   <div ng-hide="noData">
 
-    <nvd3 options='rmti_options' data='rmti_data'></nvd3>
+    <nvd3 options='rmtiOptions' data='rmtiData' api='rmtiAPI'></nvd3>
 
-    <line-chart-with-regression years="mtlYears" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
-    <line-chart-with-regression years="fibYears" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
 
-  <h3>FiB index inputs</h3>
-  <label for="fibYear">Reference year:</label>
-  <select id="fibYear" ng-model="fib.year" ng-options="year for year in years"></select>
-  <label for="fibTransferEfficiency">Transfer efficiency:</label>
-  <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text" />
-  <button class="btn btn-primary" ng-click="compute()">Compute</button>
+    <div id="charts">
 
+      <div id="chart-headers">
+        <div class="header">
+          <h2>Marine Trophic Index</h2>
+        </div>
+        <div class="header">
+          <h2>Fishing in Balance Index</h2>
+          <div class="menu pull-right">
+            <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
+              ga-event="downloadModalGA" ng-hide="noData">Download Data</button>
+
+              <p>
+                <a class="show-hide-tabular" ng-hide="showTabular" ng-click="showTabular = true">Show tabular data</a>
+                <a class="show-hide-tabular" ng-show="showTabular" ng-click="showTabular = false">Hide tabular data</a>
+                |
+                <a class="show-hide-species" ng-hide="showSpecies" ng-click="showSpecies = true">Show list of taxa</a>
+                <a class="show-hide-species" ng-show="showSpecies" ng-click="showSpecies = false">Hide list of taxa</a>
+              </p>
+          </div>
+        </div>
+      </div>
+
+      <line-chart-with-regression years="mtlYears" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
+      <line-chart-with-regression years="fibYears" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
+
+      <table ng-show="showTabular" class="tabular-data">
+        <thead>
+        <tr>
+          <th>Year</th>
+          <th>Mean trophic level</th>
+          <th>Mean max. length (cm)</th>
+          <th>FiB index</th>
+          <th>Expansion factor</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="(year, data) in tabularData | orderBy: year">
+          <td ng-bind="year"></td>
+          <td ng-bind="data.mean_trophic_level | number"></td>
+          <td ng-bind="data.mean_max_length | number"></td>
+          <td ng-bind="data.fib_index | number"></td>
+          <td ng-bind="data.expansion_factor | number"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="fib-inputs">
+      <h3>FiB index inputs</h3>
+      <!--
+      <label for="fibYear">Reference year:</label>
+      <select id="fibYear" ng-model="fib.year" ng-options="year for year in years"></select>
+      -->
+      <label for="fibTransferEfficiency">Transfer efficiency:</label>
+      <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text" />
+      <button class="btn btn-primary" ng-click="compute()">redraw graph</button>
+    </div>
   <hr />
-
-  <div class="row">
-    <a class="show-hide-tabular" ng-hide="showTabular" ng-click="showTabular = true">Show tabular data</a>
-    <a class="show-hide-tabular" ng-show="showTabular" ng-click="showTabular = false">Hide tabular data</a>
-  </div>
-
-  <table ng-show="showTabular" class="tabular-data">
-    <thead>
-    <tr>
-      <th>Year</th>
-      <th>Mean trophic level</th>
-      <th>Mean max. length (cm)</th>
-      <th>FiB index</th>
-      <th>Expansion factor</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-repeat="(year, data) in tabularData | orderBy: year">
-      <td ng-bind="year"></td>
-      <td ng-bind="data.mean_trophic_level | number"></td>
-      <td ng-bind="data.mean_max_length | number"></td>
-      <td ng-bind="data.fib_index | number"></td>
-      <td ng-bind="data.expansion_factor | number"></td>
-    </tr>
-    </tbody>
-  </table>
-
-  <div class="row">
-    <a class="show-hide-species" ng-hide="showSpecies" ng-click="showSpecies = true">Show species list</a>
-    <a class="show-hide-species" ng-show="showSpecies" ng-click="showSpecies = false">Hide species list</a>
-  </div>
 
   <div class="row buttons">
       <button ng-show="showSpecies" ng-click="compute()" scroll-click="mti-title">Compute</button>
