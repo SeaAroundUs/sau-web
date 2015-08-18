@@ -225,6 +225,17 @@ angular
         });
     }
 
+    // Country EEZs routes
+    if (togglesProvider.$get().isEnabled('country-eezs')) {
+      $routeProvider
+        .when('/country-eezs/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'country-eezs';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {

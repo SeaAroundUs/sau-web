@@ -4,7 +4,13 @@ angular.module('sauWebApp')
   .provider('toggles', function(SAU_CONFIG) {
     var disabledOnDev = ['auth'];
     var disabledOnQA = ['auth'];
-    var disabledOnStageAndProd = ['auth', 'fishingEntity', 'highseas', 'global'];
+    var disabledOnStageAndProd = [
+      'auth',
+      'country-eezs',
+      'fishingEntity',
+      'highseas',
+      'global'
+    ];
 
     var disabled = {
       dev: disabledOnDev,

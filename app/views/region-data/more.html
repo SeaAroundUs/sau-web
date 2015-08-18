@@ -6,6 +6,6 @@
       <a ng-show="link.url" ng-href="{{ link.url }}" ng-bind="link.text"></a>
       <span ng-hide="link.url" ng-bind="link.text" class="disabled"></span>
     </span>
-    <span ng-if="section.template" ng-template="section.template"></span>
+    <span ng-if="section.template" ng-include="section.template"></span>
   </p>
 </div>

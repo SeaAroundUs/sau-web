@@ -26,6 +26,7 @@ angular.module('sauWebApp')
       rfmo: defaultLimits,
       fishingCountry: defaultLimits,
       'fishing-entity': defaultLimits,
+      'country-eezs': defaultLimits,
       multi: defaultLimits
     };
   });
