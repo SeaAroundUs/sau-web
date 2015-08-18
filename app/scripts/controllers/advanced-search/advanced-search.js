@@ -30,8 +30,4 @@ angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $
   //The active child controller uses the "advSearchService" service to communicate with this controller.
   //I assign it to the $scope object so that variable changes are $watch-able
   $scope.queryState = advSearchService.state;
-  //Tied to the "view graph" button.
-  $scope.enableViewGraph = false;
-  //Tied to the "download data" button.
-  $scope.enableDownloadData = false;
 });
