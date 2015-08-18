@@ -10,9 +10,9 @@
 		</div>
 	</div>
 
-	<adv-search-dimension-param region-id="'fishingCountry'" selected-dimension="selectedDimension" use-scientific-name="useScientificName" model-changed="queryChanged()"></adv-search-dimension-param>
+	<adv-search-dimension-param region-id="'fishing-entity'" selected-dimension="selectedDimension" use-scientific-name="useScientificName"></adv-search-dimension-param>
 
-	<adv-search-measure-param region-id="'fishingCountry'" selected-measure="selectedMeasure" model-changed="queryChanged()"></adv-search-measure-param>
+	<adv-search-measure-param region-id="'fishing-entity'" selected-measure="selectedMeasure"></adv-search-measure-param>
 
-	<adv-search-dimension-limit-param region-id="'fishingCountry'" selected-limit="selectedLimit" model-changed="queryChanged()" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+	<adv-search-dimension-limit-param region-id="'fishing-entity'" selected-limit="selectedLimit" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
 </div>

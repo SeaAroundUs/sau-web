@@ -48,5 +48,9 @@ angular.module('sauWebApp').controller('AdvSearchCountryCtrl', function ($scope,
   $scope.countryList = sauAPI.GeoList.get({ nospatial: true });
 
   $scope.$watch('selectedCountries', $scope.queryChanged);
+  $scope.$watch('selectedDimension', $scope.queryChanged);
+  $scope.$watch('selectedMeasure', $scope.queryChanged);
+  $scope.$watch('selectedLimit', $scope.queryChanged);
+
   $scope.$watch('selectedCountries', requestEezsInCountry);
 });

@@ -84,7 +84,7 @@ angular.module('sauWebApp')
         return {
           dimension: getDimension(),
           measure: getMeasure(),
-          limit: $scope.limits[1],
+          limit: getLimit(),
           region_id: $scope.region.ids,
           useScientificName: getUseScientificName()
         };
@@ -98,6 +98,11 @@ angular.module('sauWebApp')
       function getMeasure() {
         return $scope.measures[$scope.measures.map(function(m) { return m.value })
             .indexOf($location.search().measure)] || $scope.measures[0];
+      }
+
+      function getLimit() {
+        return $scope.limits[$scope.limits.map(function(l) { return l.value })
+            .indexOf($location.search().limit)] || $scope.limits[1];
       }
 
       function getUseScientificName() {
@@ -130,6 +135,7 @@ angular.module('sauWebApp')
           chart: 'catch-chart',
           dimension: $scope.formModel.dimension.value,
           measure: $scope.formModel.measure.value,
+          limit: $scope.formModel.limit.value,
           sciname: $scope.formModel.useScientificName
         }).replace();
 

@@ -2,7 +2,7 @@
 	<div class="col-sm-6">
 		<div class="form-group">
 			<label class="param-label">Dimension</label>
-			<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension" ng-change="modelChanged()"></select>
+			<select id="dimensionInput" class="form-control" ng-options="dimension.label for dimension in dimensions" ng-model="selectedDimension"></select>
 		</div>
 	</div>
 	<div class="col-sm-6 side-option" ng-show="selectedDimension.scientificNameOption">
