@@ -14,7 +14,7 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
 
           sauAPI.Region.get(params, function(res) {
             scope.references = res.data.reconstruction_documents;
-            if (scope.references.length === 0) {
+            if (!scope.references || scope.references.length === 0) {
               ele.remove();
             }
           });

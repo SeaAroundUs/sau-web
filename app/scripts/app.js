@@ -130,9 +130,10 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'rfmo';}}
       })
-      .when('/rfmo/:id', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
+      .when('/rfmo/:ids', {
+        templateUrl: 'views/region-data/main.html',
+        controller: 'RegionDataCtrl',
+        reloadOnSearch: false,
         resolve: {region: function() {return 'rfmo';}}
       })
       .when('/rfmo/:id/procedures-and-outcomes', {

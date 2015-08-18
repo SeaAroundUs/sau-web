@@ -36,7 +36,7 @@ angular.module('sauWebApp')
             chartTitle += 'Global Ocean';
 
           } else if (region.name === 'rfmo') {
-            chartTitle += data.long_title + ' (' + data.title + ')';
+            chartTitle += data.long_title ? data.long_title + ' (' + data.title + ')' : ' ' + data.title;
 
           } else if (region.name === 'highseas') {
             chartTitle += 'non-EEZ waters of the ' + data.title;

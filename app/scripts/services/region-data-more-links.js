@@ -13,8 +13,10 @@ angular.module('sauWebApp')
     };
 
     importantNotes['country-eezs'] = importantNotes.global;
+    importantNotes.rfmo = importantNotes.global;
 
     var links = {
+      // Global links
       global: [
         {
           section: 'Ecosystems',
@@ -40,6 +42,7 @@ angular.module('sauWebApp')
         }
       ],
 
+      // Fishing entity links
       'fishing-entity': [
         {
           section: 'Governance',
@@ -56,6 +59,7 @@ angular.module('sauWebApp')
         }
       ],
 
+      // Country EEZ links
       'country-eezs': [
         {
           section: 'EEZs in this country',
@@ -66,37 +70,24 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity.html'
-        },
+        }
+      ],
+
+      // RFMO links
+      'rfmo': [
         {
-          section: 'Ecosystems',
+          section: 'Governance',
           links: [
-            { text: 'Ecopath models', url: '' },
-            { text: 'Estuaries', url: '' },
-            { text: 'Fish parameters', url: '' }
+            { text: 'Website', ngUrl: '{{ profile_url }}' },
+            { text: 'Procedures & Outcomes', ngUrl: '#/rfmo/{{ id }}/procedures-and-outcomes' }
           ]
         },
         {
-          section: 'Governance', // TODO
-          links: [
-            { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
-            {
-              text: 'Internal fishing access agreements',
-              ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/'
-            },
-            { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
-            {
-              text: 'Treaties & conventions',
-              ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
-              'Country={{ country_id | fishbaseCountryId }}'
-            }
-          ]
-        },
-        { // TODO
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', url: '' },
-            { text: 'Multinational footprint', url: '' },
-            { text: 'Marine trophic index', url: '' }
+            { text: 'Stock status plots', ngUrl: '#/rfmo/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
           ]
         }
       ]
