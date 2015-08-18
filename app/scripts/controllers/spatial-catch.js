@@ -211,7 +211,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     ];
 
-    d3.json('scripts/countries.topojson', function(error, countries) {
+    d3.json('countries.topojson', function(error, countries) {
       var map = d3.geo.GridMap;
       map.init('#cell-map', [720, 360], {
         projection: d3.geo.mollweide(),
