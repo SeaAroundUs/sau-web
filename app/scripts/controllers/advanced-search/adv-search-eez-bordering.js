@@ -50,6 +50,7 @@ angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($s
 
   $scope.$watch('selectedEezs', requestBorderingEezs);
   $scope.$watch('selectedDimension', $scope.queryChanged);
+  $scope.$watch('useScientificName', $scope.queryChanged);
   $scope.$watch('selectedMeasure', $scope.queryChanged);
   $scope.$watch('selectedLimit', $scope.queryChanged);
 

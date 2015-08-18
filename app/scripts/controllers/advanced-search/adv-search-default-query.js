@@ -76,6 +76,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);
   $scope.$watch('selectedDimension', $scope.queryChanged);
+  $scope.$watch('useScientificName', $scope.queryChanged);
   $scope.$watch('selectedMeasure', $scope.queryChanged);
   $scope.$watch('selectedLimit', $scope.queryChanged);
 });

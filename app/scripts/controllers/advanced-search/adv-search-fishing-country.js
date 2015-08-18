@@ -48,6 +48,7 @@ angular.module('sauWebApp').controller('AdvSearchFishingCountryCtrl', function (
 
   $scope.$watch('selectedCountries', $scope.queryChanged);
   $scope.$watch('selectedDimension', $scope.queryChanged);
+  $scope.$watch('useScientificName', $scope.queryChanged);
   $scope.$watch('selectedMeasure', $scope.queryChanged);
   $scope.$watch('selectedLimit', $scope.queryChanged);
 
