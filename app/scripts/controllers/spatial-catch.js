@@ -1,10 +1,13 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, spatialCatchColors) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment) {
 
     $scope.submitQuery = function (query) {
-      $scope.isQueryDirty = false;
+      $scope.lastQuery = angular.copy(query);
+      updateComparableTypeList();
+      assignDefaultComparison();
+      assignColorsToComparees();
 
       var queryParams = {};
       if (query.fishingCountries && query.fishingCountries.length > 0) {
@@ -17,31 +20,34 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, handleSpatialCatchDataResponse);
     };
 
-    var colors = [];
-    var nextAvailableColor = 0;
-
-    //Resolved service responses
-    $scope.fishingCountries = fishingCountries.data;
-    $scope.taxa = taxa.data;
-    $scope.commercialGroups = commercialGroups.data;
-    $scope.functionalGroups = functionalGroups.data;
-    $scope.reportingStatuses = reportingStatuses;
-    $scope.catchTypes = catchTypes;
-    $scope.isQueryDirty = false;
-
-    d3.json('countries.topojson', function(error, countries) {
-      var map = d3.geo.GridMap;
-      map.init('#cell-map', [720, 360], {
-        projection: d3.geo.mollweide(),
-        countries: countries,
-        landColor: 'rgba(251, 250, 243, 1)',
-        seaColor: 'rgba(181, 224, 249, 1)'
-      });
-    });
-
     $scope.queryChanged = function () {
-      //TODO do a diff against the previously generated query to see if the query is actually different, instead of just assuming.
-      $scope.isQueryDirty = true;
+
+    };
+
+    $scope.isQueryDirty = function() {
+      return !angular.equals($scope.lastQuery, $scope.query);
+    };
+
+    $scope.getComparees = function() {
+      var comparees = [];
+      if ($scope.isQueryComparable()) {
+        comparees = $scope.lastQuery[$scope.comparableType.field];
+      }
+
+      return comparees;
+    };
+
+    $scope.isQueryComparable = function() {
+      return $scope.comparableType && $scope.comparableType.field;
+    };
+
+    $scope.getColorOfComparee = function (comparee) {
+      if (!$scope.isQueryComparable()) {
+        return null;
+      }
+
+      var compareeId = comparee[$scope.comparableType.key];
+      return colorAssignment.colorOf(compareeId);
     };
 
     function joinBy(array, delimiter, property) {
@@ -55,13 +61,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return s;
     }
 
-    function handleSpatialCatchDataResponse (response) {
+    function handleSpatialCatchDataResponse () {
       console.log('Got response');
 
+      drawCellData();
+    }
+
+    function drawCellData() {
+      var response = $scope.spatialCatchData;
       var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
       for (var i = 0; i < response.data.length; i++) {
         var cellBlob = response.data[i];
-        var color = getColorForComparee(cellBlob.fishing_entity_id);
+        var color = colorAssignment.getDefaultColor();
+        if ($scope.isQueryComparable()) {
+          color = colorAssignment.colorOf([cellBlob[$scope.comparableType.serverId]]);
+        }
         var pct = (5 - cellBlob.threshold) / 5;
         for (var j = 0; j < cellBlob.cells.length; j++) {
           var cell = cellBlob.cells[j];
@@ -84,18 +98,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       d3.geo.GridMap.setDataUnsparseTypedArray(cellData);
     }
 
-    function getColorForComparee(compareeId) {
-      if (!colors[compareeId]) {
-        if (nextAvailableColor < spatialCatchColors.length) {
-          colors[compareeId] = spatialCatchColors[nextAvailableColor++]; //Grab from the list of pre-created colors
-        } else {
-
-          colors[compareeId] = [~~(Math.random() * 256), ~~(Math.random() * 256), ~~(Math.random() * 256), 255]; //Create a random color
-        }
-      }
-      return colors[compareeId];
-    }
-
     function multiplyChannel(top, bottom) {
       return ~~(top * bottom / 255);
     }
@@ -103,10 +105,118 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function lightenChannel(color, pct) {
       return ~~((255 - color) * pct + color);
     }
-  })
-  .value('spatialCatchColors', [
-    [111, 0, 64, 255],
-    [37, 188, 80, 255],
-    [226, 220, 34, 255],
-  ]);
+
+    function updateComparableTypeList() {
+      $scope.comparableTypes = [];
+
+      if (!$scope.lastQuery) {
+        return;
+      }
+
+      //All searchable query dimensions that have multiple selections get added to this list.
+      for (var i = 0; i < allComparableTypes.length; i++) {
+        var p = allComparableTypes[i];
+        if ($scope.lastQuery[p.field] && $scope.lastQuery[p.field].length > 1) {
+          $scope.comparableTypes.push(p);
+        }
+      }
+
+      //Make "Nothing" an option if any comparableTypes exist
+      if ($scope.comparableTypes.length > 0) {
+        $scope.comparableTypes.unshift({
+          name: 'Nothing',
+          field: '',
+          key: '',
+          serverId: '[not supported]'
+        });
+      }
+    }
+
+    function assignDefaultComparison() {
+      if (!$scope.comparableType && $scope.comparableTypes) {
+        $scope.comparableType = $scope.comparableTypes[1];
+      }
+    }
+
+    function assignColorsToComparees() {
+      if ($scope.isQueryComparable()) {
+        var compareeIds = [];
+        var comparees = $scope.lastQuery[$scope.comparableType.field];
+        for (var i = 0; i < comparees.length; i++) {
+          var comparee = comparees[i];
+          var compareeId = comparee[$scope.comparableType.key];
+          compareeIds.push(compareeId);
+        }
+        colorAssignment.setData(compareeIds);
+      }
+    }
+
+    //Resolved service responses
+    $scope.fishingCountries = fishingCountries.data;
+    $scope.taxa = taxa.data;
+    $scope.commercialGroups = commercialGroups.data;
+    $scope.functionalGroups = functionalGroups.data;
+    $scope.reportingStatuses = reportingStatuses;
+    $scope.catchTypes = catchTypes;
+
+    $scope.$watch('comparableType', assignColorsToComparees);
+
+    var allComparableTypes = [
+      {
+        name: 'Fishing countries',
+        field: 'fishingCountries',
+        key: 'id',
+        serverId: 'fishing_entity_id',
+        entityName: 'title',
+      },
+      {
+        name: 'Taxa',
+        field: 'taxa',
+        key: 'taxon_key',
+        serverId: '[not supported]',
+        entityName: 'common_name'
+      },
+      {
+        name: 'Commercial groups',
+        field: 'commercialGroups',
+        key: 'commercial_group_id',
+        serverId: '[not supported]',
+        entityName: 'name'
+      },
+      {
+        name: 'Functional groups',
+        field: 'functionalGroups',
+        key: 'functional_group_id',
+        serverId: '[not supported]',
+        entityName: 'description',
+      },
+      {
+        name: 'Reporting statuses',
+        field: 'reportingStatuses',
+        key: 'name',
+        serverId: '[not supported]',
+        entityName: 'name'
+      },
+      {
+        name: 'Catch types',
+        field: 'catchTypes',
+        key: 'name',
+        serverId: '[not supported]',
+        entityName: 'name'
+      }
+    ];
+
+    d3.json('countries.topojson', function(error, countries) {
+      var map = d3.geo.GridMap;
+      map.init('#cell-map', [720, 360], {
+        projection: d3.geo.mollweide(),
+        countries: countries,
+        landColor: 'rgba(251, 250, 243, 1)',
+        seaColor: 'rgba(181, 224, 249, 1)',
+        landOutlineColor: 'rgba(0, 0, 0, 0)',
+        graticuleColor: 'rgba(255, 255, 255, 0.3)',
+        geoJsonColor: 'rgba(0, 0, 0, 0)'
+      });
+    });
+  });
 
