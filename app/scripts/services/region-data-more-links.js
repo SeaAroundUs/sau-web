@@ -81,6 +81,10 @@ angular.module('sauWebApp')
       // RFMO links
       'rfmo': [
         {
+          section: 'Citations',
+          template: 'views/region-data/citations.html'
+        },
+        {
           section: 'Governance',
           links: [
             { text: 'Website', ngUrl: '{{ profile_url }}', target: '_blank' },

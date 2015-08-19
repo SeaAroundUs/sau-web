@@ -1,8 +1,11 @@
 @import 'global';
 
 #region-data-more {
-  span.section:after {
-    content: ': ';
+  span.section {
+    display: block;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 15px 0 10px;
   }
 
   span.link {
@@ -21,6 +24,7 @@
 
   #important-note {
     position: relative;
+    font-size: 0.8em;
 
     a {
       font-weight: bold;
@@ -33,6 +37,7 @@
       left: -300px;
       z-index: 3000;
       color: #333;
+      font-size: 1rem;
       font-weight: normal;
       background: white;
       border: 1px solid #ccc;
