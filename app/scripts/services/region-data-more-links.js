@@ -59,7 +59,7 @@ angular.module('sauWebApp')
                 'Country={{ country_id | fishbaseCountryId }}',
               target: '_blank'
             },
-            { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
+            // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }
       ],
