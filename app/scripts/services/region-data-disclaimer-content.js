@@ -11,6 +11,7 @@ angular.module('sauWebApp')
       'information on reconstruction data used, please see the documentation associated with the individual EEZs.',
     };
 
+    disclaimers.rfmo = disclaimers.global;
     disclaimers['fishing-entity'] = disclaimers.global;
 
     return {
