@@ -103,17 +103,22 @@
 				<p>{{loadingText}}</p>
 			</div>
 		</div>
-		<div class="row compare-bar" ng-show="comparableTypes && comparableTypes.length > 0">
-			<div class="col-xs-12">
-				<form class="form-inline">
-					<label for="compareInput">Compare</label>
-					<select id="compareInput" placeholder="Select" class="form-control" ng-model="comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
-				</form>
+		<div id="spatial-catch-legend">
+			<div class="row compare-bar" ng-show="comparableTypes && comparableTypes.length > 0">
+				<div class="col-xs-12">
+					<form class="form-inline">
+						<label for="compareInput">Compare</label>
+						<select id="compareInput" placeholder="Select" class="form-control" ng-model="comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="row" ng-show="isQueryComparable()">
-			<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees()">
-				<spatial-catch-legend-key key-name="comparee[comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
+			<div class="row" ng-show="spatialCatchData.$resolved">
+				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees()">
+					<spatial-catch-legend-key key-name="comparee[comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
+				</div>
+				<div class="col-md-3 clearix" ng-if="getComparees().length === 0">
+					<spatial-catch-legend-key key-name="'Catches'" color="defaultColor" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
+				</div>
 			</div>
 		</div>
 	</div>

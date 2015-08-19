@@ -92,8 +92,6 @@
   }
 
   .compare-bar {
-    border-top: 1px solid black;
-    padding-top: 24px;
     padding-bottom: 8px;
   }
 
@@ -131,5 +129,10 @@
 
   #update-map-button {
     margin-top: 8px;
+  }
+
+  #spatial-catch-legend {
+    padding-top: 24px;
+    border-top: 1px solid #aaaaaa;
   }
 }

@@ -166,6 +166,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.functionalGroups = functionalGroups.data;
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
+    $scope.defaultColor = colorAssignment.getDefaultColor();
 
     $scope.$watch('comparableType', assignDefaultComparison);
     $scope.$watch('comparableType', assignColorsToComparees);
