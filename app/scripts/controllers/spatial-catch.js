@@ -8,7 +8,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       updateComparableTypeList();
       assignDefaultComparison();
       assignColorsToComparees();
-      $scope.loadingText = "Downloading cells";
+      $scope.loadingText = 'Downloading cells';
 
       var queryParams = {};
       if (query.fishingCountries && query.fishingCountries.length > 0) {
@@ -64,7 +64,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function drawCellData() {
       $scope.isRendering = true;
-      $scope.loadingText = "Rendering";
+      $scope.loadingText = 'Rendering';
       //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
       //put up a loading screen.
       $timeout(function() {
