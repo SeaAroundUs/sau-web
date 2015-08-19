@@ -56,11 +56,18 @@ angular.module('sauWebApp')
 
                 return section;
               });
+
+              // open external links and PDFs in another tab
+              $timeout(function() {
+                ele.find('a').each(function(i, link) {
+                  if (link.href && ((link.href.indexOf(link.baseURI) !== 0) || link.href.match(/\.pdf$/))) {
+                    link.target = '_blank';
+                  }
+                });
+              });
             });
           }
         }
-
-        //TODO crawl the links and add target blank to external ones
       },
       replace: true,
       restrict: 'E',

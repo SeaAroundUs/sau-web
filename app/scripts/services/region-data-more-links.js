@@ -22,7 +22,11 @@ angular.module('sauWebApp')
           section: 'Ecosystems',
           links: [
             { text: 'Large seamounts', url: '/large-seamount-areas/' },
-            { text: 'Marine protected areas', url: 'doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' }
+            {
+              text: 'Marine protected areas',
+              url: 'doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf',
+              target: '_blank'
+            }
           ]
         },
         {
@@ -52,7 +56,8 @@ angular.module('sauWebApp')
             {
               text: 'Treaties & conventions',
               ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
-                'Country={{ country_id | fishbaseCountryId }}'
+                'Country={{ country_id | fishbaseCountryId }}',
+              target: '_blank'
             },
             { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
@@ -78,7 +83,7 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           links: [
-            { text: 'Website', ngUrl: '{{ profile_url }}' },
+            { text: 'Website', ngUrl: '{{ profile_url }}', target: '_blank' },
             { text: 'Procedures & Outcomes', ngUrl: '#/rfmo/{{ id }}/procedures-and-outcomes' }
           ]
         },
