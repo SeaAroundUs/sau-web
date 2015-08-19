@@ -32,7 +32,7 @@ angular.module('sauWebApp')
         function updateScope() {
           scope.moreData = angular.copy(regionDataMoreLinks.getLinks(scope.region));
 
-          // handle url interpolation with region data
+          // handle url interpolation with single region data
           if (scope.region.id) {
             params = { region: scope.region.name, region_id: scope.region.id };
             sauAPI.Region.get(params, function(res) {
@@ -57,6 +57,14 @@ angular.module('sauWebApp')
                 return section;
               });
 
+              // remove sections with all empty links
+              scope.moreData = scope.moreData.reduce(function(sections, section) {
+                if (!section.links || section.links.every(function(link) { return link.url; })) {
+                  sections.push(section);
+                }
+                return sections;
+              }, []);
+
               // open external links and PDFs in another tab
               $timeout(function() {
                 ele.find('a').each(function(i, link) {
@@ -66,6 +74,16 @@ angular.module('sauWebApp')
                 });
               });
             });
+
+          // handle multiple regions
+          } else {
+            // remove sections with all empty links
+            scope.moreData = scope.moreData.reduce(function(sections, section) {
+              if (!section.links || section.links.every(function(link) { return link.url; })) {
+                sections.push(section);
+              }
+              return sections;
+            }, []);
           }
         }
       },
