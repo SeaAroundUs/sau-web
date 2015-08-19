@@ -79,7 +79,8 @@ angular.module('sauWebApp')
         controller: 'DownloadDataModalCtrl',
         resolve: {
           dataUrl: function () {
-            return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id;
+            return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id +
+              '&transfer_efficiency=' + $scope.fib.transferEfficiency;
           }
         }
       });
