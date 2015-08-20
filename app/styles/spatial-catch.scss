@@ -215,7 +215,9 @@
   }
 
   #update-map-button {
-    margin-top: 8px;
+    max-width: 300px;
+    background-color: #0779BE;
+    margin: 8px auto 0 auto;
   }
 
   #spatial-catch-legend {
