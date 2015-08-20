@@ -49,7 +49,7 @@ angular.module('sauWebApp')
 
       },
       link: function (scope) {
-        var slider = angular.element("#timeline-slider").slider();
+        var slider = angular.element('#timeline-slider').slider();
       },
     }
   });
