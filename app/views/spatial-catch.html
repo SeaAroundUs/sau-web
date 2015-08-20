@@ -93,7 +93,7 @@
 			</div>
 		</div>
 		<div class="timeline">
-			<spatial-catch-timeline></spatial-catch-timeline>
+			<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
 		</div>
 		<div class="row" ng-show="isQueryDirty()">
 			<div class="col-xs-12"><button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
