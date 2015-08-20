@@ -40,4 +40,16 @@ angular.module('sauWebApp')
         }
       }
     };
+  })
+  .directive('spatialCatchTimeline', function() {
+    return {
+      templateUrl: 'views/spatial-catch/spatial-catch-timeline.html',
+      restrict: 'E',
+      scope: {
+
+      },
+      link: function (scope) {
+        var slider = angular.element("#timeline-slider").slider();
+      },
+    }
   });

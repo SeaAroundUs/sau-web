@@ -83,6 +83,59 @@
     border-top: 1px solid #979797;
     border-bottom: 1px solid #979797;
     background-color: #E2EAF3;
+    padding: 37px 6%;
+  }
+
+  #timeline-slider {
+    width: 100%;
+  }
+
+  .slider {
+    .slider-handle.custom {
+      background: url(../images/timeline-handle.svg);
+      width: 25px;
+      height: 30px;
+      position: relative;
+      top: -3px;
+      box-shadow: none;
+      margin-top: -8px;
+
+      &::before {
+        content: '';
+      }
+    }
+
+    .slider-tick.custom {
+      background: url(../images/timeline-tick.svg);
+      width: 23px;
+      height: 23px;
+      box-shadow: none;
+      margin-top: -9px;
+
+      &::before {
+        content: '';
+      }
+    }
+
+    .slider-selection.tick-slider-selection {
+      background-image: none;
+      box-shadow: none;
+      -mox-box-shadow: none;
+    }
+
+    .slider-track {
+      background-color: #FFFFFF;
+      height: 6px;
+      background-image: none;
+      box-shadow: none;
+      -mox-box-shadow: none;
+    }
+
+    .slider-tick-label {
+      font-weight: 600;
+      position: relative;
+      top: -50px;
+    }
   }
 
   .form-inline {
