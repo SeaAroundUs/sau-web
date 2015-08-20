@@ -138,6 +138,40 @@
     }
   }
 
+  /* .tooltip.bottom {
+    opacity: .8;
+    .tooltip-arrow {
+      border-bottom-color: #1879BB;
+      margin-left: -8px;
+      border-width: 0px 11px 18px;
+    }
+
+    .tooltip-inner {
+      background-color: #1879BB;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 18px;
+      padding: 10px 20px;
+      position: relative;
+      top: 10px;
+    }
+  } */
+
+  .tooltip.top {
+    .tooltip-arrow {
+      margin-left: -3px;
+      bottom: 14px;
+    }
+    .tooltip-inner {
+      position: relative;
+      left: 2px;
+      bottom: 14px;
+      padding: 5px 14px;
+      font-weight: 700;
+      font-size: 18px;
+    }
+  }
+
   .form-inline {
     select {
       width: 150px;

@@ -51,6 +51,7 @@ angular.module('sauWebApp')
       },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
+        ngModelCtrl.$setViewValue(slider.slider('getValue'));
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
