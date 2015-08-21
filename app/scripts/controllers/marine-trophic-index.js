@@ -115,7 +115,7 @@ angular.module('sauWebApp')
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
 
-        if (time_series.key.startsWith('RMTI_')) {
+        if (time_series.key.indexOf('RMTI_') >= 0) {
           // var series = {'key': time_series.key, 'values': [time_series]};
           $scope.rmtiData.push(time_series);
         } else {
