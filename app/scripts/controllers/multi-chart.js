@@ -232,6 +232,7 @@ angular.module('sauWebApp').controller('MultiChartCtrl',
         region: $location.search().region,
         dimension: $scope.formModel.dimension.value,
         measure: $scope.formModel.measure.value,
+        limit: $scope.formModel.limit.value,
         sciname: $scope.formModel.useScientificName
       }).replace();
     }

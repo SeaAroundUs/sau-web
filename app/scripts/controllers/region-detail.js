@@ -44,7 +44,8 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         $location.search({
           chart: getDefaultChartId(),
           region: $location.search().region,
-          id: $location.search().id
+          id: $location.search().id,
+          limit: $location.search().limit
         }).replace();
 
       } else {
@@ -184,7 +185,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         //TODO ?
 
       } else {
-        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO});
+        $scope.feature = sauAPI.Region.get({
+          region: $scope.region.name,
+          region_id: $scope.formModel.region_id,
+          fao_id: $scope.mapLayers.selectedFAO
+        });
         $scope.feature.$promise.then(function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
