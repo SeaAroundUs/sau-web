@@ -298,6 +298,7 @@ angular
       .when('/spatial-catch', {
         templateUrl: 'views/spatial-catch.html',
         controller: 'SpatialCatchMapCtrl',
+        reloadOnSearch: false,
         resolve: {
           taxa: function (sauAPI) {
             return sauAPI.Taxa.get().$promise;

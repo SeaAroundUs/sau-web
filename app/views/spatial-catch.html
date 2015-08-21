@@ -89,13 +89,13 @@
 				</ui-select>
 			</div>
 			<div class="col-md-2 text-right">
-				<a href="#">Show scientific names &#f00d;</a>
+				<a href="#">Show scientific names</a>
 			</div>
 		</div>
 		<div class="timeline">
 			<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
 		</div>
-		<div class="row" ng-show="isQueryDirty()">
+		<div class="row" ng-show="isQueryValid() && isQueryDirty()">
 			<div class="col-xs-12"><button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
 		</div>
 		<div id="cell-map">

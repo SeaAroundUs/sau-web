@@ -46,12 +46,8 @@ angular.module('sauWebApp')
       templateUrl: 'views/spatial-catch/spatial-catch-timeline.html',
       restrict: 'E',
       require: 'ngModel',
-      scope: {
-
-      },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
-        ngModelCtrl.$setViewValue(slider.slider('getValue'));
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
@@ -68,6 +64,6 @@ angular.module('sauWebApp')
         ngModelCtrl.$parsers.push(function(viewValue) {
           return +viewValue;
         });
-      },
+      }
     };
   });

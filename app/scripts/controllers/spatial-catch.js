@@ -1,13 +1,14 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
       updateComparableTypeList();
       assignDefaultComparison();
       assignColorsToComparees();
+      updateUrlFromQuery();
       $scope.loadingText = 'Downloading cells';
 
       var queryParams = {};
@@ -50,6 +51,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var compareeId = comparee[$scope.comparableType.key];
       return colorAssignment.colorOf(compareeId);
     };
+
+    $scope.isQueryValid = function () {
+      return $scope.query && $scope.query.fishingCountries && $scope.query.fishingCountries.length > 0;
+    }
 
     function joinBy(array, delimiter, property) {
       var s = '';
@@ -159,6 +164,48 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     }
 
+    function updateQueryFromUrl() {
+      var search = $location.search();
+
+      //Fishing countries
+      if (search.entities) {
+        $scope.query.fishingCountries = getFishingCountriesById(search.entities.split(','));
+      }
+
+      //Year
+      $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
+    }
+
+    function updateUrlFromQuery() {
+      //Fishing countries
+      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
+        $location.search('entities', joinBy($scope.query.fishingCountries, ',', 'id'));
+      }
+
+      //Year
+      var queryYear = $scope.query.year || 2010;
+      if (queryYear !== 2010) {
+        $location.search('year', queryYear);
+      } else {
+        $location.search('year', null);
+      }
+
+      $location.replace();
+    }
+
+    function getFishingCountriesById(ids) {
+      var results = [];
+      for (var i = 0; i < ids.length; i++) {
+        for (var j = 0; j < fishingCountries.data.length; j++) {
+          if (fishingCountries.data[j].id === +ids[i]) {
+            results.push(fishingCountries.data[j]);
+          }
+        }
+      }
+
+      return results;
+    }
+
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
@@ -171,6 +218,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watch('comparableType', assignDefaultComparison);
     $scope.$watch('comparableType', assignColorsToComparees);
     $scope.$watch('comparableType', drawCellData);
+    $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
+    $scope.query = {};
 
     var allComparableTypes = [
       {
@@ -229,5 +278,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         geoJsonColor: 'rgba(0, 0, 0, 0)'
       });
     });
+
+    updateQueryFromUrl();
+
+    //Boostrap the initial query if there are query params in the URL when the page loads.
+    if ($scope.isQueryValid()) {
+      $scope.submitQuery($scope.query);
+    }
   });
 
