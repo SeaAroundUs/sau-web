@@ -260,7 +260,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
         $q.all(regionDetailPromises).then(function(result) {
           $scope.selectedRegions.details = result.map(function(detail) {
-            return { id: detail.data.id, name: detail.data.title, url: '/#/' + regionType + '/' + detail.data.id };
+            return { id: detail.data.id, name: detail.data.title, url: '#/' + regionType + '/' + detail.data.id };
           });
 
           $scope.selectedRegions.references = result.reduce(function(reference, detail) {
