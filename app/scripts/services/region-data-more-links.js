@@ -81,7 +81,7 @@ angular.module('sauWebApp')
       // RFMO links
       'rfmo': [
         {
-          section: 'Citations',
+          section: 'References',
           template: 'views/region-data/citations.html'
         },
         {
