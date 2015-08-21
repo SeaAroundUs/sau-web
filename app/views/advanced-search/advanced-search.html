@@ -12,6 +12,7 @@
 						<select class="form-control" ng-model="section" ng-init="section = 'eez'">
 							<option value="eez">EEZ(s)</option>
 							<option value="lme">LME(s)</option>
+							<option value="rfmo">RFMO(s)</option>
 							<!-- <option value="eezAndBorderingEezs">EEZ & bordering EEZs</option> -->
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
@@ -30,6 +31,9 @@
 
 			<!-- LME - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'lme'"></div>
+
+			<!-- RFMO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'rfmo'"></div>
 
 			<!-- EEZ and Bordering EEZs - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-eez-bordering.html'" ng-if="section === 'eezAndBorderingEezs'"></div>

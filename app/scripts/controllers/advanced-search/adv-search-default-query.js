@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($scope, sauAPI, advSearchService, createQueryUrl) {
+angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
+        function ($scope, sauAPI, advSearchService, createQueryUrl) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
@@ -66,12 +67,22 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl', function ($s
       selectedListTitle: 'Selected LMEs',
       searchPlaceholder: 'Search LMEs',
       selectionLimit: 10
+    },
+    rfmo: {
+      regionType: 'rfmo',
+      regionListTitle: 'RFMOs',
+      selectedListTitle: 'Selected RFMOs',
+      searchPlaceholder: 'Search RFMOs',
+      selectionLimit: 5
     }
   };
 
   //These are mostly used to populate the UI components with UI data.
   $scope.selectedRegions = [];
-  $scope.regionList = sauAPI.Regions.get({region: $scope.sectionConfig[$scope.section].regionType, nospatial: true})
+  $scope.regionList = sauAPI.Regions.get({
+    region: $scope.sectionConfig[$scope.section].regionType,
+    nospatial: true
+  });
 
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);
