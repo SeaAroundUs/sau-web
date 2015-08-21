@@ -45,7 +45,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
           chart: getDefaultChartId(),
           region: $location.search().region,
           id: $location.search().id,
-          limit: $location.search().limit
+          dimension: $location.search().dimension,
+          measure: $location.search().measure,
+          limit: $location.search().limit,
+          sciname: $location.search().sciname
         }).replace();
 
       } else {
