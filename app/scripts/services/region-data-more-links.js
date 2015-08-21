@@ -72,10 +72,12 @@ angular.module('sauWebApp')
           url: '#/eez/{{ eez_id }}',
           text: '{{ eez_name }}'
         },
+        /*
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity.html'
         }
+        */
       ],
 
       // RFMO links
