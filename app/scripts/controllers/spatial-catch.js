@@ -54,7 +54,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.isQueryValid = function () {
       return $scope.query && $scope.query.fishingCountries && $scope.query.fishingCountries.length > 0;
-    }
+    };
 
     function joinBy(array, delimiter, property) {
       var s = '';
