@@ -21,6 +21,9 @@ angular.module('sauWebApp')
           if (region.name === 'fishing-entity') {
             promiseData = { data: { title: 'selected fishing countries' }};
 
+          } else if (region.name === 'rfmo') {
+            promiseData = { data: { title: 'selected RFMOs' }};
+
           } else {
             promiseData = { data: { title: 'selected regions' }};
           }
