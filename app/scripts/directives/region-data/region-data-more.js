@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, regionDataMoreLinks, sauAPI) {
+  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, $q, regionDataMoreLinks, sauAPI) {
     return {
       link: function(scope, ele) {
         var params;
@@ -20,11 +20,11 @@ angular.module('sauWebApp')
 
           ele.find('#important-note').append(popup);
 
-          popup.find('.x').on('click', function () {
+          popup.find('.x').on('click', function() {
             popup.addClass('hidden');
           });
 
-          ele.find('#important-link').on('click', function () {
+          ele.find('#important-link').on('click', function() {
             popup.toggleClass('hidden');
           });
         });
@@ -79,12 +79,51 @@ angular.module('sauWebApp')
           } else {
             // remove sections with all empty links
             scope.moreData = scope.moreData.reduce(function(sections, section) {
+              if (section.eachOf) {
+                return sections;
+              }
+
               if (!section.links || section.links.every(function(link) { return link.url; })) {
                 sections.push(section);
               }
               return sections;
             }, []);
+
+            // add section for multiple regions
+            addMultipleRegionsSection();
           }
+        }
+
+        function addMultipleRegionsSection() {
+          var sectionTitle = 'Selected ';
+
+          switch(scope.region.name) {
+            case 'rfmo':
+                  sectionTitle += 'RFMOs';
+                  break;
+            case 'fishing-entity':
+              sectionTitle += 'fishing entities';
+              break;
+            case 'country-eezs':
+              sectionTitle += 'country EEZs';
+              break;
+          }
+
+          $q.all(scope.region.ids.map(function(id) {
+            return sauAPI.Region.get({ region: scope.region.name, region_id: id }).$promise;
+          })).then(function(res) {
+            var links = res.map(function(region) {
+              return {
+                text: region.data.title,
+                url: '#/' + scope.region.name + '/' + region.data.id
+              };
+            });
+
+            scope.moreData.unshift({
+              section: sectionTitle,
+              links: links
+            });
+          });
         }
       },
       replace: true,
