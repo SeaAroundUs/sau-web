@@ -69,14 +69,24 @@ angular.module('sauWebApp').controller('MultiChartCtrl',
       sauChartUtils.toggleTaxonNames($scope);
     };
 
+    $scope.$watch('formModel', onFormModelChange, true);
+    $scope.$watch('color', function() {
+      if ($scope.color[11]){
+        $scope.options.chart.color = $scope.color[11];
+      } else {
+        $scope.options.chart.color = $scope.color[9];
+      }
+    });
+    $scope.$watch('options', function(newOptions) {
+      $timeout(function() { $scope.api.refresh(newOptions); });
+    }, true);
+
     var defaultColors = $scope.colors.Spectral['11'];
     defaultColors.push(
       '#666', '#f88', '#88f', '#8f8', '#800', '#080', '#008',
       '#888', '#333'
     );
     $scope.color = $scope.colors.Spectral;
-
-    $scope.$watch('formModel', onFormModelChange, true);
 
     function onFormModelChange() {
       updateData();
