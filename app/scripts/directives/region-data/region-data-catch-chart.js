@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp')
   .directive('regionDataCatchChart', function() {
-    var catchChartCtrl = function($scope, $location, $filter, $rootScope, sauAPI, regionDimensions, regionMeasures,
+    var catchChartCtrl = function($scope, $location, $filter, $rootScope, $timeout, sauAPI, regionDimensions, regionMeasures,
                                   regionDimensionLimits, regionDataCatchChartColors, regionDataCatchChartOptions,
                                   ga, spinnerState, sauChartUtils, regionDataCatchChartTitleGenerator, createQueryUrl) {
 
@@ -16,7 +16,7 @@ angular.module('sauWebApp')
       $scope.formModel = getFormModel();
 
       // default color
-      $scope.color = $scope.colors.Spectral;
+      $scope.color = $scope.colors.Accent;
 
       // google analytics helper
       $scope.dropdownGA = function(label, value) {
@@ -74,6 +74,12 @@ angular.module('sauWebApp')
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
       });
+      $scope.$watch('color', function() {
+        $scope.options.chart.color = !!$scope.color[11] ? $scope.color[11] : $scope.color[9];
+      });
+      $scope.$watch('options', function(newOptions) {
+        $timeout(function() { $scope.api.refresh(newOptions); });
+      }, true);
 
 
       /*
