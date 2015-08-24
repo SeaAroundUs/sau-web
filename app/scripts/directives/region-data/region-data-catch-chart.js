@@ -16,7 +16,7 @@ angular.module('sauWebApp')
       $scope.formModel = getFormModel();
 
       // default color
-      $scope.color = $scope.colors.Accent;
+      $scope.color = $scope.colors.Spectral;
 
       // google analytics helper
       $scope.dropdownGA = function(label, value) {
