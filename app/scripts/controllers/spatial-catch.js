@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -84,6 +84,34 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.query && $scope.query.fishingCountries && $scope.query.fishingCountries.length > 0;
     };
 
+    $scope.minCatch = function(groupId) {
+      var min = 0;
+
+      if ($scope.spatialCatchData.data) {
+        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
+          if ($scope.spatialCatchData.data[i].rollup_key === groupId.toString()) {
+            return $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
+          }
+        }
+      }
+
+      return min;
+    }
+
+    $scope.maxCatch = function(groupId) {
+      var max = 0;
+
+      if ($scope.spatialCatchData.data) {
+        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
+          if ($scope.spatialCatchData.data[i].rollup_key === groupId.toString()) {
+            return $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
+          }
+        }
+      }
+
+      return max;
+    }
+
     function joinBy(array, delimiter, property) {
       var s = '';
       for (var i = 0; i < array.length; i++) {
@@ -103,34 +131,37 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $timeout(function() {
         var response = $scope.spatialCatchData;
 
-        if (!response || !response.data || response.data.length < 1) {
+        if (!response) {
           return;
         }
 
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
-        for (var i = 0; i < response.data.length; i++) {
-          var cellBlob = response.data[i]; //Grouped cells
-          var color = colorAssignment.getDefaultColor();
-          if ($scope.isQueryComparable($scope.lastQuery)) {
-            color = colorAssignment.colorOf(cellBlob.rollup_key);
-          }
-          for (var j = 0; j < cellBlob.data.length; j++) {
-            var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
-            var pct = (5 - cellSubBlob.threshold) / 5;
-            for (var k = 0; k < cellSubBlob.cells.length; k++) {
-              var cell = cellSubBlob.cells[k];
-              //Don't use a color blend mode for cell's the first color.
-              if (cellData[cell*4 + 3] === 0) {
-                cellData[cell*4] = lightenChannel(color[0], pct);
-                cellData[cell*4 + 1] = lightenChannel(color[1], pct);
-                cellData[cell*4 + 2] = lightenChannel(color[2], pct);
-                cellData[cell*4 + 3] = 255;
-              //Multiply the colors for layered cells.
-              } else {
-                cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
-                cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
-                cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
-                cellData[cell*4 + 3] = 255;
+
+        if (response.data) {
+          for (var i = 0; i < response.data.length; i++) {
+            var cellBlob = response.data[i]; //Grouped cells
+            var color = colorAssignment.getDefaultColor();
+            if ($scope.isQueryComparable($scope.lastQuery)) {
+              color = colorAssignment.colorOf(cellBlob.rollup_key);
+            }
+            for (var j = 0; j < cellBlob.data.length; j++) {
+              var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
+              var pct = (5 - cellSubBlob.threshold) / 5;
+              for (var k = 0; k < cellSubBlob.cells.length; k++) {
+                var cell = cellSubBlob.cells[k];
+                //Don't use a color blend mode for cell's the first color.
+                if (cellData[cell*4 + 3] === 0) {
+                  cellData[cell*4] = lightenChannel(color[0], pct);
+                  cellData[cell*4 + 1] = lightenChannel(color[1], pct);
+                  cellData[cell*4 + 2] = lightenChannel(color[2], pct);
+                  cellData[cell*4 + 3] = 255;
+                //Multiply the colors for layered cells.
+                } else {
+                  cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
+                  cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
+                  cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
+                  cellData[cell*4 + 3] = 255;
+                }
               }
             }
           }
@@ -288,11 +319,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Reporting statuses
       if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
         $location.search('repstatuses', joinBy($scope.query.reportingStatuses, ',', 'id'));
+      } else {
+        $location.search('repstatuses', null);
       }
 
       //Catch types
       if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
         $location.search('catchtypes', joinBy($scope.query.catchTypes, ',', 'id'));
+      } else {
+        $location.search('catchtypes', null);
       }
 
       //Year
@@ -382,14 +417,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       {
         name: 'Reporting statuses',
         field: 'reportingStatuses',
-        key: 'name',
+        key: 'id',
         entityName: 'name',
         compareTerm: 'repstatus'
       },
       {
         name: 'Catch types',
         field: 'catchTypes',
-        key: 'name',
+        key: 'id',
         entityName: 'name',
         compareTerm: 'catchtypes'
       }

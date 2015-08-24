@@ -114,7 +114,7 @@
 			</div>
 			<div class="row" ng-if="spatialCatchData.$resolved">
 				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees(lastQuery)">
-					<spatial-catch-legend-key key-name="comparee[lastQuery.comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
+					<spatial-catch-legend-key key-name="comparee[lastQuery.comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="minCatch(comparee[lastQuery.comparableType.key]) + ' tonnes/km²'" max-label="maxCatch(comparee[lastQuery.comparableType.key]) + ' tonnes/km²'"></spatial-catch-legend-key>
 				</div>
 				<div class="col-md-3 clearix" ng-if="getComparees(lastQuery).length === 0">
 					<spatial-catch-legend-key key-name="'Catches'" color="defaultColor" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
