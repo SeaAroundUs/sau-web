@@ -18,6 +18,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (query.year) {
         queryParams.year = query.year;
       }
+      queryParams.compare = $scope.comparableType.compareTerm;
 
       $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, drawCellData);
     };
@@ -81,26 +82,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
         for (var i = 0; i < response.data.length; i++) {
-          var cellBlob = response.data[i];
+          var cellBlob = response.data[i]; //Grouped cells
           var color = colorAssignment.getDefaultColor();
           if ($scope.isQueryComparable()) {
-            color = colorAssignment.colorOf([cellBlob[$scope.comparableType.serverId]]);
+            color = colorAssignment.colorOf(cellBlob.rollup_key);
           }
-          var pct = (5 - cellBlob.threshold) / 5;
-          for (var j = 0; j < cellBlob.cells.length; j++) {
-            var cell = cellBlob.cells[j];
-            //Don't use a color blend mode for cell's the first color.
-            if (cellData[cell*4 + 3] === 0) {
-              cellData[cell*4] = lightenChannel(color[0], pct);
-              cellData[cell*4 + 1] = lightenChannel(color[1], pct);
-              cellData[cell*4 + 2] = lightenChannel(color[2], pct);
-              cellData[cell*4 + 3] = 255;
-            //Multiply the colors for layered cells.
-            } else {
-              cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
-              cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
-              cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
-              cellData[cell*4 + 3] = 255;
+          for (var j = 0; j < cellBlob.data.length; j++) {
+            var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
+            var pct = (5 - cellSubBlob.threshold) / 5;
+            for (var k = 0; k < cellSubBlob.cells.length; k++) {
+              var cell = cellSubBlob.cells[k];
+              //Don't use a color blend mode for cell's the first color.
+              if (cellData[cell*4 + 3] === 0) {
+                cellData[cell*4] = lightenChannel(color[0], pct);
+                cellData[cell*4 + 1] = lightenChannel(color[1], pct);
+                cellData[cell*4 + 2] = lightenChannel(color[2], pct);
+                cellData[cell*4 + 3] = 255;
+              //Multiply the colors for layered cells.
+              } else {
+                cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
+                cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
+                cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
+                cellData[cell*4 + 3] = 255;
+              }
             }
           }
         }
@@ -129,25 +133,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //All searchable query dimensions that have multiple selections get added to this list.
       for (var i = 0; i < allComparableTypes.length; i++) {
         var p = allComparableTypes[i];
-        if ($scope.lastQuery[p.field] && $scope.lastQuery[p.field].length > 1) {
+        if (($scope.lastQuery[p.field] && $scope.lastQuery[p.field].length > 1) ||
+          p.alwaysComparable) {
           $scope.comparableTypes.push(p);
         }
-      }
-
-      //Make "Nothing" an option if any comparableTypes exist
-      if ($scope.comparableTypes.length > 0) {
-        $scope.comparableTypes.unshift({
-          name: 'Nothing',
-          field: '',
-          key: '',
-          serverId: '[not supported]'
-        });
       }
     }
 
     function assignDefaultComparison() {
-      if (!$scope.comparableType && $scope.comparableTypes) {
-        $scope.comparableType = $scope.comparableTypes[1];
+      if (!$scope.comparableType || !$scope.comparableType.name) {
+        $scope.comparableType = $scope.comparableTypes[0];
       }
     }
 
@@ -158,7 +153,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         for (var i = 0; i < comparees.length; i++) {
           var comparee = comparees[i];
           var compareeId = comparee[$scope.comparableType.key];
-          compareeIds.push(compareeId);
+          compareeIds.push(compareeId.toString());
         }
         colorAssignment.setData(compareeIds);
       }
@@ -228,20 +223,26 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         key: 'id',
         serverId: 'fishing_entity_id',
         entityName: 'title',
+        compareTerm: 'entities',
+        alwaysComparable: true
       },
       {
         name: 'Taxa',
         field: 'taxa',
         key: 'taxon_key',
         serverId: '[not supported]',
-        entityName: 'common_name'
+        entityName: 'common_name',
+        compareTerm: 'taxa',
+        alwaysComparable: false
       },
       {
         name: 'Commercial groups',
         field: 'commercialGroups',
         key: 'commercial_group_id',
         serverId: '[not supported]',
-        entityName: 'name'
+        entityName: 'name',
+        compareTerm: 'commgroups',
+        alwaysComparable: false
       },
       {
         name: 'Functional groups',
@@ -249,20 +250,26 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         key: 'functional_group_id',
         serverId: '[not supported]',
         entityName: 'description',
+        compareTerm: 'funcgroups',
+        alwaysComparable: false
       },
       {
         name: 'Reporting statuses',
         field: 'reportingStatuses',
         key: 'name',
         serverId: '[not supported]',
-        entityName: 'name'
+        entityName: 'name',
+        compareTerm: 'repstatus',
+        alwaysComparable: false
       },
       {
         name: 'Catch types',
         field: 'catchTypes',
         key: 'name',
         serverId: '[not supported]',
-        entityName: 'name'
+        entityName: 'name',
+        compareTerm: 'catchtypes',
+        alwaysComparable: false
       }
     ];
 
