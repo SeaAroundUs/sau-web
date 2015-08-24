@@ -44,6 +44,7 @@ angular.module('sauWebApp')
       highseas: highseas,
       global: null,
       rfmo: null,
-      mariculture: mariculture
+      mariculture: mariculture,
+      'fishing-entity': null
     };
   });

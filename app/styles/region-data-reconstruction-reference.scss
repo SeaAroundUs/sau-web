@@ -1,0 +1,12 @@
+@import 'global';
+
+#reconstruction-reference {
+  span.reference {
+    display: block;
+    padding: 0 0 5px 16px;
+
+    a i {
+      margin-left: -16px;
+    }
+  }
+}

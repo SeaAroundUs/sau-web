@@ -49,5 +49,10 @@ angular.module('sauWebApp').controller('AdvSearchEEZBorderingCtrl', function ($s
   $scope.eezList = sauAPI.Regions.get({region: 'eez', nospatial: true});
 
   $scope.$watch('selectedEezs', requestBorderingEezs);
+  $scope.$watch('selectedDimension', $scope.queryChanged);
+  $scope.$watch('useScientificName', $scope.queryChanged);
+  $scope.$watch('selectedMeasure', $scope.queryChanged);
+  $scope.$watch('selectedLimit', $scope.queryChanged);
+
   $scope.$watch('selectedEezs', $scope.queryChanged);
 });

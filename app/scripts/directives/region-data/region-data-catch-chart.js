@@ -2,7 +2,7 @@
 
 angular.module('sauWebApp')
   .directive('regionDataCatchChart', function() {
-    var catchChartCtrl = function($scope, $location, $filter, $rootScope, sauAPI, regionDimensions, regionMeasures,
+    var catchChartCtrl = function($scope, $location, $filter, $rootScope, $timeout, sauAPI, regionDimensions, regionMeasures,
                                   regionDimensionLimits, regionDataCatchChartColors, regionDataCatchChartOptions,
                                   ga, spinnerState, sauChartUtils, regionDataCatchChartTitleGenerator, createQueryUrl) {
 
@@ -16,7 +16,7 @@ angular.module('sauWebApp')
       $scope.formModel = getFormModel();
 
       // default color
-      $scope.color = $scope.colors.Spectral;
+      $scope.color = $scope.colors.Accent;
 
       // google analytics helper
       $scope.dropdownGA = function(label, value) {
@@ -74,6 +74,12 @@ angular.module('sauWebApp')
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
       });
+      $scope.$watch('color', function() {
+        $scope.options.chart.color = !!$scope.color[11] ? $scope.color[11] : $scope.color[9];
+      });
+      $scope.$watch('options', function(newOptions) {
+        $timeout(function() { $scope.api.refresh(newOptions); });
+      }, true);
 
 
       /*
@@ -84,8 +90,8 @@ angular.module('sauWebApp')
         return {
           dimension: getDimension(),
           measure: getMeasure(),
-          limit: $scope.limits[1],
-          region_id: parseInt($scope.region.id),
+          limit: getLimit(),
+          region_id: $scope.region.ids,
           useScientificName: getUseScientificName()
         };
       }
@@ -98,6 +104,11 @@ angular.module('sauWebApp')
       function getMeasure() {
         return $scope.measures[$scope.measures.map(function(m) { return m.value })
             .indexOf($location.search().measure)] || $scope.measures[0];
+      }
+
+      function getLimit() {
+        return $scope.limits[$scope.limits.map(function(l) { return l.value })
+            .indexOf($location.search().limit)] || $scope.limits[1];
       }
 
       function getUseScientificName() {
@@ -113,7 +124,7 @@ angular.module('sauWebApp')
           dimension: $scope.formModel.dimension.value,
           limit: $scope.formModel.limit.value,
           useScientificName: $scope.formModel.useScientificName,
-          regionIds: [$scope.formModel.region_id],
+          regionIds: $scope.region.ids,
           faoId: $scope.region.faoId
         };
         var url = sauAPI.apiURL + createQueryUrl.forRegionCsv(urlConfig);
@@ -126,17 +137,15 @@ angular.module('sauWebApp')
       }
 
       function updateURL() {
-        if ($location.path() === '/global') { //TODO other regions here
-          $location.search({
-            chart: 'catch-chart',
-            dimension: $scope.formModel.dimension.value,
-            measure: $scope.formModel.measure.value,
-            sciname: $scope.formModel.useScientificName
-          }).replace();
+        $location.search({
+          chart: 'catch-chart',
+          dimension: $scope.formModel.dimension.value,
+          measure: $scope.formModel.measure.value,
+          limit: $scope.formModel.limit.value,
+          sciname: $scope.formModel.useScientificName
+        }).replace();
 
-        } else {
-          $location.search({}).replace();
-        }
+        //TODO clear params when leaving page
       }
 
       function getChartData() {
@@ -215,7 +224,7 @@ angular.module('sauWebApp')
           sauChartUtils.calculateYAxisCeiling($scope, null, 0.1);
 
           // update chart title
-          regionDataCatchChartTitleGenerator.updateTitle(data, $scope.formModel, $scope.region);
+          regionDataCatchChartTitleGenerator.updateTitle($scope.formModel, $scope.region);
 
           // update download url
           updateDataDownloadURL();

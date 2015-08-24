@@ -1,6 +1,7 @@
 'use strict';
 
 /* global angular */
+/* global d3 */
 
 angular.module('sauWebApp')
   .controller('MarineTrophicIndexCtrl', function ($scope, $routeParams, $modal, $http, $filter, $q, sauAPI, region) {
@@ -8,6 +9,7 @@ angular.module('sauWebApp')
     $scope.years = [];
     $scope.regionType = region;
     $scope.noData = false;
+    $scope.rmtiAPI = null;
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
@@ -28,6 +30,47 @@ angular.module('sauWebApp')
       }
     };
 
+    var rmtiTooltip = function(key,x,y,e) {
+      var s = '<h2>' + e.point[0] + '</h2>' +
+        '<p>' + e.point[1] + '</p>';
+      return s;
+    };
+
+    $scope.rmtiOptions = {
+      chart: {
+        type: 'lineChart',
+        height: 250,
+        margin : {
+          top: 20,
+          right: 20,
+          bottom: 60,
+          left: 85
+        },
+        color: [
+          'rgb(248, 105, 42)',
+          'rgb(85, 187, 245)',
+          'rgb(50, 67, 179)'
+        ],
+        x: function(d){ return d[0]; },
+        y: function(d){ return d[1]; },
+        useInteractiveGuideline: false,
+        tooltipContent: rmtiTooltip,
+        xAxis: {
+          axisLabel: 'Year'
+        },
+        yDomain: [2,5],
+        yAxis: {
+          axisLabel: 'RMTI',
+          tickFormat: function(d){
+            return d3.format('1d')(d);
+          },
+          // axisLabelDistance: 0
+        },
+        showYAxis: 9,
+        showLegend: false
+      },
+    };
+
     var id = ($scope.region && $scope.region.name_id) || ($routeParams.id || 1);
 
     $scope.openDownloadDataModal = function() {
@@ -36,7 +79,8 @@ angular.module('sauWebApp')
         controller: 'DownloadDataModalCtrl',
         resolve: {
           dataUrl: function () {
-            return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id;
+            return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id +
+              '&transfer_efficiency=' + $scope.fib.transferEfficiency;
           }
         }
       });
@@ -66,9 +110,17 @@ angular.module('sauWebApp')
 
       $scope.fib.year = $scope.fib.year || $scope.years[0];
 
+      $scope.rmtiData = [];
+
       angular.forEach($scope.data, function(time_series) {
         time_series.values = time_series.values.filter(function(x) { return x[1]; });
-        $scope[time_series.key] = [time_series];
+
+        if (time_series.key.indexOf('RMTI_') >= 0) {
+          // var series = {'key': time_series.key, 'values': [time_series]};
+          $scope.rmtiData.push(time_series);
+        } else {
+          $scope[time_series.key] = [time_series];
+        }
 
         angular.forEach(time_series.values, function(dataRow) {
           var year = dataRow[0];
@@ -80,6 +132,8 @@ angular.module('sauWebApp')
           }
         });
       });
+      // reverse RMTI order
+      $scope.rmtiData.sort(function(a,b) {return a.key < b.key; } );
     };
 
     // compute data with exclusions from species table

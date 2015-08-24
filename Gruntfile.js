@@ -33,10 +33,10 @@ module.exports = function (grunt) {
     cmd: 'git',
     args: ['log', '-n', '1', '--no-color'],
   }, function done(error, result) {
-    grunt.config.data.ngconstant.development.constants.SAU_CONFIG.buildNumber = result.stdout;
-    grunt.config.data.ngconstant.production.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.dev.constants.SAU_CONFIG.buildNumber = result.stdout;
     grunt.config.data.ngconstant.qa.constants.SAU_CONFIG.buildNumber = result.stdout;
-    grunt.config.data.ngconstant.beta.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.stage.constants.SAU_CONFIG.buildNumber = result.stdout;
+    grunt.config.data.ngconstant.prod.constants.SAU_CONFIG.buildNumber = result.stdout;
   });
 
   // Define the configuration for all the tasks
@@ -46,42 +46,46 @@ module.exports = function (grunt) {
       options: {
         deps: false,
         dest: '.tmp/scripts/config.js',
-        name: 'sauWebApp',
+        name: 'sauWebApp'
       },
-      development: {
+      dev: {
         constants: {
           SAU_CONFIG: {
             apiURL: 'http://' + apiHostPort + '/api/v1/',
             authURL: 'http://' + apiHostPort + '/account/',
-            buildNumber: buildNumber
+            buildNumber: buildNumber,
+            env: 'dev'
           }
         }
       },
       qa: {
         constants: {
           SAU_CONFIG: {
-            apiURL: 'http://sau-web-lb-qa-892050803.us-west-2.elb.amazonaws.com/api/v1/',
-            authURL: 'http://sau-web-lb-qa-892050803.us-west-2.elb.amazonaws.com/account/',
-            buildNumber: buildNumber
+            apiURL: 'http://api.qa1.seaaroundus.org/api/v1/',
+            authURL: 'http://api.qa1.seaaroundus.org/account/',
+            buildNumber: buildNumber,
+            env: 'qa'
           }
         }
       },
-      beta: {
+      stage: {
         constants: {
           SAU_CONFIG: {
-            apiURL: 'http://sau-web-lb-p-922647076.us-west-2.elb.amazonaws.com/api/v1/',
-            authURL: 'http://sau-web-lb-p-922647076.us-west-2.elb.amazonaws.com/account/',
-            buildNumber: buildNumber
+            apiURL: 'http://api.staging.seaaroundus.org/api/v1/',
+            authURL: 'http://api.staging.seaaroundus.org/account/',
+            buildNumber: buildNumber,
+            env: 'stage'
           }
         }
       },
-      production: {
+      prod: {
         constants: {
           SAU_CONFIG: {
-            apiURL: 'http://sau-web-mt-env.elasticbeanstalk.com/api/v1/',
-            authURL: 'http://sau-web-mt-env.elasticbeanstalk.com/account/',
-            buildNumber: buildNumber
-          },
+            apiURL: 'http://api.seaaroundus.org/api/v1/',
+            authURL: 'http://api.seaaroundus.org/account/',
+            buildNumber: buildNumber,
+            env: 'prod'
+          }
         }
       }
     },
@@ -334,18 +338,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
+          src: '{,*/}*.{png,jpg,jpeg,gif,svg}',
           dest: '<%= yeoman.dist %>/images'
         }]
       }
@@ -398,7 +391,7 @@ module.exports = function (grunt) {
           cwd: '<%= yeoman.app %>',
           dest: '<%= yeoman.dist %>',
           src: [
-            '*.{ico,png,txt}',
+            '*.{ico,png,txt,topojson}',
             '.htaccess',
             '*.html',
             'views/{,*/}*.html',
@@ -507,23 +500,49 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+  grunt.registerTask('serve', 'Compile then start a connect web server', function (target, env) {
+    target = target || 'dev';
+
     if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
+      return env === undefined ?
+        grunt.util.error('Expected: serve, serve:{ENV}, or serve:dist:{ENV}') :
+        grunt.task.run(['build:' + env, 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
       'newer:jshint',
       'jscs',
-      // 'test',
       'clean:dist',
       'clean:server',
-      'ngconstant:development',
+      'ngconstant:' + target,
       'wiredep',
       'compass:server',
       'autoprefixer',
       'connect:livereload',
       'watch'
+    ]);
+  });
+
+  grunt.registerTask('build', 'Build package for deployment', function(env) {
+    if (env === undefined) {
+      return grunt.util.error('Expected: build:{ENV}');
+    }
+
+    grunt.task.run([
+      'clean:dist',
+      'wiredep',
+      'useminPrepare',
+      'compass:dist',
+      'ngconstant:' + env,
+      'imagemin',
+      'autoprefixer',
+      'concat',
+      'ngAnnotate',
+      'copy:dist',
+      'cssmin',
+      'uglify',
+      'filerev',
+      'usemin'
     ]);
   });
 
@@ -533,79 +552,12 @@ module.exports = function (grunt) {
     'autoprefixer',
     'connect:test',
     'ngconstant:production',
-    'karma',
-  ]);
-
-  grunt.registerTask('deploy', [
-    // 'newer:jshint',
-    // 'test',
-    'build',
-    'aws_s3:production'
-  ]);
-
-  grunt.registerTask('deploy:qa', [
-    'build:qa',
-    'aws_s3:qa'
-  ]);
-
-  grunt.registerTask('build', [
-    'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'compass:dist',
-    'ngconstant:production',
-    'imagemin',
-    'autoprefixer',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    // 'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    // 'htmlmin' //breaks index.html.  https://github.com/ericclemmons/grunt-angular-templates/issues/82
-  ]);
-
-  grunt.registerTask('build:beta', [
-    'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'compass:dist',
-    'ngconstant:beta',
-    'imagemin',
-    'autoprefixer',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    // 'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    // 'htmlmin' //breaks index.html.  https://github.com/ericclemmons/grunt-angular-templates/issues/82
-  ]);
-
-  grunt.registerTask('build:qa', [
-    'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'compass:dist',
-    'ngconstant:qa',
-    'imagemin',
-    'autoprefixer',
-    'concat',
-    'ngAnnotate',
-    'copy:dist',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin'
+    'karma'
   ]);
 
   grunt.registerTask('default', [
     'newer:jshint',
     'test',
-    'build'
+    'build:prod'
   ]);
 };

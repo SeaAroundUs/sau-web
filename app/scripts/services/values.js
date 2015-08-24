@@ -84,11 +84,11 @@ angular.module('sauWebApp')
     worldBounds: {
       southWest: {
         lat: -90,
-        lng: -190
+        lng: -180
       },
       northEast: {
         lat: 90,
-        lng: 190
+        lng: 180
       }
     }
   })
@@ -98,4 +98,12 @@ angular.module('sauWebApp')
       areaDef: '/sea-around-us-area-parameters-and-definitions/',
       sspMethods: '/stock-status-plots-method/',
       s3Root: 'https://s3-us-west-2.amazonaws.com/'
-    });
+    })
+  .value('reportingStatuses', [
+    {name: 'Reported'},
+    {name: 'Unreported'}
+  ])
+  .value('catchTypes', [
+      { name: 'Landings'},
+      { name: 'Discards'}
+  ]);

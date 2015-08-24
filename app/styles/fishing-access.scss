@@ -1,4 +1,5 @@
-#internal-fishing-access {
+#internal-fishing-access,
+#external-fishing-access {
 
   max-width: 1100px;
   margin: 0 auto;
@@ -6,6 +7,13 @@
   padding-bottom: 20px;
   padding-left: 20px;
   padding-right: 20px;
+
+  .no-data {
+    font-size: 1.4em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
   #main-text {
     line-height: 1.7;
@@ -16,6 +24,7 @@
 
   }
 
+  #fishing-entity-year-table,
   #post-declaration-year-table {
     margin-bottom: 64px;
   }
@@ -79,6 +88,10 @@
     float: right !important;
     position: relative;
     bottom: 12px;
+  }
+
+  #fishing-entity-year-table .filter-arrow {
+    bottom: 0;
   }
 
   .dropdown-menu {

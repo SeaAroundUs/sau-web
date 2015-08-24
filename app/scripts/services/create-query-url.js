@@ -72,6 +72,16 @@ angular.module('sauWebApp')
             '?chart=catch-chart',
           ];
 
+        //Catch chart for multiple regions for new layouts
+        } else if (['fishing-entity', 'rfmo', 'global'].indexOf(config.regionType) !== -1) {
+          strBuilder = [
+            '/',
+            config.regionType,
+            '/',
+            config.regionIds.join(','),
+            '?chart=catch-chart'
+          ];
+
         //Catch chart for multiple regions.
         } else {
           strBuilder = [

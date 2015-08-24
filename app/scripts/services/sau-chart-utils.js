@@ -50,6 +50,12 @@ angular.module('sauWebApp')
 
       var ceiling = Math.max.apply(null, otherChartValues);
       ceiling = Math.max(ceiling, this.getMaxDataSum(scope)) * (1 + additionalCeilingScale);
+
+      //TODO fix the race condition that necessitates this conditional
+      if (!scope.api) {
+        return;
+      }
+
       scope.api.getScope().options.chart.yDomain = [0, ceiling];
       scope.api.refresh();
     },
@@ -57,7 +63,7 @@ angular.module('sauWebApp')
     //This delivers the hard-coded message to be displayed when there is no data for a region id.
     //Provide the region type and ID, and it will return you there proper message.
     getNoDataMessage: function(regionName, regionId) {
-      if (regionName === 'lme' && regionId === 64) {
+      if ((regionName === 'lme' && regionId === 64) || (regionName === 'highseas' && regionId === 18)) {
         return 'Currently no catches due to ice cover';
       } else {
         return 'No data is available for this selection';

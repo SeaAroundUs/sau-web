@@ -1,0 +1,18 @@
+@import 'global';
+
+#region-data-metrics {
+  background-color: white;
+  color: black;
+  border: 1px solid $gray;
+  margin-bottom: 30px;
+  min-height: 150px;
+  padding: 20px;
+
+  table {
+    width: 100%;
+
+    td {
+      padding: 2px;
+    }
+  }
+}

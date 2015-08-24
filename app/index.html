@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="bower_components/angular-ui-grid/ui-grid.css" />
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" href="bower_components/rrose/leaflet.rrose.css" />
+    <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -42,8 +43,16 @@
     <link rel="stylesheet" href="styles/sau-multi-select.css" />
     <link rel="stylesheet" href="styles/sau-selected-options.css" />
     <link rel="stylesheet" href="styles/procedure-outcome.css" />
-    <link rel="stylesheet" href="styles/internal-fishing-access.css" />
+    <link rel="stylesheet" href="styles/fishing-access.css" />
     <link rel="stylesheet" href="styles/login-modal.css" />
+    <link rel="stylesheet" href="styles/region-data.css" />
+    <link rel="stylesheet" href="styles/region-data-catch-chart.css" />
+    <link rel="stylesheet" href="styles/region-data-metrics.css" />
+    <link rel="stylesheet" href="styles/region-data-more.css" />
+    <link rel="stylesheet" href="styles/region-data-minimap.css" />
+    <link rel="stylesheet" href="styles/region-data-legend.css" />
+    <link rel="stylesheet" href="styles/spatial-catch.css" />
+    <link rel="stylesheet" href="styles/region-data-reconstruction-reference.css" />
     <!-- endbuild -->
 
     <!-- old browser detection -->
@@ -108,8 +117,8 @@
                 <img class="pull-right" src="images/logo_cbd.gif" alt="Vulcan logo">
               </a>
             </div>
-            <!-- RE-ENABLE WHEN IMPLEMENTING AUTH -->
-            <!--auth-status-button class="pull-right"></auth-status-button-->
+
+            <auth-status-button toggle-hide="auth" class="pull-right"></auth-status-button>
 
             <ul class="nav nav-pills top-header">
               <li role="presentation" ng-repeat="t in templates">
@@ -206,6 +215,12 @@
     <script src="bower_components/angulartics/src/angulartics-marketo.js"></script>
     <script src="bower_components/angulartics/src/angulartics-intercom.js"></script>
     <script src="bower_components/rrose/rrose-src.js"></script>
+    <script src="bower_components/proj4/dist/proj4.js"></script>
+    <script src="bower_components/Proj4Leaflet/src/proj4leaflet.js"></script>
+    <script src="bower_components/topojson/topojson.js"></script>
+    <script src="bower_components/d3-geo-projection/d3.geo.projection.js"></script>
+    <script src="bower_components/d3-grid-map/d3-grid-map.js"></script>
+    <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -251,6 +266,9 @@
     <script src="scripts/controllers/auth/account-settings.js"></script>
     <script src="scripts/controllers/auth/password-reset.js"></script>
     <script src="scripts/controllers/auth/new-password.js"></script>
+    <script src="scripts/controllers/region-data.js"></script>
+    <script src="scripts/controllers/external-fishing-access.js"></script>
+    <script src="scripts/controllers/spatial-catch.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -271,6 +289,18 @@
     <script src="scripts/directives/habitat-index.js"></script>
     <script src="scripts/directives/adv-search-directives.js"></script>
     <script src="scripts/directives/auth-directives.js"></script>
+    <script src="scripts/directives/region-data/region-data-catch-chart.js"></script>
+    <script src="scripts/directives/region-data/region-data-disclaimer.js"></script>
+    <script src="scripts/directives/region-data/region-data-metrics.js"></script>
+    <script src="scripts/directives/region-data/region-data-more.js"></script>
+    <script src="scripts/directives/region-data/region-data-title.js"></script>
+    <script src="scripts/directives/region-data/region-data-multinational-footprint.js"></script>
+    <script src="scripts/directives/region-data/region-data-map.js"></script>
+    <script src="scripts/directives/region-data/region-data-legend.js"></script>
+    <script src="scripts/directives/region-data/region-data-reconstruction-reference.js"></script>
+    <script src="scripts/directives/high-seas-vs-eezs.js"></script>
+    <script src="scripts/directives/download-button.js"></script>
+    <script src="scripts/directives/spatial-catch-directives.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/filters/significantdigits.js"></script>
@@ -300,6 +330,17 @@
     <script src="scripts/services/fishing-access-service.js"></script>
     <script src="scripts/services/auth-service.js"></script>
     <script src="scripts/services/auth-api.js"></script>
+    <script src="scripts/services/region-data-disclaimer-content.js"></script>
+    <script src="scripts/services/region-data-more-links.js"></script>
+    <script src="scripts/services/region-data-catch-chart-colors.js"></script>
+    <script src="scripts/services/region-data-catch-chart-options.js"></script>
+    <script src="scripts/services/region-data-catch-chart-title-generator.js"></script>
+    <script src="scripts/services/faos.js"></script>
+    <script src="scripts/services/toggles.js"></script>
+    <script src="scripts/services/cell-tile-layer.js"></script>
+    <script src="scripts/services/countries-110.js"></script>
+    <script src="scripts/services/test-data.js"></script>
+    <script src="scripts/services/color-assignment-service.js"></script>
 
     <script src="scripts/directives/sau-multi-select.js"></script>
     <script src="scripts/directives/sau-selected-options.js"></script>

@@ -1,0 +1,21 @@
+<div ng-if="toggles.showFAOAndLegend" class="region-data-legend">
+  <div ng-if="faos && toggles.showFAOs">
+    <h3>Select FAO area boundaries</h3>
+    <a ng-click="selectFAO(0)" scroll-click="region-title">All</a>
+    <span ng-repeat="fao in faos.data"> | <a ng-click="selectFAO(fao)" scroll-click="region-title">{{fao.name}}</a></span>
+  </div>
+
+  <sau-legend legend-keys="legendKeys" ng-if="legendKeys && toggles.showLegend"></sau-legend>
+
+  <p class="disclaimer" ng-if="toggles.showDisclaimer">
+    <strong>Disclaimer:</strong> The maritime limits and boundaries shown on this map are not to be considered as an
+    authority on the delimitation of the international maritime boundaries.
+  </p>
+
+  <sau-legend-mariculture ng-if="toggles.showMaricultureLegend"></sau-legend-mariculture>
+
+  <p ng-if="toggles.showFAOEEZLinks" class="external-links">
+    <a target="_blank" href="/eez/FAOarea.htm">FAO Areas</a>
+    <a target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807903">EEZ Boundary explanation</a>
+  </p>
+</div>

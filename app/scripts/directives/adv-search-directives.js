@@ -8,24 +8,21 @@ angular.module('sauWebApp')
       scope: {
         regionId: '=',
         selectedDimension: '=',
-        useScientificName: '=',
-        modelChanged: '&'
+        useScientificName: '='
       },
       link: function(scope) {
         scope.dimensions = regionDimensions[scope.regionId];
         scope.selectedDimension = scope.dimensions[0];
       }
     };
-  }
-  )
+  })
   .directive('advSearchMeasureParam', function(regionMeasures) {
     return {
       templateUrl: 'views/advanced-search/adv-search-measure-param.html',
       restrict: 'E',
       scope: {
         regionId: '=',
-        selectedMeasure: '=',
-        modelChanged: '&'
+        selectedMeasure: '='
       },
       link: function(scope) {
         scope.measures = regionMeasures[scope.regionId];
@@ -39,12 +36,11 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: {
         regionId: '=',
-        selectedLimit: '=',
-        modelChanged: '&'
+        selectedLimit: '='
       },
       link: function(scope) {
         scope.limits = regionDimensionLimits[scope.regionId];
-        scope.selectedLimit = scope.limits[0];
+        scope.selectedLimit = scope.limits[1];
       }
     };
   })

@@ -39,12 +39,18 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
       if ($location.search().chart) {
         setChartFromURLParams();
+
       } else if ($scope.region.name === 'multi') {
         $location.search({
           chart: getDefaultChartId(),
           region: $location.search().region,
-          id: $location.search().id
+          id: $location.search().id,
+          dimension: $location.search().dimension,
+          measure: $location.search().measure,
+          limit: $location.search().limit,
+          sciname: $location.search().sciname
         }).replace();
+
       } else {
         $location.search({chart: getDefaultChartId()}).replace();
       }
@@ -152,7 +158,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
     $scope.formModel = {
       dimension: getDimensionObjectByValue(getDimensionFromURL()),
       measure: getMeasureObjectByValue(getMeasureFromURL()),
-      limit : $scope.limits[1],
+      limit : getLimitObjectByValue(getLimitFromURL()),
       region_id: parseInt(region_id),
       useScientificName: getUseScientificNameFromURL()
     };
@@ -182,7 +188,11 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         //TODO ?
 
       } else {
-        $scope.feature = sauAPI.Region.get({region: $scope.region.name, region_id: $scope.formModel.region_id, fao_id: $scope.mapLayers.selectedFAO});
+        $scope.feature = sauAPI.Region.get({
+          region: $scope.region.name,
+          region_id: $scope.formModel.region_id,
+          fao_id: $scope.mapLayers.selectedFAO
+        });
         $scope.feature.$promise.then(function() {
           if($scope.region.name === 'lme') {
             // fishbase id is same as our id, fake it
@@ -250,7 +260,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
 
         $q.all(regionDetailPromises).then(function(result) {
           $scope.selectedRegions.details = result.map(function(detail) {
-            return { id: detail.data.id, name: detail.data.title, url: '/#/' + regionType + '/' + detail.data.id };
+            return { id: detail.data.id, name: detail.data.title, url: '#/' + regionType + '/' + detail.data.id };
           });
 
           $scope.selectedRegions.references = result.reduce(function(reference, detail) {
@@ -328,6 +338,15 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       }
     }
 
+    function getLimitFromURL() {
+      var limitObj = getLimitObjectByValue($location.search().limit);
+      if (limitObj) {
+        return limitObj.value;
+      } else {
+        return $scope.limits[1].value;
+      }
+    }
+
     function getUseScientificNameFromURL() {
       //Reads the URL param value of "sciname" and determines its truthiness, converting it to a boolean.
       var sciNameUrlValue = $location.search().sciname;
@@ -341,6 +360,7 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       if (currChart === 'catch-chart' || currChart === 'multi-chart') {
         $scope.formModel.dimension = getDimensionObjectByValue(getDimensionFromURL());
         $scope.formModel.measure = getMeasureObjectByValue(getMeasureFromURL());
+        $scope.formModel.limit = getLimitObjectByValue(getLimitFromURL());
         $scope.formModel.useScientificName = getUseScientificNameFromURL();
       }
     }
@@ -359,6 +379,14 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
         if (i.value === value) { measure = i; }
       });
       return measure;
+    }
+
+    function getLimitObjectByValue(value) {
+      var limit = null;
+      angular.forEach($scope.limits, function(i) {
+        if (i.value === value) { limit = i; }
+      });
+      return limit;
     }
 
     function getDefaultChartId() {

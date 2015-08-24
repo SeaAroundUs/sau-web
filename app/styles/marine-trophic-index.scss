@@ -1,6 +1,12 @@
 #marine-trophic-index {
   padding: 0 5em;
 
+
+  .nvd3 .nv-x.nv-axis g path.domain {
+    // make x-axis visible
+    stroke-opacity: 1 !important;
+    shape-rendering: optimizeSpeed;
+  }
   p.no-data {
     font-size: 1.3em;
     font-weight: bold;
@@ -8,10 +14,25 @@
     margin-bottom: 1em;
   }
 
-  .chart-container {
-    height: 315px;
+  #charts {
+    .chart-container {
+      float:left;
+      height: 190px;
+      width: 50%;
+    }
+  }
+  #chart-headers {
+    .header {
+      width: 50%;
+      float:left;
+    }
   }
 
+  .menu {
+    p:first-of-type {
+      margin-top: 50px;
+    }
+  }
   .row.title {
     padding: 3em 0 2em;
 
@@ -44,6 +65,11 @@
     }
   }
 
+  #fib-inputs {
+    width: 50%;
+    padding-left: 50px;
+    float: right;
+  }
   a.show-hide-species {
     display: inline-block;
     margin: 1em 0;
