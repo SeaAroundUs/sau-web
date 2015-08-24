@@ -25,15 +25,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       switch (query.catchesBy) {
         //...Taxa
         case 'taxa':
-          queryParams.taxa = joinBy(query.taxa, ',', 'taxon_key');
+          if (query.taxa) {
+            queryParams.taxa = joinBy(query.taxa, ',', 'taxon_key');
+          }
           break;
         //...Commercial groups
         case 'commercial groups':
-          queryParams.commgroups = joinBy(query.commercialGroups, ',', 'commercial_group_id');
+          if (query.commercialGroups) {
+            queryParams.commgroups = joinBy(query.commercialGroups, ',', 'commercial_group_id');
+          }
           break;
         //...Functional groups
         case 'functional groups':
-          queryParams.funcgroups = joinBy(query.functionalGroups, ',', 'functional_group_id');
+        if (query.functionalGroups) {
+            queryParams.funcgroups = joinBy(query.functionalGroups, ',', 'functional_group_id');
+          }
           break;
       }
 
