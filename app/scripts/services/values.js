@@ -100,10 +100,22 @@ angular.module('sauWebApp')
       s3Root: 'https://s3-us-west-2.amazonaws.com/'
     })
   .value('reportingStatuses', [
-    {name: 'Reported'},
-    {name: 'Unreported'}
+    {
+      name: 'Reported',
+      id: 'R'
+    },
+    {
+      name: 'Unreported',
+      id: 'U'
+    }
   ])
   .value('catchTypes', [
-      { name: 'Landings'},
-      { name: 'Discards'}
+      {
+        name: 'Landings',
+        id: 'L'
+      },
+      {
+        name: 'Discards',
+        id: 'D'
+      }
   ]);

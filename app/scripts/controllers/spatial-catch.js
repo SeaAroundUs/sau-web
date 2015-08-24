@@ -37,8 +37,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
+      //...Reporting statuses
+      if (query.reportingStatuses) {
+        queryParams.repstatus = joinBy(query.reportingStatuses, ',', 'id');
+      }
+
+      //...Catch types
+      if (query.catchTypes) {
+        queryParams.catchtypes = joinBy(query.catchTypes, ',', 'id');
+      }
+
       //...Compare term
-      queryParams.compare = $scope.query.comparableType.compareTerm;
+      queryParams.compare = query.comparableType.compareTerm;
 
       //Make the call
       $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, drawCellData);
@@ -222,13 +232,23 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
+      //Reporting statuses
+      if (search.repstatuses) {
+        $scope.query.reportingStatuses = getSubArray(reportingStatuses, search.repstatuses.split(','), 'id');
+      }
+
+      //Catch types
+      if (search.catchtypes) {
+        $scope.query.catchTypes = getSubArray(catchTypes, search.catchtypes.split(','), 'id');
+      }
+
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
       //Compare type (must supply one, no matter what)
       updateComparableTypeList();
       if (search.compare) {
-        $scope.query.comparableType = getSubArray($scope.comparableTypes, [search.compare], 'compareTerm')[0];
+        $scope.query.comparableType = allComparableTypes.getWhere('compareTerm', search.compare);
       } else {
         $scope.query.comparableType = $scope.comparableTypes[0];
       }
@@ -263,6 +283,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             $location.search('funcgroups', joinBy($scope.query.functionalGroups, ',', 'functional_group_id'));
           }
           break;
+      }
+
+      //Reporting statuses
+      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
+        $location.search('repstatuses', joinBy($scope.query.reportingStatuses, ',', 'id'));
+      }
+
+      //Catch types
+      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
+        $location.search('catchtypes', joinBy($scope.query.catchTypes, ',', 'id'));
       }
 
       //Year
@@ -304,10 +334,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
 
-    $scope.$watch('query.catchesBy', updateComparableTypeList);
+    $scope.$watch(
+      [
+        'query.catchesBy',
+        'query.reportingStatuses',
+        'query.catchTypes'
+      ],
+      updateComparableTypeList
+    );
     $scope.$watchCollection('query.taxa', updateComparableTypeList);
     $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
+    $scope.$watch('query.reportingStatuses', updateComparableTypeList);
+    $scope.$watch('query.catchTypes', updateComparableTypeList);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
@@ -316,7 +355,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Fishing countries',
         field: 'fishingCountries',
         key: 'id',
-        serverId: 'fishing_entity_id',
         entityName: 'title',
         compareTerm: 'entities'
       },
@@ -324,7 +362,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Taxa',
         field: 'taxa',
         key: 'taxon_key',
-        serverId: '[not supported]',
         entityName: 'common_name',
         compareTerm: 'taxa'
       },
@@ -332,7 +369,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Commercial groups',
         field: 'commercialGroups',
         key: 'commercial_group_id',
-        serverId: '[not supported]',
         entityName: 'name',
         compareTerm: 'commgroups'
       },
@@ -340,7 +376,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Functional groups',
         field: 'functionalGroups',
         key: 'functional_group_id',
-        serverId: '[not supported]',
         entityName: 'description',
         compareTerm: 'funcgroups'
       },
@@ -348,7 +383,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Reporting statuses',
         field: 'reportingStatuses',
         key: 'name',
-        serverId: '[not supported]',
         entityName: 'name',
         compareTerm: 'repstatus'
       },
@@ -356,7 +390,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Catch types',
         field: 'catchTypes',
         key: 'name',
-        serverId: '[not supported]',
         entityName: 'name',
         compareTerm: 'catchtypes'
       }
