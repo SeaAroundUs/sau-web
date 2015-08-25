@@ -112,7 +112,7 @@ angular.module('sauWebApp')
   .value('catchTypes', [
       {
         name: 'Landings',
-        id: 'L'
+        id: 'R'
       },
       {
         name: 'Discards',
