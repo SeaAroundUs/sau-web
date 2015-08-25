@@ -37,7 +37,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
         //...Functional groups
         case 'functional groups':
-        if (query.functionalGroups) {
+          if (query.functionalGroups) {
             queryParams.funcgroups = joinBy(query.functionalGroups, ',', 'functional_group_id');
           }
           break;
@@ -102,7 +102,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return min;
-    }
+    };
 
     $scope.maxCatch = function(groupId) {
       var max = 0;
@@ -116,7 +116,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return max;
-    }
+    };
 
     function joinBy(array, delimiter, property) {
       var s = '';
