@@ -14,7 +14,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //...Fishing countries
       if (query.fishingCountries && query.fishingCountries.length > 0) {
-        queryParams.entities = joinBy(query.fishingCountries, ',', 'id');
+        queryParams.entities = query.fishingCountries.join(',');
       }
 
       //...Year
@@ -26,31 +26,31 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //...Taxa
         case 'taxa':
           if (query.taxa) {
-            queryParams.taxa = joinBy(query.taxa, ',', 'taxon_key');
+            queryParams.taxa = query.taxa.join(',');
           }
           break;
         //...Commercial groups
         case 'commercial groups':
           if (query.commercialGroups) {
-            queryParams.commgroups = joinBy(query.commercialGroups, ',', 'commercial_group_id');
+            queryParams.commgroups = query.commercialGroups.join(',');
           }
           break;
         //...Functional groups
         case 'functional groups':
           if (query.functionalGroups) {
-            queryParams.funcgroups = joinBy(query.functionalGroups, ',', 'functional_group_id');
+            queryParams.funcgroups = query.functionalGroups.join(',');
           }
           break;
       }
 
       //...Reporting statuses
       if (query.reportingStatuses) {
-        queryParams.repstatus = joinBy(query.reportingStatuses, ',', 'id');
+        queryParams.repstatus = query.reportingStatuses.join(',');
       }
 
       //...Catch types
       if (query.catchTypes) {
-        queryParams.catchtypes = joinBy(query.catchTypes, ',', 'id');
+        queryParams.catchtypes = query.catchTypes.join(',');
       }
 
       //...Compare term
@@ -81,53 +81,47 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (!$scope.isQueryComparable($scope.lastQuery)) {
         return null;
       }
-
-      var compareeId = comparee[$scope.lastQuery.comparableType.key];
-      return colorAssignment.colorOf(compareeId);
+      return colorAssignment.colorOf(comparee);
     };
 
     $scope.isQueryValid = function () {
       return $scope.query && $scope.query.fishingCountries && $scope.query.fishingCountries.length > 0;
     };
 
-    $scope.minCatch = function(groupId) {
-      var min = 0;
-
+    $scope.minCatch = function(comparee) {
       if ($scope.spatialCatchData.data) {
         for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          if ($scope.spatialCatchData.data[i].rollup_key === groupId.toString()) {
+          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
             return $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
           }
         }
       }
 
-      return min;
+      return 0;
     };
 
-    $scope.maxCatch = function(groupId) {
-      var max = 0;
-
+    $scope.maxCatch = function (comparee) {
       if ($scope.spatialCatchData.data) {
         for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          if ($scope.spatialCatchData.data[i].rollup_key === groupId.toString()) {
+          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
             return $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
           }
         }
       }
 
-      return max;
+      return 0;
     };
 
-    function joinBy(array, delimiter, property) {
-      var s = '';
+    $scope.getCompareeName = function (comparee) {
+      var array = $scope[$scope.lastQuery.comparableType.field];
       for (var i = 0; i < array.length; i++) {
-        s += array[i][property];
-        if (i < array.length - 1) {
-          s += delimiter;
+        if (''+array[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
+          return array[i][$scope.lastQuery.comparableType.entityName];
         }
       }
-      return s;
-    }
+
+      return 'Catches';
+    };
 
     function drawCellData() {
       $scope.isRendering = true;
@@ -239,9 +233,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         var compareeIds = [];
         var comparees = $scope.getComparees($scope.lastQuery);
         for (var i = 0; i < comparees.length; i++) {
-          var comparee = comparees[i];
-          var compareeId = comparee[$scope.lastQuery.comparableType.key];
-          compareeIds.push(compareeId.toString());
+          compareeIds.push(''+comparees[i]);
         }
         colorAssignment.setData(compareeIds);
       }
@@ -252,31 +244,31 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Fishing countries
       if (search.entities) {
-        $scope.query.fishingCountries = getSubArray(fishingCountries.data, search.entities.split(','), 'id');
+        $scope.query.fishingCountries = search.entities.split(',');
       }
 
       //Taxa, commercial groups, functional groups
       if (search.taxa) {
         $scope.query.catchesBy = 'taxa';
-        $scope.query.taxa = getSubArray(taxa.data, search.taxa.split(','), 'taxon_key');
+        $scope.query.taxa = search.taxa.split(',');
       } else if (search.commgroups) {
         $scope.query.catchesBy = 'commercial groups';
-        $scope.query.commercialGroups = getSubArray(commercialGroups.data, search.commgroups.split(','), 'commercial_group_id');
+        $scope.query.commercialGroups = search.commgroups.split(',');
       } else if (search.funcgroups) {
         $scope.query.catchesBy = 'functional groups';
-        $scope.query.functionalGroups = getSubArray(functionalGroups.data, search.funcgroups.split(','), 'functional_group_id');
+        $scope.query.functionalGroups = search.funcgroups.split(',');
       } else {
         $scope.query.catchesBy = 'taxa';
       }
 
       //Reporting statuses
       if (search.repstatuses) {
-        $scope.query.reportingStatuses = getSubArray(reportingStatuses, search.repstatuses.split(','), 'id');
+        $scope.query.reportingStatuses = search.repstatuses.split(',');
       }
 
       //Catch types
       if (search.catchtypes) {
-        $scope.query.catchTypes = getSubArray(catchTypes, search.catchtypes.split(','), 'id');
+        $scope.query.catchTypes = search.catchtypes.split(',');
       }
 
       //Year
@@ -294,44 +286,42 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function updateUrlFromQuery() {
       //Fishing countries
       if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
-        $location.search('entities', joinBy($scope.query.fishingCountries, ',', 'id'));
+        $location.search('entities', $scope.query.fishingCountries.join(','));
       }
 
+      var searchValue;
       //Taxa, commercial groups, functional groups
       switch ($scope.query.catchesBy) {
         case 'taxa':
-          if ($scope.query.taxa && $scope.query.taxa.length > 0) {
-            $location.search('taxa', joinBy($scope.query.taxa, ',', 'taxon_key'));
-            $location.search('commgroups', null);
-            $location.search('funcgroups', null);
-          }
+          searchValue = ($scope.query.taxa && $scope.query.taxa.length > 0) ? $scope.query.taxa.join(',') : null;
+          $location.search('taxa', searchValue);
+          $location.search('commgroups', null);
+          $location.search('funcgroups', null);
           break;
         case 'commercial groups':
-          if ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 0) {
-            $location.search('taxa', null);
-            $location.search('commgroups', joinBy($scope.query.commercialGroups, ',', 'commercial_group_id'));
-            $location.search('funcgroups', null);
-          }
+          searchValue = ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 0) ? $scope.query.commercialGroups.join(',') : null;
+          $location.search('taxa', null);
+          $location.search('commgroups', searchValue);
+          $location.search('funcgroups', null);
           break;
         case 'functional groups':
-          if ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 0) {
-            $location.search('taxa', null);
-            $location.search('commgroups', null);
-            $location.search('funcgroups', joinBy($scope.query.functionalGroups, ',', 'functional_group_id'));
-          }
+          searchValue = ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 0) ? $scope.query.functionalGroups.join(',') : null;
+          $location.search('taxa', null);
+          $location.search('commgroups', null);
+          $location.search('funcgroups', searchValue);
           break;
       }
 
       //Reporting statuses
       if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
-        $location.search('repstatuses', joinBy($scope.query.reportingStatuses, ',', 'id'));
+        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
       } else {
         $location.search('repstatuses', null);
       }
 
       //Catch types
       if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
-        $location.search('catchtypes', joinBy($scope.query.catchTypes, ',', 'id'));
+        $location.search('catchtypes', $scope.query.catchTypes.join(','));
       } else {
         $location.search('catchtypes', null);
       }
@@ -351,19 +341,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       $location.replace();
-    }
-
-    function getSubArray(array, ids, key) {
-      var results = [];
-      for (var i = 0; i < ids.length; i++) {
-        for (var j = 0; j < array.length; j++) {
-          if (array[j][key].toString() === ids[i].toString()) {
-            results.push(array[j]);
-          }
-        }
-      }
-
-      return results;
     }
 
     //Resolved service responses

@@ -15,7 +15,8 @@ angular
     'ui.grid.selection',
     'ui.select',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'selectize'
   ])
 
   // don't strip trailing slashes from calculated URLs

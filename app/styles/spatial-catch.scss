@@ -29,6 +29,10 @@
 
   	.catches-by-query {
   		background-color: #f1f1f1;
+
+      select {
+        margin-bottom: 5px;
+      }
   	}
   }
 
@@ -46,7 +50,8 @@
 
   .query-select, .form-control {
   	border-color: #979797;
-  	height: 31px;
+  	height: 36px;
+
   	input {
   		margin-left: 9px;
   	}
@@ -137,25 +142,6 @@
       top: -50px;
     }
   }
-
-  /* .tooltip.bottom {
-    opacity: .8;
-    .tooltip-arrow {
-      border-bottom-color: #1879BB;
-      margin-left: -8px;
-      border-width: 0px 11px 18px;
-    }
-
-    .tooltip-inner {
-      background-color: #1879BB;
-      color: #FFFFFF;
-      font-weight: 700;
-      font-size: 18px;
-      padding: 10px 20px;
-      position: relative;
-      top: 10px;
-    }
-  } */
 
   .tooltip.top {
     .tooltip-arrow {

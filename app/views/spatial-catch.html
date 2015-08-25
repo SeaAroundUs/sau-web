@@ -8,14 +8,9 @@
 	<div class="sau-panel">
 		<div id="query-inputs" class="row">
 			<form novalidate>
-				<div class="col-md-4">
+				<div class="col-md-2">
 					<label class="small-label" for="selectFishingCountries">Fishing countries</label>
-					<ui-select id="selectFishingCountries" multiple ng-model="query.fishingCountries" class="query-select" on-remove="queryChanged()" on-select="queryChanged()">
-						<ui-select-match placeholder="Select">{{$item.title}}</ui-select-match>
-						<ui-select-choices repeat="country in fishingCountries | filter: $select.search track by country.id">
-							<span ng-bind-html="country.title | highlight: $select.search"></span>
-						</ui-select-choices>
-					</ui-select>
+					<selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title']}" ></selectize>
 				</div>
 				<div class="col-md-2 catches-by-query">
 					<label class="small-label" for="selectCatchesBy">Catches by</label>
@@ -28,70 +23,44 @@
 				<div class="col-md-2 catches-by-query">
 					<div ng-show="query.catchesBy === 'taxa'">
 						<label class="small-label" for="selectTaxa">Taxon/taxa</label>
-						<ui-select id="selectTaxa" multiple ng-model="query.taxa" class="query-select">
-							<ui-select-match placeholder="Select">{{$item.common_name}}</ui-select-match>
-							<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.taxon_key">
-								<span ng-bind-html="taxon.common_name | highlight: $select.search"></span>
-							</ui-select-choices>
-						</ui-select>
+						<selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name']}" ></selectize>
 					</div>
 					<div ng-show="query.catchesBy === 'commercial groups'">
 						<label class="small-label" for="selectTaxa">Commercial group(s)</label>
-						<ui-select id="selectTaxa" multiple ng-model="query.commercialGroups" class="query-select">
-							<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-							<ui-select-choices repeat="commercialGroup in commercialGroups | filter: $select.search track by commercialGroup.commercial_group_id">
-								<span ng-bind-html="commercialGroup.name | highlight: $select.search"></span>
-							</ui-select-choices>
-						</ui-select>
+						<selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
 					</div>
 					<div ng-show="query.catchesBy === 'functional groups'">
 						<label class="small-label" for="selectTaxa">Functional group(s)</label>
-						<ui-select id="selectTaxa" multiple ng-model="query.functionalGroups" class="query-select">
-							<ui-select-match placeholder="Select">{{$item.description}}</ui-select-match>
-							<ui-select-choices repeat="functionalGroup in functionalGroups | filter: $select.search track by functionalGroup.functional_group_id">
-								<span ng-bind-html="functionalGroup.description | highlight: $select.search"></span>
-							</ui-select-choices>
-						</ui-select>
+						<selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description']}" ></selectize>
 					</div>
 				</div>
 				<div class="col-md-2">
 					<label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
-					<ui-select id="selectReportingStatus" multiple ng-model="query.reportingStatuses" class="query-select">
-						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-						<ui-select-choices repeat="status in reportingStatuses | filter: $select.search track by status.name">
-							<span ng-bind-html="status.name | highlight: $select.search"></span>
-						</ui-select-choices>
-					</ui-select>
+					<selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
 				</div>
 				<div class="col-md-2">
 					<label class="small-label" for="selectCatchType">Catch type(s)</label>
-					<ui-select id="selectCatchType" multiple ng-model="query.catchTypes" class="query-select">
-						<ui-select-match placeholder="Select">{{$item.name}}</ui-select-match>
-						<ui-select-choices repeat="catchType in catchTypes | filter: $select.search track by catchType.name">
-							<span ng-bind-html="catchType.name | highlight: $select.search"></span>
-						</ui-select-choices>
-					</ui-select>
+					<selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
+				</div>
+				<div class="col-md-2">
+					<label for="compareInput" class="small-label">Compare</label>
+					<select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
 				</div>
 			</form>
 		</div>
-		<div class="row">
+		<!-- <div class="row">
 			<div class="col-xs-12">
 				<span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution</span></span>
 			</div>
 		</div>
 		<div class="row" ng-show="showTaxonDistributionBar">
 			<div class="col-md-10">
-				<ui-select id="selectDistributionTaxon" multiple ng-model="query.distributionTaxon" class="query-select">
-					<ui-select-match placeholder="Select taxa">{{$item.common_name}}</ui-select-match>
-					<ui-select-choices repeat="taxon in taxa | filter: $select.search track by taxon.taxon_key">
-						<span ng-bind-html="taxon.common_name | highlight: $select.search"></span>
-					</ui-select-choices>
-				</ui-select>
+				<selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Choose taxa'}" ></selectize>
 			</div>
 			<div class="col-md-2 text-right">
 				<a href="#">Show scientific names</a>
 			</div>
-		</div>
+		</div> -->
 		<div class="timeline">
 			<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
 		</div>
@@ -103,18 +72,10 @@
 				<p>{{loadingText}}</p>
 			</div>
 		</div>
-		<div id="spatial-catch-legend">
-			<div class="row compare-bar">
-				<div class="col-xs-12">
-					<form class="form-inline">
-						<label for="compareInput">Compare</label>
-						<select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
-					</form>
-				</div>
-			</div>
-			<div class="row" ng-if="spatialCatchData.$resolved">
+		<div id="spatial-catch-legend" ng-if="spatialCatchData.$resolved">
+			<div class="row">
 				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees(lastQuery)">
-					<spatial-catch-legend-key key-name="comparee[lastQuery.comparableType.entityName]" color="getColorOfComparee(comparee)" min-label="minCatch(comparee[lastQuery.comparableType.key]) + ' tonnes/km²'" max-label="maxCatch(comparee[lastQuery.comparableType.key]) + ' tonnes/km²'"></spatial-catch-legend-key>
+					<spatial-catch-legend-key key-name="getCompareeName(comparee)" color="getColorOfComparee(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
 				</div>
 				<div class="col-md-3 clearix" ng-if="getComparees(lastQuery).length === 0">
 					<spatial-catch-legend-key key-name="'Catches'" color="defaultColor" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
