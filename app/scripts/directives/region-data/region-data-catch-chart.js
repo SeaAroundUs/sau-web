@@ -41,12 +41,6 @@ angular.module('sauWebApp')
 
       // chart options
       $scope.options = regionDataCatchChartOptions;
-      $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
-      $scope.options.chart.yAxisTickFormat = function(d) {
-        //Make values "in thousands" or "in millions" depending on the measure.
-        var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-        return $filter('significantDigits')(d, magnitude);
-      };
       $scope.options.chart.legend = {
         updateState: false,
           dispatch: {
@@ -70,6 +64,7 @@ angular.module('sauWebApp')
       // update chart when dropdowns or region changes
       $scope.$watch('formModel', getChartData, true);
       $scope.$watch('formModel', updateURL, true);
+      $scope.$watch('formModel', updateYLabel, true);
       $scope.$watch('region', getChartData, true);
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
@@ -115,6 +110,15 @@ angular.module('sauWebApp')
         return $location.search().sciname &&
           $location.search().sciname !== 'false' &&
           parseInt($location.search().sciname) !== 0
+      }
+
+      function updateYLabel() {
+        $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
+        $scope.options.chart.yAxisTickFormat = function(d) {
+          //Make values "in thousands" or "in millions" depending on the measure.
+          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          return $filter('significantDigits')(d, magnitude);
+        };
       }
 
       function updateDataDownloadURL() {
