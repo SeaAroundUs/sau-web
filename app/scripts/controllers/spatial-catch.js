@@ -3,6 +3,8 @@
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
   function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter) {
 
+    var map = null;
+
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
       assignColorsToComparees();
@@ -173,7 +175,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           }
         }
 
-        d3.geo.GridMap.setDataUnsparseTypedArray(cellData);
+        map.setDataUnsparseTypedArray(cellData);
       }, 50).then(function () {
         $scope.isRendering = false;
       });
@@ -446,8 +448,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     d3.json('countries.topojson', function(error, countries) {
-      var map = d3.geo.GridMap;
-      map.init('#cell-map', [720, 360], {
+      map = new d3.geo.GridMap('#cell-map', [720, 360], {
         projection: d3.geo.mollweide(),
         countries: countries,
         landColor: 'rgba(251, 250, 243, 1)',
