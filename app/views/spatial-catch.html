@@ -69,7 +69,10 @@
 		</div>
 		<div id="cell-map">
 			<div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
-				<p>{{loadingText}}</p>
+				<div>
+					<p><i class="fa fa-spinner"></i></p>
+					<p>{{loadingText}}</p>
+				</div>
 			</div>
 		</div>
 		<div id="spatial-catch-legend" ng-if="spatialCatchData.$resolved">
