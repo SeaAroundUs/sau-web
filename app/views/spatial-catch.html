@@ -1,7 +1,7 @@
 <div id="spatial-catch" class="page-controller saustrap">
 	<h1>Spatial catch distribution lorem ipsum</h1>
 	<ul id="side-menu" class="pull-right list-unstyled text-right">
-		<li><a href="#">Method</a></li>
+		<li><method anchor="13"></method></li>
 		<li><a href="#">View Graph</a></li>
 	</ul>
 	<p id="main-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor sodales pretium. Morbi cursus viverra est, eget maximus enim tincidunt quis. Praesent malesuada ex quis nunc semper, non pellentesque ex consectetur.</p>
@@ -10,7 +10,7 @@
 			<form novalidate>
 				<div class="col-md-2">
 					<label class="small-label" for="selectFishingCountries">Fishing countries</label>
-					<selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title']}" ></selectize>
+					<selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}" ></selectize>
 				</div>
 				<div class="col-md-2 catches-by-query">
 					<label class="small-label" for="selectCatchesBy">Catches by</label>
@@ -23,24 +23,24 @@
 				<div class="col-md-2 catches-by-query">
 					<div ng-show="query.catchesBy === 'taxa'">
 						<label class="small-label" for="selectTaxa">Taxon/taxa</label>
-						<selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name']}" ></selectize>
+						<selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name'], plugins: ['remove_button']}" ></selectize>
 					</div>
 					<div ng-show="query.catchesBy === 'commercial groups'">
 						<label class="small-label" for="selectTaxa">Commercial group(s)</label>
-						<selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
+						<selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
 					</div>
 					<div ng-show="query.catchesBy === 'functional groups'">
 						<label class="small-label" for="selectTaxa">Functional group(s)</label>
-						<selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description']}" ></selectize>
+						<selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button']}" ></selectize>
 					</div>
 				</div>
 				<div class="col-md-2">
 					<label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
-					<selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
+					<selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
 				</div>
 				<div class="col-md-2">
 					<label class="small-label" for="selectCatchType">Catch type(s)</label>
-					<selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name']}" ></selectize>
+					<selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
 				</div>
 				<div class="col-md-2">
 					<label for="compareInput" class="small-label">Compare</label>
