@@ -1,5 +1,6 @@
 <div id="spatial-catch" class="page-controller saustrap">
-	<h1>Spatial catch distribution lorem ipsum</h1>
+	<h1 ng-if="lastQuery">{{lastQuerySentence}}</h1>
+	<h1 ng-if="!lastQuery">Global fishing search</h1>
 	<ul id="side-menu" class="pull-right list-unstyled text-right">
 		<li><method anchor="13"></method></li>
 		<li><a href="#">View Graph</a></li>
@@ -64,7 +65,7 @@
 		<div class="timeline">
 			<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
 		</div>
-		<div class="row" ng-show="isQueryValid() && isQueryDirty()">
+		<div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
 			<div class="col-xs-12"><button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button></div>
 		</div>
 		<div id="cell-map">

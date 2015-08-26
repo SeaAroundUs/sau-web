@@ -8,6 +8,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       assignColorsToComparees();
       updateUrlFromQuery();
       $scope.loadingText = 'Downloading cells';
+      $scope.lastQuerySentence = $scope.getQuerySentence(query);
 
       //Form the query...
       var queryParams = {};
@@ -84,8 +85,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return colorAssignment.colorOf(comparee);
     };
 
-    $scope.isQueryValid = function () {
-      return $scope.query && $scope.query.fishingCountries && $scope.query.fishingCountries.length > 0;
+    $scope.isQueryValid = function (query) {
+      return query && query.fishingCountries && query.fishingCountries.length > 0;
     };
 
     $scope.minCatch = function(comparee) {
@@ -121,6 +122,66 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return 'Catches';
+    };
+
+    $scope.getQuerySentence = function (query) {
+      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by [Angola, 2 countries]:
+
+      if (!$scope.isQueryValid(query)) {
+        return '';
+      }
+
+      var sentence = [];
+
+      //Reporting status
+      if (query.reportingStatuses && query.reportingStatuses.length === 1) {
+        var reporingStatusName = getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
+        sentence.push(reporingStatusName);
+      } else {
+        sentence.push('All');
+      }
+
+      //Catch type
+      if (query.catchTypes && query.catchTypes.length === 1) {
+        var catchTypeName = getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
+        sentence.push(catchTypeName.toLowerCase());
+      } else {
+        sentence.push('fishing');
+      }
+
+      //Catches by
+      if (query.catchesBy === 'taxa') {
+        if (query.taxa && query.taxa.length === 1) {
+          var taxaName = getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+          sentence.push('of ' + taxaName.toLowerCase());
+        } else if (query.taxa && query.taxa.length > 1) {
+          sentence.push('of ' + query.taxa.length + ' taxa');
+        }
+      } else if (query.catchesBy === 'commercial groups') {
+        if (query.commercialGroups && query.commercialGroups.length === 1) {
+          var commercialGroupName = getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
+          sentence.push(commercialGroupName.toLowerCase());
+        } else if (query.commercialGroups && query.commercialGroups.length > 1) {
+          sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
+        }
+      } else if (query.catchesBy === 'functional groups') {
+        if (query.functionalGroups && query.functionalGroups.length === 1) {
+          var functionalGroupName = getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
+          sentence.push(functionalGroupName.toLowerCase());
+        } else if (query.functionalGroups && query.functionalGroups.length > 1) {
+          sentence.push('of ' + query.functionalGroups.length + ' functional groups');
+        }
+      }
+
+      //Fishing countries
+      if (query.fishingCountries.length === 1) {
+        var countryName = getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+        sentence.push('by ' + countryName);
+      } else {
+        sentence.push('by ' + query.fishingCountries.length + ' countries');
+      }
+
+      return sentence.join(' ');
     };
 
     function drawCellData() {
@@ -343,6 +404,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $location.replace();
     }
 
+    function getValueFromObjectArray(array, Idkey, IdValue, property) {
+      for (var i = 0; i < array.length; i++) {
+        if (''+array[i][Idkey] === ''+IdValue) {
+          return array[i][property];
+        }
+      }
+      return null;
+    }
+
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
@@ -438,7 +508,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     updateQueryFromUrl();
 
     //Boostrap the initial query if there are query params in the URL when the page loads.
-    if ($scope.isQueryValid()) {
+    if ($scope.isQueryValid($scope.query)) {
       $scope.submitQuery($scope.query);
     }
   });
