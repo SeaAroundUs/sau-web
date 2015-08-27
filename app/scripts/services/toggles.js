@@ -7,7 +7,6 @@ angular.module('sauWebApp')
     var disabledOnStageAndProd = [
       'auth',
       'country-eezs',
-      'fishingEntity',
       'highseas',
       'global',
       'spatial'
