@@ -125,7 +125,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getQuerySentence = function (query) {
-      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by [Angola, 2 countries]:
+      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries]:
 
       if (!$scope.isQueryValid(query)) {
         return '';
@@ -160,14 +160,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       } else if (query.catchesBy === 'commercial groups') {
         if (query.commercialGroups && query.commercialGroups.length === 1) {
           var commercialGroupName = getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
-          sentence.push(commercialGroupName.toLowerCase());
+          sentence.push('of ' + commercialGroupName.toLowerCase());
         } else if (query.commercialGroups && query.commercialGroups.length > 1) {
           sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
         }
       } else if (query.catchesBy === 'functional groups') {
         if (query.functionalGroups && query.functionalGroups.length === 1) {
           var functionalGroupName = getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
-          sentence.push(functionalGroupName.toLowerCase());
+          sentence.push('of ' + functionalGroupName.toLowerCase());
         } else if (query.functionalGroups && query.functionalGroups.length > 1) {
           sentence.push('of ' + query.functionalGroups.length + ' functional groups');
         }
@@ -176,9 +176,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Fishing countries
       if (query.fishingCountries.length === 1) {
         var countryName = getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
-        sentence.push('by ' + countryName);
+        sentence.push('by the fleets of ' + countryName);
       } else {
-        sentence.push('by ' + query.fishingCountries.length + ' countries');
+        sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
       }
 
       return sentence.join(' ');
