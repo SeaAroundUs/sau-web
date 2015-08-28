@@ -126,6 +126,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return 0;
     };
 
+    $scope.totalCatch = function (comparee) {
+      if ($scope.spatialCatchData.data) {
+        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
+          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
+            return $filter('number')(+$scope.spatialCatchData.data[i].total_catch, 0);
+          }
+        }
+      }
+
+      return 0;
+    };
+
     $scope.getCompareeName = function (comparee) {
       var array = $scope[$scope.lastQuery.comparableType.field];
       for (var i = 0; i < array.length; i++) {
