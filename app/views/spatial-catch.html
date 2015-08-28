@@ -3,7 +3,7 @@
 	<h1 ng-if="!lastQuery">Global fishing search</h1>
 	<ul id="side-menu" class="pull-right list-unstyled text-right">
 		<li><method anchor="13"></method></li>
-		<li><a href="#">View Graph</a></li>
+		<li><a href="#">Show scientific names</a></li>
 	</ul>
 	<p id="main-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor sodales pretium. Morbi cursus viverra est, eget maximus enim tincidunt quis. Praesent malesuada ex quis nunc semper, non pellentesque ex consectetur.</p>
 	<div class="sau-panel">
@@ -49,19 +49,16 @@
 				</div>
 			</form>
 		</div>
-		<!-- <div class="row">
+		<div class="row">
 			<div class="col-xs-12">
 				<span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution</span></span>
 			</div>
 		</div>
 		<div class="row" ng-show="showTaxonDistributionBar">
-			<div class="col-md-10">
-				<selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Choose taxa'}" ></selectize>
+			<div class="col-md-12">
+				<selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'common_name', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name'], plugins: ['remove_button']}" ></selectize>
 			</div>
-			<div class="col-md-2 text-right">
-				<a href="#">Show scientific names</a>
-			</div>
-		</div> -->
+		</div>
 		<div class="timeline">
 			<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
 		</div>
@@ -79,10 +76,13 @@
 		<div id="spatial-catch-legend" ng-if="spatialCatchData.$resolved">
 			<div class="row">
 				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees(lastQuery)">
-					<spatial-catch-legend-key key-name="getCompareeName(comparee)" color="getColorOfComparee(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
+					<spatial-catch-legend-key key-name="getCompareeName(comparee)" color="getAssignedColor(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
 				</div>
-				<div class="col-md-3 clearix" ng-if="getComparees(lastQuery).length === 0">
+				<div class="col-md-3 clearfix" ng-if="getComparees(lastQuery).length === 0">
 					<spatial-catch-legend-key key-name="'Catches'" color="defaultColor" min-label="'x tonnes/km²'" max-label="'x tonnes/km²'"></spatial-catch-legend-key>
+				</div>
+				<div class="col-md-3 clearfix" ng-repeat="taxonId in lastQuery.taxonDistribution">
+					<spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'common_name')" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'"></spatial-catch-legend-key>
 				</div>
 			</div>
 		</div>

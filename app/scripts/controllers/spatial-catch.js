@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter) {
+  function ($scope, testData, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -57,8 +57,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //...Compare term
       queryParams.compare = query.comparableType.compareTerm;
 
-      //Make the call
-      $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams, drawCellData);
+      var promises = [];
+
+      //Make the spatial catch call
+      if (query.fishingCountries && query.fishingCountries.length > 0) {
+        $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
+        promises.push($scope.spatialCatchData.$promise);
+      }
+
+      //...Taxon distribution
+      if (query.taxonDistribution && query.taxonDistribution.length > 0) {
+        for (var i = 0; i < query.taxonDistribution.length; i++) {
+          var taxonId = query.taxonDistribution[i];
+          var taxonDistributionPromise = sauAPI.TaxonDistribution.get({id: taxonId});
+          promises.push(taxonDistributionPromise);
+        }
+      }
+
+      $q.all(promises).then(drawCellData);
     };
 
     $scope.isQueryDirty = function() {
@@ -78,10 +94,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return query && query.comparableType && query.comparableType.field;
     };
 
-    $scope.getColorOfComparee = function (comparee) {
-      if (!$scope.isQueryComparable($scope.lastQuery)) {
-        return null;
-      }
+    $scope.getAssignedColor = function (comparee) {
       return colorAssignment.colorOf(comparee);
     };
 
@@ -135,7 +148,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Reporting status
       if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-        var reporingStatusName = getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
+        var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
         sentence.push(reporingStatusName);
       } else {
         sentence.push('All');
@@ -143,7 +156,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Catch type
       if (query.catchTypes && query.catchTypes.length === 1) {
-        var catchTypeName = getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
+        var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
         sentence.push(catchTypeName.toLowerCase());
       } else {
         sentence.push('fishing');
@@ -152,21 +165,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Catches by
       if (query.catchesBy === 'taxa') {
         if (query.taxa && query.taxa.length === 1) {
-          var taxaName = getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+          var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
           sentence.push('of ' + taxaName.toLowerCase());
         } else if (query.taxa && query.taxa.length > 1) {
           sentence.push('of ' + query.taxa.length + ' taxa');
         }
       } else if (query.catchesBy === 'commercial groups') {
         if (query.commercialGroups && query.commercialGroups.length === 1) {
-          var commercialGroupName = getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
+          var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
           sentence.push('of ' + commercialGroupName.toLowerCase());
         } else if (query.commercialGroups && query.commercialGroups.length > 1) {
           sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
         }
       } else if (query.catchesBy === 'functional groups') {
         if (query.functionalGroups && query.functionalGroups.length === 1) {
-          var functionalGroupName = getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
+          var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
           sentence.push('of ' + functionalGroupName.toLowerCase());
         } else if (query.functionalGroups && query.functionalGroups.length > 1) {
           sentence.push('of ' + query.functionalGroups.length + ' functional groups');
@@ -175,7 +188,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Fishing countries
       if (query.fishingCountries.length === 1) {
-        var countryName = getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+        var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
         sentence.push('by the fleets of ' + countryName);
       } else {
         sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
@@ -184,9 +197,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return sentence.join(' ');
     };
 
-    function drawCellData() {
+    $scope.getValueFromObjectArray = function (array, Idkey, IdValue, property) {
+      for (var i = 0; i < array.length; i++) {
+        if (''+array[i][Idkey] === ''+IdValue) {
+          return array[i][property];
+        }
+      }
+      return null;
+    };
+
+    function drawCellData(responses) {
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
+      var i, j, cell, color, whiteness;
       //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
       //put up a loading screen.
       $timeout(function() {
@@ -198,33 +221,37 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
 
+        //Color up the spatial catch data cells
         if (response.data) {
-          for (var i = 0; i < response.data.length; i++) {
+          for (i = 0; i < response.data.length; i++) {
             var cellBlob = response.data[i]; //Grouped cells
-            var color = colorAssignment.getDefaultColor();
+            color = colorAssignment.getDefaultColor();
             if ($scope.isQueryComparable($scope.lastQuery)) {
               color = colorAssignment.colorOf(cellBlob.rollup_key);
             }
-            for (var j = 0; j < cellBlob.data.length; j++) {
+            for (j = 0; j < cellBlob.data.length; j++) {
               var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
-              var pct = (5 - cellSubBlob.threshold) / 5;
+              whiteness = (5 - cellSubBlob.threshold) / 5;
               for (var k = 0; k < cellSubBlob.cells.length; k++) {
-                var cell = cellSubBlob.cells[k];
-                //Don't use a color blend mode for cell's the first color.
-                if (cellData[cell*4 + 3] === 0) {
-                  cellData[cell*4] = lightenChannel(color[0], pct);
-                  cellData[cell*4 + 1] = lightenChannel(color[1], pct);
-                  cellData[cell*4 + 2] = lightenChannel(color[2], pct);
-                  cellData[cell*4 + 3] = 255;
-                //Multiply the colors for layered cells.
-                } else {
-                  cellData[cell*4] = multiplyChannel(lightenChannel(color[0], pct), cellData[cell*4]);
-                  cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], pct), cellData[cell*4 + 1]);
-                  cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], pct), cellData[cell*4 + 2]);
-                  cellData[cell*4 + 3] = 255;
-                }
+                cell = cellSubBlob.cells[k];
+                colorCell(cellData, cell, color, whiteness);
               }
             }
+          }
+        }
+
+        //Color up the taxon distribution cells.
+        var taxonDistResponses = responses.slice(responses[0] === $scope.spatialCatchData ? 1 : 0);
+        for (i = 0; i < taxonDistResponses.length; i++) {
+          var typedArray = new Uint32Array(taxonDistResponses[i].data);
+          var taxonId = $scope.lastQuery.taxonDistribution[i];
+          for (j=0; j < typedArray.length; j++) {
+            var packed = typedArray[j];
+            cell = packed & 0xfffff;
+            var value = packed >>> 24;
+            whiteness = (100 - value) / 100;
+            color = colorAssignment.colorOf('#' + taxonId);
+            colorCell(cellData, cell, color, whiteness);
           }
         }
 
@@ -232,6 +259,22 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }, 50).then(function () {
         $scope.isRendering = false;
       });
+    }
+
+    function colorCell(cellData, cell, color, whiteness) {
+      //Don't use a color blend mode for cell's the first color.
+      if (cellData[cell*4 + 3] === 0) {
+        cellData[cell*4] = lightenChannel(color[0], whiteness);
+        cellData[cell*4 + 1] = lightenChannel(color[1], whiteness);
+        cellData[cell*4 + 2] = lightenChannel(color[2], whiteness);
+        cellData[cell*4 + 3] = 255;
+      //Multiply the colors for layered cells.
+      } else {
+        cellData[cell*4] = multiplyChannel(lightenChannel(color[0], whiteness), cellData[cell*4]);
+        cellData[cell*4 + 1] = multiplyChannel(lightenChannel(color[1], whiteness), cellData[cell*4 + 1]);
+        cellData[cell*4 + 2] = multiplyChannel(lightenChannel(color[2], whiteness), cellData[cell*4 + 2]);
+        cellData[cell*4 + 3] = 255;
+      }
     }
 
     function multiplyChannel(top, bottom) {
@@ -244,15 +287,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function updateComparableTypeList() {
       $scope.comparableTypes = [allComparableTypes[0]];
-
-      //All searchable query dimensions that have multiple selections get added to this list.
-      /*for (var i = 0; i < allComparableTypes.length; i++) {
-        var p = allComparableTypes[i];
-        if (($scope.query[p.field] && $scope.query[p.field].length > 1) ||
-          p.alwaysComparable) {
-          $scope.comparableTypes.push(p);
-        }
-      }*/
 
       switch ($scope.query.catchesBy) {
         case 'taxa':
@@ -290,14 +324,25 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function assignColorsToComparees() {
+      var i;
+      var colorIds = [];
+      //Assign colors to the members of the chosen comparable field.
       if ($scope.isQueryComparable($scope.lastQuery)) {
-        var compareeIds = [];
         var comparees = $scope.getComparees($scope.lastQuery);
-        for (var i = 0; i < comparees.length; i++) {
-          compareeIds.push(''+comparees[i]);
+        for (i = 0; i < comparees.length; i++) {
+          colorIds.push(''+comparees[i]);
         }
-        colorAssignment.setData(compareeIds);
       }
+
+      //Assign colors to the various taxa in the taxon distribution.
+      if ($scope.lastQuery.taxonDistribution) {
+        for (i = 0; i < $scope.lastQuery.taxonDistribution.length; i++) {
+          //Using a hash to avoid ID conflicts between taxon distribution and spatial catch distribution.
+          colorIds.push('#' + $scope.lastQuery.taxonDistribution[i]);
+        }
+      }
+
+      colorAssignment.setData(colorIds);
     }
 
     function updateQueryFromUrl() {
@@ -402,15 +447,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       $location.replace();
-    }
-
-    function getValueFromObjectArray(array, Idkey, IdValue, property) {
-      for (var i = 0; i < array.length; i++) {
-        if (''+array[i][Idkey] === ''+IdValue) {
-          return array[i][property];
-        }
-      }
-      return null;
     }
 
     //Resolved service responses
