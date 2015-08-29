@@ -99,7 +99,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.isQueryValid = function (query) {
-      return query && query.fishingCountries && query.fishingCountries.length > 0;
+      return query && ((query.fishingCountries && query.fishingCountries.length > 0) || (query.taxonDistribution && query.taxonDistribution.length > 0));
     };
 
     $scope.minCatch = function(comparee) {
@@ -150,7 +150,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getQuerySentence = function (query) {
-      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries]:
+      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries] in [year]
 
       if (!$scope.isQueryValid(query)) {
         return '';
@@ -205,6 +205,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       } else {
         sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
       }
+
+      //Year
+      sentence.push('in ' + (query.year || 2010));
 
       return sentence.join(' ');
     };
