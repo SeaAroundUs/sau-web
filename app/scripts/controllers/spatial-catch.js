@@ -402,6 +402,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       } else {
         $scope.query.comparableType = $scope.comparableTypes[0];
       }
+
+      //Taxon distribution
+      if (search.dist) {
+        $scope.query.taxonDistribution = search.dist.split(',');
+      }
     }
 
     function updateUrlFromQuery() {
@@ -459,6 +464,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if ($scope.query.comparableType) {
         var compareTerm = $scope.query.comparableType.compareTerm;
         $location.search('compare', compareTerm === 'entities' ? null : compareTerm); //No need to show the 'compare' query if it's entities, that's the default
+      }
+
+      //Taxon distribution
+      if ($scope.query.taxonDistribution && $scope.query.taxonDistribution.length > 0) {
+        $location.search('dist', $scope.query.taxonDistribution.join(','));
+      } else {
+        $location.search('dist', null);
       }
 
       $location.replace();
