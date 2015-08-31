@@ -476,6 +476,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $location.replace();
     }
 
+    function updateTaxaDisplayName() {
+      for (var i = 0; i < $scope.taxa.length; i++) {
+        $scope.taxa[i].displayName = $scope.useScientificName ? $scope.taxa[i].scientific_name : $scope.taxa[i].common_name;
+      }
+    }
+
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
@@ -484,6 +490,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
+    $scope.useScientificName = false;
 
     $scope.$watch(
       [
@@ -498,6 +505,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
     $scope.$watch('query.reportingStatuses', updateComparableTypeList);
     $scope.$watch('query.catchTypes', updateComparableTypeList);
+    $scope.$watch('useScientificName', updateTaxaDisplayName);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
@@ -513,7 +521,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         name: 'Taxa',
         field: 'taxa',
         key: 'taxon_key',
-        entityName: 'common_name',
+        entityName: 'displayName',
         compareTerm: 'taxa'
       },
       {
