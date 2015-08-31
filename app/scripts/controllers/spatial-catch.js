@@ -9,6 +9,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       updateUrlFromQuery();
       $scope.loadingText = 'Downloading cells';
       $scope.lastQuerySentence = $scope.getQuerySentence(query);
+      $scope.queryResolved = false;
 
       //Form the query...
       var queryParams = {};
@@ -60,6 +61,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var promises = [];
 
       //Make the spatial catch call
+      $scope.spatialCatchData = null;
       if (query.fishingCountries && query.fishingCountries.length > 0) {
         $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
         promises.push($scope.spatialCatchData.$promise);
@@ -94,8 +96,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return query && query.comparableType && query.comparableType.field;
     };
 
-    $scope.getAssignedColor = function (comparee) {
-      return colorAssignment.colorOf(comparee);
+    $scope.getAssignedColor = function (id) {
+      return colorAssignment.colorOf(id);
     };
 
     $scope.isQueryValid = function (query) {
@@ -158,56 +160,68 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       var sentence = [];
 
-      //Reporting status
-      if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-        var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
-        sentence.push(reporingStatusName);
-      } else {
-        sentence.push('All');
-      }
-
-      //Catch type
-      if (query.catchTypes && query.catchTypes.length === 1) {
-        var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
-        sentence.push(catchTypeName.toLowerCase());
-      } else {
-        sentence.push('fishing');
-      }
-
-      //Catches by
-      if (query.catchesBy === 'taxa') {
-        if (query.taxa && query.taxa.length === 1) {
-          var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
-          sentence.push('of ' + taxaName.toLowerCase());
-        } else if (query.taxa && query.taxa.length > 1) {
-          sentence.push('of ' + query.taxa.length + ' taxa');
+      //A query is still valid if there are no fishing countries, if instead there are taxa distribution parameters set.
+      //But then our typical sentence structure doesn't make any sense.
+      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+        sentence.push('Global distribution of ');
+        if (query.taxonDistribution.length === 1) {
+          var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
+          sentence.push(taxonName);
+        } else {
+          sentence.push(query.taxonDistribution.length + ' taxa');
         }
-      } else if (query.catchesBy === 'commercial groups') {
-        if (query.commercialGroups && query.commercialGroups.length === 1) {
-          var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
-          sentence.push('of ' + commercialGroupName.toLowerCase());
-        } else if (query.commercialGroups && query.commercialGroups.length > 1) {
-          sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
-        }
-      } else if (query.catchesBy === 'functional groups') {
-        if (query.functionalGroups && query.functionalGroups.length === 1) {
-          var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
-          sentence.push('of ' + functionalGroupName.toLowerCase());
-        } else if (query.functionalGroups && query.functionalGroups.length > 1) {
-          sentence.push('of ' + query.functionalGroups.length + ' functional groups');
-        }
-      }
-
-      //Fishing countries
-      if (query.fishingCountries.length === 1) {
-        var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
-        sentence.push('by the fleets of ' + countryName);
       } else {
-        sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
-      }
+        //Reporting status
+        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
+          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
+          sentence.push(reporingStatusName);
+        } else {
+          sentence.push('All');
+        }
 
-      //Year
-      sentence.push('in ' + (query.year || 2010));
+        //Catch type
+        if (query.catchTypes && query.catchTypes.length === 1) {
+          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
+          sentence.push(catchTypeName.toLowerCase());
+        } else {
+          sentence.push('fishing');
+        }
+
+        //Catches by
+        if (query.catchesBy === 'taxa') {
+          if (query.taxa && query.taxa.length === 1) {
+            var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+            sentence.push('of ' + taxaName.toLowerCase());
+          } else if (query.taxa && query.taxa.length > 1) {
+            sentence.push('of ' + query.taxa.length + ' taxa');
+          }
+        } else if (query.catchesBy === 'commercial groups') {
+          if (query.commercialGroups && query.commercialGroups.length === 1) {
+            var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
+            sentence.push('of ' + commercialGroupName.toLowerCase());
+          } else if (query.commercialGroups && query.commercialGroups.length > 1) {
+            sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
+          }
+        } else if (query.catchesBy === 'functional groups') {
+          if (query.functionalGroups && query.functionalGroups.length === 1) {
+            var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
+            sentence.push('of ' + functionalGroupName.toLowerCase());
+          } else if (query.functionalGroups && query.functionalGroups.length > 1) {
+            sentence.push('of ' + query.functionalGroups.length + ' functional groups');
+          }
+        }
+
+        //Fishing countries
+        if (query.fishingCountries.length === 1) {
+          var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+          sentence.push('by the fleets of ' + countryName);
+        } else {
+          sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+        }
+
+        //Year
+        sentence.push('in ' + (query.year || 2010));
+      }
 
       return sentence.join(' ');
     };
@@ -222,24 +236,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     function drawCellData(responses) {
+      $scope.queryResolved = true;
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
       var i, j, cell, color, whiteness;
       //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
       //put up a loading screen.
       $timeout(function() {
-        var response = $scope.spatialCatchData;
-
-        if (!response) {
-          return;
-        }
-
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
 
         //Color up the spatial catch data cells
-        if (response.data) {
-          for (i = 0; i < response.data.length; i++) {
-            var cellBlob = response.data[i]; //Grouped cells
+        if ($scope.spatialCatchData === responses[0] && responses[0].data) {
+          var spatialCatchResponse = responses[0].data;
+          for (i = 0; i < spatialCatchResponse.length; i++) {
+            var cellBlob = spatialCatchResponse[i]; //Grouped cells
             color = colorAssignment.getDefaultColor();
             if ($scope.isQueryComparable($scope.lastQuery)) {
               color = colorAssignment.colorOf(cellBlob.rollup_key);
@@ -344,8 +354,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Assign colors to the members of the chosen comparable field.
       if ($scope.isQueryComparable($scope.lastQuery)) {
         var comparees = $scope.getComparees($scope.lastQuery);
-        for (i = 0; i < comparees.length; i++) {
-          colorIds.push(''+comparees[i]);
+        if (comparees) {
+          for (i = 0; i < comparees.length; i++) {
+            colorIds.push(''+comparees[i]);
+          }
         }
       }
 
@@ -413,6 +425,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Fishing countries
       if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
         $location.search('entities', $scope.query.fishingCountries.join(','));
+      } else {
+        $location.search('entities', null);
       }
 
       var searchValue;

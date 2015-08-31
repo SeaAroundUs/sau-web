@@ -13,13 +13,25 @@ angular.module('sauWebApp')
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
+
       },
       controller: function ($scope) {
+        $scope.$watch('color', colorAll);
+
+        function colorAll() {
+          for (var i = 0; i < 5; i++) {
+            $scope.colorMe(i);
+          }
+        }
+
         $scope.colorMe = function(index) {
           var pct = index / 6;
           var color = lightenColor($scope.color, pct);
           var swatch = $scope.legendColorBar.children('.legend-color-swatch')[index];
-          swatch.style.backgroundColor = colorArrayToCss(color);
+          //Swatch will be null if this function gets called befor the DOM is ready.
+          if (swatch) {
+            swatch.style.backgroundColor = colorArrayToCss(color);
+          }
         };
 
         function lightenColor (color, pct) {
