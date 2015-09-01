@@ -280,7 +280,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           }
         }
 
-        map.setDataUnsparseTypedArray(cellData);
+        if (map.layers.length === 1) {
+          map.setData(cellData, {
+            gridSize: [720, 360]
+          });
+        } else {
+          map.layers[map.layers.length - 1].grid.data = cellData;
+          map.draw();
+        }
       }, 50).then(function () {
         $scope.isRendering = false;
       });
@@ -579,14 +586,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     var map;
     d3.json('countries.topojson', function(error, countries) {
-      map = new d3.geo.GridMap('#cell-map', [720, 360], {
-        projection: d3.geo.mollweide(),
-        countries: countries,
-        landColor: 'rgba(251, 250, 243, 1)',
+      map = new d3.geo.GridMap('#cell-map', {
         seaColor: 'rgba(181, 224, 249, 1)',
-        landOutlineColor: 'rgba(0, 0, 0, 0)',
-        graticuleColor: 'rgba(255, 255, 255, 0.3)',
-        geoJsonColor: 'rgba(0, 0, 0, 0)'
+        graticuleColor: 'rgba(255, 255, 255, 0.3)'
+      });
+
+      map.setData(countries, {
+        fillColor: 'rgba(251, 250, 243, 1)',
+        strokeColor: 'rgba(0, 0, 0, 0)'
       });
     });
 
