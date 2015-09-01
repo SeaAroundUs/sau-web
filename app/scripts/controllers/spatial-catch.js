@@ -284,8 +284,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           map.setData(cellData, {
             gridSize: [720, 360]
           });
+          // swap layers to put data underneath land [SAU-1629]
+          var tmp = map.layers[0];
+          map.layers[0] = map.layers[1];
+          map.layers[1] = tmp;
         } else {
-          map.layers[map.layers.length - 1].grid.data = cellData;
+          map.layers[map.layers.length - 2].grid.data = cellData;
           map.draw();
         }
       }, 50).then(function () {
