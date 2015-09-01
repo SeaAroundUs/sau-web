@@ -57,15 +57,16 @@
 				</div>
 			</form>
 		</div>
-		<div class="row">
+		<div class="row" style="margin-top: -24px">
 			<div class="col-xs-12">
 				<hr />
 				<span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span></span></span>
 			</div>
 		</div>
-		<div class="row" ng-show="showTaxonDistributionBar">
+		<div class="row">
 			<div class="col-md-12">
-				<selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize>
+				<div ng-show="showTaxonDistributionBar"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize></div>
+				<hr style="margin-top: 10px" />
 			</div>
 		</div>
 		<div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
