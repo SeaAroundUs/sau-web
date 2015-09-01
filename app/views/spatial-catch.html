@@ -71,7 +71,7 @@
 		<div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
 			<div class="col-xs-12">
 				<hr style="margin-top: 10px; margin-bottom: 4px" />
-				<button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)">Update map</button>
+				<button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
 			</div>
 		</div>
 		<div id="spatial-catch-legend" ng-if="queryResolved">
