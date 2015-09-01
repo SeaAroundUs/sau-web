@@ -29,10 +29,10 @@
 
   	.catches-by-query {
   		background-color: #f1f1f1;
-
-      select {
-        margin-bottom: 5px;
-      }
+      height: 22px;
+      margin-bottom: 6px;
+      padding-left: 7px;
+      min-width: 175px; //This makes the "Catches by" title stretch over the column into the next column, to make it connect with the title to the right of it.
   	}
   }
 
@@ -85,10 +85,7 @@
 
   .timeline {
     height: 78px;
-    border-top: 1px solid #979797;
-    border-bottom: 1px solid #979797;
-    background-color: #E2EAF3;
-    padding: 37px 6%;
+    padding: 43px 26px;
   }
 
   #timeline-slider {
@@ -129,7 +126,7 @@
     }
 
     .slider-track {
-      background-color: #FFFFFF;
+      background-color: #CCCCCC;
       height: 6px;
       background-image: none;
       box-shadow: none;
