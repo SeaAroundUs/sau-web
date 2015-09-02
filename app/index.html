@@ -126,6 +126,11 @@
                 <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
               </li>
             </ul>
+            <ul class="nav nav-pills sub-header">
+              <li role="presentation" ng-repeat="st in subtemplates">
+                <a ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
+              </li>
+            </ul>
 
           </div>
 

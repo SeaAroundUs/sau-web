@@ -40,7 +40,7 @@
       });
 
       $scope.templates = [
-        {'name': 'View data', 'url': '/data/#/', 'class': 'selected'},
+        {'name': 'View data', 'url': '/data/#/eez', 'class': 'selected'},
         {'name': 'Publications', 'url': '/articles/'},
         {'name': 'News & About', 'url': '/about/'},
         {'name': 'Topics', 'url': '/information-by-topic/'},
@@ -49,6 +49,17 @@
         {'name': 'Help', 'url': '/faq/'}
       ];
       $scope.template = $scope.templates[0];
+
+      $scope.subtemplates = [
+        {'name': 'By map', 'url': '/data/#/eez'},
+        {'name': 'Advanced Search', 'url': '/search/'},
+        {'name': 'Spatial Distribution Map', 'url': '/spatial-catch'},
+        {'name': 'Global Fisheries Economics', 'url': '/feru'},
+        {'name': 'Biodiversity', 'url': '/topic/biodiversity'},
+        {'name': 'Mariculture Production', 'url': '/mariculture'},
+        {'name': 'Marine Trophic Index', 'url': '/marine-trophic-index'}
+      ];
+      $scope.subtemplate = $scope.subtemplates[0];
 
       $scope.go = function(url) {
         window.location = url;

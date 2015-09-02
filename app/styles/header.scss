@@ -62,4 +62,35 @@
       }
     }
   }
+
+  .nav.sub-header {
+    background-color: #E8E0D8;
+    height: 44px;
+    text-align: center;
+
+    li {
+      float: none;
+      display: inline-block;
+      height: 100%;
+      a {
+        color: #000;
+        height: 100%;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+        &:hover {
+          background-color: #EAD7B5;
+        }
+
+        &:focus {
+          background-color: #E8E0D8;
+        }
+
+        &.selected {
+          color: #000;
+          background-color: #f3bd4d;
+        }
+      }
+    }
+  }
 }
