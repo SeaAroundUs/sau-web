@@ -88,6 +88,7 @@ angular.module('sauWebApp')
       'fishing-entity': fishingEntityDimensions,
       'country-eezs': defaultDimensions,
       taxa: taxonDimension,
+      fao: defaultDimensions,
       multi: defaultDimensions
     };
   });

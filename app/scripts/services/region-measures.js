@@ -31,6 +31,7 @@ angular.module('sauWebApp')
       'fishing-entity': defaultMeasures,
       'country-eezs': defaultMeasures,
       taxa: taxonMeasures,
+      fao: defaultMeasures,
       multi: defaultMeasures
     };
   });

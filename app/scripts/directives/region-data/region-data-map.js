@@ -48,7 +48,7 @@ angular.module('sauWebApp')
       controller: controller,
       link: function(scope, ele) {
         // don't show on some regions
-        if (['global', 'fishing-entity', 'taxa'].indexOf(scope.region.name) !== -1) {
+        if (['global', 'fishing-entity', 'taxa', 'fao'].indexOf(scope.region.name) !== -1) {
           ele.remove();
 
         // don't show for multiple ids

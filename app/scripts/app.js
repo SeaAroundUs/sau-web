@@ -249,6 +249,17 @@ angular
         });
     }
 
+    // FAO routes
+    if (togglesProvider.$get().isEnabled('fao')) {
+      $routeProvider
+        .when('/fao/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fao';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {

@@ -56,6 +56,9 @@ angular.module('sauWebApp')
           } else if (region.name === 'taxa') {
             chartTitle = formModel.measure.titleLabel + ' ' + data.common_name + ' by ' + dimensionLabel;
 
+          } else if (region.name === 'fao') {
+            chartTitle += 'waters of FAO area ' + data.title + '(' + data.id + ')';
+
           } else {
             chartTitle += 'waters of ' + data.title;
           }
