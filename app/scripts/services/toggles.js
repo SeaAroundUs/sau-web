@@ -9,7 +9,8 @@ angular.module('sauWebApp')
       'country-eezs',
       'highseas',
       'global',
-      'spatial'
+      'spatial',
+      'taxon'
     ];
 
     var disabled = {

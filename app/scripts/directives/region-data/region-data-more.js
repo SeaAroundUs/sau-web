@@ -36,9 +36,15 @@ angular.module('sauWebApp')
           if (scope.region.id) {
             params = { region: scope.region.name, region_id: scope.region.id };
             sauAPI.Region.get(params, function(res) {
+              scope.data = res.data; // expose data to scope for template
+
               scope.moreData = scope.moreData.map(function(section) {
                 if (section.links && section.links.length) {
                   section.links.forEach(function(link) {
+                    if (link.ngText) {
+                      link.text = $interpolate(link.ngText, false, null, true)(res.data);
+                    }
+
                     if (link.ngUrl) {
                       link.url = $interpolate(link.ngUrl, false, null, true)(res.data);
                     }
@@ -107,15 +113,25 @@ angular.module('sauWebApp')
             case 'country-eezs':
               sectionTitle += 'country EEZs';
               break;
+            case 'taxa':
+              sectionTitle += 'taxa';
+              break;
           }
 
           $q.all(scope.region.ids.map(function(id) {
             return sauAPI.Region.get({ region: scope.region.name, region_id: id }).$promise;
           })).then(function(res) {
             var links = res.map(function(region) {
+              // push taxa to scope for template
+              if (scope.region.name === 'taxa') {
+                scope.taxa = scope.taxa || [];
+                scope.taxa.push(region.data);
+              }
+
               return {
-                text: region.data.title,
-                url: '#/' + scope.region.name + '/' + region.data.id
+                text: scope.region.name === 'taxa' ?  region.data.common_name : region.data.title,
+                url: '#/' + scope.region.name + '/' +
+                  (scope.region.name === 'taxa' ? region.data.taxon_key : region.data.id)
               };
             });
 

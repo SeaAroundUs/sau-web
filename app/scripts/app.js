@@ -238,6 +238,17 @@ angular
         });
     }
 
+    // Taxon routes
+    if (togglesProvider.$get().isEnabled('taxon')) {
+      $routeProvider
+        .when('/taxon/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'taxa';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {

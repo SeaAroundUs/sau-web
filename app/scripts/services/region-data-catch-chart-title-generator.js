@@ -24,6 +24,9 @@ angular.module('sauWebApp')
           } else if (region.name === 'rfmo') {
             promiseData = { data: { title: 'selected RFMOs' }};
 
+          } else if (region.name === 'taxa') {
+            promiseData = { data: { common_name: 'selected taxa' }};
+
           } else {
             promiseData = { data: { title: 'selected regions' }};
           }
@@ -49,6 +52,9 @@ angular.module('sauWebApp')
 
           } else if (region.name === 'country-eezs') {
             chartTitle = chartTitle.replace(' in the ', ' in all the EEZ waters of ') + data.title;
+
+          } else if (region.name === 'taxa') {
+            chartTitle = formModel.measure.titleLabel + ' ' + data.common_name + ' by ' + dimensionLabel;
 
           } else {
             chartTitle += 'waters of ' + data.title;

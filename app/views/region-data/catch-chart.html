@@ -22,7 +22,7 @@
               class="form-control" id="measure"></select>
     </div>
 
-    <div class="form-group">
+    <div ng-if="formModel.dimension.showDimensionLimit" class="form-group">
       <label for="limit">Limit</label>
       <select ng-model="formModel.limit"
               ng-options="opt as opt.label for opt in limits"

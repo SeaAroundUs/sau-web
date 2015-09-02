@@ -101,6 +101,14 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
           ]
         }
+      ],
+
+      // Taxa links
+      taxa: [
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/taxon-biodiversity.html'
+        }
       ]
     };
 

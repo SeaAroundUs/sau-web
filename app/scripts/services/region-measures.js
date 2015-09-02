@@ -15,6 +15,11 @@ angular.module('sauWebApp')
       {label: 'Landed value', value: 'value', chartlabel: 'Real 2005 value (million US$)', titleLabel: 'Real 2005 value (US$) by'}
     ];
 
+    var taxonMeasures = [
+      {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Global catches of'},
+      {label: 'Landed value', value: 'value', chartlabel: 'Real 2005 value (million US$)', titleLabel: 'Real 2005 value (US$) of global catches of'}
+    ];
+
     return {
       eez: defaultMeasures,
       lme: defaultMeasures,
@@ -25,6 +30,7 @@ angular.module('sauWebApp')
       fishingCountry: defaultMeasures,
       'fishing-entity': defaultMeasures,
       'country-eezs': defaultMeasures,
+      taxa: taxonMeasures,
       multi: defaultMeasures
     };
   });
