@@ -73,6 +73,7 @@ angular.module('sauWebApp')
     };
 
     var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
     var maricultureDimensions = [taxon, commercialGroup, functionalGroup];
     var fishingEntityDimensions = [taxon, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
     var taxonDimension = [eez, lme, highseas, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
@@ -88,7 +89,7 @@ angular.module('sauWebApp')
       'fishing-entity': fishingEntityDimensions,
       'country-eezs': defaultDimensions,
       taxa: taxonDimension,
-      fao: defaultDimensions,
+      fao: expandedDefaults,
       multi: defaultDimensions
     };
   });

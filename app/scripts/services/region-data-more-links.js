@@ -14,6 +14,7 @@ angular.module('sauWebApp')
 
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
+    importantNotes.fao = importantNotes.global;
 
     var links = {
       // Global links
@@ -108,6 +109,30 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/taxon-biodiversity.html'
+        }
+      ],
+
+      // FAO links
+      fao: [
+        {
+          section: 'Biodiversity',
+          links: [
+            { text: 'Exploited organisms', ngUrl: '#/fao/{{ id }}/exploited-organisms' }
+          ]
+        },
+        {
+          section: 'Governance',
+          links: [
+            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en', target: '_blank' }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/fao/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/fao/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/fao/{{ id }}/marine-trophic-index' }
+          ]
         }
       ]
     };

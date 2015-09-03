@@ -10,7 +10,7 @@ angular.module('sauWebApp')
 
     angular.extend($scope, {
       chart: getChartType(),
-      leftCol: ['global', 'fishing-entity', 'taxa', 'fao'].indexOf(region) === -1 && ids.length === 1,
+      leftCol: ['global', 'fishing-entity', 'taxa'].indexOf(region) === -1 && ids.length === 1,
       region: {
         name: region,
         id: ids.length > 1 ? null : ids[0],
