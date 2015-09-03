@@ -257,6 +257,21 @@ angular
           controller: 'RegionDataCtrl',
           reloadOnSearch: false,
           resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/exploited-organisms', {
+          templateUrl: 'views/exploited-organisms.html',
+          controller: 'ExploitedOrganismsCtrl',
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/marine-trophic-index', {
+          templateUrl: 'views/marine-trophic-index.html',
+          controller: 'MarineTrophicIndexCtrl',
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/stock-status', {
+          templateUrl: 'views/stock-status.html',
+          controller: 'StockStatusCtrl',
+          resolve: {region: function() {return 'fao';}}
         });
     }
 

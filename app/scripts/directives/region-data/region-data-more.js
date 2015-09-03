@@ -116,6 +116,9 @@ angular.module('sauWebApp')
             case 'taxa':
               sectionTitle = 'View taxon page';
               break;
+            case 'fao':
+              sectionTitle += 'FAOs';
+              break;
           }
 
           $q.all(scope.region.ids.map(function(id) {
