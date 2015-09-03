@@ -7,6 +7,7 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: {
         keyName: '=',
+        keyNameSecond: '=',
         color: '=',
         maxLabel: '=',
         minLabel: '='

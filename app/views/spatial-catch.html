@@ -1,6 +1,6 @@
 <div id="spatial-catch" class="page-controller saustrap">
-	<h1 ng-if="lastQuery">{{lastQuerySentence}}</h1>
-	<h1 ng-if="!lastQuery">Global fishing search</h1>
+	<h1 class="main-title" ng-if="lastQuery">{{lastQuerySentence}}</h1>
+	<h1 class="main-title" ng-if="!lastQuery">Global fishing search</h1>
 	<ul id="side-menu" class="pull-right list-unstyled text-right">
 		<li><method anchor="13"></method></li>
 		<li ng-show="!useScientificName"><a href ng-click="useScientificName = !useScientificName">Show scientific names</a></li>
@@ -47,7 +47,7 @@
 						<label class="small-label" for="selectCatchType">Catch type(s)</label>
 						<selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
 					</div>
-					<div class="col-md-2">
+				<div class="col-md-2">
 						<label for="compareInput" class="small-label">Compare</label>
 						<select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
 					</div>
@@ -77,7 +77,7 @@
 		<div id="spatial-catch-legend" ng-if="queryResolved">
 			<div class="row">
 				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees(lastQuery)">
-					<spatial-catch-legend-key key-name="getCompareeName(comparee) + ' (Total: ' + totalCatch(comparee) + ' tonnes)'" color="getAssignedColor(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
+					<spatial-catch-legend-key key-name="getCompareeName(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ' tonnes)'" color="getAssignedColor(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
 				</div>
 				<div class="col-md-3 clearfix" ng-repeat="taxonId in lastQuery.taxonDistribution">
 					<spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'"></spatial-catch-legend-key>
