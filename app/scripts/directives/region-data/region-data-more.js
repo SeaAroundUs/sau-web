@@ -114,7 +114,7 @@ angular.module('sauWebApp')
               sectionTitle += 'country EEZs';
               break;
             case 'taxa':
-              sectionTitle += 'taxa';
+              sectionTitle = 'View taxon page';
               break;
           }
 
@@ -128,11 +128,9 @@ angular.module('sauWebApp')
                 scope.taxa.push(region.data);
               }
 
-              return {
-                text: scope.region.name === 'taxa' ?  region.data.common_name : region.data.title,
-                url: '#/' + scope.region.name + '/' +
-                  (scope.region.name === 'taxa' ? region.data.taxon_key : region.data.id)
-              };
+              return scope.region.name === 'taxa' ?
+                { text: region.data.common_name, url: '#/taxon/' + region.data.taxon_key } :
+                { text: region.data.title, url: '#/' + scope.region.name + '/' + region.data.id };
             });
 
             scope.moreData.unshift({
