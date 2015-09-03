@@ -27,6 +27,9 @@ angular.module('sauWebApp')
           } else if (region.name === 'taxa') {
             promiseData = { data: { common_name: 'selected taxa' }};
 
+          } else if (region.name === 'fao') {
+            promiseData = { data: { title: 'the selected FAO areas' }};
+
           } else {
             promiseData = { data: { title: 'selected regions' }};
           }
@@ -57,8 +60,9 @@ angular.module('sauWebApp')
             chartTitle = formModel.measure.titleLabel + ' ' + data.common_name + ' by ' + dimensionLabel;
 
           } else if (region.name === 'fao') {
-            chartTitle += 'waters of FAO area ' + data.title + '(' + data.id + ')';
-
+            chartTitle += 'waters of ' + (region.id ?
+              'FAO area ' + data.title + ' (' + data.id + ')' :
+              data.title);
           } else {
             chartTitle += 'waters of ' + data.title;
           }
