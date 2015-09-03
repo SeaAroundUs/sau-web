@@ -1,5 +1,6 @@
 #spatial-catch {
   max-width: 1080px;
+  padding-bottom: 30px;
 
   .main-title {
     margin-top: 32px;
@@ -44,7 +45,6 @@
   .small-label {
   	font-size: smaller;
   	font-weight: bold;
-  	padding-bottom: 3px;
 
     .not-bold {
       font-weight: normal !important;
@@ -186,7 +186,6 @@
 
   .legend-measure {
     font-size: smaller;
-    padding-top: 8px;
   }
 
   #cell-map-loading-overlay {
@@ -219,7 +218,7 @@
   #update-map-button {
     max-width: 360px;
     background-color: #0779BE;
-    margin: 28px auto 8px auto;
+    margin: 24px auto 16px auto;
     border: none;
     height: 50px;
     font-size: larger;
@@ -232,5 +231,16 @@
 
   hr {
     border-top-color: #D9D9D9;
+  }
+
+  .legend-column {
+    padding-bottom: 10px;
+    padding-right: 3px;
+  }
+
+  #taxonDistributionInput {
+    .selectize-control {
+      padding-bottom: 10px;
+    }
   }
 }

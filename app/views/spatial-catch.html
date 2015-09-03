@@ -1,96 +1,96 @@
 <div id="spatial-catch" class="page-controller saustrap">
-	<h1 class="main-title" ng-if="lastQuery">{{lastQuerySentence}}</h1>
-	<h1 class="main-title" ng-if="!lastQuery">Global fishing search</h1>
-	<ul id="side-menu" class="pull-right list-unstyled text-right">
-		<li><method anchor="13"></method></li>
-		<li ng-show="!useScientificName"><a href ng-click="useScientificName = !useScientificName">Show scientific names</a></li>
-		<li ng-show="useScientificName"><a href ng-click="useScientificName = !useScientificName">Show common names</a></li>
-	</ul>
-	<p id="main-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor sodales pretium. Morbi cursus viverra est, eget maximus enim tincidunt quis. Praesent malesuada ex quis nunc semper, non pellentesque ex consectetur.</p>
-	<div class="sau-panel">
-		<div id="query-inputs">
-			<form novalidate>
-				<div class="row">
-					<div class="col-md-4">
-						<label class="small-label" for="selectFishingCountries">Fishing countries</label>
-						<selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}" ></selectize>
-					</div>
-					<div class="col-md-2">
-						<div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
-						<select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
-							<option value="taxa">Taxon</option>
-							<option value="commercial groups">Commercial group</option>
-							<option value="functional groups">Functional group</option>
-						</select>
-					</div>
-					<div class="col-md-6">
-						<div ng-show="query.catchesBy === 'taxa'">
-							<div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
-							<selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize>
-						</div>
-						<div ng-show="query.catchesBy === 'commercial groups'">
-							<div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
-							<selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
-						</div>
-						<div ng-show="query.catchesBy === 'functional groups'">
-							<div class="catches-by-query"><label class="small-label" for="selectTaxa">Functional group(s)</label></div>
-							<selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button']}" ></selectize>
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-2">
-						<label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
-						<selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
-					</div>
-					<div class="col-md-2">
-						<label class="small-label" for="selectCatchType">Catch type(s)</label>
-						<selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
-					</div>
-				<div class="col-md-2">
-						<label for="compareInput" class="small-label">Compare</label>
-						<select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
-					</div>
-					<div class="col-md-6 timeline">
-						<spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
-					</div>
-				</div>
-			</form>
-		</div>
-		<div class="row" style="margin-top: -24px">
-			<div class="col-xs-12">
-				<hr />
-				<span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span></span></span>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div ng-show="showTaxonDistributionBar"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize></div>
-			</div>
-		</div>
-		<div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
-			<div class="col-xs-12">
-				<hr style="margin-top: 10px; margin-bottom: 4px" />
-				<button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
-			</div>
-		</div>
-		<div id="spatial-catch-legend" ng-if="queryResolved">
-			<div class="row">
-				<div class="col-md-3 clearfix" ng-repeat="comparee in getComparees(lastQuery)">
-					<spatial-catch-legend-key key-name="getCompareeName(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ' tonnes)'" color="getAssignedColor(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
-				</div>
-				<div class="col-md-3 clearfix" ng-repeat="taxonId in lastQuery.taxonDistribution">
-					<spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'"></spatial-catch-legend-key>
-				</div>
-			</div>
-		</div>
-		<div id="cell-map">
-			<div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
-				<div>
-					<p><i class="fa fa-spinner"></i></p>
-					<p>{{loadingText}}</p>
-				</div>
-			</div>
-		</div>
-	</div>
+  <h1 class="main-title" ng-if="lastQuery">{{lastQuerySentence}}</h1>
+  <h1 class="main-title" ng-if="!lastQuery">Global fishing search</h1>
+  <ul id="side-menu" class="pull-right list-unstyled text-right">
+    <li><method anchor="13"></method></li>
+    <li ng-show="!useScientificName"><a href ng-click="useScientificName = !useScientificName">Show scientific names</a></li>
+    <li ng-show="useScientificName"><a href ng-click="useScientificName = !useScientificName">Show common names</a></li>
+  </ul>
+  <p id="main-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus tempor sodales pretium. Morbi cursus viverra est, eget maximus enim tincidunt quis. Praesent malesuada ex quis nunc semper, non pellentesque ex consectetur.</p>
+  <div class="sau-panel">
+    <div id="query-inputs">
+      <form novalidate>
+        <div class="row">
+          <div class="col-md-4">
+            <label class="small-label" for="selectFishingCountries">Fishing countries</label>
+            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}" ></selectize>
+          </div>
+          <div class="col-md-2">
+            <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
+            <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
+              <option value="taxa">Taxon</option>
+              <option value="commercial groups">Commercial group</option>
+              <option value="functional groups">Functional group</option>
+            </select>
+          </div>
+          <div class="col-md-6">
+            <div ng-show="query.catchesBy === 'taxa'">
+              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
+              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize>
+            </div>
+            <div ng-show="query.catchesBy === 'commercial groups'">
+              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
+              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
+            </div>
+            <div ng-show="query.catchesBy === 'functional groups'">
+              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Functional group(s)</label></div>
+              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button']}" ></selectize>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
+            <selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
+          </div>
+          <div class="col-md-2">
+            <label class="small-label" for="selectCatchType">Catch type(s)</label>
+            <selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
+          </div>
+        <div class="col-md-2">
+            <label for="compareInput" class="small-label">Compare</label>
+            <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
+          </div>
+          <div class="col-md-6 timeline">
+            <spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row" style="margin-top: -24px">
+      <div class="col-xs-12">
+        <hr />
+        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span></span></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize></div>
+      </div>
+    </div>
+    <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
+      <div class="col-xs-12">
+        <hr style="margin-top: 10px; margin-bottom: 4px" />
+        <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
+      </div>
+    </div>
+    <div id="spatial-catch-legend" ng-if="queryResolved">
+      <div class="row">
+        <div class="col-md-3 clearfix legend-column" ng-repeat="comparee in getComparees(lastQuery)">
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ' tonnes)'" color="getAssignedColor(comparee)" min-label="minCatch(comparee) + ' tonnes/km²'" max-label="maxCatch(comparee) + ' tonnes/km²'"></spatial-catch-legend-key>
+        </div>
+        <div class="col-md-3 clearfix legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
+          <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'"></spatial-catch-legend-key>
+        </div>
+      </div>
+    </div>
+    <div id="cell-map">
+      <div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
+        <div>
+          <p><i class="fa fa-spinner"></i></p>
+          <p>{{loadingText}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
