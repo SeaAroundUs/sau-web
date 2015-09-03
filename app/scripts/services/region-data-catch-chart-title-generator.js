@@ -30,6 +30,9 @@ angular.module('sauWebApp')
           } else if (region.name === 'fao') {
             promiseData = { data: { title: 'the selected FAO areas' }};
 
+          } else if (region.name === 'eez-bordering') {
+            promiseData = { data: { title: 'the selected EEZs' }};
+
           } else {
             promiseData = { data: { title: 'selected regions' }};
           }
@@ -60,9 +63,11 @@ angular.module('sauWebApp')
             chartTitle = formModel.measure.titleLabel + ' ' + data.common_name + ' by ' + dimensionLabel;
 
           } else if (region.name === 'fao') {
-            chartTitle += 'waters of ' + (region.id ?
-              'FAO area ' + data.title + ' (' + data.id + ')' :
-              data.title);
+            chartTitle += 'waters of ' + (region.id ? 'FAO area ' + data.title + ' (' + data.id + ')' : data.title);
+
+          } else if (region.name === 'eez-bordering') {
+            chartTitle += 'waters of ' + data.title + ' and bordering EEZs';
+
           } else {
             chartTitle += 'waters of ' + data.title;
           }

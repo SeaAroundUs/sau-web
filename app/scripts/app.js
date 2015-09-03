@@ -275,6 +275,17 @@ angular
         });
     }
 
+    // EEZ Bordering
+    if (togglesProvider.$get().isEnabled('eez-bordering')) {
+      $routeProvider
+        .when('/eez-bordering/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'eez-bordering';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {

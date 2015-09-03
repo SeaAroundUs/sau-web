@@ -11,7 +11,8 @@ angular.module('sauWebApp')
       'global',
       'spatial',
       'taxon',
-      'fao'
+      'fao',
+      'eez-bordering'
     ];
 
     var disabled = {

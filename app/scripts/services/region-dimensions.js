@@ -90,6 +90,7 @@ angular.module('sauWebApp')
       'country-eezs': defaultDimensions,
       taxa: taxonDimension,
       fao: expandedDefaults,
+      'eez-bordering': expandedDefaults,
       multi: defaultDimensions
     };
   });

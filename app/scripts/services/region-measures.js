@@ -32,6 +32,7 @@ angular.module('sauWebApp')
       'country-eezs': defaultMeasures,
       taxa: taxonMeasures,
       fao: defaultMeasures,
+      'eez-bordering': defaultMeasures,
       multi: defaultMeasures
     };
   });

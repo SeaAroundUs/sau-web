@@ -29,6 +29,7 @@ angular.module('sauWebApp')
       'country-eezs': defaultLimits,
       taxa: defaultLimits,
       fao: defaultLimits,
+      'eez-bordering': defaultLimits,
       multi: defaultLimits
     };
   });
