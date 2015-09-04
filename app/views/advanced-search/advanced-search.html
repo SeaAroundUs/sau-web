@@ -16,6 +16,7 @@
 							<!-- <option value="eezAndBorderingEezs">EEZ & bordering EEZs</option> -->
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
+							<option toggle-hide="taxon" value="taxon">Taxa</option>
 						</select>
 					</div>
 				</div>
@@ -43,6 +44,9 @@
 
 			<!-- Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-country.html'" ng-if="section === 'country'"></div>
+
+			<!-- Taxa - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-taxon.html'" ng-if="section === 'taxon'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

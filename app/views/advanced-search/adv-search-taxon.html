@@ -1,0 +1,18 @@
+<div ng-controller="AdvSearchTaxonCtrl">
+	<adv-search-section-title>Taxa</adv-search-section-title>
+
+	<div class="row">
+		<div class="col-sm-6">
+			<sau-multi-select limit="selectionLimit" label-key="title" data="taxaList" search-placeholder="Search taxa" selected="selectedTaxa"></sau-multi-select>
+		</div>
+		<div class="col-sm-6">
+			<sau-selected-options label-key="title" title="Selected taxa ({{selectedTaxa.length}}/{{selectionLimit}})" selected="selectedTaxa"></sau-selected-options>
+		</div>
+	</div>
+
+	<adv-search-dimension-param region-id="'taxa'" selected-dimension="selectedDimension" use-scientific-name="useScientificName"></adv-search-dimension-param>
+
+	<adv-search-measure-param region-id="'taxa'" selected-measure="selectedMeasure"></adv-search-measure-param>
+
+	<adv-search-dimension-limit-param region-id="'taxa'" selected-limit="selectedLimit" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+</div>

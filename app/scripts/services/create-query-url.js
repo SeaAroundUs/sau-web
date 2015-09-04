@@ -10,6 +10,8 @@
 angular.module('sauWebApp')
   .factory('createQueryUrl', function () {
 
+    var newLayoutRegions = ['fishing-entity', 'rfmo', 'global', 'fao', 'eez-bordering', 'taxon'];
+
     return {
       /*
       var exampleConfig = {
@@ -73,7 +75,7 @@ angular.module('sauWebApp')
           ];
 
         //Catch chart for multiple regions for new layouts
-        } else if (['fishing-entity', 'rfmo', 'global'].indexOf(config.regionType) !== -1) {
+        } else if (newLayoutRegions.indexOf(config.regionType) !== -1) {
           strBuilder = [
             '/',
             config.regionType,
