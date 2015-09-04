@@ -60,7 +60,8 @@ angular.module('sauWebApp')
             chartTitle = chartTitle.replace(' in the ', ' in all the EEZ waters of ') + data.title;
 
           } else if (region.name === 'taxa') {
-            chartTitle = formModel.measure.titleLabel + ' ' + data.common_name + ' by ' + dimensionLabel;
+            chartTitle = formModel.measure.titleLabel + ' ' + data.common_name +
+              ' (<i>' + data.scientific_name + '</i>) by ' + dimensionLabel;
 
           } else if (region.name === 'fao') {
             chartTitle += 'waters of ' + (region.id ? 'FAO area ' + data.title + ' (' + data.id + ')' : data.title);

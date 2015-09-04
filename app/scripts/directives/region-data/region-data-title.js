@@ -9,6 +9,6 @@ angular.module('sauWebApp')
       restrict: 'E',
       replace: true,
       scope: {},
-      template: '<h1 ng-bind="title"></h1>'
+      template: '<h1 ng-bind-html="title"></h1>'
     };
   });
