@@ -87,7 +87,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
       regionListTitle: 'EEZs',
       selectedListTitle: 'Selected EEZs',
       searchPlaceholder: 'Search EEZs',
-      selectionLimit: 10
+      selectionLimit: 1
     }
   };
 
