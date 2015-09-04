@@ -12,7 +12,10 @@ angular.module('sauWebApp')
     };
 
     disclaimers.rfmo = disclaimers.global;
+    disclaimers.fao = disclaimers.global;
+    disclaimers.taxa = disclaimers.global;
     disclaimers['fishing-entity'] = disclaimers.global;
+    disclaimers['eez-bordering'] = disclaimers.global;
 
     return {
       getDisclaimer: function(region) {
