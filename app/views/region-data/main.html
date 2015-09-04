@@ -42,7 +42,7 @@
       <region-data-metrics region="region"></region-data-metrics>
     </div>
 
-    <div ng-class="{ leftCol: 'col-md-7', '!leftCol': 'col-md-12' }">
+    <div ng-class="{ 'col-md-7': leftCol, 'col-md-12': !leftCol }">
       <region-data-reconstruction-reference region="region"></region-data-reconstruction-reference>
       <region-data-more region="region"></region-data-more>
     </div>
