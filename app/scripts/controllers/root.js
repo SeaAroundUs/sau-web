@@ -11,13 +11,8 @@
           (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
            location.$$route.controller === 'MarineTrophicIndexSearchCtrl');
 
-        if (location.$$route && location.$$route.controller === 'FERUCtrl') {
-          $scope.templates[0].class = '';
-          $scope.templates[3].class = 'selected';
-        } else {
-          $scope.templates[0].class = 'selected';
-          $scope.templates[3].class = '';
-        }
+        $scope.templates[0].class = 'selected';
+        $scope.templates[3].class = '';
       });
 
       $scope.$on('$routeChangeError', function() {
