@@ -135,6 +135,16 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/fao/{{ id }}/marine-trophic-index' }
           ]
         }
+      ],
+
+      // EEZ Bordering
+      'eez-bordering': [
+        {
+          section: 'EEZs in this group',
+          eachOf: 'eezs',
+          url: '#/eez/{{ id }}',
+          text: '{{ title }}'
+        }
       ]
     };
 

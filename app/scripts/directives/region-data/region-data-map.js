@@ -36,6 +36,17 @@ angular.module('sauWebApp')
             f.addTo(map);
             map.fitBounds(bounds);
             $scope.disabled = false;
+
+          // handle maps with multiple eezs
+          } else if (res.data && res.data.eezs && res.data.eezs[0].geojson) {
+            var group = new L.featureGroup(res.data.eezs.map(function(eez) {
+              var f = L.geoJson(eez.geojson, { style: mapConfig.countryStyle });
+              f.addTo(map);
+              return f;
+            }));
+            map.fitBounds(group.getBounds());
+            $scope.disabled = false;
+
           } else {
             map.setZoom(1);
             $scope.disabled = true;
