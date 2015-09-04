@@ -74,6 +74,13 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
       selectedListTitle: 'Selected RFMOs',
       searchPlaceholder: 'Search RFMOs',
       selectionLimit: 5
+    },
+    fao: {
+      regionType: 'fao',
+      regionListTitle: 'FAOs',
+      selectedListTitle: 'Selected FAOs',
+      searchPlaceholder: 'Search FAOs',
+      selectionLimit: 5
     }
   };
 
