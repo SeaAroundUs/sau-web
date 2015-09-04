@@ -266,6 +266,18 @@ label {
 }
 
 .content-container#country-profile {
+  padding: 40px;
+
+  h2 {
+    font-size: 2em;
+    margin: 0;
+  }
+
+  h4 {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
   span.title {
     font-weight: bolder;
   }
