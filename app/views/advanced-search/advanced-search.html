@@ -14,7 +14,7 @@
 							<option value="lme">LME(s)</option>
 							<option value="rfmo">RFMO(s)</option>
 							<option toggle-hide="fao" value="fao">FAO(s)</option>
-							<!-- <option value="eezAndBorderingEezs">EEZ & bordering EEZs</option> -->
+							<option value="eez-bordering">EEZ & bordering EEZs</option>
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
 							<option toggle-hide="taxon" value="taxon">Taxa</option>
@@ -41,7 +41,7 @@
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fao'"></div>
 
 			<!-- EEZ and Bordering EEZs - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-eez-bordering.html'" ng-if="section === 'eezAndBorderingEezs'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'eez-bordering'"></div>
 
 			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-fishing-country.html'" ng-if="section === 'fishing-entity'"></div>

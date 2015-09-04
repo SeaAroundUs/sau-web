@@ -81,6 +81,13 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
       selectedListTitle: 'Selected FAOs',
       searchPlaceholder: 'Search FAOs',
       selectionLimit: 5
+    },
+    'eez-bordering': {
+      regionType: 'eez',
+      regionListTitle: 'EEZs',
+      selectedListTitle: 'Selected EEZs',
+      searchPlaceholder: 'Search EEZs',
+      selectionLimit: 10
     }
   };
 

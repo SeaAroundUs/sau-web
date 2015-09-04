@@ -119,6 +119,9 @@ angular.module('sauWebApp')
             case 'fao':
               sectionTitle += 'FAOs';
               break;
+            case 'eez-bordering':
+              sectionTitle += 'EEZs';
+              break;
           }
 
           $q.all(scope.region.ids.map(function(id) {
