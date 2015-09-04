@@ -180,6 +180,12 @@
         background-color: white;
       }
     }
+    #managed-species-toggle {
+      // pull this up out of the chart container
+      position: absolute;
+      top: -63px;
+      right: -20px;
+    }
 }
 .nvd3.nv-stackedarea path.nv-area {
     fill-opacity: 1.0;

@@ -7,8 +7,8 @@ angular.module('sauWebApp')
       'reconstructed estimates of unreported data (including major discards), with reference to ' +
       'individual EEZs. Official reported data are <a popover-html="National data are used for some countries.">' +
       'mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) ' +
-      '<a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. For background ' +
-      'information on reconstruction data used, please see the documentation associated with the individual EEZs.',
+      '<a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. ' +
+      '<b>For background information on reconstruction data, download the .pdf below.'
     };
 
     disclaimers.rfmo = disclaimers.global;

@@ -26,6 +26,16 @@
   </div>
 
   <div class="row">
+
+    <div ng-if="region.name === 'rfmo'">
+      <div class="col-md-5">
+        <region-data-short-title region="region"></region-data-short-title>
+      </div>
+      <div class="col-md-7">
+        <h1>References</h1>
+      </div>
+    </div>
+
     <div ng-if="leftCol" class="col-md-5">
       <region-data-map region="region"></region-data-map>
       <region-data-legend region="region"></region-data-legend>

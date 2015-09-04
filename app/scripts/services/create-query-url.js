@@ -38,6 +38,10 @@ angular.module('sauWebApp')
           config.useScientificName
         ];
 
+        if (config.managed_species) {
+          strBuilder.push('&managed_species=All');
+        }
+
         if (config.faoId) {
           strBuilder.push('&fao_id=', config.faoId);
         }

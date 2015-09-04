@@ -1,7 +1,6 @@
 <div id="region-data-more">
-  <h2>More info</h2>
   <p ng-repeat="section in moreData">
-    <span ng-bind-html="trustAsHtml(section.section)" class="section"></span>
+    <span ng-if="section.section" ng-bind-html="trustAsHtml(section.section)" class="section"></span>
     <span ng-if="link.url" ng-repeat="link in section.links" class="link">
       <a ng-href="{{ link.url }}" ng-bind="link.text"></a>
     </span>
