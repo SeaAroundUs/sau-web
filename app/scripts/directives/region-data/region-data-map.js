@@ -31,7 +31,7 @@ angular.module('sauWebApp')
       function updateGeoJSON(res) {
         leafletData.getMap('region-data-minimap').then(function(map) {
           if (res.data && res.data.geojson) {
-            var f = L.geoJson(res.data.geojson, { style: mapConfig.countryStyle });
+            var f = L.geoJson(res.data.geojson, { style: mapConfig.tempCountryStyle });
             var bounds = f.getBounds();
             f.addTo(map);
             map.fitBounds(bounds);
@@ -40,7 +40,7 @@ angular.module('sauWebApp')
           // handle maps with multiple eezs
           } else if (res.data && res.data.eezs && res.data.eezs[0].geojson) {
             var group = new L.featureGroup(res.data.eezs.map(function(eez) {
-              var f = L.geoJson(eez.geojson, { style: mapConfig.countryStyle });
+              var f = L.geoJson(eez.geojson, { style: mapConfig.tempCountryStyle });
               f.addTo(map);
               return f;
             }));
