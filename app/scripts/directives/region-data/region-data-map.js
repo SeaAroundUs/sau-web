@@ -9,7 +9,7 @@ angular.module('sauWebApp')
                               createDisputedAreaPopup, ga) {
 
       var isDisputedAreaPopupOpen = false;
-      var selectedRegions;
+      var selectedRegions = [];
 
       angular.extend($scope, {
         defaults: mapConfig.defaults,
@@ -25,8 +25,18 @@ angular.module('sauWebApp')
         L.esri.basemapLayer('OceansLabels').addTo(map);
       });
 
+
+      /*
+       * watchers
+       */
+
       $scope.$watch('region.name', drawRegions);
       $scope.$watch('region.id', centerMap);
+
+
+      /*
+       * helper functions
+       */
 
       // center map on selected region
       function centerMap(regionId) {
@@ -143,6 +153,8 @@ angular.module('sauWebApp')
 
             $scope.region.id = feature.properties.region_id;
             $scope.region.ids = [$scope.region.id];
+
+            $scope.$parent.$parent.region = $scope.region;
 
             // restyle all layers
             restyleLayers();

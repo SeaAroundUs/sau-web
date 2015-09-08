@@ -70,7 +70,7 @@ angular.module('sauWebApp')
       $scope.$watch('formModel', getChartData, true);
       $scope.$watch('formModel', updateURL, true);
       $scope.$watch('formModel', updateYLabel, true);
-      $scope.$watch('region', getChartData, true);
+      $scope.$watch('region', updateRegion, true);
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
       });
@@ -121,6 +121,16 @@ angular.module('sauWebApp')
       function getManagedSpecies() {
         return $location.search().managed_species &&
           $location.search().managed_species !== 'All';
+      }
+
+      function updateRegion(newRegion, oldRegion) {
+        // update URL for region name/id change
+        if (newRegion.id !== oldRegion.id || newRegion.name !== oldRegion.name) {
+          $location.path('/' + newRegion.name + '/' + newRegion.ids.join(','));
+        }
+
+        // update formModel which sets off other updates
+        $scope.formModel = getFormModel();
       }
 
       function updateYLabel() {
