@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope, $location) {
+    .controller('RootCtrl', function ($scope, $location, toggles) {
 
       $scope.$on('$routeChangeSuccess', function(evt, location) {
         $scope.routeError = false;
@@ -55,6 +55,10 @@
         {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
       ];
       $scope.subtemplate = $scope.subtemplates[0];
+
+      if (!toggles.isEnabled('spatial')) {
+        $scope.subtemplates.splice(2,1);
+      }
 
       $scope.go = function(url) {
         window.location = url;
