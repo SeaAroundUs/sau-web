@@ -77,9 +77,9 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
     },
     fao: {
       regionType: 'fao',
-      regionListTitle: 'FAOs',
-      selectedListTitle: 'Selected FAOs',
-      searchPlaceholder: 'Search FAOs',
+      regionListTitle: 'FAO areas',
+      selectedListTitle: 'Selected FAO areas',
+      searchPlaceholder: 'Search FAO areas',
       selectionLimit: 5
     },
     'eez-bordering': {
