@@ -235,6 +235,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return null;
     };
 
+    $scope.zoomMapIn = function() {
+      map.zoomIn();
+    };
+
+    $scope.zoomMapOut = function() {
+      map.zoomOut();
+    };
+
     function drawCellData(responses) {
       $scope.queryResolved = true;
       $scope.isRendering = true;
@@ -592,7 +600,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: 'rgba(181, 224, 249, 1)',
-        graticuleColor: 'rgba(255, 255, 255, 0.3)'
+        graticuleColor: 'rgba(255, 255, 255, 0.3)',
+        disableMouseZoom: true
       });
 
       map.setData(countries, {
@@ -608,4 +617,3 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.submitQuery($scope.query);
     }
   });
-

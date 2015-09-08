@@ -26,7 +26,7 @@
           <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
-              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize>
+              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null}" ></selectize>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
@@ -60,12 +60,12 @@
     <div class="row" style="margin-top: -24px">
       <div class="col-xs-12">
         <hr />
-        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><i class="fa fa-plus-square expand-collapse-icon" ng-class="{'fa-plus-square': !showTaxonDistributionBar, 'fa-minus-square': showTaxonDistributionBar}"></i><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span></span></span>
+        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span> <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span></span></span>
       </div>
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button']}" ></selectize></div>
+        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null}" ></selectize></div>
       </div>
     </div>
     <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
@@ -85,6 +85,10 @@
       </div>
     </div>
     <div id="cell-map">
+      <div id="zoom-controls">
+        <a href ng-click="zoomMapIn()"><div class="zoom-in-control"></div></a>
+        <a href ng-click="zoomMapOut()"><div class="zoom-out-control"></div></a>
+      </div>
       <div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
         <div>
           <p><i class="fa fa-spinner"></i></p>

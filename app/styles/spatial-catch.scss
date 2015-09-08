@@ -25,7 +25,7 @@
   }
 
   #query-inputs {
-  	padding-top: 20px;
+  	padding-top: 20px;zoom-controls
 
   	.col-md-2, .col-md-4 {
   		padding-left: 8px;
@@ -83,12 +83,24 @@
     .expand-collapse-icon {
       padding-right: 8px;
       font-size: 18px;
+      width: 16px;
+      height: 16px;
+      float: left;
+      margin-right: 5px;
     }
 
     .expand-collapse-label {
       color: #1879BB;
       position: relative;
       bottom: 1px;
+    }
+
+    .expand-icon {
+      background: url(../images/control-caret-right.svg);
+    }
+
+    .collapse-icon {
+      background: url(../images/control-caret-down.svg);
     }
   }
 
@@ -193,7 +205,7 @@
     height: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
-    z-index: 1;
+    z-index: 4;
     color: #000000;
 
     div {
@@ -212,6 +224,30 @@
         top: 320px;
         width: 100%;
       }
+    }
+  }
+
+  #zoom-controls {
+    position: absolute;
+    z-index: 3;
+
+    div {
+      position: relative;
+      top: 20px;
+      left: 20px;
+    }
+
+    .zoom-in-control {
+      background: url(../images/control-plus.svg);
+      width: 24px;
+      height: 24px;
+    }
+
+    .zoom-out-control {
+      margin-top: 2px;
+      background: url(../images/control-minus.svg);
+      width: 24px;
+      height: 24px;
     }
   }
 
