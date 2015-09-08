@@ -27,7 +27,7 @@ angular.module('sauWebApp')
       */
       forRegionCsv: function(config) {
         var strBuilder = [
-          config.regionType,
+          config.regionType === 'taxon' ? 'taxa' : config.regionType,
           '/',
           config.measure,
           '/',

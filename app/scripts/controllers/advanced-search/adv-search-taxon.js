@@ -49,7 +49,6 @@ angular.module('sauWebApp').controller('AdvSearchTaxonCtrl', function ($scope, s
       taxon.title = taxon.scientific_name + ' (' + taxon.common_name + ')';
       return taxon;
     });
-    console.log($scope.taxaList);
   });
   $scope.selectionLimit = 10;
 
