@@ -6,7 +6,7 @@
 			<sau-multi-select limit="sectionConfig[section].selectionLimit" label-key="title" data="regionList.data" search-placeholder="{{sectionConfig[section].searchPlaceholder}}" selected="selectedRegions"></sau-multi-select>
 		</div>
 		<div class="col-sm-6">
-			<sau-selected-options label-key="title" title="{{sectionConfig[section].selectedListTitle}} ({{selectedRegions.length}}/{{sectionConfig[section].selectionLimit}})" selected="selectedRegions"></sau-selected-options>
+			<sau-selected-options limit="sectionConfig[section].selectionLimit" label-key="title" title="{{sectionConfig[section].selectedListTitle}} ({{selectedRegions.length}}/{{sectionConfig[section].selectionLimit}})" selected="selectedRegions"></sau-selected-options>
 		</div>
 	</div>
 

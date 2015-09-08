@@ -7,7 +7,7 @@
 		<div class="panel-body">
 			<ul class="list-unstyled">
 				<li ng-repeat="item in selected">{{item[labelKey]}}</li>
-				<li class="help-text" ng-show="(!selected || selected.length < 2) && multiKey && !hideSelectHint"><strong>Hold {{multiKey}} while clicking</strong> to make multiple selections.</li>
+				<li class="help-text" ng-show="limit > 1 && (!selected || selected.length < 2) && multiKey && !hideSelectHint"><strong>Hold {{multiKey}} while clicking</strong> to make multiple selections.</li>
 			</ul>
 		</div>
 		</div>
