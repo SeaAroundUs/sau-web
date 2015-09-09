@@ -190,7 +190,7 @@ angular.module('sauWebApp')
       // add features layer when loaded, then load IFA and FAO so they get painted on top
       leafletData.getMap('minimap').then(function(map) {
 
-        //Whenever a map popup closes, set unset a flag that indicates such.
+        //Whenever a map popup closes, unset a flag that indicates such.
         map.on('popupclose', function() {
           isDisputedAreaPopupOpen = false;
         });

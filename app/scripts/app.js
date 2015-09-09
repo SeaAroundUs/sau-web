@@ -207,6 +207,12 @@ angular
     // Fishing Entity routes
     if (togglesProvider.$get().isEnabled('fishingEntity')) {
       $routeProvider
+        .when('/fishing-entity', {
+          templateUrl: 'views/map.html',
+          controller: 'MapCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fishing-entity';}}
+        })
         .when('/fishing-entity/:ids', {
           templateUrl: 'views/region-data/main.html',
           controller: 'RegionDataCtrl',
@@ -289,8 +295,10 @@ angular
     // mariculture routes
     $routeProvider
       .when('/mariculture', {
-        templateUrl: 'views/mariculture.html',
-        controller: 'MaricultureCtrl'
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'mariculture';}}
       })
       .when('/mariculture/:id', {
         templateUrl: 'views/region-detail/main.html',

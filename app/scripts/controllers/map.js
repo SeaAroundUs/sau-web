@@ -19,7 +19,8 @@ angular.module('sauWebApp')
                                     region,
                                     spinnerState,
                                     createDisputedAreaPopup,
-                                    ga) {
+                                    ga,
+                                    mainMapRegionConfig) {
 
     $scope.region = {name: region};
 
@@ -31,24 +32,33 @@ angular.module('sauWebApp')
       $scope.map = map;
       L.esri.basemapLayer('Oceans').addTo(map);
       L.esri.basemapLayer('OceansLabels').addTo(map);
+
+      //Whenever a map popup closes, unset a flag that indicates such.
+      map.on('popupclose', function() {
+        isDisputedAreaPopupOpen = false;
+      });
     });
 
-    $scope.dropDownSelect = function(props) {
+    $scope.dropDownSelect = function(value) {
+      var searchOption = getSearchOptionByValue(value);
+      if (!searchOption) {
+        return;
+      }
+
       ga.sendEvent({
         category: 'MainMap DropDown Select',
         action: $scope.region.name.toUpperCase(),
-        label: props.title
+        label: searchOption.label
       });
-      $scope.regionSelect(props.region_id);
+      $scope.regionSelect(searchOption.value);
     };
 
     $scope.regionSelect = function(region_id) {
       $location.path('/' + $scope.region.name + '/' + region_id);
     };
 
-    var geojsonClick = function(latlng) {
-      /* handle clicks on overlapping layers */
-      var layers = leafletPip.pointInLayer(latlng, $scope.map);
+    function onMapFeatureClick (event, feature, layer) {
+      var layers = leafletPip.pointInLayer(event.latlng, $scope.map);
       var featureLayers = layers.filter(function(l) {return l.feature;});
 
       if (featureLayers.length > 1) {
@@ -60,11 +70,10 @@ angular.module('sauWebApp')
           label: '(Disputed)'
         });
 
-        popup.setLatLng(latlng);
+        popup.setLatLng(event.latlng);
         $scope.map.openPopup(popup);
+        isDisputedAreaPopupOpen = true;
       } else {
-        var feature = featureLayers[0].feature;
-
         ga.sendEvent({
           category: 'MainMap Click',
           action: $scope.region.name.toUpperCase(),
@@ -73,38 +82,33 @@ angular.module('sauWebApp')
 
         $scope.regionSelect(feature.properties.region_id);
       }
-    };
+    }
 
-    $scope.handleGeojsonMouseover = function() {
-      $scope.geojsonMouseover = $scope.$on('leafletDirectiveMap.geojsonMouseover', function(ev, feature, leafletEvent) {
-        $rootScope.hoverRegion = feature;
-        var layer = leafletEvent.layer;
-        if (layer) {
-          layer.setStyle(mapConfig.highlightStyle);
-        }
-      });
-    };
-    $scope.handleGeojsonMouseover();
+    function onMapFeatureMouseOver (event, feature, layer) {
+      layer.setStyle(mapConfig.highlightStyle);
+    }
 
-    $scope.handleGeojsonMouseout = function() {
-      $scope.geojsonMouseout = $scope.$on('leafletDirectiveMap.geojsonMouseout', function(ev, feature, leafletEvent) {
-        $rootScope.hoverRegion = {};
-        if (leafletEvent && leafletEvent.target) {
-          leafletEvent.target.setStyle(mapConfig.defaultStyle);
-        }
-        if (feature && feature.target) {
-          feature.target.setStyle(mapConfig.defaultStyle);
-        }
-      });
-    };
-    $scope.handleGeojsonMouseout();
+    function onMapFeatureMouseMove (event, feature, layer) {
+      if (!isDisputedAreaPopupOpen) {
+        new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
+        .setContent(feature.properties.title)
+        .setLatLng(event.latlng)
+        .openOn($scope.map);
+      }
+    }
 
-    $scope.handleGeojsonClick = function() {
-      $scope.geojsonClick = $scope.$on('leafletDirectiveMap.geojsonClick', function(geojsonClickEvent, feature, leafletClickEvent) {
-        geojsonClick(leafletClickEvent.latlng);
-      });
-    };
-    $scope.handleGeojsonClick();
+    function onMapFeatureMouseOut (event, feature, layer) {
+      if (event && event.target) {
+        event.target.setStyle(mapConfig.defaultStyle);
+      }
+      if (feature && feature.target) {
+        feature.target.setStyle(mapConfig.defaultStyle);
+      }
+
+      if (!isDisputedAreaPopupOpen) {
+        $scope.map.closePopup();
+      }
+    }
 
     $scope.maxbounds = leafletBoundsHelpers.createBoundsFromArray([[-89, -200],[89, 200]]);
 
@@ -122,8 +126,9 @@ angular.module('sauWebApp')
 
     $scope.changeRegion = function(region) {
       $scope.region.name = region;
-      $location.path('/' + $scope.region.name, false);
-      $scope.getFeatures();
+      $scope.regionConfig = mainMapRegionConfig.getConfig(region);
+      $location.path($scope.regionConfig.path, false);
+      getFeatures();
       //Close any map "popups" when changing region maps.
       $scope.map.closePopup();
     };
@@ -137,39 +142,59 @@ angular.module('sauWebApp')
       return viewLocation === $location.path();
     };
 
-    $scope.geojson = {};
-
-    $scope.getFeatures = function() {
+    function getFeatures () {
       spinnerState.loading = true;
-      $scope.features = sauAPI.Regions.get({region:$scope.region.name});
+      var regionResource = $scope.regionConfig.requestData();
       var mapPromise = leafletData.getMap('mainmap');
-      var featuresPromise = $scope.features.$promise;
 
-      $q.all([mapPromise, featuresPromise]).then(function(result) {
-        var features = result[1];
+      $q.all([mapPromise, regionResource.$promise]).then(function(result) {
+        var map = result[0];
+        var regionResponse = result[1];
 
-        if ($scope.region.name === 'rfmo') {
-          features.data.features = features.data.features.map(function(feature) {
-            var oldTitle = feature.properties.title;
-            feature.properties.title = feature.properties.long_title + ' (' + oldTitle + ')';
-            return feature;
-          });
-        }
-
-        angular.extend($scope, {
-          geojson: {
-            data: $scope.features.data,
-            style: mapConfig.defaultStyle
+        $scope.geojson = {
+          data: $scope.regionConfig.getGeoJsonData(regionResponse),
+          style: $scope.regionConfig.geoJsonStyle,
+          onEachFeature: function (feature, layer) {
+            layer.on({
+              click: function (event) {
+                onMapFeatureClick(event, feature, layer);
+              },
+              mouseover: function (event) {
+                onMapFeatureMouseOver(event, feature, layer);
+              },
+              mousemove: function (event) {
+                onMapFeatureMouseMove(event, feature, layer);
+              },
+              mouseout: function (event) {
+                onMapFeatureMouseOut (event, feature, layer);
+              }
+            });
           }
-        });
+        };
+
+        $scope.searchOptions = $scope.regionConfig.getSearchOptions(regionResponse);
 
         $timeout(function() {
           spinnerState.loading = false;
-          mapPromise.$$state.value.invalidateSize();
+          map.invalidateSize();
         });
       });
-    };
+    }
 
-    $scope.getFeatures();
+    function getSearchOptionByValue(value) {
+      for (var i = 0; i < $scope.searchOptions.length; i++) {
+        if ($scope.searchOptions[i].value === value) {
+          return $scope.searchOptions[i];
+        }
+      }
+      return null;
+    }
 
+    $scope.searchOptions = [];
+    //$scope.selectedSearchOption;
+    $scope.geojson = {};
+    $scope.regionConfig = mainMapRegionConfig.getConfig($scope.region.name);
+    getFeatures();
+
+    var isDisputedAreaPopupOpen = false;
   });
