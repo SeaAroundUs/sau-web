@@ -57,13 +57,13 @@
         </div>
       </form>
     </div>
-    <div class="row" style="margin-top: -24px">
+    <div class="row" style="margin-top: -24px" toggle-hide="taxon-distribution">
       <div class="col-xs-12">
         <hr />
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div><span class="expand-collapse-label">Global taxon distribution <span ng-show="showTaxonDistributionBar">as of 00/00/0000</span> <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span></span></span>
       </div>
     </div>
-    <div class="row">
+    <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
         <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null}" ></selectize></div>
       </div>
