@@ -67,7 +67,7 @@ angular.module('sauWebApp')
             chartTitle += 'waters of ' + (region.id ? 'FAO area ' + data.title + ' (' + data.id + ')' : data.title);
 
           } else if (region.name === 'eez-bordering') {
-            chartTitle += 'waters of ' + data.title + ' and bordering EEZs';
+            chartTitle += 'waters of ' + data.title + ' and neighboring EEZs';
 
           } else {
             chartTitle += 'waters of ' + data.title;
