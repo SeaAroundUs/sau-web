@@ -13,6 +13,39 @@
 
         $scope.templates[0].class = 'selected';
         $scope.templates[3].class = '';
+
+        if (location.$$route) {
+          clearSubtemplateSelection();
+          switch (location.$$route.controller) {
+            case 'MapCtrl':
+              (location.locals && location.locals.region === 'mariculture') ?
+                $scope.subtemplates[5].class = 'selected' :
+                $scope.subtemplates[0].class = 'selected';
+              break;
+            case 'AdvancedSearchCtrl':
+              $scope.subtemplates[1].class = 'selected';
+              break;
+            case 'SpatialCatchMapCtrl':
+              $scope.subtemplates[2].class = 'selected';
+              break;
+            case 'FERUCtrl':
+              $scope.subtemplates[3].class = 'selected';
+              break;
+            case 'TopicBiodiversityCtrl':
+              $scope.subtemplates[4].class = 'selected';
+              break;
+            case 'MarineTrophicIndexSearchCtrl':
+              $scope.subtemplates[6].class = 'selected';
+              break;
+          }
+        }
+
+        function clearSubtemplateSelection() {
+          $scope.subtemplates = $scope.subtemplates.map(function(st) {
+            st.class = '';
+            return st;
+          });
+        }
       });
 
       $scope.$on('$routeChangeError', function() {
