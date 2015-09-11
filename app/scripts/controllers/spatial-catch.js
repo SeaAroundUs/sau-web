@@ -1,14 +1,16 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
       assignColorsToComparees();
       updateUrlFromQuery();
       $scope.loadingText = 'Downloading cells';
-      $scope.lastQuerySentence = $scope.getQuerySentence(query);
+      $scope.lastQuerySentence = getQuerySentence(query);
+      $scope.catchGraphLinkText = getCatchGraphLinkText(query);
+      $scope.catchGraphLink = getCatchGraphLink(query);
       $scope.queryResolved = false;
 
       //Form the query...
@@ -149,81 +151,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return 'Catches';
-    };
-
-    $scope.getQuerySentence = function (query) {
-      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries] in [year]
-
-      if (!$scope.isQueryValid(query)) {
-        return '';
-      }
-
-      var sentence = [];
-
-      //A query is still valid if there are no fishing countries, if instead there are taxa distribution parameters set.
-      //But then our typical sentence structure doesn't make any sense.
-      if (!query.fishingCountries || query.fishingCountries.length === 0) {
-        sentence.push('Global distribution of ');
-        if (query.taxonDistribution.length === 1) {
-          var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
-          sentence.push(taxonName);
-        } else {
-          sentence.push(query.taxonDistribution.length + ' taxa');
-        }
-      } else {
-        //Reporting status
-        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
-          sentence.push(reporingStatusName);
-        } else {
-          sentence.push('All');
-        }
-
-        //Catch type
-        if (query.catchTypes && query.catchTypes.length === 1) {
-          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
-          sentence.push(catchTypeName.toLowerCase());
-        } else {
-          sentence.push('fishing');
-        }
-
-        //Catches by
-        if (query.catchesBy === 'taxa') {
-          if (query.taxa && query.taxa.length === 1) {
-            var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
-            sentence.push('of ' + taxaName.toLowerCase());
-          } else if (query.taxa && query.taxa.length > 1) {
-            sentence.push('of ' + query.taxa.length + ' taxa');
-          }
-        } else if (query.catchesBy === 'commercial groups') {
-          if (query.commercialGroups && query.commercialGroups.length === 1) {
-            var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
-            sentence.push('of ' + commercialGroupName.toLowerCase());
-          } else if (query.commercialGroups && query.commercialGroups.length > 1) {
-            sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
-          }
-        } else if (query.catchesBy === 'functional groups') {
-          if (query.functionalGroups && query.functionalGroups.length === 1) {
-            var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
-            sentence.push('of ' + functionalGroupName.toLowerCase());
-          } else if (query.functionalGroups && query.functionalGroups.length > 1) {
-            sentence.push('of ' + query.functionalGroups.length + ' functional groups');
-          }
-        }
-
-        //Fishing countries
-        if (query.fishingCountries.length === 1) {
-          var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
-          sentence.push('by the fleets of ' + countryName);
-        } else {
-          sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
-        }
-
-        //Year
-        sentence.push('in ' + (query.year || 2010));
-      }
-
-      return sentence.join(' ');
     };
 
     $scope.getValueFromObjectArray = function (array, Idkey, IdValue, property) {
@@ -513,6 +440,120 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       for (var i = 0; i < $scope.taxa.length; i++) {
         $scope.taxa[i].displayName = $scope.useScientificName ? $scope.taxa[i].scientific_name : $scope.taxa[i].common_name;
       }
+    }
+
+    function getQuerySentence (query) {
+      //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries] in [year]
+
+      if (!$scope.isQueryValid(query)) {
+        return '';
+      }
+
+      var sentence = [];
+
+      //A query is still valid if there are no fishing countries, if instead there are taxa distribution parameters set.
+      //But then our typical sentence structure doesn't make any sense.
+      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+        sentence.push('Global distribution of ');
+        if (query.taxonDistribution.length === 1) {
+          var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
+          sentence.push(taxonName);
+        } else {
+          sentence.push(query.taxonDistribution.length + ' taxa');
+        }
+      } else {
+        //Reporting status
+        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
+          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
+          sentence.push(reporingStatusName);
+        } else {
+          sentence.push('All');
+        }
+
+        //Catch type
+        if (query.catchTypes && query.catchTypes.length === 1) {
+          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
+          sentence.push(catchTypeName.toLowerCase());
+        } else {
+          sentence.push('fishing');
+        }
+
+        //Catches by
+        if (query.catchesBy === 'taxa') {
+          if (query.taxa && query.taxa.length === 1) {
+            var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+            sentence.push('of ' + taxaName.toLowerCase());
+          } else if (query.taxa && query.taxa.length > 1) {
+            sentence.push('of ' + query.taxa.length + ' taxa');
+          }
+        } else if (query.catchesBy === 'commercial groups') {
+          if (query.commercialGroups && query.commercialGroups.length === 1) {
+            var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
+            sentence.push('of ' + commercialGroupName.toLowerCase());
+          } else if (query.commercialGroups && query.commercialGroups.length > 1) {
+            sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
+          }
+        } else if (query.catchesBy === 'functional groups') {
+          if (query.functionalGroups && query.functionalGroups.length === 1) {
+            var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
+            sentence.push('of ' + functionalGroupName.toLowerCase());
+          } else if (query.functionalGroups && query.functionalGroups.length > 1) {
+            sentence.push('of ' + query.functionalGroups.length + ' functional groups');
+          }
+        }
+
+        //Fishing countries
+        if (query.fishingCountries.length === 1) {
+          var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+          sentence.push('by the fleets of ' + countryName);
+        } else {
+          sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+        }
+
+        //Year
+        sentence.push('in ' + (query.year || 2010));
+      }
+
+      return sentence.join(' ');
+    }
+
+    function getCatchGraphLinkText (query) {
+      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+        return null;
+      }
+
+      var text = 'View graph of catches by ' + query.catchesBy + ' by the fleets of ';
+      if (query.fishingCountries.length === 1) {
+        text += $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+      } else {
+        text += 'the selected countries';
+      }
+
+      return text + '.';
+    }
+
+    function getCatchGraphLink (query) {
+      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+        return null;
+      }
+
+      var graphDimension = 'taxon';
+      if (query.catchesBy === 'commercial groups') {
+        graphDimension = 'commercialgroup';
+      } else if (query.catchesBy === 'functional groups') {
+        graphDimension = 'functionalgroup';
+      }
+
+      //Update the variables that configure the search query.
+      var urlConfig = {
+        regionType: 'fishing-entity',
+        measure: 'tonnage',
+        dimension: graphDimension,
+        limit: '10',
+        useScientificName: $scope.useScientificName,
+        regionIds: query.fishingCountries
+      };
+      return '#' + createQueryUrl.forRegionCatchChart(urlConfig);
     }
 
     //Resolved service responses

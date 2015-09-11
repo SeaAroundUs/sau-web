@@ -350,7 +350,7 @@ angular
         resolve: {region: function() {return 'multi';}}
       });
 
-    //Spatial catch routes
+    // Spatial catch routes
     if (togglesProvider.$get().isEnabled('spatial')) {
       $routeProvider
         .when('/spatial-catch', {

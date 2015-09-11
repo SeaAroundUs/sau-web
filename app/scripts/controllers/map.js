@@ -57,7 +57,7 @@ angular.module('sauWebApp')
       $location.path('/' + $scope.region.name + '/' + region_id);
     };
 
-    function onMapFeatureClick (event, feature, layer) {
+    function onMapFeatureClick (event, feature) {
       var layers = leafletPip.pointInLayer(event.latlng, $scope.map);
       var featureLayers = layers.filter(function(l) {return l.feature;});
 
@@ -88,7 +88,7 @@ angular.module('sauWebApp')
       layer.setStyle(mapConfig.highlightStyle);
     }
 
-    function onMapFeatureMouseMove (event, feature, layer) {
+    function onMapFeatureMouseMove (event, feature) {
       if (!isDisputedAreaPopupOpen) {
         new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
         .setContent(feature.properties.title)
@@ -97,7 +97,7 @@ angular.module('sauWebApp')
       }
     }
 
-    function onMapFeatureMouseOut (event, feature, layer) {
+    function onMapFeatureMouseOut (event, feature) {
       if (event && event.target) {
         event.target.setStyle(mapConfig.defaultStyle);
       }
