@@ -98,6 +98,16 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
     nospatial: true
   });
 
+  // SAU-1736
+  if ($scope.sectionConfig[$scope.section].regionType === 'fao') {
+    $scope.regionList.$promise.then(function(res) {
+      res.data = res.data.map(function(fao) {
+        fao.title = fao.title + ' (' + fao.id + ')';
+        return fao;
+      });
+    });
+  }
+
   //Whenever the user changes which regions are selected, we notify that the query has changed.
   $scope.$watch('selectedRegions', $scope.queryChanged);
   $scope.$watch('selectedDimension', $scope.queryChanged);
