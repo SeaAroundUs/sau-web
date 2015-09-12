@@ -18,9 +18,11 @@
           clearSubtemplateSelection();
           switch (location.$$route.controller) {
             case 'MapCtrl':
-              (location.locals && location.locals.region === 'mariculture') ?
-                $scope.subtemplates[5].class = 'selected' :
+              if (location.locals && location.locals.region === 'mariculture') {
+                $scope.subtemplates[5].class = 'selected';
+              } else {
                 $scope.subtemplates[0].class = 'selected';
+              }
               break;
             case 'AdvancedSearchCtrl':
               $scope.subtemplates[1].class = 'selected';
