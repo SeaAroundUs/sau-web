@@ -20,7 +20,7 @@ angular.module('sauWebApp')
     };
   })
 
-  .directive('authStatusButton', function(authService, $modal, $location) {
+  .directive('authStatusButton', function(authService, $modal, $location, toggles) {
     return {
       restrict: 'E',
       templateUrl: 'views/auth/auth-status-button.html',
@@ -50,7 +50,9 @@ angular.module('sauWebApp')
           scope.user = false;
         });
 
-        authService.updateUser();
+        if (toggles.isEnabled('auth')) {
+          authService.updateUser();
+        }
       }
     };
   });
