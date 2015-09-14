@@ -1,6 +1,6 @@
 <div id="region-data">
   <div class="row">
-    <region-data-title class="col-md-10"></region-data-title>
+    <region-data-title class="col-md-10" id="region-title"></region-data-title>
     <div class="col-md-2 text-right">
       <download-button class="download-button"></download-button>
     </div>
@@ -19,9 +19,9 @@
 
   <div class="row col-md-12">
     <region-data-catch-chart
-      region="region" ng-if="chart === 'catch-chart'"></region-data-catch-chart>
+      region="region" faos="faos" ng-if="chart === 'catch-chart'"></region-data-catch-chart>
     <region-data-multinational-footprint
-      region="region" ng-if="chart === 'multinational-footprint'"></region-data-multinational-footprint>
+      region="region" faos="faos" ng-if="chart === 'multinational-footprint'"></region-data-multinational-footprint>
     <region-data-disclaimer region="region"></region-data-disclaimer>
   </div>
 
@@ -37,12 +37,13 @@
     </div>
 
     <div ng-if="leftCol" class="col-md-5">
-      <region-data-map region="region"></region-data-map>
-      <region-data-legend region="region"></region-data-legend>
+      <region-data-map region="region" faos="faos"></region-data-map>
+      <region-data-legend region="region" faos="faos"></region-data-legend>
       <region-data-metrics region="region"></region-data-metrics>
     </div>
 
     <div ng-class="{ 'col-md-7': leftCol, 'col-md-12': !leftCol }">
+      <under-review ng-if="region.name === 'eez'" eez="region.ids"></under-review>
       <region-data-reconstruction-reference region="region"></region-data-reconstruction-reference>
       <region-data-more region="region"></region-data-more>
     </div>

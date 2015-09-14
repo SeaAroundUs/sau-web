@@ -7,7 +7,7 @@ angular.module('sauWebApp')
         $rootScope.$broadcast('updateChartTitle', '');
       },
 
-      updateTitle: function(formModel, region) {
+      updateTitle: function(formModel, region, intersectingFAOs) {
         var faoName, promiseData;
         var dimensionLabel = formModel.dimension.overrideLabel === undefined ?
           formModel.dimension.label :
@@ -73,7 +73,10 @@ angular.module('sauWebApp')
             chartTitle += 'waters of ' + data.title;
           }
 
-          if (region.faoId && (faoName = faos.getFAOName(region.name, region.id, region.faoId))) {
+          if (region.faoId && intersectingFAOs) {
+            faoName = intersectingFAOs.reduce(function(name, fao) {
+              return fao.id === region.faoId ? fao.title : name;
+            }, 'Unknown');
             chartTitle += ' - ' + faoName;
           }
 

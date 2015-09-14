@@ -120,4 +120,26 @@
       }
     }
   }
+
+  #biodiversity .base-links {
+    position: relative;
+    
+    div {
+      display: inline-block;
+      width: 40%;
+
+      h5 {
+        margin: 15px 0 5px;
+        padding-left: 10px;
+      }
+
+      ul {
+        padding-left: 10px;
+
+        li {
+          list-style: none;
+        }
+      }
+    }
+  }
 }

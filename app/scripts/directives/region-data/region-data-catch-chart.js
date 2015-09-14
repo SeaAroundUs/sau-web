@@ -13,6 +13,12 @@ angular.module('sauWebApp')
       $scope.colors = regionDataCatchChartColors;
       $scope.managedSpecies = false;
 
+      // eez declaration
+      $scope.declarationYear = {
+        visible: false,
+        exists: $scope.region.name === 'eez' && $scope.region.id
+      };
+
       // init chart model from URL and defaults
       $scope.formModel = getFormModel();
 
@@ -37,11 +43,6 @@ angular.module('sauWebApp')
 
       $scope.toggleManagedSpecies = function() {
         $scope.formModel.managedSpecies = !$scope.formModel.managedSpecies;
-      };
-
-      // update EEZ declaration year display
-      $scope.updateDeclarationYear = function() {
-        //TODO
       };
 
       // chart options
@@ -70,7 +71,13 @@ angular.module('sauWebApp')
       $scope.$watch('formModel', getChartData, true);
       $scope.$watch('formModel', updateURL, true);
       $scope.$watch('formModel', updateYLabel, true);
-      $scope.$watch('region', updateRegion, true);
+      $scope.$watch('region', function(newRegion, oldRegion) {
+        if (newRegion.id !== oldRegion.id || newRegion.name !== oldRegion.name) {
+          $location.path('/' + newRegion.name + '/' + newRegion.ids.join(','), false);
+        }
+
+        $scope.formModel = getFormModel();
+      }, true);
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
       });
@@ -80,11 +87,55 @@ angular.module('sauWebApp')
       $scope.$watch('options', function(newOptions) {
         $timeout(function() { $scope.api.refresh(newOptions); });
       }, true);
+      $scope.$watch('declarationYear', updateDeclarationYear, true);
 
 
       /*
        * helper functions
        */
+
+      function updateDeclarationYear() {
+        if ($scope.declarationYear.exists) {
+          $scope.declarationYear.visible ? drawDeclarationYear() : hideDeclarationYear();
+        }
+      }
+
+      function hideDeclarationYear() {
+        $scope.declarationYear.visible = false;
+        d3.select('.chart-container svg .nv-stackedarea g#declaration-year').remove();
+      }
+
+      function drawDeclarationYear() {
+        $scope.declarationYear.visible = true;
+        $timeout(function() {
+          sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id }, function(res) {
+            var decYear = Math.max(1950, res.data.declaration_year);
+            var chart = $scope.api.getScope().chart;
+            var container = d3.select('.chart-container svg .nv-stackedarea');
+            container.select('#declaration-year').remove();
+            var x = chart.xAxis.scale()(decYear);
+            var g = container.append('g');
+            g.attr('id', 'declaration-year');
+            g.append('line')
+              .attr({
+                x1: x,
+                y1: 0.0,
+                x2: x,
+                y2: chart.yAxis.scale()(0)
+              })
+              .style('stroke', '#2daf51')
+              .style('stroke-width', '1');
+
+            g.append('text')
+              .attr({
+                fill: '#000',
+                style: 'font-style: italic;',
+                transform: 'translate(' + (x + 15) + ',150) rotate(270,0,0)'
+              })
+              .text('EEZ declaration year: ' + decYear);
+          });
+        });
+      }
 
       function getFormModel() {
         return {
@@ -93,7 +144,8 @@ angular.module('sauWebApp')
           limit: getLimit(),
           region_id: $scope.region.ids,
           useScientificName: getUseScientificName(),
-          managedSpecies: getManagedSpecies()
+          managedSpecies: getManagedSpecies(),
+          fao_id: $scope.region.faoId
         };
       }
 
@@ -121,16 +173,6 @@ angular.module('sauWebApp')
       function getManagedSpecies() {
         return $location.search().managed_species &&
           $location.search().managed_species !== 'All';
-      }
-
-      function updateRegion(newRegion, oldRegion) {
-        // update URL for region name/id change
-        if (newRegion.id !== oldRegion.id || newRegion.name !== oldRegion.name) {
-          $location.path('/' + newRegion.name + '/' + newRegion.ids.join(','));
-        }
-
-        // update formModel which sets off other updates
-        $scope.formModel = getFormModel();
       }
 
       function updateYLabel() {
@@ -246,7 +288,7 @@ angular.module('sauWebApp')
           }
 
           // update EEZ declaration year display
-          $scope.updateDeclarationYear();
+          updateDeclarationYear();
 
           // Raises the ceiling of of the catch chart by 10%.
           // The second parameter (which is null) is for any additional
@@ -255,7 +297,7 @@ angular.module('sauWebApp')
           sauChartUtils.calculateYAxisCeiling($scope, null, 0.1);
 
           // update chart title
-          regionDataCatchChartTitleGenerator.updateTitle($scope.formModel, $scope.region);
+          regionDataCatchChartTitleGenerator.updateTitle($scope.formModel, $scope.region, $scope.faos);
 
           // update download url
           updateDataDownloadURL();
@@ -276,7 +318,7 @@ angular.module('sauWebApp')
       controller: catchChartCtrl,
       replace: true,
       restrict: 'E',
-      scope: { region: '=' },
+      scope: { region: '=', faos: '=' },
       templateUrl: 'views/region-data/catch-chart.html'
     };
   });

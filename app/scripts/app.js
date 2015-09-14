@@ -55,9 +55,9 @@ angular
         controller: 'MapCtrl',
         resolve: {region: function() {return 'eez';}}
       })
-      .when('/eez/:id', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
+      .when('/eez/:ids', {
+        templateUrl: 'views/region-data/main.html',
+        controller: 'RegionDataCtrl',
         reloadOnSearch: false,
         resolve: {region: function() {return 'eez';}}
       })
@@ -102,9 +102,9 @@ angular
         reloadOnSearch: false,
         resolve: {region: function() {return 'lme';}}
       })
-      .when('/lme/:id', {
-        templateUrl: 'views/region-detail/main.html',
-        controller: 'RegionDetailCtrl',
+      .when('/lme/:ids', {
+        templateUrl: 'views/region-data/main.html',
+        controller: 'RegionDataCtrl',
         resolve: {region: function() {return 'lme';}}
       })
       .when('/lme/:id/marine-trophic-index', {

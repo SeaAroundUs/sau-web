@@ -8,17 +8,17 @@ angular.module('sauWebApp')
           return ele.hide();
         }
 
-        scope.legendKeys = insetMapLegendData[scope.region.name];
-        scope.toggles = regionToggles;
+        scope.$watch('region', function() {
+          scope.legendKeys = insetMapLegendData[scope.region.name];
+          scope.toggles = regionToggles.getToggles(scope.region.name);
+        });
 
-        //TODO
-        scope.selectFAO = function(fao) {
-          console.log(fao + ' FAO selected');
+        scope.selectFAO = function(faoId) {
+          scope.region.faoId = faoId;
         }
       },
-      replace: true,
       restrict: 'E',
-      scope: { region: '=' },
+      scope: { region: '=', faos: '=' },
       templateUrl: 'views/region-data/legend.html'
     };
   });
