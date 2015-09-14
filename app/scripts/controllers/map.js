@@ -1,5 +1,7 @@
 'use strict';
 
+// jshint unused:false
+
 /* global leafletPip */
 /* global L */
 

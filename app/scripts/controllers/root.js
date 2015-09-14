@@ -2,6 +2,8 @@
 
   'use strict';
 
+  // jshint expr:true
+
   angular.module('sauWebApp')
     .controller('RootCtrl', function ($scope, $location, toggles) {
 
