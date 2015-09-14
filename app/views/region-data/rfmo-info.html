@@ -2,7 +2,7 @@
   <b>Primary managed taxa:</b>
   <span ng-repeat="taxon in data.primary_taxa">
     {{taxon.common_name}}
-    ({{taxon.scientific_name}}){{$last ? '' : ', '}}
+    <em>({{taxon.scientific_name}})</em>{{$last ? '' : ', '}}
   </span>
 </p>
 
