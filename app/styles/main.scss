@@ -23,7 +23,17 @@
   }
 
   #copyright {
+    span, a {
+      display: inline-block;
+    }
 
+    a {
+      margin-right: 15px;
+    }
+
+    span {
+      margin-right: 30px;
+    }
   }
 
   .separator {

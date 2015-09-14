@@ -72,12 +72,11 @@
       });
 
       $scope.templates = [
-        {'name': 'View data', 'url': '/data/#/eez', 'class': 'selected'},
+        {'name': 'Tools & Data', 'url': '/data/#/eez', 'class': 'selected'},
         {'name': 'Publications', 'url': '/articles/'},
-        {'name': 'News & About', 'url': '/about/'},
-        {'name': 'Topics', 'url': '/information-by-topic/'},
-        {'name': 'Partners & sub-projects', 'url': '/collaborations/'},
-        {'name': 'Contact Us', 'url': '/contact/'},
+        {'name': 'News', 'url': '/about/'},
+        {'name': 'Projects', 'url': '/information-by-topic/'},
+        {'name': 'Partners', 'url': '/collaborations/'},
         {'name': 'Help', 'url': '/faq/'}
       ];
       $scope.template = $scope.templates[0];
