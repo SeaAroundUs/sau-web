@@ -9,4 +9,10 @@
 			width: 140px;
 		}
 	}
+
+	.selectize-input {
+		border-radius: 5px;
+		border-color: #aaaaaa;
+		margin-bottom: -5px; //Fixes a 5px height differential between selectize inputs and normal dropdowns.
+	}
 }

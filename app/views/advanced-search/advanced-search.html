@@ -1,6 +1,6 @@
 <div class="page-controller saustrap" id="advanced-search">
 	<h1>Advanced Search</h1>
-	<p> Use our <strong>advanced search</strong> feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
+	<p> Use our advanced search feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
 	<div class="sau-panel">
 
 		<!-- PAGE HEADER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -17,7 +17,7 @@
 							<option toggle-hide="eez-bordering" value="eez-bordering">EEZ & neighboring EEZs</option>
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
-							<option toggle-hide="taxon" value="taxon">Taxa</option>
+							<option toggle-hide="taxon" value="taxa">Taxa</option>
 						</select>
 					</div>
 				</div>
@@ -44,13 +44,13 @@
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'eez-bordering'"></div>
 
 			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-fishing-country.html'" ng-if="section === 'fishing-entity'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fishing-entity'"></div>
 
 			<!-- Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-country.html'" ng-if="section === 'country'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'country'"></div>
 
 			<!-- Taxa - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-taxon.html'" ng-if="section === 'taxon'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'taxa'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

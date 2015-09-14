@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
-        function ($scope, sauAPI, advSearchService, createQueryUrl) {
+        function ($scope, sauAPI, advSearchService, createQueryUrl, advSearchRegionConfig) {
 
   //Called by the UI components whenever the user changes a parameter of the query.
   $scope.queryChanged = function() {
+
+
+    $scope.selectedRegions = Array.isArray($scope.selectedSearchOptions) ? $scope.selectedSearchOptions : [$scope.selectedSearchOptions];
+
     updateQueryUrls();
     updateSubmitButtons();
   };
@@ -21,18 +25,19 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
     if (!$scope.selectedDimension ||
         !$scope.selectedMeasure ||
         !$scope.selectedLimit ||
+        !$scope.selectedRegions ||
         $scope.selectedRegions.length === 0) {
       return;
     }
 
     //Update the variables that configure the search query.
     var urlConfig = {
-      regionType: $scope.section,
+      regionType: $scope.sectionConfig.graphResultsPath,
       measure: $scope.selectedMeasure.value,
       dimension: $scope.selectedDimension.value,
       limit: $scope.selectedLimit.value,
-      useScientificName: $scope.useScientificName,
-      regionIds: getSelectedRegionIds()
+      useScientificName: false,
+      regionIds: $scope.selectedRegions
     };
 
     //Create the CSV URL.
@@ -42,76 +47,20 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
     advSearchService.state.graphPageUrl = createQueryUrl.forRegionCatchChart(urlConfig);
   }
 
-  //Make an array of all the region IDs from the user's selected list of regions.
-  function getSelectedRegionIds() {
-    var selectedRegionIds = [];
-    for (var i = 0; i < $scope.selectedRegions.length; i++) {
-      selectedRegionIds.push($scope.selectedRegions[i].id);
-    }
-    return selectedRegionIds;
-  }
-
-  //UI stuff that is specific to each advanced search section.
-  //This object allows us to re-use this controller to make it generic for a few advanced search sections.
-  $scope.sectionConfig = {
-    eez: {
-      regionType: 'eez',
-      regionListTitle: 'EEZs',
-      selectedListTitle: 'Selected EEZs',
-      searchPlaceholder: 'Search EEZs',
-      selectionLimit: 10
-    },
-    lme: {
-      regionType: 'lme',
-      regionListTitle: 'LMEs',
-      selectedListTitle: 'Selected LMEs',
-      searchPlaceholder: 'Search LMEs',
-      selectionLimit: 10
-    },
-    rfmo: {
-      regionType: 'rfmo',
-      regionListTitle: 'RFMOs',
-      selectedListTitle: 'Selected RFMOs',
-      searchPlaceholder: 'Search RFMOs',
-      selectionLimit: 5
-    },
-    fao: {
-      regionType: 'fao',
-      regionListTitle: 'FAO areas',
-      selectedListTitle: 'Selected FAO areas',
-      searchPlaceholder: 'Search FAO areas',
-      selectionLimit: 5
-    },
-    'eez-bordering': {
-      regionType: 'eez',
-      regionListTitle: 'EEZs',
-      selectedListTitle: 'Selected EEZs',
-      searchPlaceholder: 'Search EEZs',
-      selectionLimit: 1
-    }
-  };
-
   //These are mostly used to populate the UI components with UI data.
-  $scope.selectedRegions = [];
-  $scope.regionList = sauAPI.Regions.get({
-    region: $scope.sectionConfig[$scope.section].regionType,
-    nospatial: true
+  $scope.sectionConfig = advSearchRegionConfig[$scope.section];
+  $scope.sectionConfig.getRegionData().$promise.then(function (results) {
+    $scope.searchOptions = $scope.sectionConfig.getSearchOptions(results);
   });
 
-  // SAU-1736
-  if ($scope.sectionConfig[$scope.section].regionType === 'fao') {
-    $scope.regionList.$promise.then(function(res) {
-      res.data = res.data.map(function(fao) {
-        fao.title = fao.title + ' (' + fao.id + ')';
-        return fao;
-      });
-    });
-  }
+  //CONFUSING HACK:
+  //$scope.selectedSearchOptions can be an ARRAY OR A STRING. If the selectize component allows for multiple selections, it is an array.
+  //Otherwise, it is a string that contains a single ID.
+  //We use "$scope.selectedRegions" variable instead, that way we can ensure that we're always working with the same data type (an array).
+  //-Eric
+  $scope.selectedSearchOptions = []; //This variable is tied to the view. It can be an array or a string.
+  $scope.selectedRegions = []; //This is the variable we actually use. We update it whenever the above variable changes.
 
-  //Whenever the user changes which regions are selected, we notify that the query has changed.
-  $scope.$watch('selectedRegions', $scope.queryChanged);
-  $scope.$watch('selectedDimension', $scope.queryChanged);
-  $scope.$watch('useScientificName', $scope.queryChanged);
-  $scope.$watch('selectedMeasure', $scope.queryChanged);
-  $scope.$watch('selectedLimit', $scope.queryChanged);
+  //Whenever the user changes a query paramter, we notify that the query has changed.
+  $scope.$watchGroup(['selectedSearchOptions', 'selectedDimension', 'selectedMeasure', 'selectedLimit'], $scope.queryChanged);
 });

@@ -1,18 +1,19 @@
 <div ng-controller="AdvSearchDefaultQueryCtrl">
-	<adv-search-section-title>{{sectionConfig[section].regionListTitle}}</adv-search-section-title>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="form-group">
+        <label class="param-label">{{sectionConfig.regionListTitle}}</label>
+        <selectize ng-model="selectedSearchOptions" options="searchOptions" config="{valueField: 'value', labelField: 'label', placeholder: sectionConfig.searchPlaceholder, sortField: 'label', searchField: ['label'], plugins: ['remove_button'], maxItems: sectionConfig.selectionLimit}"></selectize>
+      </div>
+    </div>
+    <div class="col-sm-6 help-text side-option">
+      <p>{{sectionConfig.selectedListTitle}} ({{selectedRegions.length}}/{{sectionConfig.selectionLimit}})</p>
+    </div>
+  </div>
 
-	<div class="row">
-		<div class="col-sm-6">
-			<sau-multi-select limit="sectionConfig[section].selectionLimit" label-key="title" data="regionList.data" search-placeholder="{{sectionConfig[section].searchPlaceholder}}" selected="selectedRegions"></sau-multi-select>
-		</div>
-		<div class="col-sm-6">
-			<sau-selected-options limit="sectionConfig[section].selectionLimit" label-key="title" title="{{sectionConfig[section].selectedListTitle}} ({{selectedRegions.length}}/{{sectionConfig[section].selectionLimit}})" selected="selectedRegions"></sau-selected-options>
-		</div>
-	</div>
+  <adv-search-dimension-param region-id="section" selected-dimension="selectedDimension"></adv-search-dimension-param>
 
-	<adv-search-dimension-param region-id="sectionConfig[section].regionType" selected-dimension="selectedDimension" use-scientific-name="useScientificName"></adv-search-dimension-param>
+  <adv-search-measure-param region-id="section" selected-measure="selectedMeasure"></adv-search-measure-param>
 
-	<adv-search-measure-param region-id="sectionConfig[section].regionType" selected-measure="selectedMeasure"></adv-search-measure-param>
-
-	<adv-search-dimension-limit-param region-id="sectionConfig[section].regionType" selected-limit="selectedLimit" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
+  <adv-search-dimension-limit-param region-id="section" selected-limit="selectedLimit" ng-show="selectedDimension.showDimensionLimit"></adv-search-dimension-limit-param>
 </div>
