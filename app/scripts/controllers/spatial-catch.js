@@ -107,39 +107,52 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.minCatch = function(comparee) {
+      var val = 0;
       if ($scope.spatialCatchData.data) {
         for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
           if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            return $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
+            val = $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
+            break;
           }
         }
       }
 
-      return 0;
+      var strVal = ''+val;
+      if (val < 1) {
+        strVal = '< 1';
+      }
+      var units = 't/km²';
+      return strVal + ' ' + units;
     };
 
     $scope.maxCatch = function (comparee) {
+      var val = 0;
       if ($scope.spatialCatchData.data) {
         for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
           if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            return $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
+            val = $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
+            break;
           }
         }
       }
 
-      return 0;
+      var units = 't/km²';
+      return val + ' ' + units;
     };
 
     $scope.totalCatch = function (comparee) {
+      var val = 0;
       if ($scope.spatialCatchData.data) {
         for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
           if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            return $filter('number')(+$scope.spatialCatchData.data[i].total_catch, 0);
+            val = $filter('number')(+$scope.spatialCatchData.data[i].total_catch, 0);
+            break;
           }
         }
       }
 
-      return 0;
+      var units = 'x 10³ t';
+      return val + ' ' + units;
     };
 
     $scope.getCompareeName = function (comparee) {
