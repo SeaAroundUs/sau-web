@@ -11,8 +11,8 @@ angular.module('sauWebApp')
       'global',
       'spatial',
       'taxon',
-      'fao',
       'eez-bordering',
+      'fao',
       'taxon-distribution'
     ];
 

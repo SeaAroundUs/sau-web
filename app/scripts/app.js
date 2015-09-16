@@ -258,6 +258,12 @@ angular
     // FAO routes
     if (togglesProvider.$get().isEnabled('fao')) {
       $routeProvider
+        .when('/fao', {
+          templateUrl: 'views/map.html',
+          controller: 'MapCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fao';}}
+        })
         .when('/fao/:ids', {
           templateUrl: 'views/region-data/main.html',
           controller: 'RegionDataCtrl',

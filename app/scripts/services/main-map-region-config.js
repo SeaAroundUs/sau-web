@@ -60,6 +60,18 @@ angular.module('sauWebApp')
       getSearchOptions: geoJsonResponseToSearchOptions
     };
 
+    var faoConfig = {
+      path: '/fao',
+      requestData: function() {
+        return sauAPI.Regions.get({region: 'fao'});
+      },
+      getGeoJsonData: function (apiResponse) {
+        return apiResponse.data;
+      },
+      geoJsonStyle: mapConfig.defaultStyle,
+      getSearchOptions: geoJsonResponseToSearchOptions
+    };
+
     var fishingCountryConfig = {
       path: '/fishing-entity',
       requestData: function() {
@@ -100,6 +112,7 @@ angular.module('sauWebApp')
       'lme': lmeConfig,
       'rfmo': rfmoConfig,
       'mariculture': maricultureConfig,
+      'fao': faoConfig,
       'fishing-entity': fishingCountryConfig
     };
   });
