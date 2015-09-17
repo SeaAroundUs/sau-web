@@ -82,9 +82,9 @@
       $scope.template = $scope.templates[0];
 
       $scope.subtemplates = [
-        {'name': 'By map', 'url': '#/eez'},
+        {'name': 'By Map', 'url': '#/eez'},
         {'name': 'Advanced Search', 'url': '#/search/'},
-        {'name': 'Spatial Distribution Map', 'url': '#/spatial-catch'},
+        {'name': 'Mapped Catch', 'url': '#/spatial-catch'},
         {'name': 'Global Fisheries Economics', 'url': '#/feru'},
         {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
         {'name': 'Mariculture Production', 'url': '#/mariculture'},
