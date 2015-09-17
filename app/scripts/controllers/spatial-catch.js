@@ -136,8 +136,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       }
 
+      var strVal = ''+val;
+      if (val < 1) {
+        strVal = '< 1';
+      }
       var units = 't/km²';
-      return val + ' ' + units;
+      return strVal + ' ' + units;
     };
 
     $scope.totalCatch = function (comparee) {
