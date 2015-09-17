@@ -10,7 +10,6 @@ angular.module('sauWebApp')
       'highseas',
       'global',
       'spatial',
-      'taxon',
       'eez-bordering',
       'fao',
       'taxon-distribution'
