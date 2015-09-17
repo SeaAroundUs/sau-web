@@ -69,7 +69,16 @@ angular.module('sauWebApp')
         return apiResponse.data;
       },
       geoJsonStyle: mapConfig.defaultStyle,
-      getSearchOptions: geoJsonResponseToSearchOptions
+      getSearchOptions: function (apiResponse) {
+        var searchOptions = [];
+
+        for (var i = 0;i < apiResponse.data.features.length; i++) {
+          var fao = apiResponse.data.features[i];
+          searchOptions.push({value: ''+fao.properties.region_id, label: fao.properties.title + ' (' + fao.properties.region_id + ')'});
+        }
+
+        return searchOptions;
+      }
     };
 
     var fishingCountryConfig = {
