@@ -174,22 +174,33 @@ angular.module('sauWebApp')
           $q.all(scope.region.ids.map(function(id) {
             return sauAPI.Region.get({ region: scope.region.name, region_id: id }).$promise;
           })).then(function(res) {
+            var anyUnderReview = false;
             var links = res.map(function(region) {
+              var link;
+
               // push taxa to scope for template
               if (scope.region.name === 'taxa') {
                 scope.taxa = scope.taxa || [];
                 scope.taxa.push(region.data);
               }
 
-              return scope.region.name === 'taxa' ?
+              link = scope.region.name === 'taxa' ?
                 { text: region.data.common_name, url: '#/taxon/' + region.data.taxon_key } :
                 { text: region.data.title, url: '#/' + scope.region.name + '/' + region.data.id };
+
+              if (underReviewList.isUnderReview({ name: scope.region.name, ids: [region.data.id] })) {
+                link.underReview = true;
+                anyUnderReview = true;
+              }
+
+              return link;
             });
 
             scope.moreData.unshift({
               section: sectionTitle,
               class: 'vertical',
-              links: links
+              links: links,
+              underReview: anyUnderReview
             });
           });
         }

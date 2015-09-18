@@ -43,7 +43,7 @@
     </div>
 
     <div ng-class="{ 'col-md-7': leftCol, 'col-md-12': !leftCol }">
-      <under-review ng-if="region.name === 'eez'" eez="region.ids"></under-review>
+      <under-review ng-if="region.name === 'eez' && region.id" eez="region.id"></under-review>
       <region-data-reconstruction-reference region="region"></region-data-reconstruction-reference>
       <region-data-more region="region"></region-data-more>
     </div>
