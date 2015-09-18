@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, $q, regionDataMoreLinks, sauAPI) {
+  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, $q,
+                                        regionDataMoreLinks, sauAPI, underReviewList) {
     return {
       link: function(scope, ele) {
         var params;
@@ -30,6 +31,8 @@ angular.module('sauWebApp')
         });
 
         function updateScope() {
+          var anyUnderReview;
+
           scope.moreData = angular.copy(regionDataMoreLinks.getLinks(scope.region));
 
           // handle url interpolation with single region data
@@ -51,13 +54,28 @@ angular.module('sauWebApp')
                   });
 
                 } else if (section.eachOf) {
+                  anyUnderReview = false;
+
                   section.links = res.data[section.eachOf].reduce(function(links, item) {
+                    var underReview = false;
+                    var regionName = ['eez', 'eez-bordering', 'country-eezs'].indexOf(scope.region.name) ?
+                      'eez' :
+                      scope.region.name;
+
+                    if (underReviewList.isUnderReview({ name: regionName, ids: [item.id] })) {
+                      underReview = true;
+                      anyUnderReview = true;
+                    }
+
                     links.push({
                       text: $interpolate(section.text, false, null, true)(item),
-                      url: $interpolate(section.url, false, null, true)(item)
+                      url: $interpolate(section.url, false, null, true)(item),
+                      underReview: underReview
                     });
+
                     return links;
                   }, []);
+                  section.underReview = anyUnderReview;
                 }
 
                 return section;

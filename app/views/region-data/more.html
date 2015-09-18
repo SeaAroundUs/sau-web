@@ -2,8 +2,9 @@
   <p ng-repeat="section in moreData" ng-class="section.class">
     <span ng-if="section.section" ng-bind-html="trustAsHtml(section.section)" class="section"></span>
     <span ng-if="link.url" ng-repeat="link in section.links" class="link">
-      <a ng-href="{{ link.url }}" ng-bind="link.text"></a>
+      <a ng-href="{{ link.url }}" ng-class="{ 'under-review': link.underReview }" ng-bind="link.text"></a>
     </span>
+    <span ng-if="section.underReview" class="under-review-label"><span>*</span> Data under review</span>
     <span ng-if="section.template" ng-include="section.template"></span>
   </p>
 </div>

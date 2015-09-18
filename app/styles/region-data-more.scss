@@ -20,8 +20,20 @@
     }
   }
 
+  span.under-review-label {
+    font-style: italic;
+
+    span {
+      color: #2a6496;
+    }
+  }
+
   span.link {
     display: inline-block;
+
+    a.under-review:after {
+      content: ' *';
+    }
 
     &:after {
       content: '|';

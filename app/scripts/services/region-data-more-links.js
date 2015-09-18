@@ -72,7 +72,8 @@ angular.module('sauWebApp')
           class: 'vertical',
           eachOf: 'eezs',
           url: '#/eez/{{ eez_id }}',
-          text: '{{ eez_name }}'
+          text: '{{ eez_name }}',
+          checkUnderReview: true
         },
         /*
         {
@@ -149,7 +150,8 @@ angular.module('sauWebApp')
           class: 'vertical',
           eachOf: 'eezs',
           url: '#/eez/{{ id }}',
-          text: '{{ title }}'
+          text: '{{ title }}',
+          checkUnderReview: true
         }
       ]
     };
