@@ -69,6 +69,7 @@ angular.module('sauWebApp')
       'country-eezs': [
         {
           section: 'EEZs in this country',
+          class: 'vertical',
           eachOf: 'eezs',
           url: '#/eez/{{ eez_id }}',
           text: '{{ eez_name }}'
@@ -145,6 +146,7 @@ angular.module('sauWebApp')
       'eez-bordering': [
         {
           section: 'EEZs in this group',
+          class: 'vertical',
           eachOf: 'eezs',
           url: '#/eez/{{ id }}',
           text: '{{ title }}'

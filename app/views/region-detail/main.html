@@ -57,9 +57,12 @@
                 </p>
             </div>
 
-            <div ng-if="toggles.showMultiRegionList" class="padded content">
+            <div ng-if="toggles.showMultiRegionList" class="padded content multi-region-list">
               <h3>Selected {{selectedRegions.type | uppercase }}s</h3>
-              <p ng-repeat="region in selectedRegions.details"><a ng-href="{{ region.url }}" ng-bind="region.name"></a></p>
+              <p ng-repeat="region in selectedRegions.details">
+                  <a ng-href="{{ region.url }}" ng-bind="region.name"></a>
+                  <under-review ng-if="selectedRegions.type === 'eez'" eez="region.id"></under-review>
+              </p>
             </div>
 
             <div ng-if="toggles.showMetrics" class="padded content metrics">

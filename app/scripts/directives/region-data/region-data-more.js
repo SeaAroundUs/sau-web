@@ -141,6 +141,7 @@ angular.module('sauWebApp')
 
             scope.moreData.unshift({
               section: sectionTitle,
+              class: 'vertical',
               links: links
             });
           });
