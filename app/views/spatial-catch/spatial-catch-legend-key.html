@@ -1,5 +1,9 @@
 
-<label class="small-label">{{keyName}} <span class="not-bold">{{keyNameSecond}}</span></label>
+<label class="small-label">
+	<span ng-show="!keyLink">{{keyName}}</span>
+	<span ng-show="keyLink"><a ng-href="{{keyLink}}">{{keyName}}</a></span>
+	<span class="not-bold">{{keyNameSecond}}</span>
+</label>
 <ul class="legend-color-bar list-inline">
 	<li class="legend-color-swatch" ng-repeat="swatch in [1, 2, 3, 4, 5]" ng-init="colorMe($index)"></li>
 </div>

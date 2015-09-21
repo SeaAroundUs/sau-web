@@ -10,7 +10,8 @@ angular.module('sauWebApp')
         keyNameSecond: '=',
         color: '=',
         maxLabel: '=',
-        minLabel: '='
+        minLabel: '=',
+        keyLink: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();

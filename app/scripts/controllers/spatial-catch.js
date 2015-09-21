@@ -170,6 +170,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return 'Catches';
     };
 
+    $scope.getCompareeLink = function (comparee) {
+      if ($scope.lastQuery.comparableType.field === 'taxa') {
+        return '#/taxa/' + comparee;
+      }
+
+      return null;
+    }
+
     $scope.getValueFromObjectArray = function (array, Idkey, IdValue, property) {
       for (var i = 0; i < array.length; i++) {
         if (''+array[i][Idkey] === ''+IdValue) {
