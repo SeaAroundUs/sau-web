@@ -176,7 +176,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return null;
-    }
+    };
 
     $scope.getValueFromObjectArray = function (array, Idkey, IdValue, property) {
       for (var i = 0; i < array.length; i++) {
