@@ -91,9 +91,15 @@ angular.module('sauWebApp')
     }
 
     function onMapFeatureMouseMove (event, feature) {
+      var content;
+
       if (!isDisputedAreaPopupOpen) {
+        content = $scope.region.name === 'fao' ?
+          feature.properties.title + ' (' + feature.properties.region_id + ')' :
+          feature.properties.title;
+
         new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false, xEdge: 175, yEdge: 195})
-        .setContent(feature.properties.title)
+        .setContent(content)
         .setLatLng(event.latlng)
         .openOn($scope.map);
       }
