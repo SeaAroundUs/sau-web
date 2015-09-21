@@ -18,6 +18,7 @@
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
 							<option toggle-hide="taxon" value="taxa">Taxa</option>
+							<option toggle-hide="global" value="global">Global</option>
 						</select>
 					</div>
 				</div>
@@ -51,6 +52,9 @@
 
 			<!-- Taxa - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'taxa'"></div>
+
+			<!-- Global - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'global'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">

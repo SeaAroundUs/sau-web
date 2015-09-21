@@ -68,8 +68,12 @@ angular.module('sauWebApp')
       forRegionCatchChart: function(config) {
         var strBuilder;
 
+        // special case for global
+        if (config.regionType === 'global') {
+          strBuilder = ['/', 'global', '/', '?chart=catch-chart'];
+
         //Catch chart for one region.
-        if (config.regionIds.length === 1) {
+        } else if (config.regionIds.length === 1) {
           strBuilder = [
             '/',
             config.regionType,

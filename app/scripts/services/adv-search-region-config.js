@@ -4,7 +4,7 @@
 // Since each section is largely similar, this config allows us to only specify
 // The differences between each region/section within Advanced Search.
 angular.module('sauWebApp')
-  .factory('advSearchRegionConfig', function (sauAPI) {
+  .factory('advSearchRegionConfig', function ($q, sauAPI) {
 
     //Most data results conform to similar naming conventions,
     //so the search options formats are all the same, with a few exceptions.
@@ -121,6 +121,19 @@ angular.module('sauWebApp')
           }
           return searchOptions;
         }
+      },
+      global: {
+        graphResultsPath: 'global',
+        regionListTitle: 'Global',
+        selectedListTitle: 'Selected global',
+        searchPlaceholder: 'Search global',
+        selectionLimit: 1,
+        getRegionData: function() {
+          var promise = $q.defer();
+          promise.resolve({ data: [{ title: 'The global ocean', id: 1 }]});
+          return { $promise: promise.promise };
+        },
+        getSearchOptions: defaultGetSearchOptions
       }
     };
   });
