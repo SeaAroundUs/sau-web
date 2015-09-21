@@ -117,7 +117,7 @@ angular.module('sauWebApp')
           var searchOptions = [];
           for (var i = 0; i < results.data.length; i++) {
             var taxon = results.data[i];
-            searchOptions.push({value: taxon.taxon_key, label: taxon.scientific_name + ' (' + taxon.common_name + ')'});
+            searchOptions.push({value: taxon.taxon_key, label: taxon.common_name + ' (' + taxon.scientific_name + ')'});
           }
           return searchOptions;
         }
