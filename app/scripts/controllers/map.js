@@ -92,7 +92,7 @@ angular.module('sauWebApp')
 
     function onMapFeatureMouseMove (event, feature) {
       if (!isDisputedAreaPopupOpen) {
-        new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
+        new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false, xEdge: 175, yEdge: 195})
         .setContent(feature.properties.title)
         .setLatLng(event.latlng)
         .openOn($scope.map);
