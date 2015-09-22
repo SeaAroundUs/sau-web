@@ -81,7 +81,7 @@
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row">
         <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" Skey-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)"></spatial-catch-legend-key>
         </div>
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
           <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'"></spatial-catch-legend-key>
