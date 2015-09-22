@@ -3,6 +3,11 @@
 .taxon-info {
     width: 768px;
     color: #001f3f;
+    margin-top: 30px;
+
+    .taxa-link {
+        margin: 10px 0;
+    }
 
     table {
         border-color: #9a9a9a;
