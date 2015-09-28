@@ -6,8 +6,8 @@
 
   angular.module('sauWebApp')
     .controller('RootCtrl', function ($scope, $location, toggles) {
-
       $scope.$on('$routeChangeSuccess', function(evt, location) {
+        $scope.showMobileMenu = false;
         $scope.routeError = false;
         $scope.showCBDLogo = location.$$route &&
           (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
@@ -98,6 +98,11 @@
 
       $scope.go = function(url) {
         window.location = url;
+      };
+
+      $scope.showMobileMenu = false;
+      $scope.toggleMobileMenu = function () {
+        $scope.showMobileMenu = !$scope.showMobileMenu;
       };
     });
 })();

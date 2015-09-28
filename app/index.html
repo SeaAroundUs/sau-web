@@ -119,16 +119,33 @@
 
             <auth-status-button toggle-hide="auth" class="pull-right"></auth-status-button>
 
-            <ul class="nav nav-pills top-header">
-              <li role="presentation" ng-repeat="t in templates">
-                <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
-              </li>
-            </ul>
-            <ul class="nav nav-pills sub-header">
-              <li role="presentation" ng-repeat="st in subtemplates">
-                <a ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
-              </li>
-            </ul>
+            <!-- Regular Nav (hidden on mobile devices) -->
+            <div mobile-hide>
+              <ul class="nav nav-pills top-header">
+                <li role="presentation" ng-repeat="t in templates">
+                  <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
+                </li>
+              </ul>
+              <ul class="nav nav-pills sub-header">
+                <li role="presentation" ng-repeat="st in subtemplates">
+                  <a ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
+                </li>
+              </ul>
+            </div>
+            <!-- Mobile nav (hidden on non-mobile devices) -->
+            <div id="mobile-nav" mobile-only ng-cloak>
+              <div id="mobile-nav-toggle" ng-click="toggleMobileMenu()">
+                <i class="fa fa-bars pull-left"></i>Menu
+              </div>
+              <ul id="mobile-nav-menu" class="list-unstyled" ng-show="showMobileMenu" ng-cloak>
+                <li><a href="#/">Search our data</a></li>
+                <li class="separator"><a href="/faq/">Help</a></li>
+                <li><a href="/articles/">Publications</a></li>
+                <li><a href="/about/">News</a></li>
+                <li><a href="/collaborations/">Partners</a></li>
+                <li><a href="/information-by-topic/">Projects</a></li>
+              </ul>
+            </div>
 
           </div>
 

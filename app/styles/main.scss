@@ -506,3 +506,48 @@ then just wrap your html in "saustrap", then use any of these styles. */
     padding-right: 10px;
   }
 }
+
+#mobile-nav {
+  margin-top: 20px;
+
+  #mobile-nav-toggle {
+    background-color: #0077BC;
+    padding: 10px 10px 10px 10px;
+    border-bottom: 1px solid #0075BB;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    i {
+      padding-top: 3px;
+      padding-right: 4px;
+    }
+  }
+
+  #mobile-nav-menu {
+    background-color: #0077BC;
+    padding-bottom: 5px;
+
+    li {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-left: 25px;
+      margin-right: 25px;
+      color: white;
+      border-bottom: 1px solid #4796C3;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    li.separator {
+      border-bottom: 1px solid #FFFFFF;
+    }
+  }
+}
