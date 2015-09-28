@@ -58,10 +58,13 @@
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
-			<div class="text-center">
+			<div class="text-center" mobile-hide>
 				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
 				<span class="or-separator">or</span>
 				<button class="btn btn-primary"  ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
+			</div>
+			<div class="text-center" mobile-only>
+				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
 			</div>
 		</div>
 	</div>
