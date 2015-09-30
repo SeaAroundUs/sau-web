@@ -7,8 +7,7 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: {
         regionId: '=',
-        selectedDimension: '=',
-        useScientificName: '='
+        selectedDimension: '='
       },
       link: function(scope) {
         scope.dimensions = regionDimensions[scope.regionId];

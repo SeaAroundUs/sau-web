@@ -1,0 +1,10 @@
+<div id="taxon-biodiversity">
+    <a ng-if="data" ng-href="#/taxa/{{ data.taxon_key }}">
+        Key information on <i>{{ data.scientific_name }}</i> ({{ data.common_name }})
+    </a>
+    <div ng-if="taxa" ng-repeat="taxon in taxa">
+        <a ng-href="#/taxa/{{ taxon.taxon_key }}">
+            Key information on <i>{{ taxon.scientific_name }}</i> ({{ taxon.common_name }})
+        </a>
+    </div>
+</div>

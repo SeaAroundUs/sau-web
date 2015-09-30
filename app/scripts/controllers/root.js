@@ -2,21 +2,53 @@
 
   'use strict';
 
-  angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope, $location) {
+  // jshint expr:true
 
+  angular.module('sauWebApp')
+    .controller('RootCtrl', function ($scope, $location, toggles) {
       $scope.$on('$routeChangeSuccess', function(evt, location) {
+        $scope.showMobileMenu = false;
         $scope.routeError = false;
         $scope.showCBDLogo = location.$$route &&
           (location.$$route.controller === 'MarineTrophicIndexCtrl' ||
            location.$$route.controller === 'MarineTrophicIndexSearchCtrl');
 
-        if (location.$$route && location.$$route.controller === 'FERUCtrl') {
-          $scope.templates[0].class = '';
-          $scope.templates[3].class = 'selected';
-        } else {
-          $scope.templates[0].class = 'selected';
-          $scope.templates[3].class = '';
+        $scope.templates[0].class = 'selected';
+        $scope.templates[3].class = '';
+
+        if (location.$$route) {
+          clearSubtemplateSelection();
+          switch (location.$$route.controller) {
+            case 'MapCtrl':
+              if (location.locals && location.locals.region === 'mariculture') {
+                $scope.subtemplates[5].class = 'selected';
+              } else {
+                $scope.subtemplates[0].class = 'selected';
+              }
+              break;
+            case 'AdvancedSearchCtrl':
+              $scope.subtemplates[1].class = 'selected';
+              break;
+            case 'SpatialCatchMapCtrl':
+              $scope.subtemplates[2].class = 'selected';
+              break;
+            case 'FERUCtrl':
+              $scope.subtemplates[3].class = 'selected';
+              break;
+            case 'TopicBiodiversityCtrl':
+              $scope.subtemplates[4].class = 'selected';
+              break;
+            case 'MarineTrophicIndexSearchCtrl':
+              $scope.subtemplates[6].class = 'selected';
+              break;
+          }
+        }
+
+        function clearSubtemplateSelection() {
+          $scope.subtemplates = $scope.subtemplates.map(function(st) {
+            st.class = '';
+            return st;
+          });
         }
       });
 
@@ -40,18 +72,37 @@
       });
 
       $scope.templates = [
-        {'name': 'View data', 'url': '/data/#/', 'class': 'selected'},
+        {'name': 'Tools & Data', 'url': '/data/#/eez', 'class': 'selected'},
         {'name': 'Publications', 'url': '/articles/'},
-        {'name': 'News & About', 'url': '/about/'},
-        {'name': 'Topics', 'url': '/information-by-topic/'},
-        {'name': 'Partners & sub-projects', 'url': '/collaborations/'},
-        {'name': 'Contact Us', 'url': '/contact/'},
+        {'name': 'News', 'url': '/about/'},
+        {'name': 'Projects', 'url': '/information-by-topic/'},
+        {'name': 'Partners', 'url': '/collaborations/'},
         {'name': 'Help', 'url': '/faq/'}
       ];
       $scope.template = $scope.templates[0];
 
+      $scope.subtemplates = [
+        {'name': 'By Map', 'url': '#/eez'},
+        {'name': 'Advanced Search', 'url': '#/search/'},
+        {'name': 'Mapped Catch', 'url': '#/spatial-catch'},
+        {'name': 'Global Fisheries Economics', 'url': '#/feru'},
+        {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
+        {'name': 'Mariculture Production', 'url': '#/mariculture'},
+        {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
+      ];
+      $scope.subtemplate = $scope.subtemplates[0];
+
+      if (!toggles.isEnabled('spatial')) {
+        $scope.subtemplates.splice(2,1);
+      }
+
       $scope.go = function(url) {
         window.location = url;
+      };
+
+      $scope.showMobileMenu = false;
+      $scope.toggleMobileMenu = function () {
+        $scope.showMobileMenu = !$scope.showMobileMenu;
       };
     });
 })();

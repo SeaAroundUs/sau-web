@@ -14,6 +14,7 @@ angular.module('sauWebApp')
 
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
+    importantNotes.fao = importantNotes.global;
 
     var links = {
       // Global links
@@ -68,9 +69,11 @@ angular.module('sauWebApp')
       'country-eezs': [
         {
           section: 'EEZs in this country',
+          class: 'vertical',
           eachOf: 'eezs',
           url: '#/eez/{{ eez_id }}',
-          text: '{{ eez_name }}'
+          text: '{{ eez_name }}',
+          checkUnderReview: true
         },
         /*
         {
@@ -83,15 +86,16 @@ angular.module('sauWebApp')
       // RFMO links
       'rfmo': [
         {
-          section: 'References',
+          section: '',
           template: 'views/region-data/citations.html'
         },
         {
+          section: 'More info',
+          template: 'views/region-data/rfmo-info.html',
+        },
+        {
           section: 'Governance',
-          links: [
-            { text: 'Website', ngUrl: '{{ profile_url }}', target: '_blank' },
-            { text: 'Procedures & Outcomes', ngUrl: '#/rfmo/{{ id }}/procedures-and-outcomes' }
-          ]
+          template: 'views/region-data/rfmo-governance.html'
         },
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
@@ -100,6 +104,54 @@ angular.module('sauWebApp')
             { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint' },
             { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
           ]
+        }
+      ],
+
+      // Taxa links
+      taxa: [
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/taxon-biodiversity.html'
+        }
+      ],
+
+      // FAO links
+      fao: [
+        /*
+        {
+          section: 'Biodiversity',
+          links: [
+            { text: 'Exploited organisms', ngUrl: '#/fao/{{ id }}/exploited-organisms' }
+          ]
+        },
+        */
+        {
+          section: 'Governance',
+          links: [
+            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en', target: '_blank' }
+          ]
+        },
+        /*
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/fao/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/fao/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/fao/{{ id }}/marine-trophic-index' }
+          ]
+        }
+        */
+      ],
+
+      // EEZ Bordering
+      'eez-bordering': [
+        {
+          section: 'EEZs in this group',
+          class: 'vertical',
+          eachOf: 'eezs',
+          url: '#/eez/{{ id }}',
+          text: '{{ title }}',
+          checkUnderReview: true
         }
       ]
     };

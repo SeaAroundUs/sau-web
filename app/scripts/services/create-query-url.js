@@ -10,6 +10,8 @@
 angular.module('sauWebApp')
   .factory('createQueryUrl', function () {
 
+    var newLayoutRegions = ['fishing-entity', 'rfmo', 'global', 'fao', 'eez-bordering', 'taxon'];
+
     return {
       /*
       var exampleConfig = {
@@ -25,7 +27,7 @@ angular.module('sauWebApp')
       */
       forRegionCsv: function(config) {
         var strBuilder = [
-          config.regionType,
+          config.regionType === 'taxon' ? 'taxa' : config.regionType,
           '/',
           config.measure,
           '/',
@@ -35,6 +37,10 @@ angular.module('sauWebApp')
           '&sciname=',
           config.useScientificName
         ];
+
+        if (config.managed_species) {
+          strBuilder.push('&managed_species=All');
+        }
 
         if (config.faoId) {
           strBuilder.push('&fao_id=', config.faoId);
@@ -62,8 +68,12 @@ angular.module('sauWebApp')
       forRegionCatchChart: function(config) {
         var strBuilder;
 
+        // special case for global
+        if (config.regionType === 'global') {
+          strBuilder = ['/', 'global', '/', '?chart=catch-chart'];
+
         //Catch chart for one region.
-        if (config.regionIds.length === 1) {
+        } else if (config.regionIds.length === 1) {
           strBuilder = [
             '/',
             config.regionType,
@@ -73,7 +83,7 @@ angular.module('sauWebApp')
           ];
 
         //Catch chart for multiple regions for new layouts
-        } else if (['fishing-entity', 'rfmo', 'global'].indexOf(config.regionType) !== -1) {
+        } else if (newLayoutRegions.indexOf(config.regionType) !== -1) {
           strBuilder = [
             '/',
             config.regionType,

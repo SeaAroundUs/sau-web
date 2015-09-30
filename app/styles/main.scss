@@ -23,7 +23,17 @@
   }
 
   #copyright {
+    span, a {
+      display: inline-block;
+    }
 
+    a {
+      margin-right: 15px;
+    }
+
+    span {
+      margin-right: 30px;
+    }
   }
 
   .separator {
@@ -266,6 +276,18 @@ label {
 }
 
 .content-container#country-profile {
+  padding: 40px;
+
+  h2 {
+    font-size: 2em;
+    margin: 0;
+  }
+
+  h4 {
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
   span.title {
     font-weight: bolder;
   }
@@ -403,14 +425,14 @@ button {
 
 .panel-footer {
   background: #f1f1f1;
-  padding: 10px;
+  padding: 20px;
   border: none;
 }
 
 .side-option {
   @media (min-width: $screen-sm) {
     position: relative;
-    top: 22px;
+    top: 26px;
   }
 }
 
@@ -482,5 +504,50 @@ then just wrap your html in "saustrap", then use any of these styles. */
   .row > div[class*="col-"] {
     padding-left: 10px;
     padding-right: 10px;
+  }
+}
+
+#mobile-nav {
+  margin-top: 20px;
+
+  #mobile-nav-toggle {
+    background-color: #0077BC;
+    padding: 10px 10px 10px 10px;
+    border-bottom: 1px solid #0075BB;
+    color: white;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    i {
+      padding-top: 3px;
+      padding-right: 4px;
+    }
+  }
+
+  #mobile-nav-menu {
+    background-color: #0077BC;
+    padding-bottom: 5px;
+
+    li {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin-left: 25px;
+      margin-right: 25px;
+      color: white;
+      border-bottom: 1px solid #4796C3;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    li.separator {
+      border-bottom: 1px solid #FFFFFF;
+    }
   }
 }

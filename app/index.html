@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css" />
     <link rel="stylesheet" href="bower_components/rrose/leaflet.rrose.css" />
     <link rel="stylesheet" href="bower_components/seiyria-bootstrap-slider/dist/css/bootstrap-slider.css" />
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -40,8 +41,6 @@
     <link rel="stylesheet" href="styles/subsidy.css">
     <link rel="stylesheet" href="styles/expedition.css">
     <link rel="stylesheet" href="styles/advanced-search.css" />
-    <link rel="stylesheet" href="styles/sau-multi-select.css" />
-    <link rel="stylesheet" href="styles/sau-selected-options.css" />
     <link rel="stylesheet" href="styles/procedure-outcome.css" />
     <link rel="stylesheet" href="styles/fishing-access.css" />
     <link rel="stylesheet" href="styles/login-modal.css" />
@@ -120,11 +119,33 @@
 
             <auth-status-button toggle-hide="auth" class="pull-right"></auth-status-button>
 
-            <ul class="nav nav-pills top-header">
-              <li role="presentation" ng-repeat="t in templates">
-                <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
-              </li>
-            </ul>
+            <!-- Regular Nav (hidden on mobile devices) -->
+            <div mobile-hide>
+              <ul class="nav nav-pills top-header">
+                <li role="presentation" ng-repeat="t in templates">
+                  <a ng-href="{{ t.url }}" ng-bind="t.name" ng-class="t.class"></a>
+                </li>
+              </ul>
+              <ul class="nav nav-pills sub-header">
+                <li role="presentation" ng-repeat="st in subtemplates">
+                  <a ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
+                </li>
+              </ul>
+            </div>
+            <!-- Mobile nav (hidden on non-mobile devices) -->
+            <div id="mobile-nav" mobile-only ng-cloak>
+              <div id="mobile-nav-toggle" ng-click="toggleMobileMenu()">
+                <i class="fa fa-bars pull-left"></i>Menu
+              </div>
+              <ul id="mobile-nav-menu" class="list-unstyled" ng-show="showMobileMenu" ng-cloak>
+                <li><a href="#/">Search our data</a></li>
+                <li class="separator"><a href="/faq/">Help</a></li>
+                <li><a href="/articles/">Publications</a></li>
+                <li><a href="/about/">News</a></li>
+                <li><a href="/collaborations/">Partners</a></li>
+                <li><a href="/information-by-topic/">Projects</a></li>
+              </ul>
+            </div>
 
           </div>
 
@@ -147,15 +168,9 @@
 
           <div id="footer" class="clearfix">
             <div id="copyright" class="pull-left">
-              © 2015 Sea Around Us
-            </div>
-            <div id="legal" class="pull-right">
+              <span>&copy; 2015 Sea Around Us</span>
+              <a href="/contact/">Contact us</a>
               <a href="/citation-policy/">Citation Policy</a>
-              <!--
-              <a class="" href="#">Privacy Policies</a>
-              <span class="separator">|</span>
-              <a class="" href="#">Terms and Conditions</a>
-              -->
             </div>
           </div>
         </div>
@@ -179,7 +194,6 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/leaflet/dist/leaflet.js"></script>
     <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
     <script src="bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -221,6 +235,10 @@
     <script src="bower_components/d3-geo-projection/d3.geo.projection.js"></script>
     <script src="bower_components/d3-grid-map/d3-grid-map.js"></script>
     <script src="bower_components/seiyria-bootstrap-slider/js/bootstrap-slider.js"></script>
+    <script src="bower_components/sifter/sifter.js"></script>
+    <script src="bower_components/microplugin/src/microplugin.js"></script>
+    <script src="bower_components/selectize/dist/js/selectize.js"></script>
+    <script src="bower_components/angular-selectize2/dist/selectize.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -254,9 +272,6 @@
     <script src="scripts/controllers/expedition.js"></script>
     <script src="scripts/controllers/advanced-search/advanced-search.js"></script>
     <script src="scripts/controllers/advanced-search/adv-search-default-query.js"></script>
-    <script src="scripts/controllers/advanced-search/adv-search-eez-bordering.js"></script>
-    <script src="scripts/controllers/advanced-search/adv-search-fishing-country.js"></script>
-    <script src="scripts/controllers/advanced-search/adv-search-country.js"></script>
     <script src="scripts/controllers/multi-chart.js"></script>
     <script src="scripts/controllers/internal-fishing-access.js"></script>
     <script src="scripts/controllers/auth/signup.js"></script>
@@ -298,9 +313,11 @@
     <script src="scripts/directives/region-data/region-data-map.js"></script>
     <script src="scripts/directives/region-data/region-data-legend.js"></script>
     <script src="scripts/directives/region-data/region-data-reconstruction-reference.js"></script>
+    <script src="scripts/directives/region-data/region-data-short-title.js"></script>
     <script src="scripts/directives/high-seas-vs-eezs.js"></script>
     <script src="scripts/directives/download-button.js"></script>
     <script src="scripts/directives/spatial-catch-directives.js"></script>
+    <script src="scripts/directives/mobile-detection.js"></script>
 
     <script src="scripts/filters/filters.js"></script>
     <script src="scripts/filters/significantdigits.js"></script>
@@ -308,6 +325,7 @@
     <script src="scripts/filters/break-underscores.js"></script>
     <script src="scripts/filters/fishbase-country-id.js"></script>
     <script src="scripts/filters/file-of-url.js"></script>
+    <script src="scripts/filters/unique.js"></script>
 
     <script src="scripts/services/sau-api.js"></script>
     <script src="scripts/services/sau-d3-utils.js"></script>
@@ -339,11 +357,10 @@
     <script src="scripts/services/toggles.js"></script>
     <script src="scripts/services/cell-tile-layer.js"></script>
     <script src="scripts/services/countries-110.js"></script>
-    <script src="scripts/services/test-data.js"></script>
     <script src="scripts/services/color-assignment-service.js"></script>
-
-    <script src="scripts/directives/sau-multi-select.js"></script>
-    <script src="scripts/directives/sau-selected-options.js"></script>
+    <script src="scripts/services/main-map-region-config.js"></script>
+    <script src="scripts/services/adv-search-region-config.js"></script>
+    <script src="scripts/services/under-review-list.js"></script>
     <!-- endbuild -->
 
     <script>

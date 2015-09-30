@@ -11,6 +11,7 @@ angular.module('sauWebApp')
       $scope.measures = regionMeasures[$scope.region.name];
       $scope.limits = regionDimensionLimits[$scope.region.name];
       $scope.colors = regionDataCatchChartColors;
+      $scope.managedSpecies = false;
 
       // init chart model from URL and defaults
       $scope.formModel = getFormModel();
@@ -32,6 +33,10 @@ angular.module('sauWebApp')
         $scope.formModel.useScientificName = !$scope.formModel.useScientificName;
         sauChartUtils.toggleTaxonNames($scope);
         $scope.updateDeclarationYear();
+      };
+
+      $scope.toggleManagedSpecies = function() {
+        $scope.formModel.managedSpecies = !$scope.formModel.managedSpecies;
       };
 
       // update EEZ declaration year display
@@ -65,7 +70,7 @@ angular.module('sauWebApp')
       $scope.$watch('formModel', getChartData, true);
       $scope.$watch('formModel', updateURL, true);
       $scope.$watch('formModel', updateYLabel, true);
-      $scope.$watch('region', getChartData, true);
+      $scope.$watch('region', updateRegion, true);
       $scope.$on('$locationChangeSuccess', function() {
         $scope.formModel = getFormModel();
       });
@@ -87,29 +92,54 @@ angular.module('sauWebApp')
           measure: getMeasure(),
           limit: getLimit(),
           region_id: $scope.region.ids,
-          useScientificName: getUseScientificName()
+          useScientificName: getUseScientificName(),
+          managedSpecies: getManagedSpecies()
         };
       }
 
       function getDimension() {
-        return $scope.dimensions[$scope.dimensions.map(function(d) { return d.value })
+        return $scope.dimensions[$scope.dimensions.map(function(d) { return d.value; })
             .indexOf($location.search().dimension)] || $scope.dimensions[0];
       }
 
       function getMeasure() {
-        return $scope.measures[$scope.measures.map(function(m) { return m.value })
+        return $scope.measures[$scope.measures.map(function(m) { return m.value; })
             .indexOf($location.search().measure)] || $scope.measures[0];
       }
 
       function getLimit() {
-        return $scope.limits[$scope.limits.map(function(l) { return l.value })
+        return $scope.limits[$scope.limits.map(function(l) { return l.value; })
             .indexOf($location.search().limit)] || $scope.limits[1];
       }
 
       function getUseScientificName() {
         return $location.search().sciname &&
           $location.search().sciname !== 'false' &&
-          parseInt($location.search().sciname) !== 0
+          parseInt($location.search().sciname) !== 0;
+      }
+
+      function getManagedSpecies() {
+        return $location.search().managed_species &&
+          $location.search().managed_species !== 'All';
+      }
+
+      function updateRegion(newRegion, oldRegion) {
+        // update URL for region name/id change
+        if (newRegion.id !== oldRegion.id || newRegion.name !== oldRegion.name) {
+          $location.path('/' + newRegion.name + '/' + newRegion.ids.join(','));
+        }
+
+        // update formModel which sets off other updates
+        $scope.formModel = getFormModel();
+      }
+
+      function updateYLabel() {
+        $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
+        $scope.options.chart.yAxisTickFormat = function(d) {
+          //Make values "in thousands" or "in millions" depending on the measure.
+          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          return $filter('significantDigits')(d, magnitude);
+        };
       }
 
       function updateYLabel() {
@@ -129,7 +159,8 @@ angular.module('sauWebApp')
           limit: $scope.formModel.limit.value,
           useScientificName: $scope.formModel.useScientificName,
           regionIds: $scope.region.ids,
-          faoId: $scope.region.faoId
+          faoId: $scope.region.faoId,
+          managed_species: $scope.formModel.managedSpecies
         };
         var url = sauAPI.apiURL + createQueryUrl.forRegionCsv(urlConfig);
 
@@ -146,7 +177,8 @@ angular.module('sauWebApp')
           dimension: $scope.formModel.dimension.value,
           measure: $scope.formModel.measure.value,
           limit: $scope.formModel.limit.value,
-          sciname: $scope.formModel.useScientificName
+          sciname: $scope.formModel.useScientificName,
+          managed_species: $scope.formModel.managedSpecies
         }).replace();
 
         //TODO clear params when leaving page
@@ -161,6 +193,10 @@ angular.module('sauWebApp')
           region_id: $scope.formModel.region_id,
           fao_id: $scope.region.faoId
         };
+
+        if ($scope.formModel.managedSpecies) {
+          dataOptions.managed_species = 'All';
+        }
 
         // show chart loading
         spinnerState.loading = true;

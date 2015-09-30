@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .factory('sauAPI', function ($resource, SAU_CONFIG) {
+  .factory('sauAPI', function ($resource, SAU_CONFIG, $http) {
 
     var resourceFactory = function(apiPath) {
       return $resource(SAU_CONFIG.apiURL + apiPath,
@@ -60,7 +60,19 @@ angular.module('sauWebApp')
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
       SpatialCatchData: resourceFactory('spatial-catch/cells'),
-
+      TaxonDistribution: {
+        get: function (params) {
+          if (!params || !params.id) {
+            console.log('An id parameter is required for TaxonDistribution.get().');
+            params = {id: 'missing'};
+          }
+          return $http.get(SAU_CONFIG.apiURL + 'taxa/' + params.id + '/distribution',
+          {
+            responseType: 'arraybuffer',
+            headers: {'Accept': 'application/octet-stream'}
+          });
+        }
+      },
       apiURL: SAU_CONFIG.apiURL
     };
 

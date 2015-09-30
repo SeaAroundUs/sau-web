@@ -19,6 +19,12 @@ angular.module('sauWebApp')
       fillOpacity: 0.1,
       weight: 1.0
     },
+    tempCountryStyle: {
+      color: '#000',
+      fillColor: '#000',
+      fillOpacity: 0.4,
+      weight: 1.0
+    },
     faoStyle: {
       fill: false,
       color: '#00f',
@@ -100,10 +106,22 @@ angular.module('sauWebApp')
       s3Root: 'https://s3-us-west-2.amazonaws.com/'
     })
   .value('reportingStatuses', [
-    {name: 'Reported'},
-    {name: 'Unreported'}
+    {
+      name: 'Reported',
+      id: 'R'
+    },
+    {
+      name: 'Unreported',
+      id: 'U'
+    }
   ])
   .value('catchTypes', [
-      { name: 'Landings'},
-      { name: 'Discards'}
+      {
+        name: 'Landings',
+        id: 'R'
+      },
+      {
+        name: 'Discards',
+        id: 'D'
+      }
   ]);

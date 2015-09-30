@@ -9,8 +9,16 @@ angular.module('sauWebApp')
 
     var getChartTitle = function() {
       if (!$scope.feature || !$scope.feature.data) { return ''; }
-      return 'Primary Production Required for catches in ' +
+      var title = 'Primary Production Required for catches in ' +
         ($scope.feature.data.title ? 'the waters of ' + $scope.feature.data.title : 'the global ocean');
+      if ($scope.mapLayers.selectedFAO) {
+        $scope.faos.data.forEach(function(fao) {
+          if (fao.id === $scope.mapLayers.selectedFAO) {
+            title += ' - ' + fao.name;
+          }
+        });
+      }
+      return title;
     };
 
     $scope.api = {};

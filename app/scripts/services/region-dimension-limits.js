@@ -27,6 +27,9 @@ angular.module('sauWebApp')
       fishingCountry: defaultLimits,
       'fishing-entity': defaultLimits,
       'country-eezs': defaultLimits,
+      taxa: defaultLimits,
+      fao: defaultLimits,
+      'eez-bordering': defaultLimits,
       multi: defaultLimits
     };
   });

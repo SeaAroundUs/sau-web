@@ -1,6 +1,6 @@
 <div class="page-controller saustrap" id="advanced-search">
 	<h1>Advanced Search</h1>
-	<p> Use our <strong>advanced search</strong> feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
+	<p> Use our advanced search feature to access specific catch data quickly. Visualize the data in chart-form or download it to your computer for use in various applications.</p>
 	<div class="sau-panel">
 
 		<!-- PAGE HEADER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -13,9 +13,12 @@
 							<option value="eez">EEZ(s)</option>
 							<option value="lme">LME(s)</option>
 							<option value="rfmo">RFMO(s)</option>
-							<!-- <option value="eezAndBorderingEezs">EEZ & bordering EEZs</option> -->
+							<option toggle-hide="fao" value="fao">FAO area(s)</option>
+							<option toggle-hide="eez-bordering" value="eez-bordering">EEZ & neighboring EEZs</option>
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
 							<!-- <option value="country">Country</option> -->
+							<option toggle-hide="taxon" value="taxa">Taxa</option>
+							<option toggle-hide="global" value="global">Global</option>
 						</select>
 					</div>
 				</div>
@@ -35,21 +38,33 @@
 			<!-- RFMO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'rfmo'"></div>
 
+			<!-- FAO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fao'"></div>
+
 			<!-- EEZ and Bordering EEZs - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-eez-bordering.html'" ng-if="section === 'eezAndBorderingEezs'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'eez-bordering'"></div>
 
 			<!-- Fishing Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-fishing-country.html'" ng-if="section === 'fishing-entity'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fishing-entity'"></div>
 
 			<!-- Country - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-			<div ng-include="'views/advanced-search/adv-search-country.html'" ng-if="section === 'country'"></div>
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'country'"></div>
+
+			<!-- Taxa - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'taxa'"></div>
+
+			<!-- Global - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'global'"></div>
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
-			<div class="text-center">
+			<div class="text-center" mobile-hide>
 				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
 				<span class="or-separator">or</span>
 				<button class="btn btn-primary"  ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
+			</div>
+			<div class="text-center" mobile-only>
+				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
 			</div>
 		</div>
 	</div>

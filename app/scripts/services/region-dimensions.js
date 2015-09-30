@@ -54,9 +54,31 @@ angular.module('sauWebApp')
       showDimensionLimit: false
     };
 
+    var eez = {
+      'label': 'EEZ',
+      'value': 'eez',
+      showDimensionLimit: true
+    };
+
+    var lme = {
+      'label': 'LME',
+      'value': 'lme',
+      showDimensionLimit: true
+    };
+
+    var highseas = {
+      'label': 'High Seas',
+      'value': 'highseas',
+      showDimensionLimit: false
+    };
+
+    //TODO this is getting cumbersome and deserves a refactor
     var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
     var maricultureDimensions = [taxon, commercialGroup, functionalGroup];
-    var fishingEntityDimensions = [taxon, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
+    var fishingEntityDimensions = [eez, lme, highseas, taxon, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
+    var taxonDimension = [eez, lme, highseas, fishingCountry, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
 
     return {
       eez: defaultDimensions,
@@ -68,6 +90,9 @@ angular.module('sauWebApp')
       fishingCountry: defaultDimensions,
       'fishing-entity': fishingEntityDimensions,
       'country-eezs': defaultDimensions,
+      taxa: taxonDimension,
+      fao: expandedDefaults,
+      'eez-bordering': eezBorderingDimensions,
       multi: defaultDimensions
     };
   });

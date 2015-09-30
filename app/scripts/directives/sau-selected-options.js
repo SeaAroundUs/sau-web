@@ -12,6 +12,7 @@ angular.module('sauWebApp')
       templateUrl: 'views/sau-selected-options.html',
       restrict: 'E',
       scope: {
+        limit: '=',
         selected: '=',
         title: '@',
         labelKey: '@',

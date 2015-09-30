@@ -5,17 +5,13 @@
     <a ng-class="{ active: region.name=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
     <a ng-class="{ active: region=='highseas'}" class="btn btn-default disabled" ng-click="changeRegion('highseas')" role="button">High Seas</a>
     <a ng-class="{ active: region.name=='global'}" class="btn btn-default disabled" ng-click="changeRegionGlobal()" role="button">Global</a>
-    <a href="#/search" class="btn btn-default" role="button">Advanced Search</a>
+    <a ng-class="{ active: region.name=='fao'}" toggle-hide="fao" class="btn btn-default" ng-click="changeRegion('fao')" role="button">FAO Area</a>
+    <a ng-class="{ active: region.name=='fishing-entity'}" class="btn btn-default" ng-click="changeRegion('fishing-entity')" role="button">Fishing country</a>
 </div>
 
 <div id="search">
     <div id="search-inner">
-        <ui-select search-enabled="true" ng-right-click-disable on-select="dropDownSelect($item.properties)" ng-model="hoverRegion" theme="bootstrap">
-          <ui-select-match placeholder="Type or select item from list...">{{$select.selected.properties.title}}</ui-select-match>
-          <ui-select-choices repeat="feature in geojson.data.features | orderBy: 'properties.title' | filter: {properties:{title:$select.search}}">
-            <span ng-bind-html="feature.properties.title | highlight: $select.search"></span>
-          </ui-select-choices>
-        </ui-select>
+        <selectize ng-model="selectedSearchOption" options="searchOptions" config="{valueField: 'value', labelField: 'label', placeholder: 'Type or select...', sortField: 'label', searchField: ['label'], maxOptions: null, maxItems: 1, onChange: dropDownSelect}" ></selectize>
     </div>
 </div>
 

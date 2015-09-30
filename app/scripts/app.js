@@ -15,7 +15,8 @@ angular
     'ui.grid.selection',
     'ui.select',
     'angulartics',
-    'angulartics.google.analytics'
+    'angulartics.google.analytics',
+    'selectize'
   ])
 
   // don't strip trailing slashes from calculated URLs
@@ -206,6 +207,12 @@ angular
     // Fishing Entity routes
     if (togglesProvider.$get().isEnabled('fishingEntity')) {
       $routeProvider
+        .when('/fishing-entity', {
+          templateUrl: 'views/map.html',
+          controller: 'MapCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fishing-entity';}}
+        })
         .when('/fishing-entity/:ids', {
           templateUrl: 'views/region-data/main.html',
           controller: 'RegionDataCtrl',
@@ -237,11 +244,67 @@ angular
         });
     }
 
+    // Taxon routes
+    if (togglesProvider.$get().isEnabled('taxon')) {
+      $routeProvider
+        .when('/taxon/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'taxa';}}
+        });
+    }
+
+    // FAO routes
+    if (togglesProvider.$get().isEnabled('fao')) {
+      $routeProvider
+        .when('/fao', {
+          templateUrl: 'views/map.html',
+          controller: 'MapCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/exploited-organisms', {
+          templateUrl: 'views/exploited-organisms.html',
+          controller: 'ExploitedOrganismsCtrl',
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/marine-trophic-index', {
+          templateUrl: 'views/marine-trophic-index.html',
+          controller: 'MarineTrophicIndexCtrl',
+          resolve: {region: function() {return 'fao';}}
+        })
+        .when('/fao/:id/stock-status', {
+          templateUrl: 'views/stock-status.html',
+          controller: 'StockStatusCtrl',
+          resolve: {region: function() {return 'fao';}}
+        });
+    }
+
+    // EEZ Bordering
+    if (togglesProvider.$get().isEnabled('eez-bordering')) {
+      $routeProvider
+        .when('/eez-bordering/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'eez-bordering';}}
+        });
+    }
+
     // mariculture routes
     $routeProvider
       .when('/mariculture', {
-        templateUrl: 'views/mariculture.html',
-        controller: 'MaricultureCtrl'
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'mariculture';}}
       })
       .when('/mariculture/:id', {
         templateUrl: 'views/region-detail/main.html',
@@ -293,7 +356,7 @@ angular
         resolve: {region: function() {return 'multi';}}
       });
 
-    //Spatial catch routes
+    // Spatial catch routes
     if (togglesProvider.$get().isEnabled('spatial')) {
       $routeProvider
         .when('/spatial-catch', {

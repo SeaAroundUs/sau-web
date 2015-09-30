@@ -14,7 +14,8 @@
 
   #logos {
     img {
-      padding: 0 2.3em;
+      padding: 0 0 0 2em;
+      max-width: 92%;
     }
   }
 
@@ -56,6 +57,39 @@
         }
 
         &.selected {
+          color: #000;
+          background-color: #f3bd4d;
+        }
+      }
+    }
+  }
+
+  .nav.sub-header {
+    background-color: #E8E0D8;
+    text-align: center;
+
+    li {
+      float: none;
+      display: inline-block;
+      height: 100%;
+
+      a {
+        color: #000;
+        height: 100%;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        border-radius: 0;
+
+        &:hover {
+          background-color: #EAD7B5;
+        }
+
+        &:focus {
+          background-color: #E8E0D8;
+        }
+
+        &.selected {
+          cursor: auto;
           color: #000;
           background-color: #f3bd4d;
         }

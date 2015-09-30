@@ -13,7 +13,13 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
           };
 
           sauAPI.Region.get(params, function(res) {
-            scope.references = res.data.reconstruction_documents;
+            scope.references = (res.data.eezs && !res.data.reconstruction_documents) ?
+              res.data.eezs.reduce(function(recons, eez) {
+                recons = recons.concat(eez.reconstruction_documents);
+                return recons;
+              }, []) :
+              res.data.reconstruction_documents;
+
             if (!scope.references || scope.references.length === 0) {
               ele.remove();
             }
@@ -32,7 +38,7 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
     template: '<div id="reconstruction-reference">' +
       '<h3 ng-pluralize count="references.length" ' +
         'when="{\'1\': \'Reconstruction reference:\', \'other\': \'Reconstruction references:\'}"></h3>' +
-      '<span ng-repeat="ref in references" class="reference">' +
+      '<span ng-repeat="ref in references | unique: \'name\'" class="reference">' +
         '<a ng-href="{{ ref.url }}"><i class="fa fa-file-pdf-o red"></i> {{ ref.name | breakUnderscores }}</a>' +
       '</span></div>'
   };

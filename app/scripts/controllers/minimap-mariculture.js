@@ -118,18 +118,11 @@ angular.module('sauWebApp')
           });
           var bounds = L.latLngBounds(points);
           $timeout(function(){
-            map.fitBounds(bounds);
-            /*
-            map.eachLayer(function(l){
-              if (l.feature && l.feature.properties) {
-                if(l.feature.properties.region_id === $scope.formModel.region_id) {
-                  var featureBounds = L.geoJson(l.feature).getBounds();
-                  bounds.extend(featureBounds);
-                  map.fitBounds(bounds);
-                }
-              }
-            });
-            */
+            if (points.length > 1) {
+              map.fitBounds(bounds);
+            } else {
+              map.fitBounds(bounds, {maxZoom: 10});
+            }
           });
         });
       });

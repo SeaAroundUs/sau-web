@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, $q, regionDataMoreLinks, sauAPI) {
+  .directive('regionDataMore', function($sce, $timeout, $interpolate, $compile, $q,
+                                        regionDataMoreLinks, sauAPI, underReviewList) {
     return {
       link: function(scope, ele) {
         var params;
@@ -30,28 +31,51 @@ angular.module('sauWebApp')
         });
 
         function updateScope() {
+          var anyUnderReview;
+
           scope.moreData = angular.copy(regionDataMoreLinks.getLinks(scope.region));
 
           // handle url interpolation with single region data
           if (scope.region.id) {
             params = { region: scope.region.name, region_id: scope.region.id };
             sauAPI.Region.get(params, function(res) {
+              scope.data = res.data; // expose data to scope for template
+
               scope.moreData = scope.moreData.map(function(section) {
                 if (section.links && section.links.length) {
                   section.links.forEach(function(link) {
+                    if (link.ngText) {
+                      link.text = $interpolate(link.ngText, false, null, true)(res.data);
+                    }
+
                     if (link.ngUrl) {
                       link.url = $interpolate(link.ngUrl, false, null, true)(res.data);
                     }
                   });
 
                 } else if (section.eachOf) {
+                  anyUnderReview = false;
+
                   section.links = res.data[section.eachOf].reduce(function(links, item) {
+                    var underReview = false;
+                    var regionName = ['eez', 'eez-bordering', 'country-eezs'].indexOf(scope.region.name) ?
+                      'eez' :
+                      scope.region.name;
+
+                    if (underReviewList.isUnderReview({ name: regionName, ids: [item.id] })) {
+                      underReview = true;
+                      anyUnderReview = true;
+                    }
+
                     links.push({
                       text: $interpolate(section.text, false, null, true)(item),
-                      url: $interpolate(section.url, false, null, true)(item)
+                      url: $interpolate(section.url, false, null, true)(item),
+                      underReview: underReview
                     });
+
                     return links;
                   }, []);
+                  section.underReview = anyUnderReview;
                 }
 
                 return section;
@@ -107,20 +131,35 @@ angular.module('sauWebApp')
             case 'country-eezs':
               sectionTitle += 'country EEZs';
               break;
+            case 'taxa':
+              sectionTitle = 'View taxon page';
+              break;
+            case 'fao':
+              sectionTitle += 'FAOs';
+              break;
+            case 'eez-bordering':
+              sectionTitle += 'EEZs';
+              break;
           }
 
           $q.all(scope.region.ids.map(function(id) {
             return sauAPI.Region.get({ region: scope.region.name, region_id: id }).$promise;
           })).then(function(res) {
             var links = res.map(function(region) {
-              return {
-                text: region.data.title,
-                url: '#/' + scope.region.name + '/' + region.data.id
-              };
+              // push taxa to scope for template
+              if (scope.region.name === 'taxa') {
+                scope.taxa = scope.taxa || [];
+                scope.taxa.push(region.data);
+              }
+
+              return scope.region.name === 'taxa' ?
+                { text: region.data.common_name, url: '#/taxon/' + region.data.taxon_key } :
+                { text: region.data.title, url: '#/' + scope.region.name + '/' + region.data.id };
             });
 
             scope.moreData.unshift({
               section: sectionTitle,
+              class: 'vertical',
               links: links
             });
           });

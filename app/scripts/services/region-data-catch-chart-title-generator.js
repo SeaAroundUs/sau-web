@@ -24,6 +24,15 @@ angular.module('sauWebApp')
           } else if (region.name === 'rfmo') {
             promiseData = { data: { title: 'selected RFMOs' }};
 
+          } else if (region.name === 'taxa') {
+            promiseData = { data: { common_name: 'selected taxa' }};
+
+          } else if (region.name === 'fao') {
+            promiseData = { data: { title: 'the selected FAO areas' }};
+
+          } else if (region.name === 'eez-bordering') {
+            promiseData = { data: { title: 'the selected EEZs' }};
+
           } else {
             promiseData = { data: { title: 'selected regions' }};
           }
@@ -49,6 +58,16 @@ angular.module('sauWebApp')
 
           } else if (region.name === 'country-eezs') {
             chartTitle = chartTitle.replace(' in the ', ' in all the EEZ waters of ') + data.title;
+
+          } else if (region.name === 'taxa') {
+            chartTitle = formModel.measure.titleLabel + ' ' + data.common_name +
+              (!region.id ? ' by ' : ' <i>(' + data.scientific_name + ')</i> by ') + dimensionLabel;
+
+          } else if (region.name === 'fao') {
+            chartTitle += 'waters of ' + (region.id ? 'FAO area ' + data.title + ' (' + data.id + ')' : data.title);
+
+          } else if (region.name === 'eez-bordering') {
+            chartTitle += 'waters of ' + data.title + ' and neighboring EEZs';
 
           } else {
             chartTitle += 'waters of ' + data.title;

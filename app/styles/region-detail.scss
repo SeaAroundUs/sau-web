@@ -13,11 +13,20 @@
       }
     }
 
+    .nvd3 .nv-legend .nv-series {
+      cursor: default;
+    }
+
+    .taxon .nvd3 .nv-legend .nv-series {
+      cursor: pointer;
+    }
+
     &.eez {
         .metrics {
             min-height: 220px;
         }
     }
+
     &.lme {
         .metrics {
             min-height: 165px;
@@ -106,6 +115,9 @@
         padding-right: 0px;
     }
 
+    .multi-region-list p.under-review {
+        display: inline;
+    }
 }
 .eez .chart-container {
     .header-links {
@@ -179,6 +191,12 @@
         content: '';
         background-color: white;
       }
+    }
+    #managed-species-toggle {
+      // pull this up out of the chart container
+      position: absolute;
+      top: -63px;
+      right: -20px;
     }
 }
 .nvd3.nv-stackedarea path.nv-area {

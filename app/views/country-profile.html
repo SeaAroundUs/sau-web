@@ -1,5 +1,8 @@
 <div class="content-container" id="country-profile">
-    <h3>Country profile: <span ng-bind="profile.country"></span></h3>
+    <h2>Country profile: <span ng-bind="profile.country"></span></h2>
+    <a target="_blank" ng-href="{{profile.fao_profile_url}}">FAO Profile</a>
+
+    <h4>Governmental Organization(s)</h4>
     <p>
         Government agency for marine fisheries:
         <span ng-bind="profile.gov_marine_fish"></span>
@@ -8,6 +11,7 @@
         <br />
         <a target="_blank" ng-href="{{profile.url_fish_mgt_plan}}" ng-bind="profile.fish_mgt_plan"></a>
     </p>
+
     <p>
         Government agency for protection of the maritime environment:
         <span ng-bind="profile.gov_protect_marine_env"></span>
@@ -17,7 +21,6 @@
         <a target="_blank" ng-href="{{profile.url_major_law_plan}}" ng-bind="profile.major_law_plan"></a>
     </p>
 
-    <hr />
     <h4>Non-governmental organization(s) covering marine issues:</h4>
     <p ng-repeat="ngo in profile.ngo">
         <span class="title" ng-bind="ngo.ngo_name"></span>
@@ -30,11 +33,5 @@
             Website:
             <a target="_blank" ng-href="{{ngo.website}}" ng-bind="ngo.website"></a>
         </span>
-    </p>
-
-    <p id="links">
-        <a target="_blank" ng-href="{{profile.fao_profile_url}}">FAO Profile</a>
-        |
-        <span target="_blank">Code of conduct profile</a>
     </p>
 </div>

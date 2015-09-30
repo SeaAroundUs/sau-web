@@ -3,7 +3,17 @@
 </div>
 <div ng-if="taxon && ! taxon.error" class="taxon-info">
 	<h3>Key Information on <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})</h3>
-	<table class="table-bordered" >
+
+	<div class="taxa-link">
+		<a ng-href="#/taxon/{{ taxon.taxon_key }}" class="taxa-link">
+			View graph for catches of <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})
+		</a>
+	</div>
+	<div toggle-hide="taxon-distribution" class="taxa-link">
+		<a ng-href="#/spatial-catch?dist={{ taxon.taxon_key }}">View spatial distribution</a>
+	</div>
+
+	<table class="table-bordered">
 		<colgroup>
 			<col class="table-key col-xs-3" />
 			<col class="row-key" />

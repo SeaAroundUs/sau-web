@@ -1,0 +1,10 @@
+<span class="link">
+    <a target="_blank" ng-href="http://www.fao.org/fishery/rfb/{{data.title}}">FAO {{data.title}} Summary Description</a>
+</span>
+<span class="link">
+    <a target="_blank" ng-href="{{data.profile_url}}">{{data.title}} Website</a>
+</span>
+<span class="link">
+    <a ng-if="data.id !== 19" ng-href="#/rfmo/{{ data.id }}/procedures-and-outcomes">Procedures & Outcomes</a>
+    <span ng-if="data.id === 19" class="disabled">Procedures & Outcomes</span>
+</span>
