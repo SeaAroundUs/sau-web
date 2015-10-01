@@ -669,7 +669,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
         gridSize: [720, 360],
-        renderOnAnimate: false 
+        renderOnAnimate: false
       });
 
       map.setData(countries, {
