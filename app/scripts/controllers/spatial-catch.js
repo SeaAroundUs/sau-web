@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -240,18 +240,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           }
         }
 
-        if (map.layers.length === 1) {
-          map.setData(cellData, {
-            gridSize: [720, 360]
-          });
-          // swap layers to put data underneath land [SAU-1629]
-          var tmp = map.layers[0];
-          map.layers[0] = map.layers[1];
-          map.layers[1] = tmp;
-        } else {
-          map.layers[map.layers.length - 2].grid.data = cellData;
-          map.draw();
-        }
+        mapGridLayer.grid.data = cellData;
+        map.draw();
       }, 50).then(function () {
         $scope.isRendering = false;
       });
@@ -663,11 +653,23 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     var map;
+    var mapGridLayer;
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: 'rgba(181, 224, 249, 1)',
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true
+      });
+
+      map.setData(eezSpatialData.data, {
+        fillColor: 'rgba(140, 204, 242, 1)',
+        strokeColor: 'rgba(0, 0, 0, 0)',
+        renderOnAnimate: false
+      });
+
+      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
+        gridSize: [720, 360],
+        renderOnAnimate: false
       });
 
       map.setData(countries, {

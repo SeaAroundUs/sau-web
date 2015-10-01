@@ -375,6 +375,9 @@ angular
             },
             functionalGroups: function (sauAPI) {
               return sauAPI.FunctionalGroups.get().$promise;
+            },
+            eezSpatialData: function (sauAPI) {
+              return sauAPI.Regions.get({region: 'eez', format: 'topojson'}).$promise;
             }
           }
         });
