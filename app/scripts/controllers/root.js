@@ -21,7 +21,7 @@
           switch (location.$$route.controller) {
             case 'MapCtrl':
               if (location.locals && location.locals.region === 'mariculture') {
-                $scope.subtemplates[5].class = 'selected';
+                $scope.subtemplates[toggles.isEnabled('spatial') ? 5 : 4].class = 'selected';
               } else {
                 $scope.subtemplates[0].class = 'selected';
               }
@@ -33,13 +33,13 @@
               $scope.subtemplates[2].class = 'selected';
               break;
             case 'FERUCtrl':
-              $scope.subtemplates[3].class = 'selected';
+              $scope.subtemplates[toggles.isEnabled('spatial') ? 3 : 2].class = 'selected';
               break;
             case 'TopicBiodiversityCtrl':
-              $scope.subtemplates[4].class = 'selected';
+              $scope.subtemplates[toggles.isEnabled('spatial') ? 4 : 3].class = 'selected';
               break;
             case 'MarineTrophicIndexSearchCtrl':
-              $scope.subtemplates[6].class = 'selected';
+              $scope.subtemplates[toggles.isEnabled('spatial') ? 6 : 5].class = 'selected';
               break;
           }
         }
