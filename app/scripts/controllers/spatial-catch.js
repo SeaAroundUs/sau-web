@@ -173,6 +173,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.getCompareeLink = function (comparee) {
       if ($scope.lastQuery.comparableType.field === 'taxa') {
         return '#/taxa/' + comparee;
+      } else if ($scope.lastQuery.comparableType.field === 'fishingCountries') {
+        var countryId = $scope.getValueFromObjectArray(
+          $scope.fishingCountries, //Array
+          $scope.lastQuery.comparableType.key, //Object Key
+          comparee, //Value of that key
+          'country_id'); //The property of the object that we want the value of.
+        return '#/country/' + countryId;
       }
 
       return null;
