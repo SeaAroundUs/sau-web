@@ -5,7 +5,7 @@
 	<span class="not-bold">{{keyNameSecond}}</span>
 </label>
 <ul class="legend-color-bar list-inline">
-	<li class="legend-color-swatch" ng-repeat="swatch in [1, 2, 3, 4, 5]" ng-init="colorMe($index)"></li>
+	<li class="legend-color-swatch" ng-repeat="swatch in repeatForRange(numBuckets) track by $index" ng-init="colorMe($index)"></li>
 </div>
 <div class="pull-left legend-measure">{{maxLabel}}</div>
 <div class="pull-right legend-measure">{{minLabel}}</div>

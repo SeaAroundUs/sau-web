@@ -26,6 +26,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         queryParams.year = query.year;
       }
 
+      //..Number of buckets (color thresholds)
+      if (query.bucketCount) {
+        queryParams.buckets = query.bucketCount;
+      }
+
+      //Which type of bucketing function should we use
+      if (query.bucketingMethod) {
+        queryParams.buckmeth = query.bucketingMethod;
+      }
+
       switch (query.catchesBy) {
         //...Taxa
         case 'taxa':
@@ -223,7 +233,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             }
             for (j = 0; j < cellBlob.data.length; j++) {
               var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
-              whiteness = (5 - cellSubBlob.threshold) / 5;
+              whiteness = ($scope.lastQuery.bucketCount - cellSubBlob.threshold) / $scope.lastQuery.bucketCount;
               for (var k = 0; k < cellSubBlob.cells.length; k++) {
                 cell = cellSubBlob.cells[k];
                 colorCell(cellData, cell, color, whiteness);
@@ -375,6 +385,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
+      //Number of color thresholds
+      if (search.buckets) {
+        $scope.query.bucketCount = Math.min(+search.buckets, 10);
+      } else {
+        $scope.query.bucketCount = 5;
+      }
+
+      //Bucketing method
+      if (search.buckmeth) {
+        $scope.query.bucketingMethod = search.buckmeth;
+      }
+
       //Compare type (must supply one, no matter what)
       updateComparableTypeList();
       if (search.compare) {
@@ -440,6 +462,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $location.search('year', queryYear);
       } else {
         $location.search('year', null);
+      }
+
+      //Number of color thresholds
+      if ($scope.query.bucketCount && $scope.query.bucketCount !== 5) {
+        $location.search('buckets', $scope.query.bucketCount);
+      } else {
+        $location.search('buckets', null);
+      }
+
+      //Bucketing method
+      if ($scope.query.bucketingMethod && $scope.query.bucketingMethod !== 'ptile') {
+        $location.search('buckmeth', $scope.query.bucketingMethod);
+      } else {
+        $location.search('buckmeth', null);
       }
 
       //Compare type

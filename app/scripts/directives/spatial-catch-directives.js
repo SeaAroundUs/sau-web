@@ -11,7 +11,8 @@ angular.module('sauWebApp')
         color: '=',
         maxLabel: '=',
         minLabel: '=',
-        keyLink: '='
+        keyLink: '=',
+        numBuckets: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
@@ -19,21 +20,29 @@ angular.module('sauWebApp')
       },
       controller: function ($scope) {
         $scope.$watch('color', colorAll);
+        if (!$scope.numBuckets) {
+          $scope.numBuckets = 5;
+        }
 
         function colorAll() {
-          for (var i = 0; i < 5; i++) {
+          for (var i = 0; i < +$scope.numBuckets; i++) {
             $scope.colorMe(i);
           }
         }
 
         $scope.colorMe = function(index) {
-          var pct = index / 6;
+          var pct = index / (+$scope.numBuckets + 1);
           var color = lightenColor($scope.color, pct);
           var swatch = $scope.legendColorBar.children('.legend-color-swatch')[index];
           //Swatch will be null if this function gets called befor the DOM is ready.
           if (swatch) {
             swatch.style.backgroundColor = colorArrayToCss(color);
+            swatch.style.width = pctToCss(1 / +$scope.numBuckets);
           }
+        };
+
+        $scope.repeatForRange = function (range) {
+          return new Array(+range);
         };
 
         function lightenColor (color, pct) {
@@ -51,6 +60,10 @@ angular.module('sauWebApp')
 
         function colorArrayToCss (color) {
           return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+        }
+
+        function pctToCss(pct) {
+          return Math.round(pct * 100) + '%';
         }
       }
     };
