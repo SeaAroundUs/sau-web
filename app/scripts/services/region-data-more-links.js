@@ -17,6 +17,7 @@ angular.module('sauWebApp')
     importantNotes.fao = importantNotes.global;
     importantNotes.lme = importantNotes.global;
     importantNotes.eez = importantNotes.global;
+    importantNotes.highseas = importantNotes.global;
 
     var links = {
       // Global links
@@ -91,7 +92,7 @@ angular.module('sauWebApp')
         },
         {
           section: 'More info',
-          template: 'views/region-data/rfmo-info.html',
+          template: 'views/region-data/rfmo-info.html'
         },
         {
           section: 'Governance',
@@ -103,6 +104,27 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/rfmo/{{ id }}/stock-status' },
             { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint' },
             { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
+          ]
+        }
+      ],
+
+      // High seas links
+      highseas: [
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'Ecopath models',
+              url: 'http://www.ecopath.org/models/'
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/highseas/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/highseas/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/highseas/{{ id }}/marine-trophic-index' }
           ]
         }
       ],

@@ -161,9 +161,10 @@ angular
           reloadOnSearch: false,
           resolve: {region: function() {return 'highseas';}}
         })
-        .when('/highseas/:id', {
-          templateUrl: 'views/region-detail/main.html',
-          controller: 'RegionDetailCtrl',
+        .when('/highseas/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
           resolve: {region: function() {return 'highseas';}}
         })
         .when('/highseas/:id/marine-trophic-index', {
