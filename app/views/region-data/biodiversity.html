@@ -1,3 +1,22 @@
 <div id="biodiversity">
-  <a href="">Exploited organisms</a> <i>View all exploited taxa for this region</i>
+  <a ng-href="#/{{ region.name }}/{{ region.id }}/exploited-organisms">Exploited organisms</a>
+  <i>View all exploited taxa for this region</i>
+  <div class="base-links">
+    <div>
+      <h5>Fishbase links</h5>
+      <ul>
+        <li ng-repeat="link in fishbaseLinks">
+          <a ng-href="{{ link.url }}" ng-bind="link.label"></a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h5>SeaLifeBase links</h5>
+      <ul>
+        <li ng-repeat="link in sealifebaseLinks">
+          <a ng-href="{{ link.url }}" ng-bind="link.label"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

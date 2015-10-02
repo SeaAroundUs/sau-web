@@ -14,9 +14,10 @@ angular.module('sauWebApp')
         return Number(d).toFixed(3).toString();
       };
 
-      // update EEZ declaration year display
-      $scope.updateDeclarationYear = function() {
-        //TODO
+      // eez declaration
+      $scope.declarationYear = {
+        visible: false,
+        exists: $scope.region.name === 'eez'
       };
 
       // get chart data
@@ -29,11 +30,55 @@ angular.module('sauWebApp')
 
       // update chart when region changes
       $scope.$watch('region', getChartData, true);
+      $scope.$watch('declarationYear', updateDeclarationYear, true);
 
 
       /*
        * helper functions
        */
+
+      function updateDeclarationYear() {
+        if ($scope.declarationYear.exists) {
+          $scope.declarationYear.visible ? drawDeclarationYear() : hideDeclarationYear();
+        }
+      }
+
+      function hideDeclarationYear() {
+        $scope.declarationYear.visible = false;
+        d3.select('.chart-container svg .nv-stackedarea g#declaration-year').remove();
+      }
+
+      function drawDeclarationYear() {
+        $scope.declarationYear.visible = true;
+        $timeout(function() {
+          sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id }, function(res) {
+            var decYear = Math.max(1950, res.data.declaration_year);
+            var chart = $scope.api.getScope().chart;
+            var container = d3.select('.chart-container svg .nv-stackedarea');
+            container.select('#declaration-year').remove();
+            var x = chart.xAxis.scale()(decYear);
+            var g = container.append('g');
+            g.attr('id', 'declaration-year');
+            g.append('line')
+              .attr({
+                x1: x,
+                y1: 0.0,
+                x2: x,
+                y2: chart.yAxis.scale()(0)
+              })
+              .style('stroke', '#2daf51')
+              .style('stroke-width', '1');
+
+            g.append('text')
+              .attr({
+                fill: '#000',
+                style: 'font-style: italic;',
+                transform: 'translate(' + (x + 15) + ',150) rotate(270,0,0)'
+              })
+              .text('EEZ declaration year: ' + decYear);
+          });
+        });
+      }
 
       function updateDataDownloadURL() {
         var params = ['',
@@ -83,7 +128,7 @@ angular.module('sauWebApp')
           $scope.data = data.countries;
 
           // update EEZ declaration year display
-          $scope.updateDeclarationYear();
+          updateDeclarationYear();
 
           // Once we obtain the maximumFraction data, we may want to raise the ceiling on the yAxis.
           // Sometimes the maximumFraction is larger than the largest data point,
@@ -115,10 +160,14 @@ angular.module('sauWebApp')
           });
 
           // update chart title
-          regionDataCatchChartTitleGenerator.setTitle('Primary Production Required for catches in ' +
-            (data.title ? 'the waters of ' + data.title : 'the global ocean') +
-            ($scope.region.faoId ? ' - ' + faos.getFAOName($scope.region.name, $scope.region.id, $scope.region.faoId) : '')
-          );
+          sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id}, function(res) {
+            regionDataCatchChartTitleGenerator.setTitle('Primary Production Required for catches in ' +
+              (res.data.title ? 'the waters of ' + res.data.title : 'the global ocean') +
+              ($scope.region.faoId && $scope.faos ? ' - ' + $scope.faos.reduce(function(name, fao) {
+                return fao.id === $scope.region.faoId ? fao.title : name;
+              }, 'Unknown') : '')
+            );
+          });
 
           // update download url
           updateDataDownloadURL();
@@ -140,7 +189,7 @@ angular.module('sauWebApp')
       controller: controller,
       replace: true,
       restrict: 'E',
-      scope: { region: '=' },
+      scope: { region: '=', faos: '=' },
       templateUrl: 'views/region-data/multinational-footprint.html'
     }
   });
