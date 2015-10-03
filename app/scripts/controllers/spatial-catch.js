@@ -118,40 +118,66 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.minCatch = function(comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data) {
-        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            val = $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
-            break;
+      var i;
+
+      //If a comparee is specified, get the min catch for that comparee,
+      if (comparee) {
+        if ($scope.spatialCatchData.data) {
+          for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
+            if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
+              val = $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
+              break;
+            }
+          }
+        }
+      //Otherwise, get the overall min catch of all comparees.
+      } else {
+        var overallMinCatch = 0;
+        for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
+          var currMinCatch = +$scope.spatialCatchData.data[i].min_catch;
+          if (val === 0 || currMinCatch < overallMinCatch) {
+            overallMinCatch = currMinCatch;
+            val = $filter('number')(overallMinCatch, 0);
           }
         }
       }
 
       var strVal = ''+val;
       if (val < 1) {
-        strVal = '< 1';
+        strVal = '<1';
       }
-      var units = 't/km²';
-      return strVal + ' ' + units;
+      return strVal;
     };
 
     $scope.maxCatch = function (comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data) {
-        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            val = $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
-            break;
+      var i;
+
+      if (comparee) {
+        if ($scope.spatialCatchData.data) {
+          for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
+            if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
+              val = $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
+              break;
+            }
+          }
+        }
+      } else {
+        var overallMaxCatch = 0;
+        for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
+          var currMaxCatch = +$scope.spatialCatchData.data[i].max_catch;
+          if (val === 0 || currMaxCatch > overallMaxCatch) {
+            overallMaxCatch = currMaxCatch;
+            val = $filter('number')(overallMaxCatch, 0);
           }
         }
       }
 
       var strVal = ''+val;
       if (val < 1) {
-        strVal = '< 1';
+        strVal = '<1';
       }
-      var units = 't/km²';
-      return strVal + ' ' + units;
+      return strVal;
     };
 
     $scope.totalCatch = function (comparee) {

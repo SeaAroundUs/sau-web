@@ -80,11 +80,25 @@
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row">
-        <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)" num-buckets="lastQuery.bucketCount || 5"></spatial-catch-legend-key>
+        <div class="col-md-12 small-label">
+          {{lastQuery.comparableType.name}}
+          <span class="not-bold"> (0 to {{maxCatch()}} t/km²)</span>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="" max-label="" num-buckets="lastQuery.bucketCount || 5"></spatial-catch-legend-key>
+        </div>
+      </div>
+      <div class="row" ng-show="lastQuery.taxonDistribution.length > 0">
+        <div class="col-md-12 small-label">
+          <hr />
+          Taxon distribution
+        </div>
+      </div>
+      <div class="row" ng-show="lastQuery.taxonDistribution.length > 0">
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
-          <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="'Thin'", max-label="'Dense'" num-buckets="lastQuery.bucketCount || 5"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5"></spatial-catch-legend-key>
         </div>
       </div>
     </div>

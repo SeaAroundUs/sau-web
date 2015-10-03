@@ -31,8 +31,8 @@ angular.module('sauWebApp')
         }
 
         $scope.colorMe = function(index) {
-          var pct = index / (+$scope.numBuckets + 1);
-          var color = lightenColor($scope.color, pct);
+          var lightenPct = ($scope.numBuckets - 1 - index) / (+$scope.numBuckets + 1);
+          var color = lightenColor($scope.color, lightenPct);
           var swatch = $scope.legendColorBar.children('.legend-color-swatch')[index];
           //Swatch will be null if this function gets called befor the DOM is ready.
           if (swatch) {
