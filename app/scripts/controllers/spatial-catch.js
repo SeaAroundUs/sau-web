@@ -116,31 +116,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return query && ((query.fishingCountries && query.fishingCountries.length > 0) || (query.taxonDistribution && query.taxonDistribution.length > 0));
     };
 
-    $scope.minCatch = function(comparee) {
-      var val = 0;
-      var i;
-
-      //If a comparee is specified, get the min catch for that comparee,
-      if (comparee) {
-        if ($scope.spatialCatchData.data) {
-          for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
-            if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-              val = $filter('number')(+$scope.spatialCatchData.data[i].min_catch, 0);
-              break;
-            }
-          }
-        }
-      //Otherwise, get the overall min catch of all comparees.
-      } else {
-        var overallMinCatch = 0;
-        for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          var currMinCatch = +$scope.spatialCatchData.data[i].min_catch;
-          if (val === 0 || currMinCatch < overallMinCatch) {
-            overallMinCatch = currMinCatch;
-            val = $filter('number')(overallMinCatch, 0);
-          }
-        }
-      }
+    $scope.minCatch = function() {
+      var val = $filter('number')($scope.spatialCatchData.data.min_catch, 0);
 
       var strVal = ''+val;
       if (val < 1) {
@@ -149,29 +126,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return strVal;
     };
 
-    $scope.maxCatch = function (comparee) {
-      var val = 0;
-      var i;
-
-      if (comparee) {
-        if ($scope.spatialCatchData.data) {
-          for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
-            if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-              val = $filter('number')(+$scope.spatialCatchData.data[i].max_catch, 0);
-              break;
-            }
-          }
-        }
-      } else {
-        var overallMaxCatch = 0;
-        for (i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          var currMaxCatch = +$scope.spatialCatchData.data[i].max_catch;
-          if (val === 0 || currMaxCatch > overallMaxCatch) {
-            overallMaxCatch = currMaxCatch;
-            val = $filter('number')(overallMaxCatch, 0);
-          }
-        }
-      }
+    $scope.maxCatch = function () {
+      var val = $filter('number')($scope.spatialCatchData.data.max_catch, 0);
 
       var strVal = ''+val;
       if (val < 1) {
@@ -183,9 +139,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.totalCatch = function (comparee) {
       var val = 0;
       if ($scope.spatialCatchData.data) {
-        for (var i = 0; i < $scope.spatialCatchData.data.length; i++) {
-          if ($scope.spatialCatchData.data[i].rollup_key === ''+comparee) {
-            val = $filter('number')(+$scope.spatialCatchData.data[i].total_catch, 0);
+        for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
+          if ($scope.spatialCatchData.data.rollup[i].rollup_key === ''+comparee) {
+            val = $filter('number')(+$scope.spatialCatchData.data.rollup[i].total_catch, 0);
             break;
           }
         }
@@ -251,8 +207,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //Color up the spatial catch data cells
         if ($scope.spatialCatchData === responses[0] && responses[0].data) {
           var spatialCatchResponse = responses[0].data;
-          for (i = 0; i < spatialCatchResponse.length; i++) {
-            var cellBlob = spatialCatchResponse[i]; //Grouped cells
+          for (i = 0; i < spatialCatchResponse.rollup.length; i++) {
+            var cellBlob = spatialCatchResponse.rollup[i]; //Grouped cells
             color = colorAssignment.getDefaultColor();
             if ($scope.isQueryComparable($scope.lastQuery)) {
               color = colorAssignment.colorOf(cellBlob.rollup_key);
@@ -730,14 +686,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         disableMouseZoom: true
       });
 
-      map.setData(eezSpatialData.data, {
-        fillColor: 'rgba(140, 204, 242, 1)',
-        strokeColor: 'rgba(0, 0, 0, 0)',
+      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
+        gridSize: [720, 360],
         renderOnAnimate: false
       });
 
-      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
-        gridSize: [720, 360],
+      map.setData(eezSpatialData.data, {
+        fillColor: 'rgba(0, 117, 187, 0)',
+        strokeColor: 'rgba(0, 117, 187, 1)',
         renderOnAnimate: false
       });
 
