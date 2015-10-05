@@ -233,7 +233,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             var packed = typedArray[j];
             cell = packed & 0xfffff;
             var value = packed >>> 24;
-            whiteness = (255 - value) / 255;
+            whiteness = (255 - value) / 255 * 0.8;
             color = colorAssignment.colorOf('#' + taxonId);
             colorCell(cellData, cell, color, whiteness);
           }
