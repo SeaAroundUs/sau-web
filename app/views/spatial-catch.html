@@ -3,8 +3,6 @@
   <h1 class="main-title" ng-if="!lastQuery">Global fishing search</h1>
   <ul id="side-menu" class="pull-right list-unstyled text-right">
     <li><method anchor="13"></method></li>
-    <li ng-show="!useScientificName"><a href ng-click="useScientificName = !useScientificName">Show scientific names</a></li>
-    <li ng-show="useScientificName"><a href ng-click="useScientificName = !useScientificName">Show common names</a></li>
   </ul>
   <p id="main-text">
     Select one or more fishing countries below to display allocated catch data on the map.
@@ -30,7 +28,7 @@
           <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
-              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null}" ></selectize>
+              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
@@ -77,7 +75,7 @@
     </div>
     <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
-        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null}" ></selectize></div>
+        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize></div>
       </div>
     </div>
     <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">

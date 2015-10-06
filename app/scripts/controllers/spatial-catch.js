@@ -117,7 +117,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.minCatch = function() {
-      var val = $filter('number')($scope.spatialCatchData.data.min_catch, 0);
+      var val = 0;
+      if ($scope.spatialCatchData.data) {
+        val = $filter('number')($scope.spatialCatchData.data.min_catch, 0);
+      }
 
       var strVal = ''+val;
       if (val < 1) {
@@ -127,7 +130,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.maxCatch = function () {
-      var val = $filter('number')($scope.spatialCatchData.data.max_catch, 0);
+      var val = 0;
+      if ($scope.spatialCatchData.data) {
+        val = $filter('number')($scope.spatialCatchData.data.max_catch, 0);
+      }
 
       var strVal = ''+val;
       if (val < 1) {
@@ -138,7 +144,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.totalCatch = function (comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data) {
+      if ($scope.spatialCatchData.data && $scope.spatialCatchData.data.rollup) {
         for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
           if ($scope.spatialCatchData.data.rollup[i].rollup_key === ''+comparee) {
             val = $filter('number')(+$scope.spatialCatchData.data.rollup[i].total_catch, 0);
@@ -194,6 +200,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       map.zoomOut();
     };
 
+    //This is used to render the list items in the multi-select dropdowns for taxa.
+    //It shows both the common and scientific names, scientific in italics.
+    $scope.makeTaxaDropdownItem = function (item, escape) {
+      return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
+    };
+
     function drawCellData(responses) {
       $scope.queryResolved = true;
       $scope.isRendering = true;
@@ -205,10 +217,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
 
         //Color up the spatial catch data cells
-        if ($scope.spatialCatchData === responses[0] && responses[0].data) {
-          var spatialCatchResponse = responses[0].data;
-          for (i = 0; i < spatialCatchResponse.rollup.length; i++) {
-            var cellBlob = spatialCatchResponse.rollup[i]; //Grouped cells
+        if ($scope.spatialCatchData === responses[0] && responses[0].data && responses[0].data.rollup) {
+          var groups = responses[0].data.rollup;
+          for (i = 0; i < groups.length; i++) {
+            var cellBlob = groups[i]; //Grouped cells
             color = colorAssignment.getDefaultColor();
             if ($scope.isQueryComparable($scope.lastQuery)) {
               color = colorAssignment.colorOf(cellBlob.rollup_key);
@@ -478,12 +490,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $location.replace();
     }
 
-    function updateTaxaDisplayName() {
-      for (var i = 0; i < $scope.taxa.length; i++) {
-        $scope.taxa[i].displayName = $scope.useScientificName ? $scope.taxa[i].scientific_name : $scope.taxa[i].common_name;
-      }
-    }
-
     function getQuerySentence (query) {
       //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries] in [year]
 
@@ -592,7 +598,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         measure: 'tonnage',
         dimension: graphDimension,
         limit: '10',
-        useScientificName: $scope.useScientificName,
         regionIds: query.fishingCountries
       };
       return '#' + createQueryUrl.forRegionCatchChart(urlConfig);
@@ -600,7 +605,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function getBucketsOfCell(cellId) {
       var buckets = [];
-      if (!$scope.spatialCatchData || !$scope.spatialCatchData.data) {
+      if (!$scope.spatialCatchData || !$scope.spatialCatchData.data || !$scope.spatialCatchData.data.rollup) {
         return buckets;
       }
 
@@ -624,12 +629,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
+    for (var i = 0; i < $scope.taxa.length; i++) {
+      $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
+    }
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
-    $scope.useScientificName = false;
     $scope.bucketSizes = bucketSizes;
     $scope.bucketingMethods = bucketingMethods;
 
@@ -646,7 +653,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
     $scope.$watch('query.reportingStatuses', updateComparableTypeList);
     $scope.$watch('query.catchTypes', updateComparableTypeList);
-    $scope.$watch('useScientificName', updateTaxaDisplayName);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
@@ -712,7 +718,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
         //TEMPORARY - Amy wants to see the threshold numbers temporarily. This is expensive, spammy, and should be removed.
-        onCellHover: function (cellId) {
+        onCellHover: function (cell, cellId) {
           console.log(getBucketsOfCell(cellId));
         }
       });
