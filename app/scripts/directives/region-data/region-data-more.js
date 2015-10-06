@@ -62,6 +62,10 @@ angular.module('sauWebApp')
                   { label: 'Threatened non-fish organisms', url: 'http://www.sealifebase.org/Country/CountryChecklist.php?c_code='+ fishBaseId +'&vhabitat=threatened&csub_code=' }
                 ];
 
+                scope.data.fao_rfb = scope.data.fao_rfb.reduce(function(html, rfb) {
+                  return html + '<div class="fao-rfb"><a href="' + rfb.url + '">' + rfb.name + '</a></div>'
+                }, '');
+
               } else if (scope.region.name === 'lme') {
                 scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
               }

@@ -40,6 +40,12 @@ angular.module('sauWebApp')
           ]
         },
         {
+          section: 'Governance',
+          links: [
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
+          ]
+        },
+        {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
             { text: 'Stock status plots', url: '#/global/stock-status' },
@@ -61,6 +67,7 @@ angular.module('sauWebApp')
               ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
             },
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
             // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }
@@ -150,7 +157,8 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           links: [
-            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' }
+            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
+            { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
         },
         /*
@@ -202,15 +210,7 @@ angular.module('sauWebApp')
         },
         {
           section: 'Governance',
-          links: [
-            { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
-            { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
-            {
-              text: 'Treaties & conventions',
-              ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?Country={{ fishbase_id }}'
-            },
-            { text: 'FAO Profile', ngUrl: '{{ fao_profile_url }}' }
-          ]
+          template: 'views/region-data/eez-governance.html'
         },
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
