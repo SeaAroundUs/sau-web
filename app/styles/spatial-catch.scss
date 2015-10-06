@@ -95,7 +95,15 @@
     .expand-collapse-label {
       color: #1879BB;
       position: relative;
-      bottom: 1px;
+      bottom: 4px;
+      font-size: larger;
+      font-weight: 600;
+
+      .expand-collapse-sub-label {
+        font-weight: normal;
+        font-size: small;
+        bottom: 1px;
+      }
     }
 
     .expand-icon {
