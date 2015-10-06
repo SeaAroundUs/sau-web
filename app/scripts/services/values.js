@@ -116,12 +116,58 @@ angular.module('sauWebApp')
     }
   ])
   .value('catchTypes', [
-      {
-        name: 'Landings',
-        id: 'R'
-      },
-      {
-        name: 'Discards',
-        id: 'D'
-      }
-  ]);
+    {
+      name: 'Landings',
+      id: 'R'
+    },
+    {
+      name: 'Discards',
+      id: 'D'
+    }
+  ])
+  /*.value('bucketSizes', [
+    {
+      name: 5,
+      id: 5
+    },
+    {
+      name: 6,
+      id: 6
+    },
+    {
+      name: 7,
+      id: 7
+    },
+    {
+      name: 8,
+      id: 8
+    },
+    {
+      name: 9,
+      id: 9
+    },
+    {
+      name: 10,
+      id: 10
+    }
+  ])*/
+  .value('bucketSizes', [5, 6, 7, 8, 9, 10])
+  .value('bucketingMethods', ['plog', 'nlog', 'ptile', 'ntile']);
+  /*.value('bucketingMethods', [
+    {
+      name: 'plog',
+      id: 'plog'
+    },
+    {
+      name: 'nlog',
+      id: 'nlog'
+    },
+    {
+      name: 'ptile',
+      id: 'ptile'
+    },
+    {
+      name: 'ntile',
+      id: 'ntile'
+    }
+  ]);*/

@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, bucketSizes, bucketingMethods) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -377,6 +377,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Bucketing method
       if (search.buckmeth) {
         $scope.query.bucketingMethod = search.buckmeth;
+      } else {
+        $scope.query.bucketingMethod = 'ptile';
       }
 
       //Compare type (must supply one, no matter what)
@@ -605,6 +607,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
     $scope.useScientificName = false;
+    $scope.bucketSizes = bucketSizes;
+    $scope.bucketingMethods = bucketingMethods;
 
     $scope.$watch(
       [
