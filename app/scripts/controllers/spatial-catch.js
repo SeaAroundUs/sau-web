@@ -598,6 +598,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return '#' + createQueryUrl.forRegionCatchChart(urlConfig);
     }
 
+    function getBucketsOfCell(cellId) {
+      var buckets = [];
+      if (!$scope.spatialCatchData || !$scope.spatialCatchData.data) {
+        return buckets;
+      }
+
+      var groups = $scope.spatialCatchData.data.rollup;
+      for (var i = 0; i < groups.length; i++) {
+        var group = groups[i];
+        for (var j = 0; j < group.data.length; j++) {
+          var threshold = group.data[j];
+          for (var k = 0; k < threshold.cells.length; k++) {
+            var cell = threshold.cells[k];
+            if (cell === cellId) {
+              buckets.push(threshold.threshold);
+            }
+          }
+        }
+      }
+
+      return buckets;
+    }
+
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
     $scope.taxa = taxa.data;
@@ -687,7 +710,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: 'rgba(181, 224, 249, 1)',
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
-        disableMouseZoom: true
+        disableMouseZoom: true,
+        //TEMPORARY - Amy wants to see the threshold numbers temporarily. This is expensive, spammy, and should be removed.
+        onCellHover: function (cellId) {
+          console.log(getBucketsOfCell(cellId));
+        }
       });
 
       mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
