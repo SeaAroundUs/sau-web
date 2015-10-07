@@ -1,0 +1,9 @@
+a.define {
+  color: #333;
+  border-bottom: 1px dotted #333;
+
+  &:hover {
+    text-decoration: none;
+    border-bottom: 1px solid #333;
+  }
+}

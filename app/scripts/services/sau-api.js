@@ -89,6 +89,7 @@ angular.module('sauWebApp')
           });
         }
       },
+      Glossary: resourceFactory('glossary/'),
       apiURL: SAU_CONFIG.apiURL
     };
 
