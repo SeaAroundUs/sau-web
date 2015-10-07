@@ -92,6 +92,15 @@
       margin-right: 5px;
     }
 
+    .info-icon {
+      font-size: 18px;
+      width: 16px;
+      height: 16px;
+      position: relative;
+      bottom: 4px;
+      padding-left: 3px;
+    }
+
     .expand-collapse-label {
       color: #1879BB;
       position: relative;
@@ -113,6 +122,10 @@
     .collapse-icon {
       background: url(../images/control-caret-down.svg);
     }
+  }
+
+  .popover {
+    color: black;
   }
 
   .timeline {

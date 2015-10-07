@@ -13,7 +13,11 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <span ng-init="showAllocationFields = true" class="expand-collapse-button" ng-click="showAllocationFields = !showAllocationFields"><div class="expand-collapse-icon" ng-class="{'expand-icon': !showAllocationFields, 'collapse-icon': showAllocationFields}"></div><span class="expand-collapse-label">MAP TAXON ALLOCATION</span></span>
+          <span ng-init="showAllocationFields = true" class="expand-collapse-button" ng-click="showAllocationFields = !showAllocationFields">
+            <div class="expand-collapse-icon" ng-class="{'expand-icon': !showAllocationFields, 'collapse-icon': showAllocationFields}"></div>
+            <span class="expand-collapse-label">MAP TAXON ALLOCATION</span>
+            <a popover="Displays where fish are caught. You can filter by several parameters to narrow your results." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+          </span>
         </div>
       </div>
 
@@ -76,7 +80,11 @@
     <div class="row" style="margin-top: -24px" toggle-hide="taxon-distribution">
       <div class="col-xs-12">
         <hr />
-        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar"><div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div><span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of MM/DD/YYYY</span></span></span>
+        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
+          <div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div>
+          <span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of MM/DD/YYYY</span></span>
+          <a popover="Displays the latest range for the selected taxon/taxa." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+        </span>
       </div>
     </div>
     <div class="row" toggle-hide="taxon-distribution">
