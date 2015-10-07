@@ -88,7 +88,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       }
 
-      $q.all(promises).then(drawCellData);
+      $q.all(promises).then(handleQueryResponse);
     };
 
     $scope.isQueryDirty = function() {
@@ -147,7 +147,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if ($scope.spatialCatchData.data && $scope.spatialCatchData.data.rollup) {
         for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
           if ($scope.spatialCatchData.data.rollup[i].rollup_key === ''+comparee) {
-            val = $filter('number')(+$scope.spatialCatchData.data.rollup[i].total_catch, 0);
+            val = +$scope.spatialCatchData.data.rollup[i].total_catch.toPrecision(1);
             break;
           }
         }
@@ -206,7 +206,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
     };
 
-    function drawCellData(responses) {
+    function handleQueryResponse(responses) {
       $scope.queryResolved = true;
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
@@ -218,6 +218,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Color up the spatial catch data cells
         if ($scope.spatialCatchData === responses[0] && responses[0].data && responses[0].data.rollup) {
+          $scope.bucketBoundaryLabels = createBucketBoundaryLabels($scope.spatialCatchData.data.bucket_boundaries);
+
           var groups = responses[0].data.rollup;
           for (i = 0; i < groups.length; i++) {
             var cellBlob = groups[i]; //Grouped cells
@@ -604,26 +606,38 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getBucketsOfCell(cellId) {
-      var buckets = [];
       if (!$scope.spatialCatchData || !$scope.spatialCatchData.data || !$scope.spatialCatchData.data.rollup) {
-        return buckets;
+        return {};
       }
-
+      var buckets = {}; //array of buckets by compareeId: buckets[compareeId] = 4;
       var groups = $scope.spatialCatchData.data.rollup;
+
       for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
+        buckets[group.rollup_key] = [];
         for (var j = 0; j < group.data.length; j++) {
           var threshold = group.data[j];
           for (var k = 0; k < threshold.cells.length; k++) {
             var cell = threshold.cells[k];
             if (cell === cellId) {
-              buckets.push(threshold.threshold);
+              buckets[group.rollup_key] = threshold.threshold - 1;
             }
           }
         }
       }
 
       return buckets;
+    }
+
+    function createBucketBoundaryLabels (boundaries) {
+      var boundaryLabels = new Array(boundaries.length - 1);
+
+      for (var i = 0; i < boundaries.length - 1; i++) {
+        //Each boundary label looks something like this: "8.3e-11 to 2.6e-3 t/km²"
+        boundaryLabels[i] = boundaries[i].toExponential(1) + ' to ' + boundaries[i + 1].toExponential(1) + ' t/km²';
+      }
+
+      return boundaryLabels;
     }
 
     //Resolved service responses
@@ -637,8 +651,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
+    //A list of the available bucketing sizes (5, 6, 7,8, 9, 10)
     $scope.bucketSizes = bucketSizes;
+    //A list of all the available bucketing methods (plog, nlog, ptile, ntile)
     $scope.bucketingMethods = bucketingMethods;
+    //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
+    $scope.highlightedBuckets = {};
 
     $scope.$watch(
       [
@@ -717,9 +735,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         seaColor: 'rgba(181, 224, 249, 1)',
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
-        //TEMPORARY - Amy wants to see the threshold numbers temporarily. This is expensive, spammy, and should be removed.
         onCellHover: function (cell, cellId) {
-          console.log(getBucketsOfCell(cellId));
+          $scope.highlightedBuckets = getBucketsOfCell(cellId);
+          $scope.$apply();
         }
       });
 

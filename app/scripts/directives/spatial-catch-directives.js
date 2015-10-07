@@ -12,11 +12,12 @@ angular.module('sauWebApp')
         maxLabel: '=',
         minLabel: '=',
         keyLink: '=',
-        numBuckets: '='
+        numBuckets: '=',
+        bucketRollovers: '=',
+        selectedBucket: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
-
       },
       controller: function ($scope) {
         $scope.$watch('color', colorAll);

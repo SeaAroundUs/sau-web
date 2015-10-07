@@ -221,6 +221,15 @@
   .legend-color-bar {
     height: 22px;
     margin-left: 0;
+
+    .tooltip-inner {
+      font-size: small !important;
+      font-weight: normal !important;
+    }
+
+    li.selected {
+      border: 3px solid rgba(0, 0, 0, .4);
+    }
   }
 
   .legend-color-swatch {
