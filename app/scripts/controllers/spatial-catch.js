@@ -8,6 +8,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       assignColorsToComparees();
       updateUrlFromQuery();
       $scope.loadingText = 'Downloading cells';
+      $scope.queryResponseErrorMessage = null;
       $scope.lastQuerySentence = getQuerySentence(query);
       $scope.catchGraphLinkText = getCatchGraphLinkText(query);
       $scope.catchGraphLink = getCatchGraphLink(query);
@@ -240,9 +241,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Color up the taxon distribution cells.
         var taxonDistResponses = responses.slice(responses[0] === $scope.spatialCatchData ? 1 : 0);
+        //Taxa distribution responses that have no data are noted in this array so that we can throw an error message to the user.
+        var datalessTaxaNames = [];
         for (i = 0; i < taxonDistResponses.length; i++) {
-          var typedArray = new Uint32Array(taxonDistResponses[i].data);
           var taxonId = $scope.lastQuery.taxonDistribution[i];
+          if (!taxonDistResponses[i].data || taxonDistResponses[i].data.byteLength === 0) {
+            datalessTaxaNames.push($scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'common_name'));
+            continue;
+          }
+          var typedArray = new Uint32Array(taxonDistResponses[i].data);
           for (j=0; j < typedArray.length; j++) {
             var packed = typedArray[j];
             cell = packed & 0xfffff;
@@ -251,6 +258,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             color = colorAssignment.colorOf('#' + taxonId);
             colorCell(cellData, cell, color, whiteness);
           }
+        }
+
+        //Update an error message to the user.
+        if (datalessTaxaNames.length > 0) {
+          $scope.queryResponseErrorMessage = 'There is no distribution data for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
         }
 
         mapGridLayer.grid.data = cellData;

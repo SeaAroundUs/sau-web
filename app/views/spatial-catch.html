@@ -121,6 +121,11 @@
           <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
         </div>
       </div>
+      <div class="row" ng-show="queryResponseErrorMessage">
+        <div class="col-xs-12">
+          <div class="alert alert-warning text-center">{{queryResponseErrorMessage}}</div>
+        </div>
+      </div>
     </div>
     <div id="cell-map">
       <div id="zoom-controls">
