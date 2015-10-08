@@ -262,7 +262,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Update an error message to the user.
         if (datalessTaxaNames.length > 0) {
-          $scope.queryResponseErrorMessage = 'There is no distribution data for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
+          $scope.queryResponseErrorMessage = 'There is currently no distribution data for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
         }
 
         mapGridLayer.grid.data = cellData;
