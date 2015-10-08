@@ -23,11 +23,11 @@
 
       <form novalidate ng-show="showAllocationFields">
         <div class="row">
-          <div class="col-md-4">
-            <label class="small-label" for="selectFishingCountries">Fishing countries</label>
-            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}" ></selectize>
+          <div ng-class="{'col-md-4': !inProd, 'col-md-12': inProd}">
+            <label class="small-label" for="selectFishingCountries">Fishing country</label>
+            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" env-hide="prod stage">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
             <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
               <option value="taxa">Taxon</option>
@@ -35,7 +35,7 @@
               <option value="functional groups">Functional group</option>
             </select>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6" env-hide="prod stage">
             <div ng-show="query.catchesBy === 'taxa'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
               <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize>
@@ -51,33 +51,33 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2">
+          <div class="col-md-2" env-hide="prod stage">
             <label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
             <selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" env-hide="prod stage">
             <label class="small-label" for="selectCatchType">Catch type(s)</label>
             <selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
           </div>
-        <div class="col-md-2">
+        <div class="col-md-2" env-hide="prod stage">
             <label for="compareInput" class="small-label">Compare</label>
             <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
           </div>
-          <div class="col-md-6 timeline">
+          <div class="timeline" ng-class="{'col-md-6': !inProd, 'col-md-12': inProd}">
             <spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" env-hide="prod stage">
             <label class="small-label">Number of buckets</label>
             <select placeholder="Select" class="form-control" ng-model="query.bucketCount" ng-options="item for item in bucketSizes"></select>
           </div>
-          <div class="col-md-2">
+          <div class="col-md-2" env-hide="prod stage">
             <label class="small-label">Bucketing method</label>
             <select placeholder="Select" class="form-control" ng-model="query.bucketingMethod" ng-options="item for item in bucketingMethods"></select>
           </div>
         </div>
       </form>
     </div>
-    <div class="row" style="margin-top: -24px" toggle-hide="taxon-distribution">
+    <div class="row" style="margin-top: -24px" env-hide="prod stage">
       <div class="col-xs-12">
         <hr />
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">

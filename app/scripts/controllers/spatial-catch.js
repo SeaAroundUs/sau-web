@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, bucketSizes, bucketingMethods) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, bucketSizes, bucketingMethods, SAU_CONFIG) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -669,6 +669,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.bucketingMethods = bucketingMethods;
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
+    SAU_CONFIG.env = 'prod';
+    $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
     $scope.$watch(
       [
