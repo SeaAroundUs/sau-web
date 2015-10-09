@@ -77,9 +77,8 @@
         </div>
       </form>
     </div>
-    <div class="row" style="margin-top: -24px" env-hide="prod stage">
+    <div class="row" env-hide="prod stage" style="margin-top: 20px">
       <div class="col-xs-12">
-        <hr />
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
           <div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div>
           <span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of MM/DD/YYYY</span></span>
