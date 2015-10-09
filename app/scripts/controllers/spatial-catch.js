@@ -256,7 +256,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Update an error message to the user.
         if (datalessTaxaNames.length > 0) {
-          $scope.queryResponseErrorMessage = 'There is currently no distribution data for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
+          $scope.queryResponseErrorMessage = 'No distribution data currently exists for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
         }
 
         mapGridLayer.grid.data = cellData;
@@ -391,7 +391,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (search.buckets) {
         $scope.query.bucketCount = Math.min(+search.buckets, 10);
       } else {
-        $scope.query.bucketCount = 7;
+        $scope.query.bucketCount = 10;
       }
 
       //Bucketing method
@@ -469,7 +469,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Number of color thresholds
-      if ($scope.query.bucketCount && $scope.query.bucketCount !== 7) {
+      if ($scope.query.bucketCount && $scope.query.bucketCount !== 10) {
         $location.search('buckets', $scope.query.bucketCount);
       } else {
         $location.search('buckets', null);
@@ -663,6 +663,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.bucketingMethods = bucketingMethods;
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
+    //SAU_CONFIG.env = "stage"; //Used to fake the staging environment.
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
     $scope.$watch(
