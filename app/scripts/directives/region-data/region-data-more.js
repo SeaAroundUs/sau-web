@@ -63,7 +63,7 @@ angular.module('sauWebApp')
                 ];
 
                 scope.data.fao_rfb = scope.data.fao_rfb.reduce(function(html, rfb) {
-                  return html + '<div class="fao-rfb"><a href="' + rfb.url + '">' + rfb.name + '</a></div>'
+                  return html + '<div class="fao-rfb"><a href="' + rfb.url + '" target="_blank">' + rfb.name + '</a></div>'
                 }, '');
 
               } else if (scope.region.name === 'lme') {
