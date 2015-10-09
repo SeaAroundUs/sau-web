@@ -120,27 +120,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.minCatch = function() {
       var val = 0;
       if ($scope.spatialCatchData.data) {
-        val = $filter('number')($scope.spatialCatchData.data.min_catch, 0);
+        val = $scope.spatialCatchData.data.min_catch.toExponential(1);
       }
 
       var strVal = ''+val;
-      if (val < 1) {
-        strVal = '<1';
-      }
-      return strVal;
+      return strVal + ' t/km²';
     };
 
     $scope.maxCatch = function () {
       var val = 0;
       if ($scope.spatialCatchData.data) {
-        val = $filter('number')($scope.spatialCatchData.data.max_catch, 0);
+        val = $scope.spatialCatchData.data.max_catch.toExponential(1);
       }
 
       var strVal = ''+val;
-      if (val < 1) {
-        strVal = '<1';
-      }
-      return strVal;
+      return strVal + ' t/km²';
     };
 
     $scope.totalCatch = function (comparee) {
@@ -397,7 +391,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (search.buckets) {
         $scope.query.bucketCount = Math.min(+search.buckets, 10);
       } else {
-        $scope.query.bucketCount = 5;
+        $scope.query.bucketCount = 7;
       }
 
       //Bucketing method
@@ -475,7 +469,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Number of color thresholds
-      if ($scope.query.bucketCount && $scope.query.bucketCount !== 5) {
+      if ($scope.query.bucketCount && $scope.query.bucketCount !== 7) {
         $location.search('buckets', $scope.query.bucketCount);
       } else {
         $location.search('buckets', null);
