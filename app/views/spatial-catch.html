@@ -25,7 +25,7 @@
         <div class="row">
           <div ng-class="{'col-md-4': !inProd, 'col-md-12': inProd}">
             <label class="small-label" for="selectFishingCountries">Fishing country</label>
-            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
+            <selectize ng-model="selectedFishingCountry" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button'], maxItems: 1}"></selectize>
           </div>
           <div class="col-md-2" env-hide="prod stage">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
@@ -99,12 +99,6 @@
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
-      <div class="row">
-        <div class="col-md-12 small-label">
-          {{lastQuery.comparableType.name}}
-          <span class="not-bold"> ({{minCatch()}} to {{maxCatch()}} t/km²)</span>
-        </div>
-      </div>
       <div class="row legend-row">
         <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
           <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="" max-label="" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>

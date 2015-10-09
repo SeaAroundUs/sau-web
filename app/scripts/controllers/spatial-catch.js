@@ -687,6 +687,22 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
+    //TEMPORARY: This is a patch that allows the selectize.js "fishing country" component to use the same data interface
+    // no matter if it is set to a single-select or multi-select mode. This allows us to more easily go back and forth
+    // between these modes as UBC requirements may change.
+    $scope.$watch('selectedFishingCountry', function () {
+      if ($scope.selectedFishingCountry) {
+        $scope.query.fishingCountries = [$scope.selectedFishingCountry];
+      }
+    });
+
+    $scope.$watchCollection('query.fishingCountries', function () {
+      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
+        $scope.selectedFishingCountry = $scope.query.fishingCountries[0];
+      }
+    });
+    //END PATCH
+
     var allComparableTypes = [
       {
         name: 'Fishing countries',
