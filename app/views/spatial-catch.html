@@ -81,7 +81,7 @@
       <div class="col-xs-12">
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
           <div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div>
-          <span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of MM/DD/YYYY</span></span>
+          <span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of DD/MM/YYYY</span></span>
           <a popover="Displays the latest range for the selected taxon/taxa." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
         </span>
       </div>
