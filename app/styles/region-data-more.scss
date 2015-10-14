@@ -46,6 +46,10 @@
     }
   }
 
+  div.fao-rfb {
+    margin-bottom: 5px;
+  }
+
   #important-note {
     position: relative;
     font-size: 0.8em;
@@ -117,6 +121,28 @@
 
       i.fa {
         color: #428bca;
+      }
+    }
+  }
+
+  #biodiversity .base-links {
+    position: relative;
+    
+    div {
+      display: inline-block;
+      width: 40%;
+
+      h5 {
+        margin: 15px 0 5px;
+        padding-left: 10px;
+      }
+
+      ul {
+        padding-left: 10px;
+
+        li {
+          list-style: none;
+        }
       }
     }
   }

@@ -1,0 +1,25 @@
+<span class="link">
+    <a ng-href="{{ data.fao_profile_url }}">FAO country profile</a>
+</span>
+
+<span class="link">
+    <a ng-href="#/country/{{ data.country_id }}">Country profile</a>
+</span>
+
+<span class="link">
+    <a popover-html="{{ data.fao_rfb }}">Regional Fisheries Body Memberships</a>
+</span>
+
+<span class="link">
+    <a ng-href="#/subsidy/{{ data.geo_entity_id }}">Fisheries subsidies</a>
+</span>
+
+<span class="link">
+    <a ng-href="http://www.fishbase.de/Country/CountryTreatyList.php?Country={{ data.fishbase_id }}">
+        Treaties & conventions
+    </a>
+</span>
+
+<span class="link">
+    <a href="http://firms.fao.org/firms/en" target="_blank">FAO FIRMS</a>
+</span>

@@ -59,7 +59,23 @@ angular.module('sauWebApp')
       FishingEntities: resourceFactory('fishing-entity/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
-      SpatialCatchData: resourceFactory('spatial-catch/cells'),
+      SpatialCatchData: $resource(SAU_CONFIG.apiURL + 'spatial-catch/cells',
+        {},
+        {
+          get: {
+            method: 'GET',
+            cache: true,
+            transformResponse: function (response) {
+              response = JSON.parse(response);
+              if (response.data && response.data.bucket_boundaries) {
+                response.data.bucket_boundaries.unshift(response.data.min_catch);
+                response.data.bucket_boundaries.push(response.data.max_catch);
+              }
+              return response;
+            }
+          }
+        }
+      ),
       TaxonDistribution: {
         get: function (params) {
           if (!params || !params.id) {
@@ -73,6 +89,7 @@ angular.module('sauWebApp')
           });
         }
       },
+      Glossary: resourceFactory('glossary/'),
       apiURL: SAU_CONFIG.apiURL
     };
 

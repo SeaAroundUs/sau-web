@@ -40,4 +40,15 @@ angular.module('sauWebApp')
       },
       restrict: 'A'
     };
+  })
+  .directive('envHide', function (SAU_CONFIG) {
+    return {
+      link: function (scope, element, attributes) {
+        var hideInEnvs = attributes.envHide.split(' ');
+        if (hideInEnvs.indexOf(SAU_CONFIG.env) !== -1) {
+          element.remove();
+        }
+      },
+      restrict: 'A'
+    };
   });

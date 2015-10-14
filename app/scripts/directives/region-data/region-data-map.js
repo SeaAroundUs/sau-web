@@ -5,15 +5,15 @@
 
 angular.module('sauWebApp')
   .directive('regionDataMap', function() {
-    var controller = function($scope, $timeout, mapConfig, leafletBoundsHelpers, leafletData, sauAPI,
+    var controller = function($scope, $timeout, $q, mapConfig, leafletBoundsHelpers, leafletData, sauAPI,
                               createDisputedAreaPopup, ga) {
 
       var isDisputedAreaPopupOpen = false;
       var selectedRegions = [];
+      var ifaLayer, faoLayerGroup;
 
       angular.extend($scope, {
         defaults: mapConfig.defaults,
-        faoLayers: [],
         maxbounds: mapConfig.worldBounds,
         center: { lat: 0, lng: 0, zoom: 3 },
         layers: { baselayers: mapConfig.baseLayers }
@@ -32,6 +32,7 @@ angular.module('sauWebApp')
 
       $scope.$watch('region.name', drawRegions);
       $scope.$watch('region.id', centerMap);
+      $scope.$watch('faos', drawFAO);
 
 
       /*
@@ -68,12 +69,61 @@ angular.module('sauWebApp')
                 $scope.disabled = true;
               }
 
+              // handle IFA
+              drawIFA();
+
               // restyle all layers
               restyleLayers();
             });
           },
           function() { $scope.disabled = true; }
         );
+      }
+
+      // draw IFA for EEZs
+      function drawIFA() {
+        leafletData.getMap('region-data-minimap').then(function(map) {
+          // clear IFA layer if its present
+          if (ifaLayer) {
+            map.removeLayer(ifaLayer);
+          }
+
+          // draw IFA if appropriate
+          if ($scope.region.name === 'eez' && $scope.region.id) {
+            sauAPI.IFA.get({ region_id: $scope.region.id }, function(res) {
+              ifaLayer = L.geoJson(res.data.geojson, { style: mapConfig.ifaStyle }).addTo(map);
+            });
+          }
+        });
+      }
+
+      // draw FAOs for EEZs
+      function drawFAO() {
+        leafletData.getMap('region-data-minimap').then(function(map) {
+          // clear FAO layer if its present
+          if (faoLayerGroup) {
+            map.removeLayer(faoLayerGroup);
+          }
+
+          // draw FAO if appropriate
+          if ($scope.region.name === 'eez' && $scope.region.id && $scope.faos) {
+            $q.all($scope.faos.map(function(fao) {
+                return sauAPI.Region.get({ region: 'fao', region_id: fao.id }).$promise;
+              })
+            ).then(function(res) {
+                faoLayerGroup = L.layerGroup(res.map(function(fao) {
+                  var layer = L.geoJson(fao.data.geojson, {
+                    style: fao.data.id === $scope.region.faoId ? mapConfig.selectedFaoStyle : mapConfig.faoStyle
+                  });
+
+                  // mark FAO id on each layer
+                  layer.faoId = fao.data.id;
+
+                  return layer;
+                })).addTo(map);
+            });
+          }
+        });
       }
 
       // add region geojson
@@ -189,6 +239,24 @@ angular.module('sauWebApp')
               styleLayer(l.feature, l);
             }
           });
+
+          // keep IFA style
+          if (ifaLayer) {
+            ifaLayer.setStyle(mapConfig.ifaStyle);
+            ifaLayer.bringToFront();
+          }
+
+          // keep FAO style
+          if (faoLayerGroup) {
+            faoLayerGroup.getLayers().forEach(function(layer) {
+              layer.setStyle(
+                $scope.region.faoId && layer.faoId === $scope.region.faoId ?
+                mapConfig.selectedFaoStyle :
+                mapConfig.faoStyle
+              );
+              layer.bringToFront();
+            });
+          }
         });
       }
 
@@ -214,7 +282,7 @@ angular.module('sauWebApp')
         }
       },
       restrict: 'E',
-      scope: { region: '=' },
+      scope: { region: '=', faos: '=' },
       template: '<leaflet layers="layers" id="region-data-minimap" ' +
         'maxbounds="maxbounds" center="center" defaults="defaults" ' +
         'ng-class="{\'disabled\': disabled}"></leaflet>'

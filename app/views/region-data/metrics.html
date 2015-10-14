@@ -7,11 +7,11 @@
       <td ng-if="!metricLinks[metric.title]">
         <span ng-bind="metric.title"></span>
       </td>
-      <td>{{metric.value|number}} <span ng-bind-html="metric.units"></span></td>
+      <td>{{ metric.value | number }} <span ng-bind-html="metric.units"></span></td>
     </tr>
     <tr ng-if="region.name === 'eez'">
       <td><a target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807904">EEZ declaration year</a></td>
-      <td ng-bind="feature.data.declaration_year"></td>
+      <td ng-bind="declaration_year"></td>
     </tr>
   </table>
 </div>

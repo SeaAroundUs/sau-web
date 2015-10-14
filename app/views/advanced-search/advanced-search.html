@@ -13,6 +13,7 @@
 							<option value="eez">EEZ(s)</option>
 							<option value="lme">LME(s)</option>
 							<option value="rfmo">RFMO(s)</option>
+							<option toggle-hide="highseas" value="highseas">High sea(s)</option>
 							<option toggle-hide="fao" value="fao">FAO area(s)</option>
 							<option toggle-hide="eez-bordering" value="eez-bordering">EEZ & neighboring EEZs</option>
 							<option toggle-hide="fishingEntity" value="fishing-entity">Fishing countries</option>
@@ -38,6 +39,9 @@
 			<!-- RFMO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'rfmo'"></div>
 
+			<!-- High seas - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
+			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'highseas'"></div>
+
 			<!-- FAO - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<div ng-include="'views/advanced-search/adv-search-default-query.html'" ng-if="section === 'fao'"></div>
 
@@ -58,13 +62,10 @@
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
-			<div class="text-center" mobile-hide>
+			<div class="text-center">
 				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
 				<span class="or-separator">or</span>
 				<button class="btn btn-primary"  ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
-			</div>
-			<div class="text-center" mobile-only>
-				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
 			</div>
 		</div>
 	</div>

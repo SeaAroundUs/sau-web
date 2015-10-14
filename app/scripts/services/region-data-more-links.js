@@ -15,6 +15,9 @@ angular.module('sauWebApp')
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
+    importantNotes.lme = importantNotes.global;
+    importantNotes.eez = importantNotes.global;
+    importantNotes.highseas = importantNotes.global;
 
     var links = {
       // Global links
@@ -25,8 +28,7 @@ angular.module('sauWebApp')
             { text: 'Large seamounts', url: '/large-seamount-areas/' },
             {
               text: 'Marine protected areas',
-              url: 'doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf',
-              target: '_blank'
+              url: 'doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'
             }
           ]
         },
@@ -35,6 +37,12 @@ angular.module('sauWebApp')
           links: [
             { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
             { text: 'Exploited organisms', url: '#/exploited-organisms' }
+          ]
+        },
+        {
+          section: 'Governance',
+          links: [
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
           ]
         },
         {
@@ -57,9 +65,9 @@ angular.module('sauWebApp')
             {
               text: 'Treaties & conventions',
               ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
-                'Country={{ country_id | fishbaseCountryId }}',
-              target: '_blank'
+                'Country={{ country_id | fishbaseCountryId }}'
             },
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
             // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }
@@ -91,7 +99,7 @@ angular.module('sauWebApp')
         },
         {
           section: 'More info',
-          template: 'views/region-data/rfmo-info.html',
+          template: 'views/region-data/rfmo-info.html'
         },
         {
           section: 'Governance',
@@ -103,6 +111,27 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/rfmo/{{ id }}/stock-status' },
             { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint' },
             { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
+          ]
+        }
+      ],
+
+      // High seas links
+      highseas: [
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'Ecopath models',
+              url: 'http://www.ecopath.org/models/'
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/highseas/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/highseas/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/highseas/{{ id }}/marine-trophic-index' }
           ]
         }
       ],
@@ -128,7 +157,8 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           links: [
-            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en', target: '_blank' }
+            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
+            { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
         },
         /*
@@ -152,6 +182,79 @@ angular.module('sauWebApp')
           url: '#/eez/{{ id }}',
           text: '{{ title }}',
           checkUnderReview: true
+        }
+      ],
+
+      // EEZ
+      eez: [
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            { text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
+            {
+              text: 'Ecopath models',
+              ngUrl: 'http://www.ecopath.org/models/?m_terms=&m_EEZ={{ id }}&m_LME=' +
+                '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc='
+            },
+            { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' },
+            {
+              text: 'Fish parameters',
+              ngUrl: 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code={{ c_code }}' +
+                '&sb=1&disabled=1&fsb=0&custom=1'
+            }
+          ]
+        },
+        {
+          section: 'Governance',
+          template: 'views/region-data/eez-governance.html'
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index' },
+            { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' }
+          ]
+        }
+      ],
+
+      // LME
+      lme: [
+        {
+          section: 'Reference',
+          links: [
+            {
+              text: 'LME profile (NOAA)',
+              ngUrl: '{{ profile_url }}'
+            }
+          ]
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-lme.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'Ecopath models',
+              ngUrl: 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME={{ id }}' +
+                '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc='
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
+          ]
         }
       ]
     };

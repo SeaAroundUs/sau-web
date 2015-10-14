@@ -53,6 +53,17 @@ angular.module('sauWebApp')
         },
         getSearchOptions: defaultGetSearchOptions
       },
+      highseas: {
+        graphResultsPath: 'highseas',
+        regionListTitle: 'High seas',
+        selectedListTitle: 'Selected High seas',
+        searchPlaceholder: 'Search High seas',
+        selectionLimit: 6,
+        getRegionData: function() {
+          return sauAPI.Regions.get({region: 'highseas', nospatial: true});
+        },
+        getSearchOptions: defaultGetSearchOptions
+      },
       fao: {
         graphResultsPath: 'fao',
         regionListTitle: 'FAO areas',

@@ -22,6 +22,14 @@ angular.module('sauWebApp')
 
               scope.metrics = res.data.metrics;
               scope.metricLinks = metricLinks;
+
+              if (scope.region.name === 'eez') {
+                scope.declaration_year = res.data.declaration_year;
+              }
+
+              if (scope.region.name === 'highseas') {
+                scope.metrics[0].title = 'High seas area';
+              }
             });
 
           } else { //TODO something else for multiple ID?

@@ -1,4 +1,12 @@
 <p>
+  <b>Contracting parties:</b>
+  <span>{{ data.contracting_countries.length }} total - </span>
+  <span ng-repeat="party in data.contracting_countries">
+    {{ party.name + ($last ? '' : ', ') }}
+  </span>
+</p>
+
+<p>
   <b>Primary managed taxa:</b>
   <span ng-repeat="taxon in data.primary_taxa">
     {{taxon.common_name}}

@@ -5,7 +5,8 @@
 	<span class="not-bold">{{keyNameSecond}}</span>
 </label>
 <ul class="legend-color-bar list-inline">
-	<li class="legend-color-swatch" ng-repeat="swatch in [1, 2, 3, 4, 5]" ng-init="colorMe($index)"></li>
-</div>
-<div class="pull-left legend-measure">{{maxLabel}}</div>
-<div class="pull-right legend-measure">{{minLabel}}</div>
+	<li tooltip="{{bucketRollovers[$index]}}" ng-repeat="swatch in repeatForRange(numBuckets) track by $index" class="legend-color-swatch" ng-init="colorMe($index)" tooltip-append-to-body="true" ng-class="{selected: selectedBucket === $index}"></li>
+</ul>
+<div ng-show="minLabel" class="pull-left legend-measure">{{minLabel}}</div>
+<div ng-show="maxLabel" class="pull-right legend-measure">{{maxLabel}}</div>
+

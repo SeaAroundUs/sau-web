@@ -92,10 +92,27 @@
       margin-right: 5px;
     }
 
+    .info-icon {
+      font-size: 18px;
+      width: 16px;
+      height: 16px;
+      position: relative;
+      bottom: 4px;
+      padding-left: 3px;
+    }
+
     .expand-collapse-label {
       color: #1879BB;
       position: relative;
-      bottom: 1px;
+      bottom: 4px;
+      font-size: larger;
+      font-weight: 600;
+
+      .expand-collapse-sub-label {
+        font-weight: normal;
+        font-size: small;
+        bottom: 1px;
+      }
     }
 
     .expand-icon {
@@ -105,6 +122,10 @@
     .collapse-icon {
       background: url(../images/control-caret-down.svg);
     }
+  }
+
+  .popover {
+    color: black;
   }
 
   .timeline {
@@ -189,12 +210,29 @@
     padding-bottom: 8px;
   }
 
+  .legend-row {
+    padding-bottom: 6px;
+  }
+
+  .legend-hr {
+    margin-top: 0;
+  }
+
   .legend-color-bar {
     height: 22px;
+    margin-left: 0;
+
+    .tooltip-inner {
+      font-size: small !important;
+      font-weight: normal !important;
+    }
+
+    li.selected {
+      border: 3px solid rgba(0, 0, 0, .4);
+    }
   }
 
   .legend-color-swatch {
-    width: 20%;
     height: 100%;
     background-color: #F68E1E;
   }
@@ -273,9 +311,8 @@
   }
 
   .legend-column {
-    padding-bottom: 10px;
+    padding-bottom: 0;
     padding-right: 3px;
-    height: 85px;
   }
 
   #taxonDistributionInput {
