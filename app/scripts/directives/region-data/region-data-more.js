@@ -8,7 +8,7 @@ angular.module('sauWebApp')
 
         scope.trustAsHtml = $sce.trustAsHtml;
 
-        scope.$watch('region', updateScope);
+        scope.$watch('region', updateScope, true);
 
         $timeout(function() {
           var popup = angular.element('<div class="important-note-popup">' +
