@@ -243,7 +243,11 @@ angular.module('sauWebApp')
           // keep IFA style
           if (ifaLayer) {
             ifaLayer.setStyle(mapConfig.ifaStyle);
-            ifaLayer.bringToFront();
+            try {
+              ifaLayer.bringToFront();
+            } catch(e) {
+              angular.noop(); // bringToFront doesn't always work
+            }
           }
 
           // keep FAO style
