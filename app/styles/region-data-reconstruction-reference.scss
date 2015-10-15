@@ -1,6 +1,13 @@
 @import 'global';
 
 #reconstruction-reference {
+  margin-bottom: 20px;
+
+  h2 {
+    font-size: 1.8em;
+    margin-top: 0;
+  }
+
   span.reference {
     display: block;
     padding: 0 0 5px 16px;
