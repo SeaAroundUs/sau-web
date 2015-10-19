@@ -28,7 +28,7 @@ angular.module('sauWebApp')
             { text: 'Large seamounts', url: '/large-seamount-areas/' },
             {
               text: 'Marine protected areas',
-              url: 'doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'
+              url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'
             }
           ]
         },
