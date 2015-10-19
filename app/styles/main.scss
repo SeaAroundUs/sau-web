@@ -4,16 +4,12 @@
 @import "bootstrap-sass-official/vendor/assets/stylesheets/bootstrap.scss";
 // endbower
 
-@import "compass/layout/sticky-footer";
-@include sticky-footer(54px);
-
 // recommended by ui-bootstrap
 .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 #footer {
   background-color: $headerBackgroundColor;
   width: 100%;
-  height: $footerHeight;
   padding: 0 40px;
   color: #fff;
   line-height: $footerHeight;
