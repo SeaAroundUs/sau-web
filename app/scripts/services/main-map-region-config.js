@@ -27,6 +27,18 @@ angular.module('sauWebApp')
       getSearchOptions: geoJsonResponseToSearchOptions
     };
 
+    var highseasConfig = {
+      path: '/highseas',
+      requestData: function() {
+        return sauAPI.Regions.get({region: 'highseas'});
+      },
+      getGeoJsonData: function (apiResponse) {
+        return apiResponse.data;
+      },
+      geoJsonStyle: mapConfig.defaultStyle,
+      getSearchOptions: geoJsonResponseToSearchOptions
+    };
+
     var rfmoConfig = {
       path: '/rfmo',
       requestData: function() {
@@ -119,6 +131,7 @@ angular.module('sauWebApp')
       },
       'eez': eezConfig,
       'lme': lmeConfig,
+      'highseas': highseasConfig,
       'rfmo': rfmoConfig,
       'mariculture': maricultureConfig,
       'fao': faoConfig,
