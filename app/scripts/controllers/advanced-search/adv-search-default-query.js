@@ -15,8 +15,12 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
 
   //Tells the parent controller what the state of the query buttons should be (via a service)
   function updateSubmitButtons() {
-    advSearchService.state.isQueryGraphable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
-    advSearchService.state.isQueryDownloadable = ($scope.selectedRegions && $scope.selectedRegions.length > 0);
+    advSearchService.state.isQueryGraphable = (
+      ($scope.selectedRegions && $scope.selectedRegions.length > 0) || $scope.sectionConfig.selectionLimit == 0
+    );
+    advSearchService.state.isQueryDownloadable = (
+      ($scope.selectedRegions && $scope.selectedRegions.length > 0) || $scope.sectionConfig.selectionLimit == 0
+    );
   }
 
   //When the query buttons are pushed, they call these URLS, which are generated based on the query params.
@@ -26,7 +30,7 @@ angular.module('sauWebApp').controller('AdvSearchDefaultQueryCtrl',
         !$scope.selectedMeasure ||
         !$scope.selectedLimit ||
         !$scope.selectedRegions ||
-        $scope.selectedRegions.length === 0) {
+        ($scope.selectedRegions.length === 0 && $scope.sectionConfig.selectionLimit > 0)) {
       return;
     }
 
