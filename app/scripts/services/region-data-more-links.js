@@ -196,9 +196,8 @@ angular.module('sauWebApp')
           links: [
             { text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
             {
-              text: 'Ecopath models',
-              ngUrl: 'http://www.ecopath.org/models/?m_terms=&m_EEZ={{ id }}&m_LME=' +
-                '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc='
+              text: 'EcoBase',
+              ngUrl: 'http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=base&m_EEZ={{ id }}'
             },
             { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' },
             {
@@ -242,9 +241,8 @@ angular.module('sauWebApp')
           section: 'Ecosystems',
           links: [
             {
-              text: 'Ecopath models',
-              ngUrl: 'http://www.ecopath.org/models/?m_terms=&m_EEZ=&m_LME={{ id }}' +
-                '&m_FAO=0&m_fYearPub=&m_tYearPub=&m_N=&m_S=&m_E=&m_W=&m_Or=&page=1&orderby=&m_asc='
+              text: 'EcoBase',
+              ngUrl: 'http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=base&m_LME={{ id }}'
             }
           ]
         },
