@@ -552,3 +552,20 @@ then just wrap your html in "saustrap", then use any of these styles. */
     }
   }
 }
+
+.modal-content {
+  .modal-header {
+    h1, h2, h3, h4, h5 {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .modal-body {
+    padding-bottom: 0;
+
+    .alert {
+      margin-bottom: 0;
+    }
+  }
+}
