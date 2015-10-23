@@ -106,8 +106,8 @@
           <spatial-catch-legend-key key-name="'Total: ' + totalCatch()" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
-      <hr class="legend-hr" ng-if="isAllocationQueryValid(lastQuery) && isDistribtionQueryValid(lastQuery)" />
       <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
+        <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
         <div class="col-md-12 small-label">
           Taxon distribution <span class="not-bold"> (Thin to dense)</span>
         </div>
