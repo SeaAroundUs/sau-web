@@ -77,13 +77,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Make the spatial catch call
       $scope.spatialCatchData = null;
-      if (query.fishingCountries && query.fishingCountries.length > 0) {
+      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
         promises.push($scope.spatialCatchData.$promise);
       }
 
       //...Taxon distribution
-      if (query.taxonDistribution && query.taxonDistribution.length > 0) {
+      if ($scope.isDistributionQueryValid($scope.lastQuery)) {
         for (var i = 0; i < query.taxonDistribution.length; i++) {
           var taxonId = query.taxonDistribution[i];
           var taxonDistributionPromise = sauAPI.TaxonDistribution.get({id: taxonId});
@@ -115,7 +115,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return colorAssignment.colorOf(id);
     };
 
-    $scope.isQueryValid = function (query) {
+    $scope.isAllocationQueryValid = function(query) {
       var hasFishingCountryInput = query && query.fishingCountries && query.fishingCountries.length > 0;
 
       var hasCatchesByInput = false;
@@ -137,9 +137,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      var isAllocationQueryValid = hasFishingCountryInput || hasCatchesByInput;
-      var isDistributionQueryValid = query.taxonDistribution && query.taxonDistribution.length > 0;
-      return isAllocationQueryValid || isDistributionQueryValid;
+      return hasFishingCountryInput || hasCatchesByInput;
+    };
+
+    $scope.isDistributionQueryValid = function(query) {
+      return query.taxonDistribution && query.taxonDistribution.length > 0;
+    };
+
+    $scope.isQueryValid = function (query) {
+      return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
     };
 
     $scope.minCatch = function() {
@@ -543,9 +549,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       var sentence = [];
 
-      //A query is still valid if there are no fishing countries, if instead there are taxa distribution parameters set.
+      //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
       //But then our typical sentence structure doesn't make any sense.
-      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+      if ((!query.fishingCountries || query.fishingCountries.length === 0) &&
+        (query.taxonDistribution && query.taxonDistribution.length > 0)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
@@ -595,11 +602,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Fishing countries
-        if (query.fishingCountries.length === 1) {
-          var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
-          sentence.push('by the fleets of ' + countryName);
-        } else {
-          sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+        if (query.fishingCountryies && query.fishingCountries.length > 0) {
+          if (query.fishingCountries.length === 1) {
+            var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+            sentence.push('by the fleets of ' + countryName);
+          } else {
+            sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+          }
         }
 
         //Year
