@@ -380,6 +380,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             colorIds.push(''+comparees[i]);
           }
         }
+      //For non-comparable queries, just make a default color ID.
+      } else {
+        colorIds.push('default');
       }
 
       //Assign colors to the various taxa in the taxon distribution.
