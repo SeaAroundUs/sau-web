@@ -605,7 +605,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Fishing countries
-        if (query.fishingCountryies && query.fishingCountries.length > 0) {
+        if (query.fishingCountries && query.fishingCountries.length > 0) {
           if (query.fishingCountries.length === 1) {
             var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
             sentence.push('by the fleets of ' + countryName);

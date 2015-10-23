@@ -103,7 +103,7 @@
           <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
         </div>
         <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="'Total: ' + totalCatch()" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
@@ -112,7 +112,7 @@
           Taxon distribution <span class="not-bold"> (Thin to dense)</span>
         </div>
       </div>
-      <div class="row legend-row" ng-show="lastQuery.taxonDistribution.length > 0">
+      <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
           <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
         </div>
