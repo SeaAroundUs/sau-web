@@ -116,7 +116,30 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.isQueryValid = function (query) {
-      return query && ((query.fishingCountries && query.fishingCountries.length > 0) || (query.taxonDistribution && query.taxonDistribution.length > 0));
+      var hasFishingCountryInput = query && query.fishingCountries && query.fishingCountries.length > 0;
+
+      var hasCatchesByInput = false;
+      switch ($scope.query.catchesBy) {
+        case 'taxa':
+          if (query.taxa && query.taxa.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'commercial groups':
+          if (query.commercialGroups && query.commercialGroups.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'functional groups':
+          if (query.functionalGroups && query.functionalGroups.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+      }
+
+      var isAllocationQueryValid = hasFishingCountryInput || hasCatchesByInput;
+      var isDistributionQueryValid = query.taxonDistribution && query.taxonDistribution.length > 0;
+      return isAllocationQueryValid || isDistributionQueryValid;
     };
 
     $scope.minCatch = function() {
