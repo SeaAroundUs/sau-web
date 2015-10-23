@@ -23,11 +23,11 @@
 
       <form novalidate ng-show="showAllocationFields">
         <div class="row">
-          <div ng-class="{'col-md-4': !inProd, 'col-md-12': inProd}">
+          <div class="col-md-4">
             <label class="small-label" for="selectFishingCountries">Fishing countries</label>
             <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
-          <div class="col-md-2" env-hide="prod stage">
+          <div class="col-md-2">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
             <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
               <option value="taxa">Taxon</option>
@@ -35,7 +35,7 @@
               <option value="functional groups">Functional group</option>
             </select>
           </div>
-          <div class="col-md-6" env-hide="prod stage">
+          <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
               <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize>

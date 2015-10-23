@@ -698,7 +698,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.bucketingMethods = bucketingMethods;
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
-    //SAU_CONFIG.env = "stage"; //Used to fake the staging environment.
+    //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
     $scope.$watch(
