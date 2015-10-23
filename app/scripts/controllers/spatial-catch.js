@@ -166,7 +166,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var val = 0;
       if ($scope.spatialCatchData.data && $scope.spatialCatchData.data.rollup) {
         for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
-          if ($scope.spatialCatchData.data.rollup[i].rollup_key === ''+comparee) {
+          var rollupKey = $scope.spatialCatchData.data.rollup[i].rollup_key;
+          if (rollupKey === ''+comparee || rollupKey === '') {
             val = +$scope.spatialCatchData.data.rollup[i].total_catch.toPrecision(1);
             break;
           }
@@ -655,13 +656,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
-        buckets[group.rollup_key] = [];
+        var groupId = group.rollup_key || 'default';
+        buckets[groupId] = [];
         for (var j = 0; j < group.data.length; j++) {
           var threshold = group.data[j];
           for (var k = 0; k < threshold.cells.length; k++) {
             var cell = threshold.cells[k];
             if (cell === cellId) {
-              buckets[group.rollup_key] = threshold.threshold - 1;
+              buckets[groupId] = threshold.threshold - 1;
             }
           }
         }

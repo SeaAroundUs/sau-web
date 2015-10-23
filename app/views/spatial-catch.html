@@ -99,8 +99,11 @@
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row">
-        <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
+        <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
+        </div>
+        <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
+          <spatial-catch-legend-key key-name="Allocation" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor()" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row" ng-show="lastQuery.taxonDistribution.length > 0">
