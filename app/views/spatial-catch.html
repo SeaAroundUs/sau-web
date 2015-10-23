@@ -24,8 +24,8 @@
       <form novalidate ng-show="showAllocationFields">
         <div class="row">
           <div ng-class="{'col-md-4': !inProd, 'col-md-12': inProd}">
-            <label class="small-label" for="selectFishingCountries">Fishing country</label>
-            <selectize ng-model="selectedFishingCountry" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button'], maxItems: 1}"></selectize>
+            <label class="small-label" for="selectFishingCountries">Fishing countries</label>
+            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
           <div class="col-md-2" env-hide="prod stage">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>

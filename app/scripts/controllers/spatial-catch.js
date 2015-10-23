@@ -69,7 +69,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //...Compare term
-      queryParams.compare = query.comparableType.compareTerm;
+      if (query.comparableType) {
+        queryParams.compare = query.comparableType.compareTerm;
+      }
 
       var promises = [];
 
@@ -153,10 +155,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getCompareeName = function (comparee) {
-      var array = $scope[$scope.lastQuery.comparableType.field];
-      for (var i = 0; i < array.length; i++) {
-        if (''+array[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
-          return array[i][$scope.lastQuery.comparableType.entityName];
+
+      if ($scope.isQueryComparable($scope.lastQuery)) {
+        var comparees = $scope[$scope.lastQuery.comparableType.field];
+        for (var i = 0; i < comparees.length; i++) {
+          if (''+comparees[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
+            return comparees[i][$scope.lastQuery.comparableType.entityName];
+          }
         }
       }
 
@@ -164,6 +169,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getCompareeLink = function (comparee) {
+
+      //No link if the query is not comparable.
+      if (!$scope.isQueryComparable($scope.lastQuery)) {
+        return null;
+      }
+
+      //Generate a link for any comparable types that require links.
       if ($scope.lastQuery.comparableType.field === 'taxa') {
         return '#/taxa/' + comparee;
       } else if ($scope.lastQuery.comparableType.field === 'fishingCountries') {
@@ -175,6 +187,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         return '#/country/' + countryId;
       }
 
+      //Return no link if the provided comparee is not a type that requires a link.
       return null;
     };
 
@@ -293,6 +306,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function updateComparableTypeList() {
       $scope.comparableTypes = [allComparableTypes[0]];
 
+      //Add fishing countries to the comparable list if there is more than one selected.
+      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 1) {
+        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'fishingCountries'));
+      }
+
+      //Add the visible "catches by" dimension to the comparable types list if there is more than one selected.
       switch ($scope.query.catchesBy) {
         case 'taxa':
           if ($scope.query.taxa && $scope.query.taxa.length > 1) {
@@ -311,20 +330,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 1) {
-        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'reportingStatuses'));
-      }
-
-      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 1) {
-        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'catchTypes'));
-      }
-
       assignDefaultComparison();
     }
 
     function assignDefaultComparison() {
       if (!$scope.query.comparableType || $scope.comparableTypes.indexOf($scope.query.comparableType) === -1) {
-        $scope.query.comparableType = $scope.comparableTypes[0];
+        $scope.query.comparableType = allComparableTypes[0]; //This is the "None" comparable type.
       }
     }
 
@@ -406,7 +417,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (search.compare) {
         $scope.query.comparableType = allComparableTypes.getWhere('compareTerm', search.compare);
       } else {
-        $scope.query.comparableType = $scope.comparableTypes[0];
+        $scope.query.comparableType = allComparableTypes[0]; //The "None" comparable type.
       }
 
       //Taxon distribution
@@ -483,9 +494,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Compare type
-      if ($scope.query.comparableType) {
-        var compareTerm = $scope.query.comparableType.compareTerm;
-        $location.search('compare', compareTerm === 'entities' ? null : compareTerm); //No need to show the 'compare' query if it's entities, that's the default
+      if ($scope.isQueryComparable($scope.lastQuery)) {
+        $location.search('compare', $scope.query.comparableType.compareTerm);
+      } else {
+        $location.search('compare', null);
       }
 
       //Taxon distribution
@@ -668,37 +680,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.$watch(
       [
-        'query.catchesBy',
-        'query.reportingStatuses',
-        'query.catchTypes'
+        'query.catchesBy'
       ],
       updateComparableTypeList
     );
+    $scope.$watchCollection('query.fishingCountries', updateComparableTypeList);
     $scope.$watchCollection('query.taxa', updateComparableTypeList);
     $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
-    $scope.$watch('query.reportingStatuses', updateComparableTypeList);
-    $scope.$watch('query.catchTypes', updateComparableTypeList);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
-    //TEMPORARY: This is a patch that allows the selectize.js "fishing country" component to use the same data interface
-    // no matter if it is set to a single-select or multi-select mode. This allows us to more easily go back and forth
-    // between these modes as UBC requirements may change.
-    $scope.$watch('selectedFishingCountry', function () {
-      if ($scope.selectedFishingCountry) {
-        $scope.query.fishingCountries = [$scope.selectedFishingCountry];
-      }
-    });
-
-    $scope.$watchCollection('query.fishingCountries', function () {
-      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
-        $scope.selectedFishingCountry = $scope.query.fishingCountries[0];
-      }
-    });
-    //END PATCH
-
     var allComparableTypes = [
+      {
+        name: 'None'
+      },
       {
         name: 'Fishing countries',
         field: 'fishingCountries',
@@ -726,20 +722,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         key: 'functional_group_id',
         entityName: 'description',
         compareTerm: 'funcgroups'
-      },
-      {
-        name: 'Reporting statuses',
-        field: 'reportingStatuses',
-        key: 'id',
-        entityName: 'name',
-        compareTerm: 'repstatus'
-      },
-      {
-        name: 'Catch types',
-        field: 'catchTypes',
-        key: 'id',
-        entityName: 'name',
-        compareTerm: 'catchtypes'
       }
     ];
 
