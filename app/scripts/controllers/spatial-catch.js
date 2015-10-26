@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, bucketSizes, bucketingMethods, SAU_CONFIG) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -408,11 +408,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
-      //Catch types
-      if (search.catchtypes) {
-        $scope.query.catchTypes = search.catchtypes.split(',');
-      }
-
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
@@ -660,13 +655,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
-    $scope.reportingStatuses = reportingStatuses;
-    $scope.catchTypes = catchTypes;
     $scope.defaultColor = colorAssignment.getDefaultColor();
-    //A list of the available bucketing sizes (5, 6, 7,8, 9, 10)
-    $scope.bucketSizes = bucketSizes;
-    //A list of all the available bucketing methods (plog, nlog, ptile, ntile)
-    $scope.bucketingMethods = bucketingMethods;
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
