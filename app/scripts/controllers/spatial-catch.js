@@ -58,16 +58,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //...Reporting statuses
-      if (query.reportingStatuses) {
-        queryParams.repstatus = query.reportingStatuses.join(',');
-      }
-
-      //...Catch types
-      if (query.catchTypes) {
-        queryParams.catchtypes = query.catchTypes.join(',');
-      }
-
       //...Compare term
       if (query.comparableType) {
         queryParams.compare = query.comparableType.compareTerm;
@@ -418,11 +408,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
-      //Reporting statuses
-      if (search.repstatuses) {
-        $scope.query.reportingStatuses = search.repstatuses.split(',');
-      }
-
       //Catch types
       if (search.catchtypes) {
         $scope.query.catchTypes = search.catchtypes.split(',');
@@ -490,20 +475,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //Reporting statuses
-      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
-        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
-      } else {
-        $location.search('repstatuses', null);
-      }
-
-      //Catch types
-      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
-        $location.search('catchtypes', $scope.query.catchTypes.join(','));
-      } else {
-        $location.search('catchtypes', null);
-      }
-
       //Year
       var queryYear = $scope.query.year || 2010;
       if (queryYear !== 2010) {
@@ -564,21 +535,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
       } else {
-        //Reporting status
-        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
-          sentence.push(reporingStatusName);
-        } else {
-          sentence.push('All');
-        }
-
-        //Catch type
-        if (query.catchTypes && query.catchTypes.length === 1) {
-          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
-          sentence.push(catchTypeName.toLowerCase());
-        } else {
-          sentence.push('fishing');
-        }
+        sentence.push('All fishing');
 
         //Catches by
         if (query.catchesBy === 'taxa') {
