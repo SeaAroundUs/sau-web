@@ -5,7 +5,7 @@ angular.module('sauWebApp').directive('define', function(sauAPI) {
     $transclude(function(content) {
       sauAPI.Glossary.get().$promise.then(function(res) {
         if (content[0].textContent && res.data[content[0].textContent]) {
-          $scope.definition = '<div class="definition"><span>' + content[0].textContent + '</span><div>' +
+          $scope.definition = '<div class="definition"><span>' + content[0].textContent + ':</span><div>' +
             res.data[content[0].textContent] + '</div></div>';
         }
       });
@@ -14,7 +14,7 @@ angular.module('sauWebApp').directive('define', function(sauAPI) {
 
   return {
     controller: controller,
-    restrict: 'AE',
+    restrict: 'E',
     scope: {},
     templateUrl: 'views/define.html',
     transclude: true
