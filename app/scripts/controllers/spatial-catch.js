@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -16,10 +16,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Form the query...
       var queryParams = {};
+      var gaAction = ['query'];
 
       //...Fishing countries
       if (query.fishingCountries && query.fishingCountries.length > 0) {
         queryParams.entities = query.fishingCountries.join(',');
+        
+        //Form GA event action
+        if (query.fishingCountries.length > 1) {
+          gaAction.push(['multi-entity']);
+        } else {
+          gaAction.push(['single-entity']);
+        }
       }
 
       //...Year
@@ -42,18 +50,39 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         case 'taxa':
           if (query.taxa) {
             queryParams.taxa = query.taxa.join(',');
+
+            //Form GA event action
+            if (query.taxa.length > 1) {
+              gaAction.push(['multi-taxa']);
+            } else {
+              gaAction.push(['single-taxa']);
+            }
           }
           break;
         //...Commercial groups
         case 'commercial groups':
           if (query.commercialGroups) {
             queryParams.commgroups = query.commercialGroups.join(',');
+
+            //Form GA event action
+            if (query.commercialGroups.length > 1) {
+              gaAction.push(['multi-commgroup']);
+            } else {
+              gaAction.push(['single-commgroup']);
+            }
           }
           break;
         //...Functional groups
         case 'functional groups':
           if (query.functionalGroups) {
             queryParams.funcgroups = query.functionalGroups.join(',');
+
+            //Form GA event action
+            if (query.functionalGroups.length > 1) {
+              gaAction.push(['multi-funcgroup']);
+            } else {
+              gaAction.push(['single-funcgroup']);
+            }
           }
           break;
       }
@@ -82,6 +111,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       $q.all(promises).then(handleQueryResponse);
+
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: gaAction.join(' '),
+        label: $location.url()
+      });
     };
 
     $scope.isQueryDirty = function() {
@@ -221,10 +257,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.zoomMapIn = function() {
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: 'zoom',
+        label: 'in'
+      });
+
       map.zoomIn();
     };
 
     $scope.zoomMapOut = function() {
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: 'zoom',
+        label: 'out'
+      });
+
       map.zoomOut();
     };
 
