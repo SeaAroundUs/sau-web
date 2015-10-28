@@ -73,6 +73,7 @@
 
       $scope.templates = [
         {'name': 'Tools & Data', 'url': '/data/#/eez', 'class': 'selected'},
+        {'name': 'Getting started', 'url': '/tools-guide/'},
         {'name': 'Publications', 'url': '/articles/'},
         {'name': 'News', 'url': '/about/'},
         {'name': 'Projects', 'url': '/information-by-topic/'},
