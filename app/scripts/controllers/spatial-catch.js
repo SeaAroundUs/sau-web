@@ -21,7 +21,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //...Fishing countries
       if (query.fishingCountries && query.fishingCountries.length > 0) {
         queryParams.entities = query.fishingCountries.join(',');
-        
+
         //Form GA event action
         if (query.fishingCountries.length > 1) {
           gaAction.push(['multi-entity']);
