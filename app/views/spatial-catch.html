@@ -100,7 +100,7 @@
       </div>
       <div class="row" ng-show="queryResponseErrorMessage">
         <div class="col-xs-12">
-          <div class="alert alert-warning text-center">{{queryResponseErrorMessage}}</div>
+          <div class="alert alert-warning text-center" ng-bind-html="queryResponseErrorMessage"></div>
         </div>
       </div>
     </div>

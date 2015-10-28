@@ -288,11 +288,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.queryResolved = true;
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
-      var i, j, cell, color, whiteness;
+      var i, j, cell, color, whiteness, errorMessage;
       //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
       //put up a loading screen.
       $timeout(function() {
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
+
+        //Error message for no data
+        if ($scope.spatialCatchData && (!responses[0] || !responses[0].data)) {
+          $scope.queryResponseErrorMessage = 'No map catch allocation data currently exists for your query. ';
+        }
 
         //Color up the spatial catch data cells
         if ($scope.spatialCatchData === responses[0] && responses[0].data && responses[0].data.rollup) {
@@ -339,7 +344,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Update an error message to the user.
         if (datalessTaxaNames.length > 0) {
-          $scope.queryResponseErrorMessage = 'No distribution data currently exists for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
+          errorMessage = ($scope.queryResponseErrorMessage ? $scope.queryResponseErrorMessage + '<br />' : '') +
+            'No distribution data currently exists for some taxa in your query ' +
+            '(' + datalessTaxaNames.join(', ') + ').';
+          $scope.queryResponseErrorMessage = errorMessage;
         }
 
         mapGridLayer.grid.data = cellData;
