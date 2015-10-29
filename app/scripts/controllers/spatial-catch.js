@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -282,6 +282,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //It shows both the common and scientific names, scientific in italics.
     $scope.makeTaxaDropdownItem = function (item, escape) {
       return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
+    };
+
+    $scope.updateQueryWithExample = function (example) {
+      $scope.query = angular.extend($scope.query, example)
+
+      //Submit the query
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query);
+      }
     };
 
     function handleQueryResponse(responses) {
@@ -713,6 +722,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
+    $scope.mappedCatchExamples = spatialCatchExamples;
     $scope.defaultColor = colorAssignment.getDefaultColor();
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};

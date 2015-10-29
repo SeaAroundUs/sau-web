@@ -86,9 +86,9 @@ angular.module('sauWebApp')
         });
 
         ngModelCtrl.$render = function() {
-          slider.slider('setValue', ngModelCtrl.$viewValue);
           $timeout(function() {
             slider.slider('refresh');
+            slider.slider('setValue', ngModelCtrl.$viewValue);
           });
         };
 
