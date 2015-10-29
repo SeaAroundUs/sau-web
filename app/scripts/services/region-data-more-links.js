@@ -73,7 +73,7 @@ angular.module('sauWebApp')
         }, {
           section: 'Other topics',
           links: [
-            { ngText: 'View catch allocations on a map for the fleets of {{title}}', ngUrl: '/#spatial-catch?entities={{id}}'}
+            { ngText: 'View catch allocations on a map for the fleets of {{title}}', ngUrl: '#/spatial-catch?entities={{id}}'}
           ]
         }
       ],
