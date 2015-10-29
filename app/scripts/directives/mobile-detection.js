@@ -32,25 +32,4 @@ angular.module('sauWebApp')
       },
       restrict: 'A'
     };
-  })
-  //An array of all angular paths that are considered "mobile-friendly"
-  .value('mobileFriendlyPaths', [
-    '/search'
-  ])
-  //Prevents mobiled users from visiting pages that aren't mobile friendly.
-  .run(function ($rootScope, $location, isMobileDevice, mobileFriendlyPaths) {
-    $rootScope.$on('$routeChangeStart', function (event, next) {
-      if (isMobileDevice) {
-        var isRouteMobileFriendly = false;
-        for (var i = 0; i < mobileFriendlyPaths.length; i++) {
-          if (mobileFriendlyPaths[i] === next.originalPath) {
-            isRouteMobileFriendly = true;
-          }
-        }
-        if (!isRouteMobileFriendly) {
-          event.preventDefault();
-          $location.path('/search');
-        }
-      }
-    });
   });
