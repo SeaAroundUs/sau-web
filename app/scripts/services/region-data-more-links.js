@@ -70,6 +70,11 @@ angular.module('sauWebApp')
             { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
             // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
+        }, {
+          section: 'Other topics',
+          links: [
+            { ngText: 'View catch allocations on a map for the fleets of {{title}}', ngUrl: '/#spatial-catch?entities={{id}}'}
+          ]
         }
       ],
 
