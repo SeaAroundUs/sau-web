@@ -4,38 +4,38 @@ angular.module('sauWebApp')
   .factory('spatialCatchExamples', function () {
     return [
       {
-        sentence: 'See all fishing by the fleets of China in 1963',
+        sentence: 'See all fishing by the fleets of Ghana in 2008',
         query: {
           fishingCountries: [
-            31
+            67
           ],
           catchesBy: 'taxa',
           taxa: [],
-          year: 1963
+          year: 2008
         }
       }, {
-        sentence: 'See fishing of anchovies by the fleets of Spain in 2010',
+        sentence: 'See global fishing of Atlantic soury in 2010',
         query: {
           fishingCountries: [
-            165
+            
           ],
-          catchesBy: 'commercial groups',
-          commercialGroups: [
-            1
+          catchesBy: 'taxa',
+          taxa: [
+            601084
           ],
           year: 2010
         }
       }, {
-        sentence: 'See global fishing of yellowfin, skipjack, and bigeye tuna in 1998',
+        sentence: 'See Atlantic cod fishing by the fleets of Germany in 1976',
         query: {
-          fishingCountries: [],
+          fishingCountries: [
+            66
+          ],
           catchesBy: 'taxa',
           taxa: [
-            600143,
-            600107,
-            600146
+            600069
           ],
-          year: 1998
+          year: 1976
         }
       }
     ];
