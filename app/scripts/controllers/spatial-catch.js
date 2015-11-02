@@ -285,7 +285,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.updateQueryWithExample = function (example) {
-      $scope.query = angular.extend($scope.query, example)
+      $scope.query = angular.extend($scope.query, example);
 
       //Submit the query
       if ($scope.isQueryValid($scope.query)) {
