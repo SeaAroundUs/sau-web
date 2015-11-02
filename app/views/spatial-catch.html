@@ -9,7 +9,7 @@
   <div ng-init="showExamples = false" class="expand-collapse-button" ng-click="showExamples = !showExamples">
     <div class="expand-collapse-icon" ng-class="{'expand-icon': !showExamples, 'collapse-icon': showExamples}"></div>
     <span class="expand-collapse-label">Examples</span>
-    <a popover="Learn how to perform varioius queries by looking at some of these provided examples." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+    <a popover="Learn how to perform various queries by looking at some of these provided examples." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
   </div>
   <div class="mapped-catch-examples" ng-show="showExamples">
     <ul class="list-unstyled">
@@ -53,8 +53,8 @@
           </div>
           <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
-              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
-              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize>
+              <div class="catches-by-query"><label class="small-label">Taxon/taxa</label></div>
+              <select id="taxa-allocation-input"></select>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
@@ -88,7 +88,8 @@
     </div>
     <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
-        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize></div>
+        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput">
+          <select id="taxa-distribution-input"></select>
       </div>
     </div>
     <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
@@ -114,7 +115,7 @@
       </div>
       <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
-          <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="getTaxonDisplayName(taxonId)" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row" ng-show="queryResponseErrorMessage">

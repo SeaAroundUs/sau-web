@@ -285,12 +285,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.updateQueryWithExample = function (example) {
-      $scope.query = angular.extend($scope.query, example)
+      $scope.query = angular.extend($scope.query, example);
 
       //Submit the query
       if ($scope.isQueryValid($scope.query)) {
         $scope.submitQuery($scope.query);
       }
+    };
+
+    /*
+    This is a hack-fix function because I can't call the inner function from the DOM,
+    because taxa.data is not in the scope,
+    because it is too big to digest.
+    */
+    $scope.getTaxonDisplayName = function (taxonId) {
+      return $scope.getValueFromObjectArray(taxa.data, 'taxon_key', taxonId, 'displayName');
     };
 
     function handleQueryResponse(responses) {
@@ -337,7 +346,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         for (i = 0; i < taxonDistResponses.length; i++) {
           var taxonId = $scope.lastQuery.taxonDistribution[i];
           if (!taxonDistResponses[i].data || taxonDistResponses[i].data.byteLength === 0) {
-            datalessTaxaNames.push($scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'common_name'));
+            datalessTaxaNames.push($scope.getValueFromObjectArray(taxa.data, 'taxon_key', taxonId, 'common_name'));
             continue;
           }
           var typedArray = new Uint32Array(taxonDistResponses[i].data);
@@ -591,7 +600,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         (query.taxonDistribution && query.taxonDistribution.length > 0)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
-          var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
+          var taxonName = $scope.getValueFromObjectArray(taxa.data, 'taxon_key', query.taxonDistribution[0], 'common_name');
           sentence.push(taxonName);
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
@@ -602,7 +611,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //Catches by
         if (query.catchesBy === 'taxa') {
           if (query.taxa && query.taxa.length === 1) {
-            var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+            var taxaName = $scope.getValueFromObjectArray(taxa.data, 'taxon_key', query.taxa[0], 'common_name');
             sentence.push('of ' + taxaName.toLowerCase());
           } else if (query.taxa && query.taxa.length > 1) {
             sentence.push('of ' + query.taxa.length + ' taxa');
@@ -716,10 +725,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
-    $scope.taxa = taxa.data;
-    for (var i = 0; i < $scope.taxa.length; i++) {
-      $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
+    
+    for (var i = 0; i < taxa.data.length; i++) {
+      taxa.data[i].displayName = taxa.data[i].common_name + ' (' + taxa.data[i].scientific_name + ')';
     }
+
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
     $scope.mappedCatchExamples = spatialCatchExamples;
@@ -798,18 +808,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       });
 
-      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
+      mapGridLayer = map.addLayer(new Uint8ClampedArray(720 * 360 * 4), {
         gridSize: [720, 360],
         renderOnAnimate: false
       });
 
-      map.setData(eezSpatialData.data, {
+      map.addLayer(eezSpatialData.data, {
         fillColor: 'rgba(0, 117, 187, 0)',
         strokeColor: 'rgba(0, 117, 187, 1)',
         renderOnAnimate: false
       });
 
-      map.setData(countries, {
+      map.addLayer(countries, {
         fillColor: 'rgba(251, 250, 243, 1)',
         strokeColor: 'rgba(0, 0, 0, 0)'
       });
@@ -821,4 +831,61 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     if ($scope.isQueryValid($scope.query)) {
       $scope.submitQuery($scope.query);
     }
+
+    /* 
+    WARNING: HACK FIX
+    The code below is directly configuring the selectize.js components that use the /taxa data.
+    The /taxa data is too big to be $digested by angular, so we have to circumvent angular-selectize
+    for performance reasons.
+
+    The better fix would be to perform an autofilled search in the taxa inputs. See the "Remote Source - Github" example for the best solution.
+    https://brianreavis.github.io/selectize.js/
+    */
+    var config = {
+      options: taxa.data,
+      valueField: 'taxon_key',
+      labelField: 'displayName',
+      placeholder: 'Select...',
+      sortField: 'common_name',
+      searchField: ['common_name', 'scientific_name'],
+      plugins: ['remove_button'],
+      maxOptions: null,
+      maxItems: null,
+      render: {item: $scope.makeTaxaDropdownItem, option: $scope.makeTaxaDropdownItem}
+    };
+
+    var allocTaxaQuery = angular.element('#taxa-allocation-input').selectize(config);
+    var taxaSelectize = allocTaxaQuery[0].selectize;
+    allocTaxaQuery.on('change', function () {
+      $timeout(function () {
+        $scope.query.taxa = taxaSelectize.getValue();
+      });
+    });
+
+    $scope.$watchCollection('query.taxa', function () {
+      if ('taxa' in $scope.query) {
+        taxaSelectize.setValue($scope.query.taxa, true);
+        taxaSelectize.refreshOptions(false);
+      }
+    });
+
+    var distTaxaQuery = angular.element('#taxa-distribution-input').selectize(config);
+    var distSelectize = distTaxaQuery[0].selectize;
+    distTaxaQuery.on('change', function () {
+      $timeout(function() {
+        $scope.query.taxonDistribution = distSelectize.getValue();
+      });
+    });
+
+    $scope.$watchCollection('query.taxonDistribution', function () {
+      if ('taxonDistribution' in $scope.query) {
+        distSelectize.setValue($scope.query.taxonDistribution, true);
+        distSelectize.refreshOptions(false);
+      }
+    });
+
+    /*
+    END HACK FIX
+    */
+
   });
