@@ -590,8 +590,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
       //But then our typical sentence structure doesn't make any sense.
-      if ((!query.fishingCountries || query.fishingCountries.length === 0) &&
-        (query.taxonDistribution && query.taxonDistribution.length > 0)) {
+      if ($scope.isAllocationQueryValid(query) === false && $scope.isDistributionQueryValid(query)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
