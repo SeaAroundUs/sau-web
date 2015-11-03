@@ -200,7 +200,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
           var rollupKey = $scope.spatialCatchData.data.rollup[i].rollup_key;
           if (rollupKey === ''+comparee || rollupKey === '') {
-            val = +$scope.spatialCatchData.data.rollup[i].total_catch.toPrecision(1);
+            val = Math.round(+$scope.spatialCatchData.data.rollup[i].total_catch);
             break;
           }
         }
@@ -808,18 +808,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       });
 
-      mapGridLayer = map.addLayer(new Uint8ClampedArray(720 * 360 * 4), {
+      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
         gridSize: [720, 360],
         renderOnAnimate: false
       });
 
-      map.addLayer(eezSpatialData.data, {
+      map.setData(eezSpatialData.data, {
         fillColor: 'rgba(0, 117, 187, 0)',
         strokeColor: 'rgba(0, 117, 187, 1)',
         renderOnAnimate: false
       });
 
-      map.addLayer(countries, {
+      map.setData(countries, {
         fillColor: 'rgba(251, 250, 243, 1)',
         strokeColor: 'rgba(0, 0, 0, 0)'
       });
