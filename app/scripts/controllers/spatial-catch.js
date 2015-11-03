@@ -725,7 +725,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
-    
+
     for (var i = 0; i < taxa.data.length; i++) {
       taxa.data[i].displayName = taxa.data[i].common_name + ' (' + taxa.data[i].scientific_name + ')';
     }
@@ -832,7 +832,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.submitQuery($scope.query);
     }
 
-    /* 
+    /*
     WARNING: HACK FIX
     The code below is directly configuring the selectize.js components that use the /taxa data.
     The /taxa data is too big to be $digested by angular, so we have to circumvent angular-selectize

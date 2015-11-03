@@ -16,9 +16,7 @@ angular.module('sauWebApp')
       }, {
         sentence: 'See global fishing of Atlantic soury in 2010',
         query: {
-          fishingCountries: [
-            
-          ],
+          fishingCountries: [],
           catchesBy: 'taxa',
           taxa: [
             601084
