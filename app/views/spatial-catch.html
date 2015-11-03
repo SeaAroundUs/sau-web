@@ -54,7 +54,7 @@
           <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
               <div class="catches-by-query"><label class="small-label">Taxon/taxa</label></div>
-              <select id="taxa-allocation-input"></select>
+              <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
@@ -89,7 +89,8 @@
     <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
         <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput">
-          <select id="taxa-distribution-input"></select>
+          <taxa-selectize options="taxa" items="query.taxonDistribution"></taxa-selectize>
+        </div>
       </div>
     </div>
     <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
