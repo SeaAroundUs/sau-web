@@ -97,4 +97,61 @@ angular.module('sauWebApp')
         });
       }
     };
+  })
+  .directive('taxaSelectize', function ($timeout) {
+    return {
+      template: '<select></select>',
+      restrict: 'E',
+      replace: true,
+      scope: {
+        options: '=',
+        items: '='
+      },
+      link: function (scope, element) {
+        /*
+        This is used to render the list items in the multi-select dropdowns for taxa.
+        It shows both the common and scientific names, scientific in italics.
+        */
+        function makeTaxaDropdownItem (item, escape) {
+          return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
+        }
+
+        /*
+        View > Model binding
+        */
+        function onComponentChanged() {
+          $timeout(function() {
+            scope.items = component.items;
+          });
+        }
+
+        /*
+        Model > View binding
+        */
+        function onModelChanged() {
+          component.setValue(scope.items, true);
+          component.refreshOptions(false);
+        }
+
+        //Component setup
+        var config = {
+          options: scope.options,
+          valueField: 'taxon_key',
+          labelField: 'displayName',
+          placeholder: 'Select...',
+          sortField: 'common_name',
+          searchField: ['common_name', 'scientific_name'],
+          plugins: ['remove_button'],
+          maxOptions: null,
+          maxItems: null,
+          render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}
+        };
+
+        //Create the component and set up bindings
+        var query = element.selectize(config);
+        var component = query[0].selectize;
+        query.on('change', onComponentChanged);
+        scope.$watchCollection('items', onModelChanged);
+      }
+    };
   });
