@@ -36,8 +36,8 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
       region: '='
     },
     template: '<div id="reconstruction-reference">' +
-      '<h3 ng-pluralize count="references.length" ' +
-        'when="{\'1\': \'Reconstruction reference:\', \'other\': \'Reconstruction references:\'}"></h3>' +
+      '<h2 ng-pluralize count="references.length" ' +
+        'when="{\'1\': \'Reconstruction reference\', \'other\': \'Reconstruction references\'}"></h2>' +
       '<span ng-repeat="ref in references | unique: \'name\'" class="reference">' +
         '<a ng-href="{{ ref.url }}"><i class="fa fa-file-pdf-o red"></i> {{ ref.name | breakUnderscores }}</a>' +
       '</span></div>'

@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, reportingStatuses, catchTypes, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, bucketSizes, bucketingMethods, SAU_CONFIG) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -16,10 +16,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Form the query...
       var queryParams = {};
+      var gaAction = ['query'];
 
       //...Fishing countries
       if (query.fishingCountries && query.fishingCountries.length > 0) {
         queryParams.entities = query.fishingCountries.join(',');
+
+        //Form GA event action
+        if (query.fishingCountries.length > 1) {
+          gaAction.push(['multi-entity']);
+        } else {
+          gaAction.push(['single-entity']);
+        }
       }
 
       //...Year
@@ -42,46 +50,59 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         case 'taxa':
           if (query.taxa) {
             queryParams.taxa = query.taxa.join(',');
+
+            //Form GA event action
+            if (query.taxa.length > 1) {
+              gaAction.push(['multi-taxa']);
+            } else {
+              gaAction.push(['single-taxa']);
+            }
           }
           break;
         //...Commercial groups
         case 'commercial groups':
           if (query.commercialGroups) {
             queryParams.commgroups = query.commercialGroups.join(',');
+
+            //Form GA event action
+            if (query.commercialGroups.length > 1) {
+              gaAction.push(['multi-commgroup']);
+            } else {
+              gaAction.push(['single-commgroup']);
+            }
           }
           break;
         //...Functional groups
         case 'functional groups':
           if (query.functionalGroups) {
             queryParams.funcgroups = query.functionalGroups.join(',');
+
+            //Form GA event action
+            if (query.functionalGroups.length > 1) {
+              gaAction.push(['multi-funcgroup']);
+            } else {
+              gaAction.push(['single-funcgroup']);
+            }
           }
           break;
       }
 
-      //...Reporting statuses
-      if (query.reportingStatuses) {
-        queryParams.repstatus = query.reportingStatuses.join(',');
-      }
-
-      //...Catch types
-      if (query.catchTypes) {
-        queryParams.catchtypes = query.catchTypes.join(',');
-      }
-
       //...Compare term
-      queryParams.compare = query.comparableType.compareTerm;
+      if (query.comparableType) {
+        queryParams.compare = query.comparableType.compareTerm;
+      }
 
       var promises = [];
 
       //Make the spatial catch call
       $scope.spatialCatchData = null;
-      if (query.fishingCountries && query.fishingCountries.length > 0) {
+      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
         promises.push($scope.spatialCatchData.$promise);
       }
 
       //...Taxon distribution
-      if (query.taxonDistribution && query.taxonDistribution.length > 0) {
+      if ($scope.isDistributionQueryValid($scope.lastQuery)) {
         for (var i = 0; i < query.taxonDistribution.length; i++) {
           var taxonId = query.taxonDistribution[i];
           var taxonDistributionPromise = sauAPI.TaxonDistribution.get({id: taxonId});
@@ -90,6 +111,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       $q.all(promises).then(handleQueryResponse);
+
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: gaAction.join(' '),
+        label: $location.url()
+      });
     };
 
     $scope.isQueryDirty = function() {
@@ -113,8 +141,37 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return colorAssignment.colorOf(id);
     };
 
+    $scope.isAllocationQueryValid = function(query) {
+      var hasFishingCountryInput = query && query.fishingCountries && query.fishingCountries.length > 0;
+
+      var hasCatchesByInput = false;
+      switch ($scope.query.catchesBy) {
+        case 'taxa':
+          if (query.taxa && query.taxa.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'commercial groups':
+          if (query.commercialGroups && query.commercialGroups.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'functional groups':
+          if (query.functionalGroups && query.functionalGroups.length > 0) {
+            hasCatchesByInput = true;
+          }
+          break;
+      }
+
+      return hasFishingCountryInput || hasCatchesByInput;
+    };
+
+    $scope.isDistributionQueryValid = function(query) {
+      return query.taxonDistribution && query.taxonDistribution.length > 0;
+    };
+
     $scope.isQueryValid = function (query) {
-      return query && ((query.fishingCountries && query.fishingCountries.length > 0) || (query.taxonDistribution && query.taxonDistribution.length > 0));
+      return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
     };
 
     $scope.minCatch = function() {
@@ -141,8 +198,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var val = 0;
       if ($scope.spatialCatchData.data && $scope.spatialCatchData.data.rollup) {
         for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
-          if ($scope.spatialCatchData.data.rollup[i].rollup_key === ''+comparee) {
-            val = +$scope.spatialCatchData.data.rollup[i].total_catch.toPrecision(1);
+          var rollupKey = $scope.spatialCatchData.data.rollup[i].rollup_key;
+          if (rollupKey === ''+comparee || rollupKey === '') {
+            val = Math.round(+$scope.spatialCatchData.data.rollup[i].total_catch);
             break;
           }
         }
@@ -153,10 +211,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getCompareeName = function (comparee) {
-      var array = $scope[$scope.lastQuery.comparableType.field];
-      for (var i = 0; i < array.length; i++) {
-        if (''+array[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
-          return array[i][$scope.lastQuery.comparableType.entityName];
+
+      if ($scope.isQueryComparable($scope.lastQuery)) {
+        var comparees = $scope[$scope.lastQuery.comparableType.field];
+        for (var i = 0; i < comparees.length; i++) {
+          if (''+comparees[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
+            return comparees[i][$scope.lastQuery.comparableType.entityName];
+          }
         }
       }
 
@@ -164,6 +225,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.getCompareeLink = function (comparee) {
+
+      //No link if the query is not comparable.
+      if (!$scope.isQueryComparable($scope.lastQuery)) {
+        return null;
+      }
+
+      //Generate a link for any comparable types that require links.
       if ($scope.lastQuery.comparableType.field === 'taxa') {
         return '#/taxa/' + comparee;
       } else if ($scope.lastQuery.comparableType.field === 'fishingCountries') {
@@ -175,6 +243,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         return '#/country/' + countryId;
       }
 
+      //Return no link if the provided comparee is not a type that requires a link.
       return null;
     };
 
@@ -188,10 +257,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.zoomMapIn = function() {
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: 'zoom',
+        label: 'in'
+      });
+
       map.zoomIn();
     };
 
     $scope.zoomMapOut = function() {
+      //Google Analytics Event
+      ga.sendEvent({
+        category: 'Mapped Catch',
+        action: 'zoom',
+        label: 'out'
+      });
+
       map.zoomOut();
     };
 
@@ -201,15 +284,38 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
     };
 
+    $scope.updateQueryWithExample = function (example) {
+      $scope.query = angular.extend($scope.query, example);
+
+      //Submit the query
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query);
+      }
+    };
+
+    /*
+    This is a hack-fix function because I can't call the inner function from the DOM,
+    because taxa.data is not in the scope,
+    because it is too big to digest.
+    */
+    $scope.getTaxonDisplayName = function (taxonId) {
+      return $scope.getValueFromObjectArray(taxa.data, 'taxon_key', taxonId, 'displayName');
+    };
+
     function handleQueryResponse(responses) {
       $scope.queryResolved = true;
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
-      var i, j, cell, color, whiteness;
+      var i, j, cell, color, whiteness, errorMessage;
       //The rendering process locks the CPU for a while, so the $timeout gives us a chance to
       //put up a loading screen.
       $timeout(function() {
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
+
+        //Error message for no data
+        if ($scope.spatialCatchData && (!responses[0] || !responses[0].data)) {
+          $scope.queryResponseErrorMessage = 'No map catch allocation data currently exists for your query. ';
+        }
 
         //Color up the spatial catch data cells
         if ($scope.spatialCatchData === responses[0] && responses[0].data && responses[0].data.rollup) {
@@ -240,7 +346,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         for (i = 0; i < taxonDistResponses.length; i++) {
           var taxonId = $scope.lastQuery.taxonDistribution[i];
           if (!taxonDistResponses[i].data || taxonDistResponses[i].data.byteLength === 0) {
-            datalessTaxaNames.push($scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'common_name'));
+            datalessTaxaNames.push($scope.getValueFromObjectArray(taxa.data, 'taxon_key', taxonId, 'common_name'));
             continue;
           }
           var typedArray = new Uint32Array(taxonDistResponses[i].data);
@@ -256,7 +362,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Update an error message to the user.
         if (datalessTaxaNames.length > 0) {
-          $scope.queryResponseErrorMessage = 'No distribution data currently exists for some taxa in your query (' + datalessTaxaNames.join(', ') + ').';
+          errorMessage = ($scope.queryResponseErrorMessage ? $scope.queryResponseErrorMessage + '<br />' : '') +
+            'No distribution data currently exists for some taxa in your query ' +
+            '(' + datalessTaxaNames.join(', ') + ').';
+          $scope.queryResponseErrorMessage = errorMessage;
         }
 
         mapGridLayer.grid.data = cellData;
@@ -293,6 +402,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function updateComparableTypeList() {
       $scope.comparableTypes = [allComparableTypes[0]];
 
+      //Add fishing countries to the comparable list if there is more than one selected.
+      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 1) {
+        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'fishingCountries'));
+      }
+
+      //Add the visible "catches by" dimension to the comparable types list if there is more than one selected.
       switch ($scope.query.catchesBy) {
         case 'taxa':
           if ($scope.query.taxa && $scope.query.taxa.length > 1) {
@@ -311,20 +426,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 1) {
-        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'reportingStatuses'));
-      }
-
-      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 1) {
-        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'catchTypes'));
-      }
-
       assignDefaultComparison();
     }
 
     function assignDefaultComparison() {
       if (!$scope.query.comparableType || $scope.comparableTypes.indexOf($scope.query.comparableType) === -1) {
-        $scope.query.comparableType = $scope.comparableTypes[0];
+        $scope.query.comparableType = allComparableTypes[0]; //This is the "None" comparable type.
       }
     }
 
@@ -339,6 +446,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             colorIds.push(''+comparees[i]);
           }
         }
+      //For non-comparable queries, just make a default color ID.
+      } else {
+        colorIds.push('default');
       }
 
       //Assign colors to the various taxa in the taxon distribution.
@@ -374,16 +484,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
-      //Reporting statuses
-      if (search.repstatuses) {
-        $scope.query.reportingStatuses = search.repstatuses.split(',');
-      }
-
-      //Catch types
-      if (search.catchtypes) {
-        $scope.query.catchTypes = search.catchtypes.split(',');
-      }
-
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
@@ -406,7 +506,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if (search.compare) {
         $scope.query.comparableType = allComparableTypes.getWhere('compareTerm', search.compare);
       } else {
-        $scope.query.comparableType = $scope.comparableTypes[0];
+        $scope.query.comparableType = allComparableTypes[0]; //The "None" comparable type.
       }
 
       //Taxon distribution
@@ -446,20 +546,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //Reporting statuses
-      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
-        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
-      } else {
-        $location.search('repstatuses', null);
-      }
-
-      //Catch types
-      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
-        $location.search('catchtypes', $scope.query.catchTypes.join(','));
-      } else {
-        $location.search('catchtypes', null);
-      }
-
       //Year
       var queryYear = $scope.query.year || 2010;
       if (queryYear !== 2010) {
@@ -483,9 +569,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Compare type
-      if ($scope.query.comparableType) {
-        var compareTerm = $scope.query.comparableType.compareTerm;
-        $location.search('compare', compareTerm === 'entities' ? null : compareTerm); //No need to show the 'compare' query if it's entities, that's the default
+      if ($scope.isQueryComparable($scope.lastQuery)) {
+        $location.search('compare', $scope.query.comparableType.compareTerm);
+      } else {
+        $location.search('compare', null);
       }
 
       //Taxon distribution
@@ -507,37 +594,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       var sentence = [];
 
-      //A query is still valid if there are no fishing countries, if instead there are taxa distribution parameters set.
+      //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
       //But then our typical sentence structure doesn't make any sense.
-      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+      if ((!query.fishingCountries || query.fishingCountries.length === 0) &&
+        (query.taxonDistribution && query.taxonDistribution.length > 0)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
-          var taxonName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxonDistribution[0], 'common_name');
+          var taxonName = $scope.getValueFromObjectArray(taxa.data, 'taxon_key', query.taxonDistribution[0], 'common_name');
           sentence.push(taxonName);
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
       } else {
-        //Reporting status
-        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
-          sentence.push(reporingStatusName);
-        } else {
-          sentence.push('All');
-        }
-
-        //Catch type
-        if (query.catchTypes && query.catchTypes.length === 1) {
-          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
-          sentence.push(catchTypeName.toLowerCase());
-        } else {
-          sentence.push('fishing');
-        }
+        sentence.push('All fishing');
 
         //Catches by
         if (query.catchesBy === 'taxa') {
           if (query.taxa && query.taxa.length === 1) {
-            var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
+            var taxaName = $scope.getValueFromObjectArray(taxa.data, 'taxon_key', query.taxa[0], 'common_name');
             sentence.push('of ' + taxaName.toLowerCase());
           } else if (query.taxa && query.taxa.length > 1) {
             sentence.push('of ' + query.taxa.length + ' taxa');
@@ -559,11 +633,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Fishing countries
-        if (query.fishingCountries.length === 1) {
-          var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
-          sentence.push('by the fleets of ' + countryName);
-        } else {
-          sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+        if (query.fishingCountries && query.fishingCountries.length > 0) {
+          if (query.fishingCountries.length === 1) {
+            var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
+            sentence.push('by the fleets of ' + countryName);
+          } else {
+            sentence.push('by the fleets of ' + query.fishingCountries.length + ' countries');
+          }
         }
 
         //Year
@@ -620,13 +696,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       for (var i = 0; i < groups.length; i++) {
         var group = groups[i];
-        buckets[group.rollup_key] = [];
+        var groupId = group.rollup_key || 'default';
+        buckets[groupId] = [];
         for (var j = 0; j < group.data.length; j++) {
           var threshold = group.data[j];
           for (var k = 0; k < threshold.cells.length; k++) {
             var cell = threshold.cells[k];
             if (cell === cellId) {
-              buckets[group.rollup_key] = threshold.threshold - 1;
+              buckets[groupId] = threshold.threshold - 1;
             }
           }
         }
@@ -648,57 +725,37 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
-    $scope.taxa = taxa.data;
-    for (var i = 0; i < $scope.taxa.length; i++) {
-      $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
+
+    for (var i = 0; i < taxa.data.length; i++) {
+      taxa.data[i].displayName = taxa.data[i].common_name + ' (' + taxa.data[i].scientific_name + ')';
     }
+
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
-    $scope.reportingStatuses = reportingStatuses;
-    $scope.catchTypes = catchTypes;
+    $scope.mappedCatchExamples = spatialCatchExamples;
     $scope.defaultColor = colorAssignment.getDefaultColor();
-    //A list of the available bucketing sizes (5, 6, 7,8, 9, 10)
-    $scope.bucketSizes = bucketSizes;
-    //A list of all the available bucketing methods (plog, nlog, ptile, ntile)
-    $scope.bucketingMethods = bucketingMethods;
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
-    //SAU_CONFIG.env = "stage"; //Used to fake the staging environment.
+    //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
     $scope.$watch(
       [
-        'query.catchesBy',
-        'query.reportingStatuses',
-        'query.catchTypes'
+        'query.catchesBy'
       ],
       updateComparableTypeList
     );
+    $scope.$watchCollection('query.fishingCountries', updateComparableTypeList);
     $scope.$watchCollection('query.taxa', updateComparableTypeList);
     $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
-    $scope.$watch('query.reportingStatuses', updateComparableTypeList);
-    $scope.$watch('query.catchTypes', updateComparableTypeList);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
 
-    //TEMPORARY: This is a patch that allows the selectize.js "fishing country" component to use the same data interface
-    // no matter if it is set to a single-select or multi-select mode. This allows us to more easily go back and forth
-    // between these modes as UBC requirements may change.
-    $scope.$watch('selectedFishingCountry', function () {
-      if ($scope.selectedFishingCountry) {
-        $scope.query.fishingCountries = [$scope.selectedFishingCountry];
-      }
-    });
-
-    $scope.$watchCollection('query.fishingCountries', function () {
-      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
-        $scope.selectedFishingCountry = $scope.query.fishingCountries[0];
-      }
-    });
-    //END PATCH
-
     var allComparableTypes = [
+      {
+        name: 'None'
+      },
       {
         name: 'Fishing countries',
         field: 'fishingCountries',
@@ -726,20 +783,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         key: 'functional_group_id',
         entityName: 'description',
         compareTerm: 'funcgroups'
-      },
-      {
-        name: 'Reporting statuses',
-        field: 'reportingStatuses',
-        key: 'id',
-        entityName: 'name',
-        compareTerm: 'repstatus'
-      },
-      {
-        name: 'Catch types',
-        field: 'catchTypes',
-        key: 'id',
-        entityName: 'name',
-        compareTerm: 'catchtypes'
       }
     ];
 
@@ -788,4 +831,61 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     if ($scope.isQueryValid($scope.query)) {
       $scope.submitQuery($scope.query);
     }
+
+    /*
+    WARNING: HACK FIX
+    The code below is directly configuring the selectize.js components that use the /taxa data.
+    The /taxa data is too big to be $digested by angular, so we have to circumvent angular-selectize
+    for performance reasons.
+
+    The better fix would be to perform an autofilled search in the taxa inputs. See the "Remote Source - Github" example for the best solution.
+    https://brianreavis.github.io/selectize.js/
+    */
+    var config = {
+      options: taxa.data,
+      valueField: 'taxon_key',
+      labelField: 'displayName',
+      placeholder: 'Select...',
+      sortField: 'common_name',
+      searchField: ['common_name', 'scientific_name'],
+      plugins: ['remove_button'],
+      maxOptions: null,
+      maxItems: null,
+      render: {item: $scope.makeTaxaDropdownItem, option: $scope.makeTaxaDropdownItem}
+    };
+
+    var allocTaxaQuery = angular.element('#taxa-allocation-input').selectize(config);
+    var taxaSelectize = allocTaxaQuery[0].selectize;
+    allocTaxaQuery.on('change', function () {
+      $timeout(function () {
+        $scope.query.taxa = taxaSelectize.getValue();
+      });
+    });
+
+    $scope.$watchCollection('query.taxa', function () {
+      if ('taxa' in $scope.query) {
+        taxaSelectize.setValue($scope.query.taxa, true);
+        taxaSelectize.refreshOptions(false);
+      }
+    });
+
+    var distTaxaQuery = angular.element('#taxa-distribution-input').selectize(config);
+    var distSelectize = distTaxaQuery[0].selectize;
+    distTaxaQuery.on('change', function () {
+      $timeout(function() {
+        $scope.query.taxonDistribution = distSelectize.getValue();
+      });
+    });
+
+    $scope.$watchCollection('query.taxonDistribution', function () {
+      if ('taxonDistribution' in $scope.query) {
+        distSelectize.setValue($scope.query.taxonDistribution, true);
+        distSelectize.refreshOptions(false);
+      }
+    });
+
+    /*
+    END HACK FIX
+    */
+
   });

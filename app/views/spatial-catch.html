@@ -2,12 +2,28 @@
   <h1 class="main-title">Catch allocations map</h1>
   <ul id="side-menu" class="pull-right list-unstyled text-right">
     <li><method anchor="13"></method></li>
+    <li><a href="/using-spatial-data-displays" target="_blank">How to use this tool</a></li>
   </ul>
-  <p id="main-text">
-    Select one or more fishing countries below to display allocated catch data on the map.
-  </p>
+
+  <!-- EXAMPLES -->
+  <div ng-init="showExamples = false" class="expand-collapse-button" ng-click="showExamples = !showExamples">
+    <div class="expand-collapse-icon" ng-class="{'expand-icon': !showExamples, 'collapse-icon': showExamples}"></div>
+    <span class="expand-collapse-label">Examples</span>
+    <a popover="Learn how to perform various queries by looking at some of these provided examples." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+  </div>
+  <div class="mapped-catch-examples" ng-show="showExamples">
+    <ul class="list-unstyled">
+      <li ng-repeat="example in mappedCatchExamples"><a ng-click="updateQueryWithExample(example.query)">{{example.sentence}}</a></li>
+    </ul>
+  </div>
+
+  <!-- GRAPH LINK -->
   <p><a ng-show="catchGraphLink" ng-href="{{catchGraphLink}}"><i class="fa fa-area-chart"></i> {{catchGraphLinkText}}</a></p>
+
+  <!-- NOTE -->
   <p id="note"><strong>Note:</strong> The data we present ('reconstructed data') combine official reported data and reconstructed estimates of unreported data (including major discards), with reference to individual EEZs. Official reported data are <a popover="National data are used for some countries." popover-trigger="mouseenter">mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) <a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. For background information on reconstruction data, download the .pdf associated with each relevant EEZ.</p>
+
+  <!-- MAIN QUERY PANEL -->
   <div class="sau-panel">
     <div id="query-inputs">
 
@@ -23,11 +39,11 @@
 
       <form novalidate ng-show="showAllocationFields">
         <div class="row">
-          <div ng-class="{'col-md-4': !inProd, 'col-md-12': inProd}">
-            <label class="small-label" for="selectFishingCountries">Fishing country</label>
-            <selectize ng-model="selectedFishingCountry" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button'], maxItems: 1}"></selectize>
+          <div class="col-md-4">
+            <label class="small-label" for="selectFishingCountries">Fishing countries</label>
+            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
-          <div class="col-md-2" env-hide="prod stage">
+          <div class="col-md-2">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
             <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
               <option value="taxa">Taxon</option>
@@ -35,10 +51,10 @@
               <option value="functional groups">Functional group</option>
             </select>
           </div>
-          <div class="col-md-6" env-hide="prod stage">
+          <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
-              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Taxon/taxa</label></div>
-              <selectize ng-model="query.taxa" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Select...', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize>
+              <div class="catches-by-query"><label class="small-label">Taxon/taxa</label></div>
+              <select id="taxa-allocation-input"></select>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
@@ -51,28 +67,12 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-2" env-hide="prod stage">
-            <label class="small-label" for="selectReportingStatus">Reporting status(es)</label>
-            <selectize ng-model="query.reportingStatuses" options="reportingStatuses" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
-          </div>
-          <div class="col-md-2" env-hide="prod stage">
-            <label class="small-label" for="selectCatchType">Catch type(s)</label>
-            <selectize ng-model="query.catchTypes" options="catchTypes" config="{valueField: 'id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button']}" ></selectize>
-          </div>
         <div class="col-md-2" env-hide="prod stage">
             <label for="compareInput" class="small-label">Compare</label>
             <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
           </div>
-          <div class="timeline" ng-class="{'col-md-6': !inProd, 'col-md-12': inProd}">
+          <div class="timeline" ng-class="{'col-md-10': !inProd, 'col-md-12': inProd}">
             <spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
-          </div>
-          <div class="col-md-2" env-hide="prod stage">
-            <label class="small-label">Number of buckets</label>
-            <select placeholder="Select" class="form-control" ng-model="query.bucketCount" ng-options="item for item in bucketSizes"></select>
-          </div>
-          <div class="col-md-2" env-hide="prod stage">
-            <label class="small-label">Bucketing method</label>
-            <select placeholder="Select" class="form-control" ng-model="query.bucketingMethod" ng-options="item for item in bucketingMethods"></select>
           </div>
         </div>
       </form>
@@ -88,7 +88,8 @@
     </div>
     <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
-        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput"><selectize ng-model="query.taxonDistribution" options="taxa" config="{valueField: 'taxon_key', labelField: 'displayName', placeholder: 'Choose taxa', sortField: 'common_name', searchField: ['common_name', 'scientific_name'], plugins: ['remove_button'], maxOptions: null, render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}}" ></selectize></div>
+        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput">
+          <select id="taxa-distribution-input"></select>
       </div>
     </div>
     <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
@@ -98,25 +99,28 @@
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
-      <div class="row legend-row">
-        <div class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
+      <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
+        <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
+        </div>
+        <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
-      <div class="row" ng-show="lastQuery.taxonDistribution.length > 0">
+      <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
+        <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
         <div class="col-md-12 small-label">
-          <hr class="legend-hr" />
           Taxon distribution <span class="not-bold"> (Thin to dense)</span>
         </div>
       </div>
-      <div class="row legend-row" ng-show="lastQuery.taxonDistribution.length > 0">
+      <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
-          <spatial-catch-legend-key key-name="getValueFromObjectArray(taxa, 'taxon_key', taxonId, 'displayName')" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="getTaxonDisplayName(taxonId)" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row" ng-show="queryResponseErrorMessage">
         <div class="col-xs-12">
-          <div class="alert alert-warning text-center">{{queryResponseErrorMessage}}</div>
+          <div class="alert alert-warning text-center" ng-bind-html="queryResponseErrorMessage"></div>
         </div>
       </div>
     </div>

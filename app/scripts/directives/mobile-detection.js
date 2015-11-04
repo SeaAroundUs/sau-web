@@ -33,23 +33,25 @@ angular.module('sauWebApp')
       restrict: 'A'
     };
   })
-  //An array of all angular paths that are considered "mobile-friendly"
-  .value('mobileFriendlyPaths', [
-    '/search'
-  ])
+  //An array of all angular paths that should be redirected on mobile.
+  .value('mobileRedirects', {
+    '/eez': '/search',
+    '/lme': '/search',
+    '/rfmo': '/search',
+    '/highseas': '/search',
+    '/fishing-entity': '/search',
+    '/fao': '/search',
+    '/mariculture': '/search'
+  })
   //Prevents mobiled users from visiting pages that aren't mobile friendly.
-  .run(function ($rootScope, $location, isMobileDevice, mobileFriendlyPaths) {
+  //Reroutes them to a different page.
+  .run(function ($rootScope, $location, isMobileDevice, mobileRedirects) {
     $rootScope.$on('$routeChangeStart', function (event, next) {
       if (isMobileDevice) {
-        var isRouteMobileFriendly = false;
-        for (var i = 0; i < mobileFriendlyPaths.length; i++) {
-          if (mobileFriendlyPaths[i] === next.originalPath) {
-            isRouteMobileFriendly = true;
-          }
-        }
-        if (!isRouteMobileFriendly) {
+        if (next.originalPath in mobileRedirects) {
           event.preventDefault();
-          $location.path('/search');
+          var redirectTo = mobileRedirects[next.originalPath];
+          $location.path(redirectTo);
         }
       }
     });

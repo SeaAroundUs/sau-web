@@ -3,10 +3,15 @@
 angular.module('sauWebApp')
   .controller('RegionDataCtrl', function($scope, $location, $routeParams, region, faos) {
     var ids = region === 'global' ? [1] : $routeParams.ids.split(',').map(function(id) { return parseInt(id); });
+    var thisPath = $location.path();
 
     $scope.$watch('region', getFAOs, true);
 
     $scope.$on('$locationChangeSuccess', function() {
+      if ($location.path() !== thisPath) {
+        return;
+      }
+
       $scope.chart = getChartType();
     });
 

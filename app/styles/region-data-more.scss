@@ -8,6 +8,11 @@
     margin: 15px 0 10px;
   }
 
+  h2 {
+    font-size: 1.8em;
+    margin-top: 0;
+  }
+
   p.vertical {
     span.link {
       display: block;
@@ -125,23 +130,29 @@
     }
   }
 
-  #biodiversity .base-links {
-    position: relative;
-    
-    div {
-      display: inline-block;
-      width: 40%;
+  #biodiversity {
+    p {
+      margin: 10px 0 0;
+    }
 
-      h5 {
-        margin: 15px 0 5px;
-        padding-left: 10px;
-      }
+    .base-links {
+      position: relative;
 
-      ul {
-        padding-left: 10px;
+      div {
+        display: inline-block;
+        width: 40%;
 
-        li {
-          list-style: none;
+        h5 {
+          margin: 15px 0 5px;
+          padding-left: 10px;
+        }
+
+        ul {
+          padding-left: 10px;
+
+          li {
+            list-style: none;
+          }
         }
       }
     }

@@ -5,13 +5,20 @@
     </div>
     <div class="modal-body">
         <p>While these data are freely available for use, we ask that you please acknowledge Sea Around Us in your work.</p>
-
-        <p><strong>By clicking Download Data Now, you agree to provide attribution for any Sea Around Us data you use.</strong></p>
+        <p><strong>By downloading this data, you agree to provide attribution for any Sea Around Us data you use.</strong></p>
+        <p mobile-hide class="alert alert-warning">
+            Download may take several minutes depending upon data size and your connection. Some versions of Internet
+            Explorer may not be compatible. To install an updated browser, click
+            <a target="_blank" href="https://www.google.com/chrome/">here</a> to download Chrome.
+        </p>
+        <p mobile-only class="alert alert-warning">
+            Downloaded data can be very large; please take into consideration your device storage and data plan.
+        </p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="downloadData()"
-                ga-event="downloadGA">DOWNLOAD DATA NOW</button>
+                ga-event="downloadGA">Download Data</button>
         <button type="button" class="btn btn-default" ng-click="cancel()"
-                ga-event="cancelGA">CANCEL</button>
+                ga-event="cancelGA">Cancel</button>
     </div>
 </div>

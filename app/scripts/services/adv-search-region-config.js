@@ -138,7 +138,7 @@ angular.module('sauWebApp')
         regionListTitle: 'Global',
         selectedListTitle: 'Selected global',
         searchPlaceholder: 'Search global',
-        selectionLimit: 1,
+        selectionLimit: 0,
         getRegionData: function() {
           var promise = $q.defer();
           promise.resolve({ data: [{ title: 'The global ocean', id: 1 }]});

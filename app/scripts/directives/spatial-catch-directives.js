@@ -69,7 +69,7 @@ angular.module('sauWebApp')
       }
     };
   })
-  .directive('spatialCatchTimeline', function() {
+  .directive('spatialCatchTimeline', function($timeout) {
     return {
       templateUrl: 'views/spatial-catch/spatial-catch-timeline.html',
       restrict: 'E',
@@ -86,7 +86,10 @@ angular.module('sauWebApp')
         });
 
         ngModelCtrl.$render = function() {
-          slider.slider('setValue', ngModelCtrl.$viewValue);
+          $timeout(function() {
+            slider.slider('refresh');
+            slider.slider('setValue', ngModelCtrl.$viewValue);
+          });
         };
 
         ngModelCtrl.$parsers.push(function(viewValue) {

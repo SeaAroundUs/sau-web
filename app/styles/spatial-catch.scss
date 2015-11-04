@@ -320,4 +320,18 @@
       padding-bottom: 10px;
     }
   }
+
+  .selectize-dropdown {
+    z-index: 2000;
+  }
+
+  .mapped-catch-examples {
+    .expand-collapse-label {
+      font-size: normal;
+    }
+
+    li {
+      padding-left: 16px;
+    }
+  }
 }

@@ -62,10 +62,13 @@
 		</div>
 		<!-- PAGE FOOTER - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<div class="panel-footer">
-			<div class="text-center">
-				<button class="btn btn-primary" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
-				<span class="or-separator">or</span>
-				<button class="btn btn-primary"  ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
+			<div class="row">
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-right btn-block" ng-class="{'disabled': !queryState.isQueryGraphable}" ng-click="viewGraph()">View graph</button>
+				</div>
+				<div class="col-xs-6">
+					<button class="btn btn-primary pull-left btn-block"  ng-class="{'disabled': !queryState.isQueryDownloadable}" ng-click="downloadData()">Download data</button>
+				</div>
 			</div>
 		</div>
 	</div>

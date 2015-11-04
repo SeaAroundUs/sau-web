@@ -1,14 +1,28 @@
 'use strict';
 
-angular.module('sauWebApp').controller('AdvancedSearchCtrl', function ($scope, $location, advSearchService, $window, sauAPI, $modal) {
+angular.module('sauWebApp').controller('AdvancedSearchCtrl',
+  function ($scope, $location, advSearchService, $window, sauAPI, $modal, ga) {
 
   //Tied to the "view graph" button
   $scope.viewGraph = function() {
+
+    ga.sendEvent({
+      category: 'AdvancedSearch View Graph',
+      action: $scope.section.toUpperCase(),
+      label: $scope.queryState.graphPageUrl
+    });
+
     $location.url($scope.queryState.graphPageUrl);
   };
 
   //Tied to the "download data" button
   $scope.downloadData = function() {
+
+    ga.sendEvent({
+      category: 'AdvancedSearch Download Data',
+      action: $scope.section.toUpperCase(),
+      label: $scope.queryState.downloadDataUrl
+    });
 
     //Open a modal that reminds the user to attribute SAU in their paper.
     $modal.open({
