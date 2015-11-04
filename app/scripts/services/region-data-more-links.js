@@ -36,7 +36,7 @@ angular.module('sauWebApp')
           section: 'Other topics',
           links: [
             { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
-            { text: 'Exploited organisms', url: '#/exploited-organisms' }
+            { text: 'Exploited organisms', url: '#/global/exploited-organisms' }
           ]
         },
         {
