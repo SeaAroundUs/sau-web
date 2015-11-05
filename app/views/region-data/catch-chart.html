@@ -6,6 +6,14 @@
   <div ng-hide="noData" class="chart-container form-inline" spinner>
     <i class="fa fa-spinner fa-spin loading fa-5x"></i>
 
+    <div class="form-group">
+      <label for="dimension">Dimension</label>
+      <select ng-model="formModel.dimension"
+              ng-options="opt as opt.label for opt in dimensions"
+              ng-change="dropdownGA('Dimension', formModel.dimension.label)"
+              class="form-control" id="dimension"></select>
+    </div>
+
     <div class="clearfix">
       <div class="form-group">
         <label for="measure">Measure</label>

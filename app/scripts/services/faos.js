@@ -11,8 +11,8 @@ angular.module('sauWebApp')
 
         } else if (region === 'global') {
           promise.resolve([
-            { id: 1, name: 'EEZs of the world' },
-            { id: 2, name: 'High Seas of the world' }
+            { id: 1, title: 'EEZs of the world' },
+            { id: 2, title: 'High Seas of the world' }
           ]);
 
         } else if (region === 'eez') {
