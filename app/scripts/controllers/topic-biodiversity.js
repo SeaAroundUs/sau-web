@@ -3,7 +3,7 @@
   'use strict';
 
   angular.module('sauWebApp')
-  .controller('TopicBiodiversityCtrl', function ($scope, $location, sauAPI) {
+  .controller('TopicBiodiversityCtrl', function ($scope, $location, sauAPI, toggles) {
 
     $scope.regionId = null;
     $scope.regionName = 'eez';
@@ -13,6 +13,10 @@
       {title: 'LME', value: 'lme'},
       {title: 'RFMO', value: 'rfmo'}
     ];
+
+    if (toggles.isEnabled('fao')) {
+      $scope.regions.push({title: 'FAO Area', value: 'fao'});
+    }
 
     $scope.selectedRegion = $scope.regions[0];
 
