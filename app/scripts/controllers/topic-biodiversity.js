@@ -18,6 +18,10 @@
       $scope.regions.push({title: 'FAO Area', value: 'fao'});
     }
 
+    if (toggles.isEnabled('highseas')) {
+      $scope.regions.push({title: 'High seas', value: 'highseas'});
+    }
+
     $scope.selectedRegion = $scope.regions[0];
 
     $scope.$watch('selectedRegion', function() {
