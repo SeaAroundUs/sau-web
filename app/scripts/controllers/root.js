@@ -83,12 +83,12 @@
       $scope.template = $scope.templates[0];
 
       $scope.subtemplates = [
-        {'name': 'By Map', 'url': '#/eez'},
+        {'name': 'Basic search', 'url': '#/eez'},
         {'name': 'Advanced Search', 'url': '#/search/'},
         {'name': 'Mapped Catch', 'url': '#/spatial-catch'},
-        {'name': 'Global Fisheries Economics', 'url': '#/feru'},
+        {'name': 'Fisheries Economics', 'url': '#/feru'},
         {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
-        {'name': 'Mariculture Production', 'url': '#/mariculture'},
+        {'name': 'Mariculture', 'url': '#/mariculture'},
         {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
       ];
       $scope.subtemplate = $scope.subtemplates[0];
