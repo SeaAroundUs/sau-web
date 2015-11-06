@@ -22,11 +22,24 @@
       $scope.regions.push({title: 'High seas', value: 'highseas'});
     }
 
+    if (toggles.isEnabled('global')) {
+      $scope.regions.push({title: 'Global', value: 'global'});
+    }
+
     $scope.selectedRegion = $scope.regions[0];
 
     $scope.$watch('selectedRegion', function() {
 
       $scope.regionName = $scope.selectedRegion.value;
+
+      //There are no regions within the global ocean.
+      //So don't bother trying to make a request for any.
+      if ($scope.regionName === 'global') {
+        //For global ocean, we directly set the regionID to 1, because there are no regions.
+        $scope.selectedSubregion = null;
+        $scope.regionId = 1;
+        return;
+      }
 
       var data = sauAPI.Regions.get({region: $scope.selectedRegion.value, nospatial: true}, function() {
         $scope.subregions = data.data;
@@ -47,17 +60,6 @@
         $scope.regionId = $scope.selectedSubregion.id;
       }
     });
-
-    $scope.changeRoute = function() {
-      var newPath;
-
-      if ($scope.regionId === 0) {
-        return;
-      }
-
-      newPath = '/' + $scope.regionName + '/' + $scope.regionId;
-      $location.path(newPath);
-    };
 
   });
 
