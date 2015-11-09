@@ -28,7 +28,7 @@ angular.module('sauWebApp')
       sauAPI.EEZVsHighSeasData.get(function(res) {
         var fancyLabels = {
           'eez_percent_catch': 'EEZ percent catch',
-          'high_seas_percent_catch': 'High Seas percent catch'
+          'high_seas_percent_catch': 'High seas percent catch'
         };
         $scope.data = res.data.map(function(datum) {
           datum.key = fancyLabels[datum.key];
