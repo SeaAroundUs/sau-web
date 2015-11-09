@@ -8,7 +8,7 @@ angular.module('sauWebApp')
         options: {
           chart: {
             showControls: false,
-            style: 'expand',
+            style: 'stack',
             type: 'stackedAreaChart',
             height: 350,
             x: function(d) { return d[0]; },
@@ -20,7 +20,8 @@ angular.module('sauWebApp')
             },
             yAxis: {
               axisLabel: 'Percent of global catch'
-            }
+            },
+            yAxisTickFormat: function(x) { return Math.floor(x); }
           }
         }
       });
