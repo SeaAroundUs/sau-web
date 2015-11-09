@@ -7,10 +7,10 @@ angular.module('sauWebApp')
         scope.$watch('region', updateScope, true);
 
         function updateScope() {
-          if (scope.region.id) {
+          if (scope.region.id || scope.region.name == 'global') {
             var params = {
               region: scope.region.name,
-              region_id: scope.region.id,
+              region_id: scope.region.name == 'global' ? 1 : scope.region.id,
               fao_id: scope.region.faoId
             };
 
