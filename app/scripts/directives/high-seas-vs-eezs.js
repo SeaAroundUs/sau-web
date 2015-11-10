@@ -2,7 +2,28 @@
 
 angular.module('sauWebApp')
   .directive('highSeasVsEezs', function() {
-    var controller = function($scope, sauAPI) {
+    var controller = function($scope, $location, sauAPI) {
+      $scope.measure = $location.search().measure;
+
+      $scope.$on('$locationChangeSuccess', function() {
+        $scope.measure = $location.search().measure;
+      });
+
+      $scope.$watch('measure', function(measure) {
+        sauAPI.EEZVsHighSeasData.get({ value: measure === 'value' ? 1 : 0 }, function(res) {
+          var fancyLabels = {
+            'eez_percent_catch': 'EEZ',
+            'eez_percent_value': 'EEZ',
+            'high_seas_percent_catch': 'High seas',
+            'high_seas_percent_value': 'High seas'
+          };
+          $scope.data = res.data.map(function(datum) {
+            datum.key = fancyLabels[datum.key];
+            return datum;
+          });
+        });
+      });
+
       angular.extend($scope, {
         colors: ['#f00', '#00f'],
         options: {
@@ -25,22 +46,12 @@ angular.module('sauWebApp')
           }
         }
       });
-
-      sauAPI.EEZVsHighSeasData.get(function(res) {
-        var fancyLabels = {
-          'eez_percent_catch': 'EEZ',
-          'high_seas_percent_catch': 'High seas'
-        };
-        $scope.data = res.data.map(function(datum) {
-          datum.key = fancyLabels[datum.key];
-          return datum;
-        });
-      });
     };
 
     return {
       controller: controller,
       restrict: 'E',
+      scope: { region: '=' },
       template: '<nvd3 options="options" data="data" api="api"></nvd3>' +
         '<p class="graph-note">Majority of global catches are in EEZs</p>'
     };
