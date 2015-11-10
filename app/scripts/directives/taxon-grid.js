@@ -5,11 +5,6 @@ angular.module('sauWebApp')
 
     var controller = function($scope, $q, $filter) {
 
-      $scope.model = {
-        taxon_level: {},
-        taxon_group: {}
-      };
-
       $scope.selectRow = function(row) {
         angular.forEach(row.grid.rows, function(r) {
           r.isSelected = false;
@@ -84,28 +79,32 @@ angular.module('sauWebApp')
       };
 
       $scope.taxonChange = function() {
-        $q.all([$scope.taxon_levels.$promise, $scope.taxon_groups.$promise])
+        $q.all([$scope.taxonLevels.$promise, $scope.taxonGroups.$promise])
           .then(function() {
-
-            var filteredData = $filter('filter')($scope.allData, {
-              taxon_level: $scope.model.taxon_level.taxon_level_id,
-              taxon_group: $scope.model.taxon_group.taxon_group_id
-            });
-            $scope.gridOptions.data = $filter('orderBy')(filteredData || [], 'common_name');
-
+            var taxaFilterConfig = {};
+            if ($scope.selectedTaxonLevel.taxon_level_id >= 0) {
+              taxaFilterConfig.taxon_level = $scope.selectedTaxonLevel.taxon_level_id;
+            }
+            if ($scope.selectedTaxonGroup.taxon_group_id >= 0) {
+              taxaFilterConfig.taxon_group = $scope.selectedTaxonGroup.taxon_group_id;
+            }
+            var filteredTaxa = $filter('filter')($scope.allRegionTaxa, taxaFilterConfig);
+            $scope.gridOptions.data = $filter('orderBy')(filteredTaxa || [], 'common_name');
           });
       };
 
-      $scope.taxon_levels = sauAPI.TaxonLevels.get(function() {
-        $scope.model.taxon_level = $scope.taxon_levels.data[0];
+      $scope.taxonLevels = sauAPI.TaxonLevels.get(function() {
+        $scope.taxonLevels.data.unshift({name: '-- All levels --', taxon_level_id: -1});
+        $scope.selectedTaxonLevel = $scope.taxonLevels.data[0];
       });
-      $scope.taxon_groups = sauAPI.TaxonGroups.get(function() {
-        $scope.model.taxon_group = $scope.taxon_groups.data[0];
+      $scope.taxonGroups = sauAPI.TaxonGroups.get(function() {
+        $scope.taxonGroups.data.unshift({name: '-- All groups --', taxon_group_id: -1});
+        $scope.selectedTaxonGroup = $scope.taxonGroups.data[0];
       });
 
       $scope.$watch('regionId', function() {
         var cb = function(response) {
-          $scope.allData = response.data;
+          $scope.allRegionTaxa = response.data;
           $scope.taxonChange();
         };
 
