@@ -73,13 +73,30 @@
       display: inline-block;
       height: 100%;
 
+      span > a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+      }
+
+      .dropdown-menu {
+        background-color: #E8E0D8;
+        border: none;
+        border-radius: 0;
+        margin-top: 0;
+
+        li {
+          display: block;
+        }
+      }
+
       a {
         color: #000;
         height: 100%;
         -webkit-border-radius: 0;
         -moz-border-radius: 0;
         border-radius: 0;
-
+        text-decoration: none;
         &:hover {
           background-color: #EAD7B5;
         }

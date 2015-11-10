@@ -129,7 +129,15 @@
               </ul>
               <ul class="nav nav-pills sub-header">
                 <li role="presentation" ng-repeat="st in subtemplates">
-                  <a ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
+                  <a ng-if="st.url" ng-href="{{ st.url }}" ng-bind="st.name" ng-class="st.class"></a>
+                  <span ng-if="st.dropdown" dropdown>
+                    <a href dropdown-toggle ng-bind="st.name"></a>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="dropdownItem in st.dropdown">
+                        <a ng-href="{{dropdownItem.url}}" ng-bind="dropdownItem.name"></a>
+                      </li>
+                    </ul>
+                  </span>
                 </li>
               </ul>
             </div>

@@ -132,24 +132,6 @@ angular.module('sauWebApp')
       }
     });
 
-    $scope.changeRegion = function(region) {
-      $scope.region.name = region;
-      $scope.regionConfig = mainMapRegionConfig.getConfig(region);
-      $location.path($scope.regionConfig.path, false);
-      getFeatures();
-      //Close any map "popups" when changing region maps.
-      $scope.map.closePopup();
-    };
-
-    $scope.changeRegionGlobal = function() {
-      $scope.region.name = 'global';
-      $location.path('/' + $scope.region.name, true);
-    };
-
-    $scope.isActive = function (viewLocation) {
-      return viewLocation === $location.path();
-    };
-
     function getFeatures () {
       spinnerState.loading = true;
       var regionResource = $scope.regionConfig.requestData();

@@ -5,7 +5,7 @@
   // jshint expr:true
 
   angular.module('sauWebApp')
-    .controller('RootCtrl', function ($scope, $location, toggles) {
+    .controller('RootCtrl', function ($scope, $location, toggles, mainMapRegionConfig) {
       $scope.$on('$routeChangeSuccess', function(evt, location) {
         $scope.showMobileMenu = false;
         $scope.routeError = false;
@@ -72,30 +72,51 @@
       });
 
       $scope.templates = [
-        {'name': 'Tools & Data', 'url': '/data/#/eez', 'class': 'selected'},
-        {'name': 'Getting started', 'url': '/tools-guide/'},
-        {'name': 'Publications', 'url': '/articles/'},
-        {'name': 'News', 'url': '/about/'},
-        {'name': 'Projects', 'url': '/information-by-topic/'},
-        {'name': 'Partners', 'url': '/collaborations/'},
-        {'name': 'Help', 'url': '/faq/'}
+        {name: 'Tools & Data', url: '/data/#/eez', 'class': 'selected'},
+        {name: 'Getting started', url: '/tools-guide/'},
+        {name: 'Publications', url: '/articles/'},
+        {name: 'News', url: '/about/'},
+        {name: 'Projects', url: '/information-by-topic/'},
+        {name: 'Partners', url: '/collaborations/'},
+        {name: 'Help', url: '/faq/'}
       ];
       $scope.template = $scope.templates[0];
 
       $scope.subtemplates = [
-        {'name': 'Basic search', 'url': '#/eez'},
-        {'name': 'Advanced Search', 'url': '#/search/'},
-        {'name': 'Mapped Catch', 'url': '#/spatial-catch'},
-        {'name': 'Fisheries Economics', 'url': '#/feru'},
-        {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
-        {'name': 'Mariculture', 'url': '#/mariculture'},
-        {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
+        {
+          name: 'Basic search',
+          dropdown: [
+            {name: 'EEZ', url: '#' + mainMapRegionConfig.getConfig('eez').path},
+            {name: 'LME', url: '#' + mainMapRegionConfig.getConfig('lme').path},
+            {name: 'RFMO', url: '#' + mainMapRegionConfig.getConfig('rfmo').path},
+            {name: 'High seas', url: '#' + mainMapRegionConfig.getConfig('highseas').path},
+            {name: 'Global', url: '#/global'},
+            {name: 'FAO area', url: '#' + mainMapRegionConfig.getConfig('fao').path},
+            {name: 'Fishing country', url: '#' + mainMapRegionConfig.getConfig('fishing-entity').path}
+          ]
+        },
+        {name: 'Advanced Search', url: '#/search/'},
+        {name: 'Mapped Catch', url: '#/spatial-catch'},
+        {name: 'Fisheries Economics', url: '#/feru'},
+        {name: 'Biodiversity', url: '#/topic/biodiversity'},
+        {name: 'Mariculture', url: '#/mariculture'},
+        {name: 'Marine Trophic Index', url: '#/marine-trophic-index'}
       ];
       $scope.subtemplate = $scope.subtemplates[0];
 
       if (!toggles.isEnabled('spatial')) {
         $scope.subtemplates.splice(2,1);
       }
+
+      if (!toggles.isEnabled('highseas')) {
+        $scope.subtemplates[0].dropdown.splice(3, 1);
+      }
+
+      if (!toggles.isEnabled('global')) {
+        $scope.subtemplates[0].dropdown.splice(4, 1);
+      }
+
+      if (!toggles.isEnabled(''))
 
       $scope.go = function(url) {
         window.location = url;

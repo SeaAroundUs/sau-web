@@ -1,17 +1,6 @@
-<div class="regions row">
-    <span> Show Search Type: </span>
-    <a ng-class="{ active: region.name=='eez'}" class="btn btn-default" ng-click="changeRegion('eez')" role="button">EEZ</a>
-    <a ng-class="{ active: region.name=='lme'}" class="btn btn-default" ng-click="changeRegion('lme')" role="button">LME</a>
-    <a ng-class="{ active: region.name=='rfmo'}" class="btn btn-default" ng-click="changeRegion('rfmo')" role="button">RFMO</a>
-    <a tooltip="High seas queries will be available after publication is released." tooltip-append-to-body="true" class="btn btn-default" style="opacity: 0.65; cursor: not-allowed;">High seas</a>
-    <a tooltip="Global queries will be available after publication is released." tooltip-append-to-body="true" class="btn btn-default" style="opacity: 0.65; cursor: not-allowed;">Global</a>
-    <a ng-class="{ active: region.name=='fao'}" toggle-hide="fao" class="btn btn-default" ng-click="changeRegion('fao')" role="button">FAO Area</a>
-    <a ng-class="{ active: region.name=='fishing-entity'}" class="btn btn-default" ng-click="changeRegion('fishing-entity')" role="button">Fishing country</a>
-</div>
-
 <div id="search">
     <div id="search-inner">
-        <selectize ng-model="selectedSearchOption" options="searchOptions" config="{valueField: 'value', labelField: 'label', placeholder: 'Type or select...', sortField: 'label', searchField: ['label'], maxOptions: null, maxItems: 1, onChange: dropDownSelect}" ></selectize>
+        <selectize ng-model="selectedSearchOption" options="searchOptions" config="{valueField: 'value', labelField: 'label', placeholder: 'Find a region...', sortField: 'label', searchField: ['label'], maxOptions: null, maxItems: 1, onChange: dropDownSelect}" ></selectize>
     </div>
 </div>
 
