@@ -164,7 +164,7 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           links: [
-            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
+            { text: 'FAO area information', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
             { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
