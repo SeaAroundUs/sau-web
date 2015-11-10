@@ -4,7 +4,10 @@
       Stock status not presented, as too few data are available for meaningful use.
     </p>
     <div ng-hide="data.css.length === 0 && data.nss.length === 0">
-      <h1>Stock status in the waters of {{region.data.title}}</h1>
+      <h1>Stock status <span ng-hide="regionName === 'global'">in the waters of </span>
+        <span ng-hide="regionName === 'global'" ng-bind="region.data.title"></span>
+        <span ng-show="regionName === 'global'">in the global ocean</span>
+      </h1>
 
       <div class="download-div">
         <button class="btn btn-primary download" ng-click="openDownloadDataModal()"
