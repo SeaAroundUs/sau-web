@@ -116,8 +116,6 @@
         $scope.subtemplates[0].dropdown.splice(4, 1);
       }
 
-      if (!toggles.isEnabled(''))
-
       $scope.go = function(url) {
         window.location = url;
       };
