@@ -41,7 +41,7 @@ angular.module('sauWebApp')
     return {
       controller: controller,
       restrict: 'E',
-      replace: true,
-      template: '<nvd3 options="options" data="data" api="api"></nvd3>'
+      template: '<nvd3 options="options" data="data" api="api"></nvd3>' +
+        '<p class="graph-note">Majority of global catches are in EEZs</p>'
     };
   });
