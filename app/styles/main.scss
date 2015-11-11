@@ -144,13 +144,16 @@ label {
 }
 
 #main_view .search-container {
-  background-color: $darkBlue;
-
+  position: relative;
   #search {
+    position: absolute;
+    z-index: 1;
+    left: calc(50% - 300px);
     div#search-inner {
       width: 600px;
-      padding: 10px 10px 6px;
-      margin: 0 auto;
+      background-color: $darkBlue;
+      padding: 10px 10px 15px;
+      position: relative;
 
       div.ui-select-container {
         width: 100%;
