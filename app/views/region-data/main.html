@@ -51,7 +51,8 @@
 
   <div ng-if="region.name === 'global'" class="global-extras">
     <div class="row">
-      <h2 class="col-md-11">Percent of landings in EEZs vs. high seas</h2>
+      <h2 class="col-md-11" ng-if="measure == 'tonnage'">Percent of catch in EEZs vs. High seas</h2>
+      <h2 class="col-md-11" ng-if="measure == 'value'">Percent of landed value in EEZs vs. High seas</h2>
 
       <div class="col-md-1 method">
         <method anchor="13"></method>
@@ -64,7 +65,7 @@
       </div>
 
       <div class="col-md-5 high-seas-vs-eezs">
-        <high-seas-vs-eezs region="region"></high-seas-vs-eezs>
+        <high-seas-vs-eezs region="region" measure="measure"></high-seas-vs-eezs>
       </div>
     </div>
   </div>

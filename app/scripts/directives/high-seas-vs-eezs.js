@@ -3,12 +3,6 @@
 angular.module('sauWebApp')
   .directive('highSeasVsEezs', function() {
     var controller = function($scope, $location, sauAPI) {
-      $scope.measure = $location.search().measure;
-
-      $scope.$on('$locationChangeSuccess', function() {
-        $scope.measure = $location.search().measure;
-      });
-
       $scope.$watch('measure', function(measure) {
         sauAPI.EEZVsHighSeasData.get({ value: measure === 'value' ? 1 : 0 }, function(res) {
           var fancyLabels = {
@@ -51,7 +45,7 @@ angular.module('sauWebApp')
     return {
       controller: controller,
       restrict: 'E',
-      scope: { region: '=' },
+      scope: { measure: '=', region: '=' },
       template: '<nvd3 options="options" data="data" api="api"></nvd3>' +
         '<p class="graph-note">Majority of global catches are in EEZs</p>'
     };

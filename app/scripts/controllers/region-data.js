@@ -5,6 +5,12 @@ angular.module('sauWebApp')
     var ids = region === 'global' ? [1] : $routeParams.ids.split(',').map(function(id) { return parseInt(id); });
     var thisPath = $location.path();
 
+    // needed for eezs vs high seas graph and title
+    $scope.measure = $location.search().measure;
+    $scope.$on('$locationChangeSuccess', function() {
+      $scope.measure = $location.search().measure;
+    });
+
     $scope.$watch('region', getFAOs, true);
 
     $scope.$on('$locationChangeSuccess', function() {
