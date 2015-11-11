@@ -19,6 +19,10 @@ angular.module('sauWebApp')
         return '<div ng-click="grid.appScope.selectRow(row)" ng-repeat="col in colContainer.renderedColumns track by col.colDef.name" class="ui-grid-cell" ui-grid-cell></div>';
       }
 
+      function cellTemplate() {
+        return '<div class="ui-grid-cell-content">{{row.entity.common_name}} (<em>{{row.entity.scientific_name}}</em>)</div>';
+      }
+
       $scope.gridOptions = {
         enableFiltering: true,
         rowTemplate: rowTemplate(),
@@ -31,25 +35,17 @@ angular.module('sauWebApp')
         enableSorting: true,
         columnDefs: [
           {
-            field: 'common_name',
+            field: 'name',
+            displayName: 'Taxon',
             filter: {
               condition: uiGridConstants.filter.CONTAINS,
-              placeholder: ''
+              placeholder: 'Search this list'
             },
+            cellTemplate: cellTemplate(),
             enableColumnMenu: false,
             enableSorting: true,
             suppressRemoveSort: true // this plus below fixes column sorting
-          },
-          {
-            field: 'scientific_name',
-            filter: {
-              condition: uiGridConstants.filter.CONTAINS,
-              placeholder: ''
-            },
-            enableColumnMenu: false,
-            enableSorting: true,
-            suppressRemoveSort: true // this plus on.sortChanged below fixes column sorting
-          },
+          }
         ]
       };
 
@@ -90,6 +86,7 @@ angular.module('sauWebApp')
             }
             var filteredTaxa = $filter('filter')($scope.allRegionTaxa, taxaFilterConfig);
             $scope.gridOptions.data = $filter('orderBy')(filteredTaxa || [], 'common_name');
+            updateGridHeaderTitle();
           });
       };
 
@@ -105,6 +102,7 @@ angular.module('sauWebApp')
       $scope.$watch('regionId', function() {
         var cb = function(response) {
           $scope.allRegionTaxa = response.data;
+          createTaxaDisplayNames();
           $scope.taxonChange();
         };
 
@@ -114,6 +112,23 @@ angular.module('sauWebApp')
           sauAPI.ExploitedOrganismsData.get({region: $scope.regionName, region_id: $scope.regionId}, cb);
         }
       }, true);
+
+      function createTaxaDisplayNames() {
+        if (!$scope.allRegionTaxa) {
+          return; 
+        }
+        $scope.allRegionTaxa.forEach(function (taxon) {
+          taxon.name = taxon.common_name + ' ' + taxon.scientific_name;
+        });
+      }
+
+      function updateGridHeaderTitle() {
+        var title = 'Taxa';
+        if ($scope.gridOptions && $scope.gridOptions.data) {
+          title += ' (' + $scope.gridOptions.data.length + ')';  
+        }
+        $scope.gridOptions.columnDefs[0].displayName = title;
+      }
 
     };
 

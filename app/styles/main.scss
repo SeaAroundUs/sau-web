@@ -206,15 +206,28 @@ label {
 .eo-grid {
   width: 768px;
   height: 250px;
+
   .ui-grid-cell {
     cursor: pointer;
     background-color: transparent !important;
+
+    .ui-grid-cell-content {
+      width: 100%;
+      height: 100%;
+      padding: 5px 0px 3px 12px;
+    }
   }
+
   .ui-grid-cell-focus {
     background-color: transparent !important;
   }
   .ui-grid-row-selected .ui-grid-cell {
     background-color: $orange !important;
+  }
+
+  .ui-grid-filter-input {
+    font-weight: normal;
+    padding: 5px 0px 3px 12px !important;
   }
 }
 .content-container {
