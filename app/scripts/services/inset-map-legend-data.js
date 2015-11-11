@@ -38,6 +38,11 @@ angular.module('sauWebApp')
       {value: 12999999, label: '10,000,000-12,999,999'}
     ];
 
+    var fao = [
+      {pattern: 'images/legend/this_fao.png', label: 'FAO area'},
+      {pattern: 'images/legend/other_fao.png', label: 'Other FAOs'}
+    ];
+
     return {
       eez: eez,
       lme: lme,
@@ -45,6 +50,7 @@ angular.module('sauWebApp')
       global: null,
       rfmo: null,
       mariculture: mariculture,
-      'fishing-entity': null
+      'fishing-entity': null,
+      fao: fao
     };
   });
