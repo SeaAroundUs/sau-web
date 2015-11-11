@@ -27,6 +27,7 @@ angular.module('sauWebApp')
     var highseas = [
       { pattern: 'images/legend/eez.png', label: 'High seas' },
       { pattern: 'images/legend/other_eez.png', label: 'Other high seas' },
+      { pattern: 'images/legend/ocean.png', label: 'EEZs' }
     ];
 
     var mariculture = [
