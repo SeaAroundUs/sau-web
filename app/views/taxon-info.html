@@ -2,11 +2,11 @@
 	<h3>Error: taxon {{taxon.key}} was not found</h3>
 </div>
 <div ng-if="taxon && ! taxon.error" class="taxon-info">
-	<h3>Key Information on <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})</h3>
+	<h3>Key Information on {{taxon.common_name}} (<i>{{taxon.scientific_name}}</i>)</h3>
 
 	<div class="taxa-link">
 		<a ng-href="#/taxon/{{ taxon.taxon_key }}" class="taxa-link">
-			View graph for catches of <i>{{taxon.scientific_name}}</i> ({{taxon.common_name}})
+			View graph for catches of {{taxon.common_name}} (<i>{{taxon.scientific_name}}</i>)
 		</a>
 	</div>
 	<div toggle-hide="taxon-distribution" class="taxa-link">
