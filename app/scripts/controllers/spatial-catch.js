@@ -1,7 +1,7 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes) {
 
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
@@ -85,6 +85,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             }
           }
           break;
+      }
+
+      //...Reporting statuses
+      if (query.reportingStatuses) {
+        queryParams.repstatus = query.reportingStatuses.join(',');
+      }
+
+      //...Catch types
+      if (query.catchTypes) {
+        queryParams.catchtypes = query.catchTypes.join(',');
       }
 
       //...Compare term
@@ -478,6 +488,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
+      //Reporting statuses
+      if (search.repstatuses) {
+        $scope.query.reportingStatuses = search.repstatuses.split(',');
+      }
+
+      //Catch types
+      if (search.catchtypes) {
+        $scope.query.catchTypes = search.catchtypes.split(',');
+      }
+
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
@@ -540,6 +560,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
+      //Reporting Statuses
+      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
+        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
+      } else {
+        $location.search('repstatuses', null);
+      }
+
+      //Catch types
+      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
+        $location.search('catchtypes', $scope.query.catchTypes.join(','));
+      } else {
+        $location.search('catchtypes', null);
+      }
+
       //Year
       var queryYear = $scope.query.year || 2010;
       if (queryYear !== 2010) {
@@ -599,7 +633,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
       } else {
-        sentence.push('All fishing');
+        //Reporting status
+        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
+          var reporingStatusName = $scope.getValueFromObjectArray($scope.reportingStatuses, 'id', query.reportingStatuses[0], 'name');
+          sentence.push(reporingStatusName);
+        } else {
+          sentence.push('All');
+        }
+
+        //Catch type
+        if (query.catchTypes && query.catchTypes.length === 1) {
+          var catchTypeName = $scope.getValueFromObjectArray($scope.catchTypes, 'id', query.catchTypes[0], 'name');
+          sentence.push(catchTypeName.toLowerCase());
+        } else {
+          sentence.push('fishing');
+        }
 
         //Catches by
         if (query.catchesBy === 'taxa') {
@@ -725,6 +773,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.commercialGroups = commercialGroups.data;
     $scope.functionalGroups = functionalGroups.data;
+    $scope.reportingStatuses = reportingStatuses;
+    $scope.catchTypes = catchTypes;
     $scope.mappedCatchExamples = spatialCatchExamples;
     $scope.defaultColor = colorAssignment.getDefaultColor();
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
