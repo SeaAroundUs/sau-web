@@ -115,7 +115,7 @@ angular.module('sauWebApp')
 
       function createTaxaDisplayNames() {
         if (!$scope.allRegionTaxa) {
-          return; 
+          return;
         }
         $scope.allRegionTaxa.forEach(function (taxon) {
           taxon.name = taxon.common_name + ' ' + taxon.scientific_name;
@@ -125,7 +125,7 @@ angular.module('sauWebApp')
       function updateGridHeaderTitle() {
         var title = 'Taxa';
         if ($scope.gridOptions && $scope.gridOptions.data) {
-          title += ' (' + $scope.gridOptions.data.length + ')';  
+          title += ' (' + $scope.gridOptions.data.length + ')';
         }
         $scope.gridOptions.columnDefs[0].displayName = title;
       }
