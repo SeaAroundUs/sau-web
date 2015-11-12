@@ -36,12 +36,13 @@ angular.module('sauWebApp')
           section: 'Other topics',
           links: [
             { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
-            { text: 'Exploited organisms', url: '#/exploited-organisms' }
+            { text: 'Exploited organisms', url: '#/global/exploited-organisms' }
           ]
         },
         {
           section: 'Governance',
           links: [
+            { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
             { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
           ]
         },
@@ -67,6 +68,7 @@ angular.module('sauWebApp')
               ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
             },
+            { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
             { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
             // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
@@ -162,7 +164,8 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           links: [
-            { text: 'FAO info', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
+            { text: 'FAO area information', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
+            { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
             { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
         },

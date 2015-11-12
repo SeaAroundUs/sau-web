@@ -280,8 +280,8 @@ angular.module('sauWebApp')
     return {
       controller: controller,
       link: function(scope, ele) {
-        // don't show on multi regions
-        if (!scope.region.id) {
+        // don't show on multi regions or global
+        if (!scope.region.id || scope.region.name == 'global') {
           ele.hide();
         }
       },

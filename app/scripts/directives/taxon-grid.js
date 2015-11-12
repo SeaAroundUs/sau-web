@@ -91,7 +91,7 @@ angular.module('sauWebApp')
               taxon_level: $scope.model.taxon_level.taxon_level_id,
               taxon_group: $scope.model.taxon_group.taxon_group_id
             });
-            $scope.gridOptions.data = $filter('orderBy')(filteredData, 'common_name');
+            $scope.gridOptions.data = $filter('orderBy')(filteredData || [], 'common_name');
 
           });
       };

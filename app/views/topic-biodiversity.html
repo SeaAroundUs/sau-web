@@ -6,19 +6,21 @@
         the selected taxon will be displayed at the bottom of the screen.
     </p>
 
-    <h3>Information by Region</h3>
+    <h3>Filter by Region</h3>
 
     <div id="region-selector">
+        <!-- Region type selector -->
         <select ng-model="selectedRegion" ng-options="region.title for region in regions"></select>
-        for
-        <select ng-model="selectedSubregion" ng-options="region.title for region in subregions | orderBy: 'title'"></select>
 
-        <button type="button" ng-click="changeRoute()" ng-disabled="regionId === 0" class="btn btn-primary">
-            Submit
-        </button>
+        <!-- Region selector -->
+        <!-- Hide this when 'Global' is selected as it is N/A -->
+        <span ng-show="selectedRegion.value !== 'global'">
+            <span style="padding: 0 8px">for</span>
+            <select ng-model="selectedSubregion" ng-options="region.title for region in subregions | orderBy: 'title'"></select>
+        </span>
     </div>
 
-    <h3>Information by Taxon</h3>
+    <h3>Filter by Taxon</h3>
 
     <sau-taxon-grid region-name="regionName" region-id="regionId"></sau-taxon-grid>
 

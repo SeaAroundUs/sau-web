@@ -4,7 +4,8 @@ angular.module('sauWebApp')
   .directive('regionDataLegend', function(insetMapLegendData, regionToggles) {
     return {
       link: function(scope, ele) {
-        if (!scope.region.id) {
+        // don't show on multi regions or global
+        if (!scope.region.id || scope.region.name == 'global') {
           return ele.hide();
         }
 
