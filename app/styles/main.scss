@@ -145,10 +145,12 @@ label {
 
 #main_view .search-container {
   position: relative;
+
   #search {
     position: absolute;
     z-index: 1;
     left: calc(50% - 300px);
+
     div#search-inner {
       width: 600px;
       background-color: $darkBlue;
@@ -164,6 +166,15 @@ label {
 
       span {
         overflow: hidden;
+      }
+    }
+
+    /* Specific overrides to the region search box on /mariculture, because it doesn't have the navy menu. */
+    .mariculture-search-inner {
+      background-color: transparent !important;
+
+      .selectize-input {
+        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.54);
       }
     }
   }
