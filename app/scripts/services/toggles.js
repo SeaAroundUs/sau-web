@@ -10,7 +10,8 @@ angular.module('sauWebApp')
       'highseas',
       'global',
       'fao',
-      'taxon-distribution'
+      'taxon-distribution',
+      'fishingEntity'
     ];
 
     var disabled = {
