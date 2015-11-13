@@ -74,11 +74,26 @@ angular.module('sauWebApp')
       templateUrl: 'views/spatial-catch/spatial-catch-timeline.html',
       restrict: 'E',
       require: 'ngModel',
+      scope: {
+        'onSlideStopDebounce': '&'
+      },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
+        var sliderReleasedPromise;
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
+        });
+
+        //Sends out a delayed event that the user can handle.
+        slider.on('slideStop', function () {
+          $timeout.cancel(sliderReleasedPromise);
+          sliderReleasedPromise = $timeout(scope.onSlideStopDebounce, 1000);
+        });
+
+        //Cancels the delayed 'slideStop' event.
+        slider.on('slideStart', function () {
+          $timeout.cancel(sliderReleasedPromise);
         });
 
         ngModelCtrl.$formatters.push(function(modelValue) {
