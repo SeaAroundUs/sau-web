@@ -3,6 +3,7 @@
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
   function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes) {
 
+    var lastQueryPromise;
     $scope.submitQuery = function (query) {
       $scope.lastQuery = angular.copy(query);
       assignColorsToComparees();
@@ -120,7 +121,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       }
 
-      $q.all(promises).then(handleQueryResponse);
+      lastQueryPromise = $q.all(promises);
+      lastQueryPromise.then(handleQueryResponse);
 
       //Google Analytics Event
       ga.sendEvent({
@@ -130,8 +132,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       });
     };
 
-    $scope.isQueryDirty = function() {
-      return !angular.equals($scope.lastQuery, $scope.query);
+    $scope.dataNeedsManualUpdate = function() {
+      if ($scope.lastQuery && $scope.query) {
+        var tempYear = $scope.lastQuery.year;
+        $scope.lastQuery.year = $scope.query.year;
+        var isEqual = angular.equals($scope.lastQuery, $scope.query);
+        $scope.lastQuery.year = tempYear;
+        return !isEqual;
+      } else {
+        return !angular.equals($scope.lastQuery, $scope.query);
+      }
     };
 
     $scope.getComparees = function(query) {
@@ -306,7 +316,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'displayName');
     };
 
+    $scope.onTimelineRelease = function () {
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query);
+      }
+    };
+
     function handleQueryResponse(responses) {
+      //This checks to see if an older query resolved after a newer query,
+      //in which case we should just throw it out.
+      if (responses !== lastQueryPromise.$$state.value) {
+        return;
+      }
+      lastQueryPromise = null;
+
       $scope.queryResolved = true;
       $scope.isRendering = true;
       $scope.loadingText = 'Rendering';
@@ -794,6 +817,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
+    $scope.selectedYear = 2010;
 
     var allComparableTypes = [
       {

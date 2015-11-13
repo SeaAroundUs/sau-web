@@ -72,7 +72,7 @@
             <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
           </div>
           <div class="timeline" ng-class="{'col-md-10': !inProd, 'col-md-12': inProd}">
-            <spatial-catch-timeline ng-model="query.year"></spatial-catch-timeline>
+            <spatial-catch-timeline ng-model="query.year" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
           </div>
         </div>
       </form>
@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-show="isQueryValid(query) && isQueryDirty()">
+    <div class="row" ng-show="isQueryValid(query) && dataNeedsManualUpdate()">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
         <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
