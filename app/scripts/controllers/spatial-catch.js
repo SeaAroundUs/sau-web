@@ -825,18 +825,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       });
 
-      mapGridLayer = map.setData(new Uint8ClampedArray(720 * 360 * 4), {
+      mapGridLayer = map.addLayer(new Uint8ClampedArray(720 * 360 * 4), {
         gridSize: [720, 360],
         renderOnAnimate: false
       });
 
-      map.setData(eezSpatialData.data, {
+      map.addLayer(eezSpatialData.data, {
         fillColor: 'rgba(0, 117, 187, 0)',
         strokeColor: 'rgba(0, 117, 187, 1)',
         renderOnAnimate: false
       });
 
-      map.setData(countries, {
+      map.addLayer(countries, {
         fillColor: 'rgba(251, 250, 243, 1)',
         strokeColor: 'rgba(0, 0, 0, 0)'
       });

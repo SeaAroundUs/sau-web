@@ -28,7 +28,7 @@
     "angulartics": "0.17.2",
     "rrose": "https://github.com/SeaAroundUs/rrose.git#e2aae9b4a393f2560697f5d483a8eaed067cebe3",
     "Proj4Leaflet": "https://github.com/SeaAroundUs/Proj4Leaflet.git#dbd09c2adc1f9eacc8dee3192763dd9746dbb842",
-    "d3-grid-map": "https://github.com/VulcanTechnologies/d3-grid-map.git#f0c575c6416df3e51861a41c1cc0066753de69e6",
+    "d3-grid-map": "https://github.com/VulcanTechnologies/d3-grid-map.git#dcef365e82d754ac5dc457a8ff27ecd1b8cab3fb",
     "seiyria-bootstrap-slider": "~5.0.13",
     "angular-selectize2": "~1.2.3"
   },
