@@ -88,7 +88,7 @@ angular.module('sauWebApp')
         //Sends out a delayed event that the user can handle.
         slider.on('slideStop', function () {
           $timeout.cancel(sliderReleasedPromise);
-          sliderReleasedPromise = $timeout(scope.onSlideStopDebounce, 1000);
+          sliderReleasedPromise = $timeout(scope.onSlideStopDebounce, 0);
         });
 
         //Cancels the delayed 'slideStop' event.
