@@ -3,16 +3,30 @@
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
   function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes) {
 
-    var lastQueryPromise;
+    var lastAllQueryPromise;
+    var lastCatchQueryResponse;
     $scope.submitQuery = function (query) {
+      //Clears the grid cache when the query changes.
+      //If only the year has changed, the grid cache doesn't clear.
+      //Grid cache keeps all grid layers of a query, indexed by year.
+      if (!$scope.isQueryEqual($scope.lastQuery, query, true)) {
+        timelineCache.clearCache();
+      }
+
       $scope.lastQuery = angular.copy(query);
       assignColorsToComparees();
       updateUrlFromQuery();
-      $scope.loadingText = 'Downloading cells';
       $scope.queryResponseErrorMessage = null;
       $scope.lastQuerySentence = getQuerySentence(query);
       $scope.catchGraphLinkText = getCatchGraphLinkText(query);
       $scope.catchGraphLink = getCatchGraphLink(query);
+
+      //If this query is cached, we can exit early.
+      if (timelineCache.isValid(getTimelineCacheIndex(query.year))) {
+        return;
+      }
+
+      $scope.loadingText = 'Downloading cells';
       $scope.queryResolved = false;
 
       //Form the query...
@@ -104,15 +118,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       var promises = [];
+      lastCatchQueryResponse = null;
 
       //Make the spatial catch call
-      $scope.spatialCatchData = null;
       if ($scope.isAllocationQueryValid($scope.lastQuery)) {
-        $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
-        promises.push($scope.spatialCatchData.$promise);
+        lastCatchQueryResponse = sauAPI.SpatialCatchData.get(queryParams);
+        promises.push(lastCatchQueryResponse.$promise);
       }
 
-      //...Taxon distribution
+      //...Taxon distribution call
       if ($scope.isDistributionQueryValid($scope.lastQuery)) {
         for (var i = 0; i < query.taxonDistribution.length; i++) {
           var taxonId = query.taxonDistribution[i];
@@ -121,8 +135,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       }
 
-      lastQueryPromise = $q.all(promises);
-      lastQueryPromise.then(handleQueryResponse);
+      lastAllQueryPromise = $q.all(promises);
+      lastAllQueryPromise.then(handleQueryResponse);
 
       //Google Analytics Event
       ga.sendEvent({
@@ -132,15 +146,17 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       });
     };
 
-    $scope.dataNeedsManualUpdate = function() {
-      if ($scope.lastQuery && $scope.query) {
-        var tempYear = $scope.lastQuery.year;
-        $scope.lastQuery.year = $scope.query.year;
-        var isEqual = angular.equals($scope.lastQuery, $scope.query);
-        $scope.lastQuery.year = tempYear;
-        return !isEqual;
+    //Return true if any data except the year is different.
+    //Returns false if all data is the same, or just the year is different.
+    $scope.isQueryEqual = function(q1, q2, ignoreYear) {
+      if (q1 && q2 && ignoreYear) {
+        var tempYear = q1.year;
+       q1.year = q2.year;
+        var isEqual = angular.equals(q1, q2);
+        q1.year = tempYear;
+        return isEqual;
       } else {
-        return !angular.equals($scope.lastQuery, $scope.query);
+        return angular.equals(q1, q2);
       }
     };
 
@@ -194,20 +210,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
     };
 
-    $scope.minCatch = function() {
+    $scope.minCatch = function(comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data) {
-        val = $scope.spatialCatchData.data.min_catch.toExponential(1);
+      comparee = comparee || '';
+
+      if (timelineCache[currTimelineCacheIndex]) {
+        val = timelineCache[currTimelineCacheIndex].catchLegend[comparee].minCatch.toExponential(1);
       }
 
       var strVal = ''+val;
       return strVal + ' t/km²';
     };
 
-    $scope.maxCatch = function () {
+    $scope.maxCatch = function (comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data) {
-        val = $scope.spatialCatchData.data.max_catch.toExponential(1);
+      comparee = comparee || '';
+
+      if (timelineCache[currTimelineCacheIndex]) {
+        val = timelineCache[currTimelineCacheIndex].catchLegend[comparee].maxCatch.toExponential(1);
       }
 
       var strVal = ''+val;
@@ -216,18 +236,22 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.totalCatch = function (comparee) {
       var val = 0;
-      if ($scope.spatialCatchData.data && $scope.spatialCatchData.data.rollup) {
-        for (var i = 0; i < $scope.spatialCatchData.data.rollup.length; i++) {
-          var rollupKey = $scope.spatialCatchData.data.rollup[i].rollup_key;
-          if (rollupKey === ''+comparee || rollupKey === '') {
-            val = Math.round(+$scope.spatialCatchData.data.rollup[i].total_catch);
-            break;
-          }
-        }
+      comparee = comparee || '';
+      if (timelineCache[currTimelineCacheIndex]) {
+        val = Math.round(+timelineCache[currTimelineCacheIndex].catchLegend[comparee].totalCatch);
       }
 
       var units = 'x 10³ t';
       return val + ' ' + units;
+    };
+
+    $scope.boundaryLabels = function (comparee) {
+      comparee = comparee || '';
+      if (timelineCache[currTimelineCacheIndex]) {
+        return timelineCache[currTimelineCacheIndex].catchLegend[comparee].boundaryLabels;
+      }
+
+      return '';
     };
 
     $scope.getCompareeName = function (comparee) {
@@ -325,10 +349,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function handleQueryResponse(responses) {
       //This checks to see if an older query resolved after a newer query,
       //in which case we should just throw it out.
-      if (responses !== lastQueryPromise.$$state.value) {
+      if (responses !== lastAllQueryPromise.$$state.value) {
         return;
       }
-      lastQueryPromise = null;
+      lastAllQueryPromise = null;
 
       $scope.queryResolved = true;
       $scope.isRendering = true;
@@ -338,19 +362,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //put up a loading screen.
       $timeout(function() {
         var cellData = new Uint8ClampedArray(1036800); //Number of bytes: columns * rows * 4 (r,g,b,a)
+        var catchResponse = lastCatchQueryResponse ? responses[0] : null;
+        //var distResponses = responses.slice(catchResponse ? 1 : 0);
+        var isValidCatchResponse = catchResponse && catchResponse.data && catchResponse.data.rollup;
+        var legendDataCache = {};
+        //PROCESS THE CATCH RESPONSE
 
         //Error message for no data
-        if ($scope.spatialCatchData && (!responses[0] || !responses[0].data)) {
+        if (catchResponse && !isValidCatchResponse) {
           $scope.queryResponseErrorMessage = 'No map catch allocation data currently exists for your query. ';
         }
 
-        //Color up the spatial catch data cells
-        if ($scope.spatialCatchData === responses[0] && responses[0].data && responses[0].data.rollup) {
-          $scope.bucketBoundaryLabels = createBucketBoundaryLabels($scope.spatialCatchData.data.bucket_boundaries);
-
-          var groups = responses[0].data.rollup;
+        //Process the catch response.
+        if (isValidCatchResponse) {
+          //Parse the data into a cell array.
+          var groups = catchResponse.data.rollup;
           for (i = 0; i < groups.length; i++) {
             var cellBlob = groups[i]; //Grouped cells
+            legendDataCache[cellBlob.rollup_key] = {
+              minCatch: catchResponse.data.min_catch,
+              maxCatch: catchResponse.data.max_catch,
+              totalCatch: cellBlob.total_catch,
+              bucketBoundaryLabels: createBucketBoundaryLabels(catchResponse.data.bucket_boundaries)
+            };
             color = colorAssignment.getDefaultColor();
             if ($scope.isQueryComparable($scope.lastQuery)) {
               color = colorAssignment.colorOf(cellBlob.rollup_key);
@@ -364,40 +398,64 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               }
             }
           }
-        }
+          
+          var cacheIndex = getTimelineCacheIndex($scope.lastQuery.year);
+          if (timelineCache[cacheIndex]) {
+            timelineCache[cacheIndex].layer.grid.data = cellData;
+          } else {
+            timelineCache[cacheIndex] = {};
+            timelineCache[cacheIndex].layer = map.addLayer(cellData, {
+              gridSize: [720, 360],
+              renderOnAnimate: false,
+              zIndex: cacheIndex
+            });
 
-        //Color up the taxon distribution cells.
-        var taxonDistResponses = responses.slice(responses[0] === $scope.spatialCatchData ? 1 : 0);
-        //Taxa distribution responses that have no data are noted in this array so that we can throw an error message to the user.
-        var datalessTaxaNames = [];
-        for (i = 0; i < taxonDistResponses.length; i++) {
-          var taxonId = $scope.lastQuery.taxonDistribution[i];
-          if (!taxonDistResponses[i].data || taxonDistResponses[i].data.byteLength === 0) {
-            datalessTaxaNames.push($scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'common_name'));
-            continue;
+            if (currTimelineCacheIndex !== cacheIndex) {
+              timelineCache[cacheIndex].layer.hide();
+            }
           }
-          var typedArray = new Uint32Array(taxonDistResponses[i].data);
-          for (j=0; j < typedArray.length; j++) {
-            var packed = typedArray[j];
-            cell = packed & 0xfffff;
-            var value = packed >>> 24;
-            whiteness = (255 - value) / 255 * 0.8;
-            color = colorAssignment.colorOf('#' + taxonId);
-            colorCell(cellData, cell, color, whiteness);
+          timelineCache[cacheIndex].isValid = true;
+          timelineCache[cacheIndex].layer.draw();
+
+          //Cache the data that drives the legend so we can re-render it while dragging the timeline.
+          timelineCache[cacheIndex].catchLegend = legendDataCache;
+        }
+
+        //PROCESS THE DISTRIBUTION RESPONSE
+
+        /*if (distResponses.length === 0) {
+          var datalessTaxaNames = [];
+          for (i = 0; i < distResponses.length; i++) {
+            //Taxa distribution responses that have no data are noted in this array so that we can throw an error message to the user.
+            var taxonId = $scope.lastQuery.taxonDistribution[i];
+            var isValidDistResponse = distResponses[i].data && distResponses[i].data.byteLength !== 0
+            if (!isValidDistResponse) {
+              datalessTaxaNames.push($scope.getValueFromObjectArray($scope.taxa, 'taxon_key', taxonId, 'common_name'));
+              continue;
+            }
+
+
+            var typedArray = new Uint32Array(distResponses[i].data);
+            for (j=0; j < typedArray.length; j++) {
+              var packed = typedArray[j];
+              cell = packed & 0xfffff;
+              var value = packed >>> 24;
+              whiteness = (255 - value) / 255 * 0.8;
+              color = colorAssignment.colorOf('#' + taxonId);
+              colorCell(cellData, cell, color, whiteness);
+            }
           }
-        }
 
-        //Update an error message to the user.
-        if (datalessTaxaNames.length > 0) {
-          errorMessage = ($scope.queryResponseErrorMessage ? $scope.queryResponseErrorMessage + '<br />' : '') +
-            'No distribution data currently exists for some taxa in your query ' +
-            '(' + datalessTaxaNames.join(', ') + ').';
-          $scope.queryResponseErrorMessage = errorMessage;
-        }
+          //Update an error message to the user.
+          if (datalessTaxaNames.length > 0) {
+            errorMessage = ($scope.queryResponseErrorMessage ? $scope.queryResponseErrorMessage + '<br />' : '') +
+              'No distribution data currently exists for some taxa in your query ' +
+              '(' + datalessTaxaNames.join(', ') + ').';
+            $scope.queryResponseErrorMessage = errorMessage;
+          }
+        }*/
 
-        mapGridLayer.grid.data = cellData;
-        map.draw();
-      }, 50).then(function () {
+      }, 120).then(function () { //Timeout delay
         $scope.isRendering = false;
       });
     }
@@ -522,7 +580,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Year
-      $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
+      $scope.query.year = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
       //Number of color thresholds
       if (search.buckets) {
@@ -598,8 +656,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Year
-      var queryYear = $scope.query.year || 2010;
-      if (queryYear !== 2010) {
+      var queryYear = $scope.query.year || lastYearOfData;
+      if (queryYear !== lastYearOfData) {
         $location.search('year', queryYear);
       } else {
         $location.search('year', null);
@@ -707,7 +765,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Year
-        sentence.push('in ' + (query.year || 2010));
+        sentence.push('in ' + (query.year || lastYearOfData));
       }
 
       return sentence.join(' ');
@@ -751,7 +809,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return '#' + createQueryUrl.forRegionCatchChart(urlConfig);
     }
 
-    function getBucketsOfCell(cellId) {
+    /*function getBucketsOfCell(cellId) {
       if (!$scope.spatialCatchData || !$scope.spatialCatchData.data || !$scope.spatialCatchData.data.rollup) {
         return {};
       }
@@ -774,7 +832,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return buckets;
-    }
+    }*/
 
     function createBucketBoundaryLabels (boundaries) {
       var boundaryLabels = new Array(boundaries.length - 1);
@@ -785,6 +843,25 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return boundaryLabels;
+    }
+
+    function updateYearLayerVisibility() {
+      //Hide the old grid layer so that only one is showing at a time.
+      if (timelineCache[currTimelineCacheIndex]) {
+        timelineCache[currTimelineCacheIndex].layer.hide();
+      }
+      currTimelineCacheIndex = getTimelineCacheIndex($scope.query.year);
+
+      //Show the new grid layer.
+      if (timelineCache.isValid(currTimelineCacheIndex)) {
+        timelineCache[currTimelineCacheIndex].layer.show();
+        timelineCache[currTimelineCacheIndex].layer.draw(); //This call shouldn't need to be done by the application, it should be done in the library.
+        $scope.lastQuerySentence = getQuerySentence($scope.query);
+      }
+    }
+
+    function getTimelineCacheIndex(year) {
+      return year - firstYearOfData + 1;
     }
 
     //Resolved service responses
@@ -815,9 +892,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watchCollection('query.taxa', updateComparableTypeList);
     $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
+    $scope.$watch('query.year', updateYearLayerVisibility);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
-    $scope.selectedYear = 2010;
 
     var allComparableTypes = [
       {
@@ -862,33 +939,44 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return null;
     };
 
+    var timelineCache = []; //Stores allocation data responses so that we can re-display results when the user scrubs the timeline.
+    timelineCache.isValid = function (index) {
+      return this[index] && this[index].isValid;
+    };
+    timelineCache.clearCache = function () {
+      for (var key in this) {
+        if (this.hasOwnProperty(key)) {
+          this[key].isValid = false;
+        }
+      }
+    };
+
     var map;
-    var mapGridLayer;
+    var firstYearOfData = 1950; //Dynamic later.
+    var lastYearOfData = 2010; //Dynamic later.
+    var currTimelineCacheIndex = lastYearOfData;
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: 'rgba(181, 224, 249, 1)',
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
         onCellHover: function (cell, cellId) {
-          $scope.highlightedBuckets = getBucketsOfCell(cellId);
-          $scope.$apply();
+          /*$scope.highlightedBuckets = getBucketsOfCell(cellId);
+          $scope.$apply();*/
         }
-      });
-
-      mapGridLayer = map.addLayer(new Uint8ClampedArray(720 * 360 * 4), {
-        gridSize: [720, 360],
-        renderOnAnimate: false
       });
 
       map.addLayer(eezSpatialData.data, {
         fillColor: 'rgba(0, 117, 187, 0)',
         strokeColor: 'rgba(0, 117, 187, 1)',
-        renderOnAnimate: false
+        renderOnAnimate: false,
+        zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
 
       map.addLayer(countries, {
         fillColor: 'rgba(251, 250, 243, 1)',
-        strokeColor: 'rgba(0, 0, 0, 0)'
+        strokeColor: 'rgba(0, 0, 0, 0)',
+        zIndex: 100 ////Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
     });
 

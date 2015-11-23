@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-show="isQueryValid(query) && dataNeedsManualUpdate()">
+    <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query, true)">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
         <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
@@ -102,10 +102,10 @@
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
         <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="boundaryLabels(comparee)" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
         </div>
         <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="boundaryLabels()" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
