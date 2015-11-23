@@ -14,7 +14,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       $scope.lastQuery = angular.copy(query);
-      assignColorsToComparees();
       updateUrlFromQuery();
       $scope.queryResponseErrorMessage = null;
       $scope.lastQuerySentence = getQuerySentence(query);
@@ -112,11 +111,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         queryParams.catchtypes = query.catchTypes.join(',');
       }
 
-      //...Compare term
-      if (query.comparableType) {
-        queryParams.compare = query.comparableType.compareTerm;
-      }
-
       var promises = [];
       lastCatchQueryResponse = null;
 
@@ -151,26 +145,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.isQueryEqual = function(q1, q2, ignoreYear) {
       if (q1 && q2 && ignoreYear) {
         var tempYear = q1.year;
-       q1.year = q2.year;
+        q1.year = q2.year;
         var isEqual = angular.equals(q1, q2);
         q1.year = tempYear;
         return isEqual;
       } else {
         return angular.equals(q1, q2);
       }
-    };
-
-    $scope.getComparees = function(query) {
-      var comparees = [];
-      if ($scope.isQueryComparable(query)) {
-        comparees = query[query.comparableType.field];
-      }
-
-      return comparees;
-    };
-
-    $scope.isQueryComparable = function(query) {
-      return query && query.comparableType && query.comparableType.field;
     };
 
     $scope.getAssignedColor = function (id) {
@@ -210,85 +191,26 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
     };
 
-    $scope.minCatch = function(comparee) {
+    $scope.minCatch = function() {
       var val = 0;
-      comparee = comparee || '';
-
-      if (timelineCache[currTimelineCacheIndex]) {
-        val = timelineCache[currTimelineCacheIndex].catchLegend[comparee].minCatch.toExponential(1);
-      }
-
-      var strVal = ''+val;
-      return strVal + ' t/km²';
+      var units = 't/km²';
+      return val + ' ' + units;
     };
 
-    $scope.maxCatch = function (comparee) {
+    $scope.maxCatch = function () {
       var val = 0;
-      comparee = comparee || '';
-
-      if (timelineCache[currTimelineCacheIndex]) {
-        val = timelineCache[currTimelineCacheIndex].catchLegend[comparee].maxCatch.toExponential(1);
-      }
-
-      var strVal = ''+val;
-      return strVal + ' t/km²';
+      var units = 't/km²';
+      return val + ' ' + units;
     };
 
-    $scope.totalCatch = function (comparee) {
+    $scope.totalCatch = function () {
       var val = 0;
-      comparee = comparee || '';
-      if (timelineCache[currTimelineCacheIndex]) {
-        val = Math.round(+timelineCache[currTimelineCacheIndex].catchLegend[comparee].totalCatch);
-      }
-
       var units = 'x 10³ t';
       return val + ' ' + units;
     };
 
-    $scope.boundaryLabels = function (comparee) {
-      comparee = comparee || '';
-      if (timelineCache[currTimelineCacheIndex]) {
-        return timelineCache[currTimelineCacheIndex].catchLegend[comparee].boundaryLabels;
-      }
-
+    $scope.boundaryLabels = function () {
       return '';
-    };
-
-    $scope.getCompareeName = function (comparee) {
-
-      if ($scope.isQueryComparable($scope.lastQuery)) {
-        var comparees = $scope[$scope.lastQuery.comparableType.field];
-        for (var i = 0; i < comparees.length; i++) {
-          if (''+comparees[i][$scope.lastQuery.comparableType.key] === ''+comparee) {
-            return comparees[i][$scope.lastQuery.comparableType.entityName];
-          }
-        }
-      }
-
-      return 'Catches';
-    };
-
-    $scope.getCompareeLink = function (comparee) {
-
-      //No link if the query is not comparable.
-      if (!$scope.isQueryComparable($scope.lastQuery)) {
-        return null;
-      }
-
-      //Generate a link for any comparable types that require links.
-      if ($scope.lastQuery.comparableType.field === 'taxa') {
-        return '#/taxa/' + comparee;
-      } else if ($scope.lastQuery.comparableType.field === 'fishingCountries') {
-        var countryId = $scope.getValueFromObjectArray(
-          $scope.fishingCountries, //Array
-          $scope.lastQuery.comparableType.key, //Object Key
-          comparee, //Value of that key
-          'country_id'); //The property of the object that we want the value of.
-        return '#/country/' + countryId;
-      }
-
-      //Return no link if the provided comparee is not a type that requires a link.
-      return null;
     };
 
     $scope.getValueFromObjectArray = function (array, Idkey, IdValue, property) {
@@ -386,9 +308,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               bucketBoundaryLabels: createBucketBoundaryLabels(catchResponse.data.bucket_boundaries)
             };
             color = colorAssignment.getDefaultColor();
-            if ($scope.isQueryComparable($scope.lastQuery)) {
-              color = colorAssignment.colorOf(cellBlob.rollup_key);
-            }
             for (j = 0; j < cellBlob.data.length; j++) {
               var cellSubBlob = cellBlob.data[j]; //Subgroups by threshold
               whiteness = ($scope.lastQuery.bucketCount - cellSubBlob.threshold) / $scope.lastQuery.bucketCount;
@@ -398,7 +317,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               }
             }
           }
-          
+
           var cacheIndex = getTimelineCacheIndex($scope.lastQuery.year);
           if (timelineCache[cacheIndex]) {
             timelineCache[cacheIndex].layer.grid.data = cellData;
@@ -484,69 +403,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return ~~((255 - color) * pct + color);
     }
 
-    function updateComparableTypeList() {
-      $scope.comparableTypes = [allComparableTypes[0]];
-
-      //Add fishing countries to the comparable list if there is more than one selected.
-      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 1) {
-        $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'fishingCountries'));
-      }
-
-      //Add the visible "catches by" dimension to the comparable types list if there is more than one selected.
-      switch ($scope.query.catchesBy) {
-        case 'taxa':
-          if ($scope.query.taxa && $scope.query.taxa.length > 1) {
-            $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'taxa'));
-          }
-          break;
-        case 'commercial groups':
-          if ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 1) {
-            $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'commercialGroups'));
-          }
-          break;
-        case 'functional groups':
-          if ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 1) {
-            $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'functionalGroups'));
-          }
-          break;
-      }
-
-      assignDefaultComparison();
-    }
-
-    function assignDefaultComparison() {
-      if (!$scope.query.comparableType || $scope.comparableTypes.indexOf($scope.query.comparableType) === -1) {
-        $scope.query.comparableType = allComparableTypes[0]; //This is the "None" comparable type.
-      }
-    }
-
-    function assignColorsToComparees() {
-      var i;
-      var colorIds = [];
-      //Assign colors to the members of the chosen comparable field.
-      if ($scope.isQueryComparable($scope.lastQuery)) {
-        var comparees = $scope.getComparees($scope.lastQuery);
-        if (comparees) {
-          for (i = 0; i < comparees.length; i++) {
-            colorIds.push(''+comparees[i]);
-          }
-        }
-      //For non-comparable queries, just make a default color ID.
-      } else {
-        colorIds.push('default');
-      }
-
-      //Assign colors to the various taxa in the taxon distribution.
-      if ($scope.lastQuery.taxonDistribution) {
-        for (i = 0; i < $scope.lastQuery.taxonDistribution.length; i++) {
-          //Using a hash to avoid ID conflicts between taxon distribution and spatial catch distribution.
-          colorIds.push('#' + $scope.lastQuery.taxonDistribution[i]);
-        }
-      }
-
-      colorAssignment.setData(colorIds);
-    }
-
     function updateQueryFromUrl() {
       var search = $location.search();
 
@@ -594,14 +450,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.bucketingMethod = search.buckmeth;
       } else {
         $scope.query.bucketingMethod = 'ptile';
-      }
-
-      //Compare type (must supply one, no matter what)
-      updateComparableTypeList();
-      if (search.compare) {
-        $scope.query.comparableType = allComparableTypes.getWhere('compareTerm', search.compare);
-      } else {
-        $scope.query.comparableType = allComparableTypes[0]; //The "None" comparable type.
       }
 
       //Taxon distribution
@@ -675,13 +523,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $location.search('buckmeth', $scope.query.bucketingMethod);
       } else {
         $location.search('buckmeth', null);
-      }
-
-      //Compare type
-      if ($scope.isQueryComparable($scope.lastQuery)) {
-        $location.search('compare', $scope.query.comparableType.compareTerm);
-      } else {
-        $location.search('compare', null);
       }
 
       //Taxon distribution
@@ -882,62 +723,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
-    $scope.$watch(
-      [
-        'query.catchesBy'
-      ],
-      updateComparableTypeList
-    );
-    $scope.$watchCollection('query.fishingCountries', updateComparableTypeList);
-    $scope.$watchCollection('query.taxa', updateComparableTypeList);
-    $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
-    $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
     $scope.$watch('query.year', updateYearLayerVisibility);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {};
-
-    var allComparableTypes = [
-      {
-        name: 'None'
-      },
-      {
-        name: 'Fishing countries',
-        field: 'fishingCountries',
-        key: 'id',
-        entityName: 'title',
-        compareTerm: 'entities'
-      },
-      {
-        name: 'Taxa',
-        field: 'taxa',
-        key: 'taxon_key',
-        entityName: 'displayName',
-        compareTerm: 'taxa'
-      },
-      {
-        name: 'Commercial groups',
-        field: 'commercialGroups',
-        key: 'commercial_group_id',
-        entityName: 'name',
-        compareTerm: 'commgroups'
-      },
-      {
-        name: 'Functional groups',
-        field: 'functionalGroups',
-        key: 'functional_group_id',
-        entityName: 'description',
-        compareTerm: 'funcgroups'
-      }
-    ];
-
-    allComparableTypes.getWhere = function(field, value) {
-      for (var i = 0; i < allComparableTypes.length; i++) {
-        if (allComparableTypes[i][field] === value) {
-          return allComparableTypes[i];
-        }
-      }
-      return null;
-    };
 
     var timelineCache = []; //Stores allocation data responses so that we can re-display results when the user scrubs the timeline.
     timelineCache.isValid = function (index) {
@@ -951,6 +739,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     };
 
+    colorAssignment.setData([0]);
     var map;
     var firstYearOfData = 1950; //Dynamic later.
     var lastYearOfData = 2010; //Dynamic later.

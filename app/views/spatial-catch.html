@@ -67,11 +67,7 @@
           </div>
         </div>
         <div class="row">
-        <div class="col-md-2" env-hide="prod stage">
-            <label for="compareInput" class="small-label">Compare</label>
-            <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
-          </div>
-          <div class="timeline" ng-class="{'col-md-10': !inProd, 'col-md-12': inProd}">
+          <div class="timeline" class="col-md-12">
             <spatial-catch-timeline ng-model="query.year" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
           </div>
         </div>
@@ -101,10 +97,7 @@
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
-        <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch(comparee)" max-label="maxCatch(comparee)" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="boundaryLabels(comparee)" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
-        </div>
-        <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
+        <div class="col-md-12 legend-column">
           <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="boundaryLabels()" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
         </div>
       </div>
