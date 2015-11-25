@@ -64,18 +64,20 @@ angular.module('sauWebApp')
         {
           get: {
             method: 'GET',
-            cache: true,
-            transformResponse: function (response) {
-              response = JSON.parse(response);
-              if (response.data && response.data.bucket_boundaries) {
-                response.data.bucket_boundaries.unshift(response.data.min_catch);
-                response.data.bucket_boundaries.push(response.data.max_catch);
-              }
-              return response;
-            }
+            responseType: 'arraybuffer',
+            headers: {'Accept': 'application/octet-stream'}
           }
         }
       ),
+      SpatialCatchData: {
+        get: function (params) {
+          return $http.get(SAU_CONFIG.apiURL + 'spatial-catch/cells?year=' + params.year + '&entities=187&taxa=600146',
+          {
+            responseType: 'arraybuffer',
+            headers: {'Accept': 'application/octet-stream'}
+          });
+        }
+      },
       TaxonDistribution: {
         get: function (params) {
           if (!params || !params.id) {
