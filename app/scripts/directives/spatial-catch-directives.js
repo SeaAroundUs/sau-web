@@ -153,7 +153,7 @@ angular.module('sauWebApp')
           options: scope.options,
           valueField: 'taxon_key',
           labelField: 'displayName',
-          placeholder: 'Select...',
+          placeholder: 'All taxa',
           sortField: 'common_name',
           searchField: ['common_name', 'scientific_name'],
           plugins: ['remove_button'],

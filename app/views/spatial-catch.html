@@ -41,7 +41,7 @@
         <div class="row">
           <div class="col-md-4">
             <label class="small-label" for="selectFishingCountries">Fishing countries</label>
-            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
+            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'All fishing countries', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
           <div class="col-md-2">
             <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
@@ -58,11 +58,11 @@
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
-              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'All commercial groups', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
             </div>
             <div ng-show="query.catchesBy === 'functional groups'">
               <div class="catches-by-query"><label class="small-label" for="selectTaxa">Functional group(s)</label></div>
-              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'All functional groups', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
             </div>
           </div>
         </div>
@@ -93,14 +93,14 @@
         </div>
       </div>
     </div>
-    <div class="row" ng-show="isQueryValid(query) && dataNeedsManualUpdate()">
+    <div class="row" ng-show="dataNeedsManualUpdate()">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
         <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
-      <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
+      <div class="row legend-row">
         <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
           <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
         </div>
@@ -109,7 +109,6 @@
         </div>
       </div>
       <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
-        <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
         <div class="col-md-12 small-label">
           Taxon distribution <span class="not-bold"> (Thin to dense)</span>
         </div>
