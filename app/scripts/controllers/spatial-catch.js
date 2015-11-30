@@ -20,15 +20,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var gaAction = ['query'];
 
       //...Fishing countries
-      if (query.fishingCountries && query.fishingCountries.length > 0) {
+      if (query.isFilteredBy('fishingCountries')) {
         queryParams.entities = query.fishingCountries.join(',');
-
         //Form GA event action
         if (query.fishingCountries.length > 1) {
           gaAction.push(['multi-entity']);
         } else {
           gaAction.push(['single-entity']);
         }
+      } else {
+        gaAction.push(['global-entity']);
       }
 
       //...Year
@@ -49,7 +50,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       switch (query.catchesBy) {
         //...Taxa
         case 'taxa':
-          if (query.taxa) {
+          if (query.isFilteredBy('taxa')) {
             queryParams.taxa = query.taxa.join(',');
 
             //Form GA event action
@@ -62,7 +63,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
         //...Commercial groups
         case 'commercial groups':
-          if (query.commercialGroups) {
+          if (query.isFilteredBy('commercialGroups')) {
             queryParams.commgroups = query.commercialGroups.join(',');
 
             //Form GA event action
@@ -75,7 +76,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
         //...Functional groups
         case 'functional groups':
-          if (query.functionalGroups) {
+          if (query.isFilteredBy('functionalGroups')) {
             queryParams.funcgroups = query.functionalGroups.join(',');
 
             //Form GA event action
@@ -364,7 +365,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         mapGridLayer.grid.data = cellData;
         map.draw();
-      }, 50).then(function () {
+        $scope.isRendering = false;
+      }, 150).then(function () {
         $scope.isRendering = false;
       });
     }
@@ -397,24 +399,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.comparableTypes = [allComparableTypes[0]];
 
       //Add fishing countries to the comparable list if there is more than one selected.
-      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 1) {
+      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 1 && $scope.query.isFilteredBy('fishingCountries')) {
         $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'fishingCountries'));
       }
 
       //Add the visible "catches by" dimension to the comparable types list if there is more than one selected.
       switch ($scope.query.catchesBy) {
         case 'taxa':
-          if ($scope.query.taxa && $scope.query.taxa.length > 1) {
+          if ($scope.query.isFilteredBy('taxa') && $scope.query.taxa.length > 1) {
             $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'taxa'));
           }
           break;
         case 'commercial groups':
-          if ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 1) {
+          if ($scope.query.isFilteredBy('commercialGroups') && $scope.query.commercialGroups.length > 1) {
             $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'commercialGroups'));
           }
           break;
         case 'functional groups':
-          if ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 1) {
+          if ($scope.query.isFilteredBy('functionalGroups') && $scope.query.functionalGroups.length > 1) {
             $scope.comparableTypes.push(allComparableTypes.getWhere('field', 'functionalGroups'));
           }
           break;
@@ -521,7 +523,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function updateUrlFromQuery() {
       //Fishing countries
-      if ($scope.query.fishingCountries && $scope.query.fishingCountries.length > 0) {
+      if ($scope.query.isFilteredBy('fishingCountries')) {
         $location.search('entities', $scope.query.fishingCountries.join(','));
       } else {
         $location.search('entities', null);
@@ -531,19 +533,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Taxa, commercial groups, functional groups
       switch ($scope.query.catchesBy) {
         case 'taxa':
-          searchValue = ($scope.query.taxa && $scope.query.taxa.length > 0) ? $scope.query.taxa.join(',') : null;
+          searchValue = ($scope.query.isFilteredBy('taxa')) ? $scope.query.taxa.join(',') : null;
           $location.search('taxa', searchValue);
           $location.search('commgroups', null);
           $location.search('funcgroups', null);
           break;
         case 'commercial groups':
-          searchValue = ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 0) ? $scope.query.commercialGroups.join(',') : null;
+          searchValue = ($scope.query.isFilteredBy('commercialGroups')) ? $scope.query.commercialGroups.join(',') : null;
           $location.search('taxa', null);
           $location.search('commgroups', searchValue);
           $location.search('funcgroups', null);
           break;
         case 'functional groups':
-          searchValue = ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 0) ? $scope.query.functionalGroups.join(',') : null;
+          searchValue = ($scope.query.isFilteredBy('functionalGroups')) ? $scope.query.functionalGroups.join(',') : null;
           $location.search('taxa', null);
           $location.search('commgroups', null);
           $location.search('funcgroups', searchValue);
@@ -619,7 +621,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
       } else {
-        if (!query.fishingCountries || query.fishingCountries.length === 0) {
+        if (!query.isFilteredBy('fishingCountries')) {
           sentence.push('Global');
         } else {
           sentence.push('All');
@@ -640,21 +642,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Catches by
-        if (query.catchesBy === 'taxa') {
+        if (query.catchesBy === 'taxa' && query.isFilteredBy('taxa')) {
           if (query.taxa && query.taxa.length === 1) {
             var taxaName = $scope.getValueFromObjectArray($scope.taxa, 'taxon_key', query.taxa[0], 'common_name');
             sentence.push('of ' + taxaName.toLowerCase());
           } else if (query.taxa && query.taxa.length > 1) {
             sentence.push('of ' + query.taxa.length + ' taxa');
           }
-        } else if (query.catchesBy === 'commercial groups') {
+        } else if (query.catchesBy === 'commercial groups' && query.isFilteredBy('commercialGroups')) {
           if (query.commercialGroups && query.commercialGroups.length === 1) {
             var commercialGroupName = $scope.getValueFromObjectArray($scope.commercialGroups, 'commercial_group_id', query.commercialGroups[0], 'name');
             sentence.push('of ' + commercialGroupName.toLowerCase());
           } else if (query.commercialGroups && query.commercialGroups.length > 1) {
             sentence.push('of ' + query.commercialGroups.length + ' commercial groups');
           }
-        } else if (query.catchesBy === 'functional groups') {
+        } else if (query.catchesBy === 'functional groups' && query.isFilteredBy('functionalGroups')) {
           if (query.functionalGroups && query.functionalGroups.length === 1) {
             var functionalGroupName = $scope.getValueFromObjectArray($scope.functionalGroups, 'functional_group_id', query.functionalGroups[0], 'description');
             sentence.push('of ' + functionalGroupName.toLowerCase());
@@ -664,7 +666,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Fishing countries
-        if (query.fishingCountries && query.fishingCountries.length > 0) {
+        if (query.isFilteredBy('fishingCountries')) {
           if (query.fishingCountries.length === 1) {
             var countryName = $scope.getValueFromObjectArray($scope.fishingCountries, 'id', query.fishingCountries[0], 'title');
             sentence.push('by the fleets of ' + countryName);
@@ -681,7 +683,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLinkText (query) {
-      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+      if (!query.isFilteredBy('fishingCountries')) {
         return null;
       }
 
@@ -696,7 +698,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLink (query) {
-      if (!query.fishingCountries || query.fishingCountries.length === 0) {
+      if (!query.isFilteredBy('fishingCountries')) {
         return null;
       }
 
@@ -756,13 +758,17 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
+    $scope.fishingCountries.unshift({id: 0, title: '-- All fishing countries --'}); //"All countries" pseudo-item
     $scope.taxa = taxa.data;
     for (var i = 0; i < $scope.taxa.length; i++) {
       $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
     }
+    $scope.taxa.unshift({taxon_key: 0, common_name: '-- All taxa --', displayName: '-- All taxa --'}); //"All taxa" pseudo-item
 
     $scope.commercialGroups = commercialGroups.data;
+    $scope.commercialGroups.unshift({commercial_group_id: '0', name: '-- All commercial groups --'}); //"All groups" pseudo-item
     $scope.functionalGroups = functionalGroups.data;
+    $scope.functionalGroups.unshift({functional_group_id: '-1', description: '-- All functional groups --'}); //"All groups" pseudo-item
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
     $scope.mappedCatchExamples = spatialCatchExamples;
@@ -783,7 +789,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.$watchCollection('query.commercialGroups', updateComparableTypeList);
     $scope.$watchCollection('query.functionalGroups', updateComparableTypeList);
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
-    $scope.query = {};
+    $scope.query = {
+      //A quick function to find out if a particular query property is filtering the query.
+      isFilteredBy: function isFilteredBy (queryProperty) {
+        var globalIndex = queryProperty === 'functionalGroups' ? '-1': '0';
+        return this[queryProperty] && this[queryProperty].length > 0 && this[queryProperty].indexOf(globalIndex) === -1;
+      }
+    };
     $scope.selectedYear = 2010;
 
     var allComparableTypes = [
