@@ -1,7 +1,8 @@
 'use strict';
 /* global d3 */
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles) {
+    //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     var lastQueryPromise;
     $scope.submitQuery = function (query) {
@@ -108,7 +109,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Make the spatial catch call
       $scope.spatialCatchData = null;
-      if (!$scope.isDistributionQueryValid($scope.lastQuery)) {
+      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         $scope.spatialCatchData = sauAPI.SpatialCatchData.get(queryParams);
         promises.push($scope.spatialCatchData.$promise);
       }
@@ -162,8 +163,41 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return colorAssignment.colorOf(id);
     };
 
+    $scope.isAllocationQueryValid = function(query) {
+      if (toggles.isEnabled('global')) {
+        return true;
+      }
+
+      var hasFishingCountryInput = query && query.isFilteredBy('fishingCountries');
+
+      var hasCatchesByInput = false;
+      switch ($scope.query.catchesBy) {
+        case 'taxa':
+          if (query.isFilteredBy('taxa')) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'commercial groups':
+          if (query.isFilteredBy('commercialGroups')) {
+            hasCatchesByInput = true;
+          }
+          break;
+        case 'functional groups':
+          if (query.isFilteredBy('functionalGroups')) {
+            hasCatchesByInput = true;
+          }
+          break;
+      }
+
+      return hasFishingCountryInput || hasCatchesByInput;
+    };
+
     $scope.isDistributionQueryValid = function(query) {
       return query.taxonDistribution && query.taxonDistribution.length > 0;
+    };
+
+    $scope.isQueryValid = function (query) {
+      return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
     };
 
     $scope.minCatch = function() {
@@ -274,7 +308,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.query = angular.extend($scope.query, example);
 
       //Submit the query
-      $scope.submitQuery($scope.query);
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query);
+      }
     };
 
     /*
@@ -287,7 +323,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.onTimelineRelease = function () {
-      $scope.submitQuery($scope.query);
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query);
+      }
     };
 
     function handleQueryResponse(responses) {
@@ -607,6 +645,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function getQuerySentence (query) {
       //[All, Unreported, Reported, All] [fishing, landings, Discards, (F)fishing ] [<blank>, of Abolones, of 2 taxa, of 2 commercial groups] by the fleets of [Angola, 2 countries] in [year]
+      if (!$scope.isQueryValid(query)) {
+        return '';
+      }
 
       var sentence = [];
 
@@ -758,24 +799,40 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     //Resolved service responses
     $scope.fishingCountries = fishingCountries.data;
-    $scope.fishingCountries.unshift({id: 0, title: '-- All fishing countries --'}); //"All countries" pseudo-item
+
+    //"All countries" pseudo-item
+    if (toggles.isEnabled('global')) {
+      $scope.fishingCountries.unshift({id: 0, title: '-- All fishing countries --'});
+    }
+
     $scope.taxa = taxa.data;
     for (var i = 0; i < $scope.taxa.length; i++) {
       $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
     }
-    $scope.taxa.unshift({taxon_key: 0, common_name: '-- All taxa --', displayName: '-- All taxa --'}); //"All taxa" pseudo-item
+
+    //"All taxa" pseudo-item
+    if (toggles.isEnabled('global')) {
+      $scope.taxa.unshift({taxon_key: 0, common_name: '-- All taxa --', displayName: '-- All taxa --'});
+    }
 
     $scope.commercialGroups = commercialGroups.data;
-    $scope.commercialGroups.unshift({commercial_group_id: '0', name: '-- All commercial groups --'}); //"All groups" pseudo-item
+
+    //"All commercial groups" pseudo-item
+    if (toggles.isEnabled('global')) {
+      $scope.commercialGroups.unshift({commercial_group_id: '0', name: '-- All commercial groups --'});
+    }
     $scope.functionalGroups = functionalGroups.data;
-    $scope.functionalGroups.unshift({functional_group_id: '-1', description: '-- All functional groups --'}); //"All groups" pseudo-item
+
+    //"All commercial groups" pseudo-item
+    if (toggles.isEnabled('global')) {
+      $scope.functionalGroups.unshift({functional_group_id: '-1', description: '-- All functional groups --'});
+    }
     $scope.reportingStatuses = reportingStatuses;
     $scope.catchTypes = catchTypes;
     $scope.mappedCatchExamples = spatialCatchExamples;
     $scope.defaultColor = colorAssignment.getDefaultColor();
     //The values are "bucket" or "threshold numbers", organized as a 2-dimensional array: highlightedCells[compareeId][]
     $scope.highlightedBuckets = {};
-    //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
 
     $scope.$watch(
@@ -874,5 +931,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     updateQueryFromUrl();
 
     //Boostrap the initial query if there are query params in the URL when the page loads.
-    $scope.submitQuery($scope.query);
+    if ($scope.isQueryValid($scope.query)) {
+      $scope.submitQuery($scope.query);
+    }
   });
