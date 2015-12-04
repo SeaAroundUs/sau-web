@@ -59,19 +59,26 @@ angular.module('sauWebApp')
       FishingEntities: resourceFactory('fishing-entity/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
-      SpatialCatchData: $resource(SAU_CONFIG.apiURL + 'spatial-catch/cells',
-        {},
-        {
-          get: {
-            method: 'GET',
-            responseType: 'arraybuffer',
-            headers: {'Accept': 'application/octet-stream'}
-          }
-        }
-      ),
       SpatialCatchData: {
         get: function (params) {
-          return $http.get(SAU_CONFIG.apiURL + 'spatial-catch/cells?year=' + params.year + '&entities=187&taxa=600146',
+          var url = SAU_CONFIG.apiURL + 'spatial-catch/cells';
+          var urlParams = [];
+          for (var key in params) {
+            if (!params.hasOwnProperty(key)) {
+              return;
+            }
+            urlParams.push(key + '=' + params[key]);
+          }
+          if (urlParams.length > 0) {
+            url += '?';
+          }
+          for (var i = 0; i < urlParams.length; i++) {
+            url += urlParams[i];
+            if (i < urlParams.length - 1) {
+              url += '&';
+            }
+          }
+          return $http.get(url,
           {
             responseType: 'arraybuffer',
             headers: {'Accept': 'application/octet-stream'}

@@ -18,7 +18,7 @@
   </div>
 
   <!-- GRAPH LINK -->
-  <p><a ng-show="catchGraphLink" ng-href="{{catchGraphLink}}"><i class="fa fa-area-chart"></i> {{catchGraphLinkText}}</a></p>
+  <p><a ng-show="catchGraphLink" ng-href="{{catchGraphLink}}" toggle-hide="fishingEntity"><i class="fa fa-area-chart"></i> {{catchGraphLinkText}}</a></p>
 
   <!-- NOTE -->
   <p id="note"><strong>Note:</strong> The data we present ('reconstructed data') combine official reported data and reconstructed estimates of unreported data (including major discards), with reference to individual EEZs. Official reported data are <a popover="National data are used for some countries." popover-trigger="mouseenter">mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) <a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. For background information on reconstruction data, download the .pdf associated with each relevant EEZ.</p>
@@ -68,13 +68,13 @@
         </div>
         <div class="row">
           <div class="timeline" class="col-md-12">
-            <spatial-catch-timeline ng-model="query.year" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
+            <spatial-catch-timeline loading-progress="loadingProgress" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
           </div>
         </div>
       </form>
     </div>
     <div>
-      {{cellValue}}
+      
     </div>
     <!-- <div class="row" env-hide="prod stage" style="margin-top: 20px">
       <div class="col-xs-12">
@@ -92,10 +92,10 @@
         </div>
       </div>
     </div> -->
-    <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query, true)">
+    <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query)">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
-        <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
+        <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query, currentYear)" scroll-click="cell-map">Update map</button>
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">

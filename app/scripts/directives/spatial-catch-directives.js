@@ -1,5 +1,7 @@
 'use strict';
 
+/*global $*/
+
 angular.module('sauWebApp')
   .directive('spatialCatchLegendKey', function () {
     return {
@@ -75,11 +77,13 @@ angular.module('sauWebApp')
       restrict: 'E',
       require: 'ngModel',
       scope: {
-        'onSlideStopDebounce': '&'
+        onSlideStopDebounce: '&',
+        loadingProgress: '='
       },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
         var sliderReleasedPromise;
+        var progressBarElement;
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
@@ -110,6 +114,22 @@ angular.module('sauWebApp')
         ngModelCtrl.$parsers.push(function(viewValue) {
           return +viewValue;
         });
+
+        function progressToCssWidth() {
+          return Math.round(scope.loadingProgress * 100) + '%';
+        }
+
+        scope.$watch('loadingProgress', function updateProgressBar() {
+          if (!progressBarElement) {
+            return;
+          }
+          progressBarElement.css('width', progressToCssWidth());
+        });
+
+        //Create the progress bar.
+        $timeout(function createProgressBar () {
+          progressBarElement = $('.slider-track-high').clone().insertBefore('.slider-track-high').removeClass('right').css({left: '0px', backgroundColor: '#96C1E6', width: progressToCssWidth()});
+        });
       }
     };
   })
@@ -128,7 +148,11 @@ angular.module('sauWebApp')
         It shows both the common and scientific names, scientific in italics.
         */
         function makeTaxaDropdownItem (item, escape) {
-          return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
+          var result = '<div>' + escape(item.common_name);
+          if (item.scientific_name) {
+            result += ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span>';
+          }
+          return result + '</div>';
         }
 
         /*
