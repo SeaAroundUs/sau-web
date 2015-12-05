@@ -118,10 +118,10 @@ angular.module('sauWebApp')
         function progressToCssWidth() {
           return Math.round(scope.loadingProgress * 100) + '%';
         }
-        
+
         //Create the progress bar.
         $timeout(function createProgressBar () {
-          progressBarElement = $('.slider-track-high').clone().insertBefore('.slider-track-high').removeClass('right').css({left: '0px', backgroundColor: '#96C1E6', width: progressToCssWidth()});
+          progressBarElement = $('.slider-track-high').clone().insertBefore('.slider-track-high').removeClass('right').css({left: '0px', backgroundColor: '#2F5B82', width: progressToCssWidth()});
           scope.$watch('loadingProgress', function updateProgressBar() {
             progressBarElement.css('width', progressToCssWidth());
           });
