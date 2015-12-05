@@ -3,7 +3,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchCache) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchCache, spatialCatchThemes) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -274,7 +274,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Maps cell values to their colors on a rainbow color range. NOTE: SLOW FUNCTION
-        mapScale.domain(smallerSuperGrid).range(rainbowColorRange);
+        mapScale.domain(smallerSuperGrid);
 
         //Makes a grid layer for each year. NOTE: ALSO VERY SLOW
         forEachYear(function makeAllGrids(currYear, yearIndex) {
@@ -635,9 +635,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
-    //var rainbowColorRange = ['#6840ff', '#407fff', '#40ffeb', '#40ff64', '#beff40', '#ffbe40', '#ff5b40'];
-    var rainbowColorRange = ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a'];
-    var mapScale = d3.scale.quantile().range(rainbowColorRange);
+    var theme = spatialCatchThemes.eLight;
+    var mapScale = d3.scale.quantile().range(theme.scale);
     var superGridData = new Float32Array(numCellsInGrid*(lastYearOfData-firstYearOfData+1)); //All years of grid data in one massive array.
     //////////////////////////////////////////////////////
     //SCOPE VARS
@@ -707,7 +706,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     colorAssignment.setData([0]);
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
-        seaColor: 'rgba(181, 224, 249, 1)',
+        seaColor: theme.ocean,
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
         colorScale: mapScale,
@@ -795,4 +794,24 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     return cache;
+  })
+
+
+  /*
+  *
+  *
+  *
+  *
+  */
+  .factory('spatialCatchThemes', function () {
+    return {
+      nightlyNews: {
+        ocean: 'rgba(51, 125, 211, 1)',
+        scale: ['#2ad9eb', '#74f9ae', '#74f9ae', '#fef500', '#fef500', '#fc6a1b', '#fb2921']
+      },
+      eLight: {
+        ocean: 'rgba(181, 224, 249, 1)',
+        scale: ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a']
+      }
+    }
   });
