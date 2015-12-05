@@ -126,10 +126,12 @@
         <a href ng-click="zoomMapIn()"><div class="zoom-in-control"></div></a>
         <a href ng-click="zoomMapOut()"><div class="zoom-out-control"></div></a>
       </div>
-      <div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
+      <div id="cell-map-loading-overlay" ng-show="loadingProgress < 1">
         <div>
           <p><i class="fa fa-spinner"></i></p>
-          <p>{{loadingText}}</p>
+          <p>
+            {{loadingText}}: {{loadingProgress | decimalToPct}}</div>
+          </p>
         </div>
       </div>
     </div>

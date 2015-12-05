@@ -635,9 +635,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
-    var rainbowColorRange = ['#6840ff', '#407fff', '#40ffeb', '#40ff64', '#beff40', '#ffbe40', '#ff5b40'];
-    var monoColorRange = ['#40ffeb'];
-    var mapScale = d3.scale.quantile().range(monoColorRange);
+    //var rainbowColorRange = ['#6840ff', '#407fff', '#40ffeb', '#40ff64', '#beff40', '#ffbe40', '#ff5b40'];
+    var rainbowColorRange = ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a'];
+    var mapScale = d3.scale.quantile().range(rainbowColorRange);
     var superGridData = new Float32Array(numCellsInGrid*(lastYearOfData-firstYearOfData+1)); //All years of grid data in one massive array.
     //////////////////////////////////////////////////////
     //SCOPE VARS
@@ -686,7 +686,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
-    $scope.loadingProgress = 0;
+    $scope.loadingProgress = 1;
 
     //////////////////////////////////////////////////////
     //WATCHERS
