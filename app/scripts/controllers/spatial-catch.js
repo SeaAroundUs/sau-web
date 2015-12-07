@@ -796,7 +796,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     return cache;
   })
 
-
   /*
   *
   *
@@ -813,5 +812,5 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         ocean: 'rgba(181, 224, 249, 1)',
         scale: ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a']
       }
-    }
+    };
   });

@@ -1,6 +1,5 @@
 'use strict';
 
-
 angular.module('sauWebApp')
   .filter('decimalToPct', function () {
     return function (input) {
