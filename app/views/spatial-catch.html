@@ -99,15 +99,15 @@
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
-      <!-- <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
+      <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
         <div class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="boundaryLabels()" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch | totalCatchUnits).toString() + ')'" colors="theme.scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" bucket-rollovers="boundaryLabels" selected-bucket="getSelectedBucket()"></spatial-catch-legend-key>
         </div>
-      </div> -->
+      </div>
       <!-- <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
         <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
         <div class="col-md-12 small-label">
-          Taxon distribution <span class="not-bold"> (Thin to dense)</span>
+          Taxon distribution <span class="not-bold"> (Thin to dense)</span>`
         </div>
       </div> -->
       <!-- <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">

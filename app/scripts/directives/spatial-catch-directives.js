@@ -10,56 +10,53 @@ angular.module('sauWebApp')
       scope: {
         keyName: '=',
         keyNameSecond: '=',
-        color: '=',
+        colors: '=',
         maxLabel: '=',
         minLabel: '=',
         keyLink: '=',
-        numBuckets: '=',
         bucketRollovers: '=',
         selectedBucket: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
       },
-      controller: function ($scope) {
-        $scope.$watch('color', colorAll);
-        if (!$scope.numBuckets) {
-          $scope.numBuckets = 5;
-        }
+      controller: function ($scope, $timeout) {
 
         function colorAll() {
-          for (var i = 0; i < +$scope.numBuckets; i++) {
+          if (!$scope.colors) {
+            console.log("No colors specified in spatial catch legend key. Cannot render.");
+            return;
+          }
+          for (var i = 0; i < $scope.colors.length; i++) {
             $scope.colorMe(i);
           }
         }
 
-        $scope.colorMe = function(index) {
-          var lightenPct = ($scope.numBuckets - 1 - index) / (+$scope.numBuckets + 1);
-          var color = lightenColor($scope.color, lightenPct);
-          var swatch = $scope.legendColorBar.children('.legend-color-swatch')[index];
+        $scope.colorMe = function(colorIndex) {
+          var swatch = $scope.legendColorBar.children('.legend-color-swatch')[colorIndex];
           //Swatch will be null if this function gets called befor the DOM is ready.
           if (swatch) {
-            swatch.style.backgroundColor = colorArrayToCss(color);
-            swatch.style.width = pctToCss(1 / +$scope.numBuckets);
+            swatch.style.backgroundColor = $scope.colors[colorIndex];
+            swatch.style.width = pctToCss(1 / $scope.colors.length);
           }
         };
 
-        $scope.repeatForRange = function (range) {
+        /*$scope.repeatForRange = function (range) {
           return new Array(+range);
-        };
+        };*/
 
-        function lightenColor (color, pct) {
+        /*function lightenColor (color, pct) {
           return [
             lightenChannel(color[0], pct),
             lightenChannel(color[1], pct),
             lightenChannel(color[2], pct),
             255
           ];
-        }
+        }*/
 
-        function lightenChannel (channel, pct) {
+        /*function lightenChannel (channel, pct) {
           return ~~((255 - channel) * pct + channel);
-        }
+        }*/
 
         function colorArrayToCss (color) {
           return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
@@ -68,6 +65,11 @@ angular.module('sauWebApp')
         function pctToCss(pct) {
           return Math.round(pct * 100) + '%';
         }
+
+        $timeout(function initColors() {
+          colorAll();
+          $scope.$watch('color', colorAll);
+        });
       }
     };
   })

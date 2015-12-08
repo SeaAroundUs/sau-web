@@ -173,27 +173,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.isAllocationQueryValid(query);
     };
 
-    $scope.minCatch = function() {
-      var val = 0;
-      var units = 't/km²';
-      return val + ' ' + units;
+    $scope.bucketRange = function(bucketIndex) {
+      return 0;
     };
 
-    $scope.maxCatch = function () {
-      var val = 0;
-      var units = 't/km²';
-      return val + ' ' + units;
-    };
-
-    $scope.totalCatch = function () {
-      var val = 0;
-      var units = 'x 10³ t';
-      return val + ' ' + units;
-    };
-
-    //MIGHT GET TO DELETE THIS
-    $scope.boundaryLabels = function () {
-      return '';
+    $scope.getSelectedBucket = function () {
+      return -1;
     };
 
     $scope.zoomMapIn = function() {
@@ -269,14 +254,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         var smallerSuperGrid = superGridData.filter(function a(x) {
           return !isNaN(x);
         });
-        for (var i = 0; i < superGridData.length; i+=3) {
-          smallerSuperGrid[i/3] = superGridData[i];
-        }
 
-        //Maps cell values to their colors on a rainbow color range. NOTE: SLOW FUNCTION
+        //Maps cell values to their colors on a rainbow color range.
         mapScale.domain(smallerSuperGrid);
+        var range = mapScale.range();
+        $scope.minCatch = mapScale.invertExtent(range[0])[0]; //Gets the smallest value in the scale.
+        $scope.maxCatch = mapScale.invertExtent(range[range.length - 1])[1]; //Gets the largest value in the scale.
+        $scope.totalCatch = 0;
+        $scope.quantiles = mapScale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
+        $scope.quantiles.unshift($scope.minCatch);
+        $scope.quantiles.push($scope.maxCatch);
+        $scope.boundaryLabels = createQuantileBoundaryLabels($scope.quantiles);
 
-        //Makes a grid layer for each year. NOTE: ALSO VERY SLOW
+        //Makes a grid layer for each year. NOTE: VERY SLOW
         forEachYear(function makeAllGrids(currYear, yearIndex) {
           var bufferOffsetForyear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
           var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForyear, numCellsInGrid);
@@ -580,7 +570,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return buckets;
     }*/
 
-    /*function createBucketBoundaryLabels (boundaries) {
+    function createQuantileBoundaryLabels (boundaries) {
       var boundaryLabels = new Array(boundaries.length - 1);
 
       for (var i = 0; i < boundaries.length - 1; i++) {
@@ -589,7 +579,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       return boundaryLabels;
-    }*/
+    }
 
     function updateYearLayerVisibility() {
       //Hide the old grid layer so that only one is showing at a time.
@@ -635,8 +625,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
-    var theme = spatialCatchThemes.eLight;
-    var mapScale = d3.scale.quantile().range(theme.scale);
+    var mapScale;
     var superGridData = new Float32Array(numCellsInGrid*(lastYearOfData-firstYearOfData+1)); //All years of grid data in one massive array.
     //////////////////////////////////////////////////////
     //SCOPE VARS
@@ -686,6 +675,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
+    $scope.theme = spatialCatchThemes.eLight;
 
     //////////////////////////////////////////////////////
     //WATCHERS
@@ -704,9 +694,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //KICKING THINGS OFF
     //////////////////////////////////////////////////////
     colorAssignment.setData([0]);
+    mapScale = d3.scale.quantile().range($scope.theme.scale);
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
-        seaColor: theme.ocean,
+        seaColor: $scope.theme.ocean,
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
         colorScale: mapScale,
