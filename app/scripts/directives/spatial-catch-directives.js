@@ -128,7 +128,11 @@ angular.module('sauWebApp')
         It shows both the common and scientific names, scientific in italics.
         */
         function makeTaxaDropdownItem (item, escape) {
-          return '<div>' + escape(item.common_name) + ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span></div>';
+          var result = '<div>' + escape(item.common_name);
+          if (item.scientific_name) {
+            result += ' <span class="scientific-name">(' + escape(item.scientific_name) + ')</span>';
+          }
+          return result + '</div>';
         }
 
         /*
