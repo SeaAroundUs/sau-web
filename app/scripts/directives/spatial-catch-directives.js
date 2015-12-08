@@ -41,23 +41,6 @@ angular.module('sauWebApp')
           }
         };
 
-        /*$scope.repeatForRange = function (range) {
-          return new Array(+range);
-        };*/
-
-        /*function lightenColor (color, pct) {
-          return [
-            lightenChannel(color[0], pct),
-            lightenChannel(color[1], pct),
-            lightenChannel(color[2], pct),
-            255
-          ];
-        }*/
-
-        /*function lightenChannel (channel, pct) {
-          return ~~((255 - channel) * pct + channel);
-        }*/
-
         function colorArrayToCss (color) {
           return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
         }

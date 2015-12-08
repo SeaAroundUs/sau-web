@@ -3,7 +3,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, colorAssignment, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchCache, spatialCatchThemes) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchCache, spatialCatchThemes, makeCatchMapScale) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -131,10 +131,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return angular.equals(q1, q2);
     };
 
-    /*$scope.getAssignedColor = function (id) {
-      return colorAssignment.colorOf(id);
-    };*/
-
     $scope.isAllocationQueryValid = function(query) {
       if (toggles.isEnabled('global')) {
         return true;
@@ -256,15 +252,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         });
 
         //Maps cell values to their colors on a rainbow color range.
-        mapScale.domain(smallerSuperGrid);
-        var range = mapScale.range();
-        $scope.minCatch = mapScale.invertExtent(range[0])[0]; //Gets the smallest value in the scale.
-        $scope.maxCatch = mapScale.invertExtent(range[range.length - 1])[1]; //Gets the largest value in the scale.
+        var d3Scale = d3.scale.quantile().domain(smallerSuperGrid).range($scope.theme.scale);
+        var d3Range = d3Scale.range();
+        $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
+        $scope.maxCatch = 0; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
         $scope.totalCatch = 0;
-        $scope.quantiles = mapScale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
+        $scope.quantiles = d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
         $scope.quantiles.unshift($scope.minCatch);
         $scope.quantiles.push($scope.maxCatch);
         $scope.boundaryLabels = createQuantileBoundaryLabels($scope.quantiles);
+        map.colorScale = d3Scale; //makeCatchMapScale(d3Scale.quantiles(), $scope.theme.scale.slice());
 
         //Makes a grid layer for each year. NOTE: VERY SLOW
         forEachYear(function makeAllGrids(currYear, yearIndex) {
@@ -545,31 +542,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     }
 
-    /*function getBucketsOfCell(cellId) {
-      if (!$scope.spatialCatchData || !$scope.spatialCatchData.data || !$scope.spatialCatchData.data.rollup) {
-        return {};
-      }
-      var buckets = {}; //array of buckets by compareeId: buckets[compareeId] = 4;
-      var groups = $scope.spatialCatchData.data.rollup;
-
-      for (var i = 0; i < groups.length; i++) {
-        var group = groups[i];
-        var groupId = group.rollup_key || 'default';
-        buckets[groupId] = [];
-        for (var j = 0; j < group.data.length; j++) {
-          var threshold = group.data[j];
-          for (var k = 0; k < threshold.cells.length; k++) {
-            var cell = threshold.cells[k];
-            if (cell === cellId) {
-              buckets[groupId] = threshold.threshold - 1;
-            }
-          }
-        }
-      }
-
-      return buckets;
-    }*/
-
     function createQuantileBoundaryLabels (boundaries) {
       var boundaryLabels = new Array(boundaries.length - 1);
 
@@ -625,7 +597,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
-    var mapScale;
     var superGridData = new Float32Array(numCellsInGrid*(lastYearOfData-firstYearOfData+1)); //All years of grid data in one massive array.
     //////////////////////////////////////////////////////
     //SCOPE VARS
@@ -670,12 +641,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.mappedCatchExamples = spatialCatchExamples;
 
-    $scope.defaultColor = colorAssignment.getDefaultColor();
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
-    $scope.theme = spatialCatchThemes.eLight;
+    $scope.theme = spatialCatchThemes.nightlyNews;
 
     //////////////////////////////////////////////////////
     //WATCHERS
@@ -693,14 +663,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     //KICKING THINGS OFF
     //////////////////////////////////////////////////////
-    colorAssignment.setData([0]);
-    mapScale = d3.scale.quantile().range($scope.theme.scale);
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: $scope.theme.ocean,
         graticuleColor: 'rgba(255, 255, 255, 0.3)',
         disableMouseZoom: true,
-        colorScale: mapScale,
         onCellHover: function (cell, cellId) {
           $scope.cellValue = cell.toExponential(1);
         }
@@ -797,11 +764,39 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     return {
       nightlyNews: {
         ocean: 'rgba(51, 125, 211, 1)',
-        scale: ['#2ad9eb', '#74f9ae', '#74f9ae', '#fef500', '#fef500', '#fc6a1b', '#fb2921']
+        scale: ['#2ad9eb', '#74f9ae', '#d4f32a', '#fef500', '#fcab07', '#fc6a1b', '#fb2921']
       },
       eLight: {
         ocean: 'rgba(181, 224, 249, 1)',
         scale: ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a']
       }
+    };
+  })
+
+  /*
+  *
+  *
+  *
+  *
+  */
+  .factory('makeCatchMapScale', function () {
+    return function (thresholds, colors) {
+      //Convert the provided colors to a single integer value for faster processing by the D3 grid map.
+      /*for (var i = 0; i < colors.length; i++) {
+        var d3Color = d3.rgb(colors[i]);
+        var intColor = (255 << 24) | (d3Color.b << 16) | (d3Color.g << 8) | d3Color.r;
+        colors[i] = intColor;
+      }*/
+
+      return function (x) {
+        var y = colors[colors.length - 1];
+        for (var i = 0; i < thresholds.length - 1; i++) {
+          if (x <= thresholds[i]) {
+            y = colors[i];
+            break;
+          }
+        }
+        return y;
+      };
     };
   });
