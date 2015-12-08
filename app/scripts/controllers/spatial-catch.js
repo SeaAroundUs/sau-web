@@ -90,6 +90,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
+      //...Reporting statuses
+      if (query.reportingStatuses) {
+        queryParams.repstatus = query.reportingStatuses.join(',');
+      }
+
+      //...Catch types
+      if (query.catchTypes) {
+        queryParams.catchtypes = query.catchTypes.join(',');
+      }
+
       //...Compare term
       if (query.comparableType) {
         queryParams.compare = query.comparableType.compareTerm;
@@ -508,6 +518,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
+      //Reporting statuses
+      if (search.repstatuses) {
+        $scope.query.reportingStatuses = search.repstatuses.split(',');
+      }
+
+      //Catch types
+      if (search.catchtypes) {
+        $scope.query.catchTypes = search.catchtypes.split(',');
+      }
+
       //Year
       $scope.query.year = Math.min(Math.max(+search.year || 2010, 1950), 2010); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
 
@@ -568,6 +588,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $location.search('commgroups', null);
           $location.search('funcgroups', searchValue);
           break;
+      }
+
+      //Reporting Statuses
+      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
+        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
+      } else {
+        $location.search('repstatuses', null);
+      }
+
+      //Catch types
+      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
+        $location.search('catchtypes', $scope.query.catchTypes.join(','));
+      } else {
+        $location.search('catchtypes', null);
       }
 
       //Year
