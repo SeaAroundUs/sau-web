@@ -265,8 +265,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Makes a grid layer for each year. NOTE: VERY SLOW
         forEachYear(function makeAllGrids(currYear, yearIndex) {
-          var bufferOffsetForyear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
-          var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForyear, numCellsInGrid);
+          var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
+          var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
           makeGridLayer(gridDataForYear, currYear);
         });
       };
@@ -645,7 +645,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
-    $scope.theme = spatialCatchThemes.nightlyNews;
+    $scope.theme = spatialCatchThemes.eLight;
 
     //////////////////////////////////////////////////////
     //WATCHERS
@@ -782,11 +782,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
   .factory('makeCatchMapScale', function () {
     return function (thresholds, colors) {
       //Convert the provided colors to a single integer value for faster processing by the D3 grid map.
-      /*for (var i = 0; i < colors.length; i++) {
+      for (var i = 0; i < colors.length; i++) {
         var d3Color = d3.rgb(colors[i]);
         var intColor = (255 << 24) | (d3Color.b << 16) | (d3Color.g << 8) | d3Color.r;
         colors[i] = intColor;
-      }*/
+      }
 
       return function (x) {
         var y = colors[colors.length - 1];
