@@ -659,7 +659,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
-    $scope.theme = spatialCatchThemes.eLight;
+    $scope.theme = spatialCatchThemes.nightlyNews;
 
     //////////////////////////////////////////////////////
     //WATCHERS
