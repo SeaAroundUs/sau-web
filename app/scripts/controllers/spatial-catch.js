@@ -256,6 +256,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }*/
     };
 
+    $scope.currentYearHasGrid = function () {
+      return gridLayers.forYear($scope.currentYear) ? true : false;
+    }
+
     //////////////////////////////////////////////////////
     //PRIVATE METHODS
     //////////////////////////////////////////////////////
