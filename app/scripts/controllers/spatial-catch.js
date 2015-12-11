@@ -82,18 +82,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //var promises = [];
-
-      //Make the spatial catch call for each year.
-      /*if ($scope.isAllocationQueryValid($scope.lastQuery)) {
-        forEachYear(function getCatchDataForYear(currYear) {
-          var catchResponseCallback = processCatchResponse(currYear, numQueriesMade);
-          queryParams.year = currYear;
-          var catchResponse = sauAPI.SpatialCatchData.get(queryParams).then(catchResponseCallback);
-          promises.push(catchResponse);
-        });
-      }*/
-
       if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         //Request data about the grid scale, relative to all years.
         $timeout(function requestMapScale() {
@@ -110,7 +98,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           //Request the current year so that the user can look at it while the other years are loading.
           queryParams.year = visibleYear;
           return sauAPI.SpatialCatchData.get(queryParams);
-        }, 500)
+        })
         //Process visible year response
         .then(function processCurrYear(currYearResponse) {
 
@@ -123,41 +111,27 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             var layerData = transformCatchResponse(currYearResponse.data);
             makeGridLayer(layerData, visibleYear);
           }, 100);
-          
+
           //Request all years.
           delete queryParams.year;
           return sauAPI.SpatialCatchData.get(queryParams);
         })
         //Process all years
         .then(function processAllYears(allYearsResponse) {
-          $timeout(function () {
-            var superGridData = transformCatchResponse(allYearsResponse.data);
+          var superGridData = transformCatchResponse(allYearsResponse.data);
 
-            //Makes a grid layer for each year. NOTE: VERY SLOW
-            forEachYear(function makeAllGrids(currYear, yearIndex) {
-              if (currYear === visibleYear) {
-                return;
-              }
-              var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
-              var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
-              makeGridLayer(gridDataForYear, currYear);
-            });
+          //Makes a grid layer for each year. NOTE: VERY SLOW
+          forEachYear(function makeAllGrids(currYear, yearIndex) {
+            if (currYear === visibleYear) {
+              return;
+            }
+            var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
+            var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
+            makeGridLayer(gridDataForYear, currYear);
           });
         });
 
       }
-
-      //...Taxon distribution call
-      /*if ($scope.isDistributionQueryValid($scope.lastQuery)) {
-        for (var i = 0; i < query.taxonDistribution.length; i++) {
-          var taxonId = query.taxonDistribution[i];
-          var taxonDistributionPromise = sauAPI.TaxonDistribution.get({id: taxonId});
-          promises.push(taxonDistributionPromise);
-        }
-      }*/
-
-      /*lastAllQueryPromise = $q.all(promises);
-      lastAllQueryPromise.then(processAllCatchResponses(numQueriesMade));*/
 
       //Google Analytics Event
       ga.sendEvent({
@@ -211,10 +185,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return $scope.isAllocationQueryValid(query);
     };
 
-    $scope.bucketRange = function(bucketIndex) {
-      return 0;
-    };
-
     $scope.getSelectedBucket = function () {
       return -1;
     };
@@ -258,7 +228,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.currentYearHasGrid = function () {
       return gridLayers.forYear($scope.currentYear) ? true : false;
-    }
+    };
 
     //////////////////////////////////////////////////////
     //PRIVATE METHODS
@@ -556,7 +526,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Hide the old grid layers so that only one is showing at a time.
       forEachYear(function hideAllLayers(year) {
         var layer = gridLayers.forYear(year);
-        layer && layer.hide();
+        if (layer) {
+          layer.hide();
+        }
       });
 
       //Show the new grid layer.
@@ -592,7 +564,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var firstYearOfData = 1950; //Dynamic later.
     var lastYearOfData = 2010; //Dynamic later.
     var numCellsInGrid = 720 * 360;
-    var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
     var gridLayers = [];
@@ -602,7 +573,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       } else {
         this[year - firstYearOfData] = layer;
       }
-    }
+    };
     //////////////////////////////////////////////////////
     //SCOPE VARS
     //////////////////////////////////////////////////////
@@ -638,12 +609,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.functionalGroups.unshift({functional_group_id: '-1', description: '-- All functional groups --'});
     }
 
-    $scope.reportingStatuses = reportingStatuses;
-    $scope.reportingStatuses.find = makeArrayQueryable('id');
-
-    $scope.catchTypes = catchTypes;
-    $scope.catchTypes.find = makeArrayQueryable('id');
-
     $scope.mappedCatchExamples = spatialCatchExamples;
 
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
@@ -671,23 +636,23 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
         seaColor: $scope.theme.ocean,
-        graticuleColor: 'rgba(255, 255, 255, 0.3)',
+        graticuleColor: $scope.theme.graticule,
         disableMouseZoom: true,
-        onCellHover: function (cell, cellId) {
+        onCellHover: function (cell) {
           $scope.cellValue = cell.toExponential(1);
         }
       });
 
       map.addLayer(eezSpatialData.data, {
-        fillColor: 'rgba(0, 117, 187, 0)',
-        strokeColor: 'rgba(0, 117, 187, 1)',
+        fillColor: $scope.theme.eezFill,
+        strokeColor: $scope.theme.eezStroke,
         renderOnAnimate: false,
         zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
 
       map.addLayer(countries, {
-        fillColor: 'rgba(251, 250, 243, 1)',
-        strokeColor: 'rgba(0, 0, 0, 0)',
+        fillColor: $scope.theme.landFill,
+        strokeColor: $scope.theme.landStroke,
         zIndex: 100 ////Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
     });
@@ -710,10 +675,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     return {
       nightlyNews: {
         ocean: 'rgba(51, 125, 211, 1)',
+        graticule: 'rgba(255, 255, 255, 0.3)',
+        landStroke: 'rgba(255, 255, 255, 1)',
+        landFill: 'rgba(251, 250, 243, 1)',
+        eezStroke: 'rgba(255, 255, 255, .3)',
+        eezFill: 'rgba(255, 255, 255, .15)',
         scale: ['#2ad9eb', '#74f9ae', '#d4f32a', '#fef500', '#fcab07', '#fc6a1b', '#fb2921']
       },
       eLight: {
         ocean: 'rgba(181, 224, 249, 1)',
+        graticule: 'rgba(255, 255, 255, 0.3)',
+        landStroke: 'rgba(255, 255, 255, 1)',
+        landFill: 'rgba(251, 250, 243, 1)',
+        eezStroke: 'rgba(255, 155, 155, 1)',
+        eezFill: 'rgba(255, 255, 255, .15)',
         scale: ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a']
       }
     };
