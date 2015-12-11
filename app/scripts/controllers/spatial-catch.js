@@ -9,7 +9,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     //SCOPE METHODS
     //////////////////////////////////////////////////////
-    $scope.submitQuery = function (query, currentYear) {
+    $scope.submitQuery = function (query, visibleYear) {
       clearGrid();
       superGridData.fill(NaN);
       $scope.loadingProgress = 0;
@@ -17,7 +17,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.lastQuery = angular.copy(query);
       updateUrlFromQuery();
       $scope.queryResponseErrorMessage = null;
-      $scope.lastQuerySentence = getQuerySentence(query, currentYear);
+      $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
       $scope.catchGraphLinkText = getCatchGraphLinkText(query);
       $scope.catchGraphLink = getCatchGraphLink(query);
 
@@ -83,26 +83,76 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //...Reporting statuses
-      if (query.reportingStatuses) {
-        queryParams.repstatus = query.reportingStatuses.join(',');
-      }
-
-      //...Catch types
-      if (query.catchTypes) {
-        queryParams.catchtypes = query.catchTypes.join(',');
-      }
-
-      var promises = [];
+      //var promises = [];
 
       //Make the spatial catch call for each year.
-      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
+      /*if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         forEachYear(function getCatchDataForYear(currYear) {
           var catchResponseCallback = processCatchResponse(currYear, numQueriesMade);
           queryParams.year = currYear;
           var catchResponse = sauAPI.SpatialCatchData.get(queryParams).then(catchResponseCallback);
           promises.push(catchResponse);
         });
+      }*/
+
+      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
+        //Request data about the grid scale, relative to all years.
+        $timeout(function requestMapScale() {
+          //Request the current year so that the user can look at it while the other years are loading.
+          queryParams.year = visibleYear;
+          return sauAPI.SpatialCatchData.get(queryParams);
+        })
+        //Process visible year response
+        .then(function processCurrYear(currYearResponse) {
+          //Rendering the visible year is main-thread-blocking, so we delay it a bit to make sure that the
+          //mega array request gets fired first.
+          $timeout(function makeFirstYearLayer() {
+            var layerData = transformCatchResponse(currYearResponse.data);
+            makeGridLayer(layerData, visibleYear);
+          }, 100);
+          
+          //Request all years.
+          delete queryParams.year;
+          return sauAPI.SpatialCatchData.get(queryParams);
+        })
+        //Process all years
+        .then(function processAllYears(allYearsResponse) {
+          $timeout(function () {
+            $scope.queryResolved = true;
+            $scope.loadingProgress = 1;
+
+            var superGridData = transformCatchResponse(allYearsResponse.data);
+            //We chop away a portion of the grid data before we pass it to the rainbow scale.
+            //This significantly speeds up the domain() method, which does a sort().
+            var smallerSuperGrid = superGridData.filter(function removeNaNs(x) {
+              return !isNaN(x);
+            });
+
+            //Maps cell values to their colors on a rainbow color range.
+            var d3Scale = d3.scale.quantile().domain(smallerSuperGrid).range($scope.theme.scale);
+            var d3Range = d3Scale.range();
+            $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
+            $scope.maxCatch = 0; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
+            $scope.totalCatch = 0;
+            $scope.quantiles = d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
+            $scope.quantiles.unshift($scope.minCatch);
+            $scope.quantiles.push($scope.maxCatch);
+            $scope.boundaryLabels = createQuantileBoundaryLabels($scope.quantiles);
+            map.colorScale = makeCatchMapScale(d3Scale.quantiles(), $scope.theme.scale.slice());
+
+            //Makes a grid layer for each year. NOTE: VERY SLOW
+          
+            forEachYear(function makeAllGrids(currYear, yearIndex) {
+              if (currYear === visibleYear) {
+                return;
+              }
+              var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
+              var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
+              makeGridLayer(gridDataForYear, currYear);
+            });
+          }, 1000);
+        });
+
       }
 
       //...Taxon distribution call
@@ -114,8 +164,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       }*/
 
-      lastAllQueryPromise = $q.all(promises);
-      lastAllQueryPromise.then(processAllCatchResponses(numQueriesMade));
+      /*lastAllQueryPromise = $q.all(promises);
+      lastAllQueryPromise.then(processAllCatchResponses(numQueriesMade));*/
 
       //Google Analytics Event
       ga.sendEvent({
@@ -279,20 +329,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         map.removeLayer(oldLayer);
       }
 
+      var showLayer = cache.currentYear() === year;
+
       //Then make the layer
       var newLayer = map.addLayer(data, {
         gridSize: [720, 360],
         renderOnAnimate: false,
         zIndex: year - firstYearOfData,
-        renderOnAdd: false
+        renderOnAdd: showLayer
       });
 
-      //Show hide the layer initially
-      if (cache.currentYear() !== year) {
+      //Workaround for this bug: https://github.com/VulcanTechnologies/d3-grid-map/issues/12
+      if (!showLayer) {
         newLayer.hide();
-      } else {
-        newLayer.show();
-        newLayer.draw();
       }
 
       //Add it to the cache
@@ -555,9 +604,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function updateYearLayerVisibility() {
       //Hide the old grid layer so that only one is showing at a time.
-      if (cache.getLayer()) {
+      /*if (cache.getLayer()) {
         cache.getLayer().hide();
-      }
+      }*/
+
+      forEachYear(function hideAllLayers(year) {
+        var layer = cache.getLayer(year);
+        if (layer) {
+          cache.getLayer(year).hide();
+        }
+      });
 
       cache.currentYear($scope.currentYear);
 
