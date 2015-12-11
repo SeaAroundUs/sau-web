@@ -3,7 +3,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchCache, spatialCatchThemes, makeCatchMapScale) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -11,7 +11,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     $scope.submitQuery = function (query, visibleYear) {
       clearGrid();
-      superGridData.fill(NaN);
       $scope.loadingProgress = 0;
       numQueriesMade++;
       $scope.lastQuery = angular.copy(query);
@@ -260,17 +259,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     //PRIVATE METHODS
     //////////////////////////////////////////////////////
-    function processCatchResponse (year, queryIndex) {
-      return function (response) {
-        if (queryIndex < numQueriesMade) {
-          return;
-        }
-        var layerData = transformCatchResponse(response.data);
-        superGridData.set(layerData, (year - firstYearOfData) * numCellsInGrid);
-        $scope.loadingProgress += 1 / (lastYearOfData - firstYearOfData + 1);
-      };
-    }
-
     function transformCatchResponse(response) {
       try {
         return new Float32Array(response);
@@ -282,12 +270,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function makeGridLayer(data, year) {
       //First delete any previous layer in that year slot.
-      var oldLayer = cache.getLayer(year);
+      var oldLayer = gridLayers.forYear(year);
       if (oldLayer) {
         map.removeLayer(oldLayer);
       }
 
-      var showLayer = cache.currentYear() === year;
+      var showLayer = $scope.currentYear === year;
 
       //Then make the layer
       var newLayer = map.addLayer(data, {
@@ -303,18 +291,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Add it to the cache
-      cache.put(year, newLayer);
+      gridLayers.forYear(year, newLayer);
     }
 
     function deleteGridLayer(year) {
       //Remove layer from the gridmap
-      var deadLayerWalking = cache.getLayer(year);
+      var deadLayerWalking = gridLayers.forYear(year);
       if (deadLayerWalking) {
         map.removeLayer(deadLayerWalking);
       }
 
       //Clear the cache reference
-      cache.invalidate(year);
+      gridLayers.forYear(year, null);
     }
 
     function clearGrid() {
@@ -561,24 +549,17 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function updateYearLayerVisibility() {
-      //Hide the old grid layer so that only one is showing at a time.
-      /*if (cache.getLayer()) {
-        cache.getLayer().hide();
-      }*/
-
+      //Hide the old grid layers so that only one is showing at a time.
       forEachYear(function hideAllLayers(year) {
-        var layer = cache.getLayer(year);
-        if (layer) {
-          cache.getLayer(year).hide();
-        }
+        var layer = gridLayers.forYear(year);
+        layer && layer.hide();
       });
 
-      cache.currentYear($scope.currentYear);
-
       //Show the new grid layer.
-      if (cache.isCurrentYearValid()) {
-        cache.getLayer().show();
-        cache.getLayer().draw(); //This call shouldn't need to be done by the application, it should be done in the library.
+      var currentYearLayer = gridLayers.forYear($scope.currentYear);
+      if (currentYearLayer) {
+        currentYearLayer.show();
+        currentYearLayer.draw(); //This call shouldn't need to be done by the application, it should be done in the library.
         $scope.lastQuerySentence = getQuerySentence($scope.query, $scope.currentYear);
       }
     }
@@ -607,11 +588,17 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var firstYearOfData = 1950; //Dynamic later.
     var lastYearOfData = 2010; //Dynamic later.
     var numCellsInGrid = 720 * 360;
-    var cache = spatialCatchCache.init(firstYearOfData, lastYearOfData);
     var lastAllQueryPromise;
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
-    var superGridData = new Float32Array(numCellsInGrid*(lastYearOfData-firstYearOfData+1)); //All years of grid data in one massive array.
+    var gridLayers = [];
+    gridLayers.forYear = function (year, layer) {
+      if (arguments.length === 1) {
+        return this[year - firstYearOfData];
+      } else {
+        this[year - firstYearOfData] = layer;
+      }
+    }
     //////////////////////////////////////////////////////
     //SCOPE VARS
     //////////////////////////////////////////////////////
@@ -707,65 +694,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     if ($scope.isQueryValid($scope.query)) {
       $scope.submitQuery($scope.query, $scope.currentYear);
     }
-  })
-
-  /*
-  *
-  *
-  *
-  *
-  */
-  .factory('spatialCatchCache', function() {
-
-    var cache = [];
-    cache.init = function (firstYear, lastYear) {
-      this._firstYear = firstYear;
-      this._currentYear = this._lastYear = lastYear;
-      return this;
-    };
-
-    cache.currentYear = function (year) {
-      if (typeof year === 'undefined') {
-        return this._currentYear;
-      } else {
-        this._currentYear = year;
-      }
-    };
-
-    cache.getLayer = function(year) {
-      if (typeof year === 'undefined') {
-        year = this.currentYear();
-      }
-      var index = year - this._firstYear;
-      return this[index] ? this[index].layer : null;
-    };
-
-    cache.isCurrentYearValid = function () {
-      var index = this.currentYear() - this._firstYear;
-      return this[index] && this[index].isValid;
-    };
-
-    cache.put = function (year, layer) {
-      var index = year - this._firstYear; //Convert the year to an index.
-      if (!this[index]) {
-        this[index] = {};
-      }
-      this[index].layer = layer;
-      this[index].isValid = true;
-    };
-
-    cache.invalidate = function(year) {
-      if (year) {
-        var index = year - this._firstYear;
-        this[index] = null;
-      } else {
-        for (var i = 0; i < this.length; i++) {
-          cache = [];
-        }
-      }
-    };
-
-    return cache;
   })
 
   /*
