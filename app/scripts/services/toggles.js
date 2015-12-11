@@ -7,11 +7,7 @@ angular.module('sauWebApp')
     var disabledOnStageAndProd = [
       'auth',
       'country-eezs',
-      'highseas',
-      'global',
-      'fao',
-      'taxon-distribution',
-      'fishingEntity'
+      'taxon-distribution'
     ];
 
     var disabled = {
