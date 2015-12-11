@@ -98,12 +98,26 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         //Request data about the grid scale, relative to all years.
         $timeout(function requestMapScale() {
+          $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
+          $scope.maxCatch = 70; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
+          $scope.totalCatch = 0;
+          var quantiles = [0.00001, 0.0002, 0.003, 0.04, 0.5, 6]; //d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
+          var quantilesAndExtrema = quantiles.slice(); //Makes a copy
+          quantilesAndExtrema.unshift($scope.minCatch);
+          quantilesAndExtrema.push($scope.maxCatch);
+          $scope.boundaryLabels = createQuantileBoundaryLabels(quantilesAndExtrema);
+          map.colorScale = makeCatchMapScale(quantiles, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
+
           //Request the current year so that the user can look at it while the other years are loading.
           queryParams.year = visibleYear;
           return sauAPI.SpatialCatchData.get(queryParams);
-        })
+        }, 500)
         //Process visible year response
         .then(function processCurrYear(currYearResponse) {
+
+          $scope.queryResolved = true;
+          $scope.loadingProgress = 1;
+
           //Rendering the visible year is main-thread-blocking, so we delay it a bit to make sure that the
           //mega array request gets fired first.
           $timeout(function makeFirstYearLayer() {
@@ -118,30 +132,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //Process all years
         .then(function processAllYears(allYearsResponse) {
           $timeout(function () {
-            $scope.queryResolved = true;
-            $scope.loadingProgress = 1;
-
             var superGridData = transformCatchResponse(allYearsResponse.data);
-            //We chop away a portion of the grid data before we pass it to the rainbow scale.
-            //This significantly speeds up the domain() method, which does a sort().
-            var smallerSuperGrid = superGridData.filter(function removeNaNs(x) {
-              return !isNaN(x);
-            });
-
-            //Maps cell values to their colors on a rainbow color range.
-            var d3Scale = d3.scale.quantile().domain(smallerSuperGrid).range($scope.theme.scale);
-            var d3Range = d3Scale.range();
-            $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
-            $scope.maxCatch = 0; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
-            $scope.totalCatch = 0;
-            $scope.quantiles = d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
-            $scope.quantiles.unshift($scope.minCatch);
-            $scope.quantiles.push($scope.maxCatch);
-            $scope.boundaryLabels = createQuantileBoundaryLabels($scope.quantiles);
-            map.colorScale = makeCatchMapScale(d3Scale.quantiles(), $scope.theme.scale.slice());
 
             //Makes a grid layer for each year. NOTE: VERY SLOW
-          
             forEachYear(function makeAllGrids(currYear, yearIndex) {
               if (currYear === visibleYear) {
                 return;
@@ -150,7 +143,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
               makeGridLayer(gridDataForYear, currYear);
             });
-          }, 1000);
+          });
         });
 
       }
@@ -285,41 +278,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         console.log('Spatial catch response not parseable into Float32Array.');
         return new Float32Array();
       }
-    }
-
-    function processAllCatchResponses(queryIndex) {
-      return function(response) {
-        if (queryIndex < numQueriesMade) {
-          return;
-        }
-        $scope.queryResolved = true;
-        $scope.loadingProgress = 1;
-
-        //We chop away a portion of the grid data before we pass it to the rainbow scale.
-        //This significantly speeds up the domain() method, which does a sort().
-        var smallerSuperGrid = superGridData.filter(function a(x) {
-          return !isNaN(x);
-        });
-
-        //Maps cell values to their colors on a rainbow color range.
-        var d3Scale = d3.scale.quantile().domain(smallerSuperGrid).range($scope.theme.scale);
-        var d3Range = d3Scale.range();
-        $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
-        $scope.maxCatch = 0; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
-        $scope.totalCatch = 0;
-        $scope.quantiles = d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
-        $scope.quantiles.unshift($scope.minCatch);
-        $scope.quantiles.push($scope.maxCatch);
-        $scope.boundaryLabels = createQuantileBoundaryLabels($scope.quantiles);
-        map.colorScale = d3Scale; //makeCatchMapScale(d3Scale.quantiles(), $scope.theme.scale.slice());
-
-        //Makes a grid layer for each year. NOTE: VERY SLOW
-        forEachYear(function makeAllGrids(currYear, yearIndex) {
-          var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
-          var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
-          makeGridLayer(gridDataForYear, currYear);
-        });
-      };
     }
 
     function makeGridLayer(data, year) {
