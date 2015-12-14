@@ -235,6 +235,7 @@
   .legend-color-swatch {
     height: 100%;
     background-color: #F68E1E;
+    
   }
 
   .legend-measure {
@@ -311,8 +312,7 @@
   }
 
   .legend-column {
-    padding-bottom: 0;
-    padding-right: 3px;
+    padding: 0;
   }
 
   #taxonDistributionInput {

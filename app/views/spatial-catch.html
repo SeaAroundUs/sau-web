@@ -73,9 +73,6 @@
         </div>
       </form>
     </div>
-    <div>
-      {{cellValue}}
-    </div>
     <!-- <div class="row" env-hide="prod stage" style="margin-top: 20px">
       <div class="col-xs-12">
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
@@ -101,7 +98,7 @@
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
         <div class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch | totalCatchUnits).toString() + ')'" colors="theme.scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" bucket-rollovers="boundaryLabels" selected-bucket="getSelectedBucket()"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch | totalCatchUnits).toString() + ')'" colors="theme.scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
         </div>
       </div>
       <!-- <div class="row" ng-show="isDistributionQueryValid(lastQuery)">

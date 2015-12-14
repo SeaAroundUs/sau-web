@@ -14,8 +14,9 @@ angular.module('sauWebApp')
         maxLabel: '=',
         minLabel: '=',
         keyLink: '=',
-        bucketRollovers: '=',
-        selectedBucket: '='
+        boundaries: '=',
+        selectedBucket: '=',
+        currValue: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
@@ -46,7 +47,7 @@ angular.module('sauWebApp')
         }
 
         function pctToCss(pct) {
-          return Math.round(pct * 100) + '%';
+          return Math.round(pct * 10000) / 100 - 0.01 + '%';
         }
 
         $timeout(function initColors() {

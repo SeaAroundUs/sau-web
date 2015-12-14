@@ -89,10 +89,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $scope.maxCatch = 70; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
           $scope.totalCatch = 0;
           var quantiles = [0.00001, 0.0002, 0.003, 0.04, 0.5, 6]; //d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
-          var quantilesAndExtrema = quantiles.slice(); //Makes a copy
-          quantilesAndExtrema.unshift($scope.minCatch);
-          quantilesAndExtrema.push($scope.maxCatch);
-          $scope.boundaryLabels = createQuantileBoundaryLabels(quantilesAndExtrema);
+          $scope.boundaries = quantiles.slice(); //Makes a copy
+          $scope.boundaries.unshift($scope.minCatch);
+          $scope.boundaries.push($scope.maxCatch);
           map.colorScale = makeCatchMapScale(quantiles, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
           //Request the current year so that the user can look at it while the other years are loading.
@@ -183,10 +182,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.isQueryValid = function (query) {
       //return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
       return $scope.isAllocationQueryValid(query);
-    };
-
-    $scope.getSelectedBucket = function () {
-      return -1;
     };
 
     $scope.zoomMapIn = function() {
@@ -511,17 +506,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     }
 
-    function createQuantileBoundaryLabels (boundaries) {
-      var boundaryLabels = new Array(boundaries.length - 1);
-
-      for (var i = 0; i < boundaries.length - 1; i++) {
-        //Each boundary label looks something like this: "8.3e-11 to 2.6e-3 t/km²"
-        boundaryLabels[i] = boundaries[i].toExponential(1) + ' to ' + boundaries[i + 1].toExponential(1) + ' t/km²';
-      }
-
-      return boundaryLabels;
-    }
-
     function updateYearLayerVisibility() {
       //Hide the old grid layers so that only one is showing at a time.
       forEachYear(function hideAllLayers(year) {
@@ -639,7 +623,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         graticuleColor: $scope.theme.graticule,
         disableMouseZoom: true,
         onCellHover: function (cell) {
-          $scope.cellValue = cell.toExponential(1);
+          $scope.cellValue = cell;
           $scope.$apply();
         }
       });

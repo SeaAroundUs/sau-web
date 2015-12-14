@@ -5,7 +5,7 @@
 	<span class="not-bold">{{keyNameSecond}}</span>
 </label>
 <ul class="legend-color-bar list-inline">
-	<li tooltip="{{bucketRollovers[$index]}}" ng-repeat="swatch in colors" class="legend-color-swatch" ng-init="colorMe($index)" tooltip-append-to-body="true" ng-class="{selected: selectedBucket === $index}"></li>
+	<li tooltip="{{boundaries[$index].toExponential(1)}} to {{boundaries[$index + 1].toExponential(1)}} t/km²" ng-repeat="swatch in colors" class="legend-color-swatch" ng-init="colorMe($index)" tooltip-append-to-body="true" ng-class="{selected: currValue >= boundaries[$index] && currValue < boundaries[$index + 1]}"></li>
 </ul>
 <div ng-show="minLabel" class="pull-left legend-measure">{{minLabel}}</div>
 <div ng-show="maxLabel" class="pull-right legend-measure">{{maxLabel}}</div>
