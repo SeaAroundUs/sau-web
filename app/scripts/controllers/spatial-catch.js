@@ -640,6 +640,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         disableMouseZoom: true,
         onCellHover: function (cell) {
           $scope.cellValue = cell.toExponential(1);
+          $scope.$apply();
         }
       });
 
