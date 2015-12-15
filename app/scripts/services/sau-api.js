@@ -78,11 +78,14 @@ angular.module('sauWebApp')
               url += '&';
             }
           }
-          return $http.get(url,
-          {
-            responseType: 'arraybuffer',
-            headers: {'Accept': 'application/octet-stream'}
-          });
+          var requestConfig = null;
+          if (!params.stats) {
+            requestConfig = {
+              responseType: 'arraybuffer',
+              headers: {'Accept': 'application/octet-stream'}
+            };
+          }
+          return $http.get(url, requestConfig);
         }
       },
       TaxonDistribution: {

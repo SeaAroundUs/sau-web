@@ -18,8 +18,8 @@
     })
     .filter('totalCatchUnits', function() {
       return function (input) {
-        return input + ' x 10³ t';
-      }
+        return (Math.round(+input / 1000)).toLocaleString() + ' x 10³ t';
+      };
     });
 
 })();

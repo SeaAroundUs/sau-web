@@ -11,6 +11,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     $scope.submitQuery = function (query, visibleYear) {
       clearGrid();
+      $scope.queryFailed = false;
       $scope.loadingProgress = 0;
       numQueriesMade++;
       $scope.lastQuery = angular.copy(query);
@@ -24,7 +25,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.queryResolved = false;
 
       //Form the query...
-      var queryParams = {format: 'binary'};
+      var queryParams = {format: 'binary', buckets: 7};
       var gaAction = ['query'];
 
       //...Fishing countries
@@ -84,22 +85,26 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       if ($scope.isAllocationQueryValid($scope.lastQuery)) {
         //Request data about the grid scale, relative to all years.
-        $timeout(function requestMapScale() {
-          $scope.minCatch = 0; //d3Scale.invertExtent(d3Range[0])[0]; //Gets the smallest value in the scale.
-          $scope.maxCatch = 70; //d3Scale.invertExtent(d3Range[d3Range.length - 1])[1]; //Gets the largest value in the scale.
-          $scope.totalCatch = 0;
-          var quantiles = [0.00001, 0.0002, 0.003, 0.04, 0.5, 6]; //d3Scale.quantiles().slice(); //Slice makes a copy of the array, so we can manipulate it without messing up the scale.
-          $scope.boundaries = quantiles.slice(); //Makes a copy
-          $scope.boundaries.unshift($scope.minCatch);
-          $scope.boundaries.push($scope.maxCatch);
+        queryParams.stats = true;
+        var scaleQuery = sauAPI.SpatialCatchData.get(queryParams);
+        scaleQuery.then(makeCancellableCallback(numQueriesMade, function requestMapScale(response) {
+          $scope.boundaries = response.data.data.quantiles;
+          $scope.minCatch = $scope.boundaries[0];
+          $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
+          $scope.totalCatch.setAllYears(response.data.data.total_catch);
+
+          var quantiles = $scope.boundaries.slice();
+          quantiles.pop();
+          quantiles.shift();
           map.colorScale = makeCatchMapScale(quantiles, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
           //Request the current year so that the user can look at it while the other years are loading.
           queryParams.year = visibleYear;
+          delete queryParams.stats;
           return sauAPI.SpatialCatchData.get(queryParams);
-        })
+        }))
         //Process visible year response
-        .then(function processCurrYear(currYearResponse) {
+        .then(makeCancellableCallback(numQueriesMade, function processCurrYear(currYearResponse) {
 
           $scope.queryResolved = true;
           $scope.loadingProgress = 1;
@@ -114,9 +119,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           //Request all years.
           delete queryParams.year;
           return sauAPI.SpatialCatchData.get(queryParams);
-        })
+        }))
         //Process all years
-        .then(function processAllYears(allYearsResponse) {
+        .then(makeCancellableCallback(numQueriesMade, function processAllYears(allYearsResponse) {
           var superGridData = transformCatchResponse(allYearsResponse.data);
 
           //Makes a grid layer for each year. NOTE: VERY SLOW
@@ -128,7 +133,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
             makeGridLayer(gridDataForYear, currYear);
           });
-        });
+        }))
+        .catch(makeCancellableCallback(queryParams, function notifyFailedQuery() {
+          $scope.queryFailed = true;
+          console.log('query failed.');
+        }));
 
       }
 
@@ -276,6 +285,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function clearGrid() {
       forEachYear(deleteGridLayer);
+    }
+
+    //Ensures that outdated query responses don't fire after newer ones.
+    function makeCancellableCallback(callIndex, cb) {
+      if (callIndex < numQueriesMade) {
+        return angular.noop;
+      }
+      return cb;
     }
 
     function updateQueryFromUrl() {
@@ -612,6 +629,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         var globalIndex = queryProperty === 'functionalGroups' ? '-1': '0';
         return this[queryProperty] && this[queryProperty].length > 0 && this[queryProperty].indexOf(globalIndex) === -1;
       }
+    };
+    $scope.totalCatch = [];
+    $scope.totalCatch.setAllYears = function (allYears) {
+      for (var i = 0; i < allYears.length; i++) {
+        this[i] = allYears[i];
+      }
+    };
+    $scope.totalCatch.forYear = function (year) {
+      return this[year - firstYearOfData];
     };
 
     //////////////////////////////////////////////////////

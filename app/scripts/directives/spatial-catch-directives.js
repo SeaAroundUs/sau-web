@@ -25,7 +25,7 @@ angular.module('sauWebApp')
 
         function colorAll() {
           if (!$scope.colors) {
-            console.log("No colors specified in spatial catch legend key. Cannot render.");
+            console.log('No colors specified in spatial catch legend key. Cannot render.');
             return;
           }
           for (var i = 0; i < $scope.colors.length; i++) {
@@ -41,10 +41,6 @@ angular.module('sauWebApp')
             swatch.style.width = pctToCss(1 / $scope.colors.length);
           }
         };
-
-        function colorArrayToCss (color) {
-          return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-        }
 
         function pctToCss(pct) {
           return Math.round(pct * 10000) / 100 - 0.01 + '%';
