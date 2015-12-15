@@ -20,6 +20,13 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
               }, []) :
               res.data.reconstruction_documents;
 
+            if (scope.references) {
+              scope.references.map(function(ref) {
+                ref.ga = {category: 'PDF', action: 'Reconstruction Reference', Label: ref.name};
+                return ref;
+              });
+            }
+
             if (!scope.references || scope.references.length === 0) {
               ele.remove();
             }
@@ -39,7 +46,9 @@ angular.module('sauWebApp').directive('regionDataReconstructionReference', funct
       '<h2 ng-pluralize count="references.length" ' +
         'when="{\'1\': \'Reconstruction reference\', \'other\': \'Reconstruction references\'}"></h2>' +
       '<span ng-repeat="ref in references | unique: \'name\'" class="reference">' +
-        '<a ng-href="{{ ref.url }}"><i class="fa fa-file-pdf-o red"></i> {{ ref.name | breakUnderscores }}</a>' +
+        '<a ng-href="{{ ref.url }}" ga-event="ref.ga" target="_blank">' +
+          '<i class="fa fa-file-pdf-o red"></i> {{ ref.name | breakUnderscores }}' +
+        '</a>' +
       '</span></div>'
   };
 });
