@@ -3,7 +3,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -92,7 +92,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $scope.minCatch = $scope.boundaries[0];
           $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
           $scope.totalCatch.setAllYears(response.data.data.total_catch);
-          map.colorScale = makeCatchMapScale($scope.boundaries, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
+          map.colorScale = makeCatchMapScale($scope.boundaries, $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
           //Request the current year so that the user can look at it while the other years are loading.
           queryParams.year = visibleYear;
@@ -119,6 +119,16 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //Process all years
         .then(makeCancellableCallback(numQueriesMade, function processAllYears(allYearsResponse) {
           var superGridData = transformCatchResponse(allYearsResponse.data);
+
+          //Creates a histogram of the cells in the buckets, used for debugging.
+          /*var buckets = [0, 0, 0, 0, 0, 0, 0];
+          for (var i = 0; i < superGridData.length; i++) {
+            if (isNaN(superGridData[i])) {
+              continue;
+            }
+            buckets[map.colorScale.getQuantile(superGridData[i])]++;
+          }
+          debugger;*/
 
           //Makes a grid layer for each year. NOTE: VERY SLOW
           forEachYear(function makeAllGrids(currYear, yearIndex) {
@@ -612,7 +622,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
-    $scope.theme = spatialCatchThemes.nightlyNews;
+    $scope.themes = spatialCatchThemes;
 
     //////////////////////////////////////////////////////
     //WATCHERS
@@ -641,8 +651,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     d3.json('countries.topojson', function(error, countries) {
       map = new d3.geo.GridMap('#cell-map', {
-        seaColor: $scope.theme.ocean,
-        graticuleColor: $scope.theme.graticule,
+        seaColor: $scope.themes.current().ocean,
+        graticuleColor: $scope.themes.current().graticule,
         disableMouseZoom: true,
         onCellHover: function (cell) {
           $scope.cellValue = cell;
@@ -651,54 +661,36 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       });
 
       map.addLayer(eezSpatialData.data, {
-        fillColor: $scope.theme.eezFill,
-        strokeColor: $scope.theme.eezStroke,
+        fillColor: $scope.themes.current().eezFill,
+        strokeColor: $scope.themes.current().eezStroke,
         renderOnAnimate: false,
         zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
 
       map.addLayer(countries, {
-        fillColor: $scope.theme.landFill,
-        strokeColor: $scope.theme.landStroke,
+        fillColor: $scope.themes.current().landFill,
+        strokeColor: $scope.themes.current().landStroke,
         zIndex: 100 ////Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
+
+      updateQueryFromUrl();
+
+      //Boostrap the initial query if there are query params in the URL when the page loads.
+      if ($scope.isQueryValid($scope.query)) {
+        $scope.submitQuery($scope.query, $scope.currentYear);
+      }
     });
 
-    updateQueryFromUrl();
-
-    //Boostrap the initial query if there are query params in the URL when the page loads.
-    if ($scope.isQueryValid($scope.query)) {
-      $scope.submitQuery($scope.query, $scope.currentYear);
-    }
-  })
-
-  /*
-  *
-  *
-  *
-  *
-  */
-  .factory('spatialCatchThemes', function () {
-    return {
-      nightlyNews: {
-        ocean: 'rgba(51, 125, 211, 1)',
-        graticule: 'rgba(255, 255, 255, 0.3)',
-        landStroke: 'rgba(255, 255, 255, 1)',
-        landFill: 'rgba(251, 250, 243, 1)',
-        eezStroke: 'rgba(255, 255, 255, .3)',
-        eezFill: 'rgba(255, 255, 255, .15)',
-        scale: ['#2ad9eb', '#74f9ae', '#d4f32a', '#fef500', '#fcab07', '#fc6a1b', '#fb2921']
-      },
-      eLight: {
-        ocean: 'rgba(181, 224, 249, 1)',
-        graticule: 'rgba(255, 255, 255, 0.3)',
-        landStroke: 'rgba(255, 255, 255, 1)',
-        landFill: 'rgba(251, 250, 243, 1)',
-        eezStroke: 'rgba(255, 155, 155, 1)',
-        eezFill: 'rgba(255, 255, 255, .15)',
-        scale: ['#77b2ba', '#93d787', '#f0ff4c', '#fadf56', '#ffbd4b', '#fc8a52', '#db1f1a']
+    var keychain = new Keychain('wwssadadba', function () {
+      var indexOfCurrent = $scope.themes.indexOf($scope.themes.current());
+      indexOfCurrent++;
+      if (indexOfCurrent === $scope.themes.length) {
+        indexOfCurrent = 0;
       }
-    };
+      $scope.themes.current(indexOfCurrent);
+      $route.reload();
+    });
+    $scope.$on('$destroy', keychain.destruct);
   })
 
   /*
@@ -719,7 +711,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var getY = function (x) {
         for (var i = 1; i < thresholds.length; i++) {
           if (x <= thresholds[i]) {
-            return colors[i];
+            return colors[i-1];
           }
         }
         return colors[colors.length - 1];
@@ -728,7 +720,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       getY.getQuantile = function (x) {
         for (var i = 1; i < thresholds.length; i++) {
           if (x <= thresholds[i]) {
-            return i;
+            return i-1;
           }
         }
         return thresholds.length - 1;

@@ -98,7 +98,7 @@
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
         <div class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch.forYear(currentYear) | totalCatchUnits).toString() + ')'" colors="theme.scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch.forYear(currentYear) | totalCatchUnits).toString() + ')'" colors="themes.current().scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
         </div>
       </div>
       <!-- <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
