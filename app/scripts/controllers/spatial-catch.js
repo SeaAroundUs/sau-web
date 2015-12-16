@@ -92,11 +92,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $scope.minCatch = $scope.boundaries[0];
           $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
           $scope.totalCatch.setAllYears(response.data.data.total_catch);
-
-          var quantiles = $scope.boundaries.slice();
-          quantiles.pop();
-          quantiles.shift();
-          map.colorScale = makeCatchMapScale(quantiles, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
+          map.colorScale = makeCatchMapScale($scope.boundaries, $scope.theme.scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
           //Request the current year so that the user can look at it while the other years are loading.
           queryParams.year = visibleYear;
@@ -721,26 +717,22 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       var getY = function (x) {
-        var y = colors[colors.length - 1];
-        for (var i = 0; i < thresholds.length - 1; i++) {
+        for (var i = 1; i < thresholds.length; i++) {
           if (x <= thresholds[i]) {
-            y = colors[i];
-            break;
+            return colors[i];
           }
         }
-        return y;
+        return colors[colors.length - 1];
       };
 
       getY.getQuantile = function (x) {
-        var y = colors.length - 1;
-        for (var i = 0; i < thresholds.length - 1; i++) {
+        for (var i = 1; i < thresholds.length; i++) {
           if (x <= thresholds[i]) {
-            y = i
-            break;
+            return i;
           }
         }
-        return y;
-      }
+        return thresholds.length - 1;
+      };
 
       return getY;
     };
