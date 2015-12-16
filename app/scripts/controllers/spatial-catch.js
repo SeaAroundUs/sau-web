@@ -720,7 +720,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         colors[i] = intColor;
       }
 
-      return function (x) {
+      var getY = function (x) {
         var y = colors[colors.length - 1];
         for (var i = 0; i < thresholds.length - 1; i++) {
           if (x <= thresholds[i]) {
@@ -730,5 +730,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
         return y;
       };
+
+      getY.getQuantile = function (x) {
+        var y = colors.length - 1;
+        for (var i = 0; i < thresholds.length - 1; i++) {
+          if (x <= thresholds[i]) {
+            y = i
+            break;
+          }
+        }
+        return y;
+      }
+
+      return getY;
     };
   });
