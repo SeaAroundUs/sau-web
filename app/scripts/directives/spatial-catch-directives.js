@@ -171,4 +171,17 @@ angular.module('sauWebApp')
         scope.$watchCollection('items', onModelChanged);
       }
     };
+  })
+  .directive('oceanLegend', function () {
+    return {
+      templateUrl: 'views/spatial-catch/spatial-catch-ocean-legend.html',
+      restrict: 'E',
+      scope: {
+        color: '='
+      },
+      link: function (scope, element) {
+        var keyElement = element.find('.ocean-legend-key');
+        keyElement.css('background-color', scope.color);
+      }
+    };
   });

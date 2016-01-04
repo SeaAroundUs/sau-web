@@ -663,6 +663,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       map.addLayer(eezSpatialData.data, {
         fillColor: $scope.themes.current().eezFill,
         strokeColor: $scope.themes.current().eezStroke,
+        strokeWidth: 1.5,
         renderOnAnimate: false,
         zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
       });
