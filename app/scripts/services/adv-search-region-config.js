@@ -47,7 +47,7 @@ angular.module('sauWebApp')
         regionListTitle: 'RFMOs',
         selectedListTitle: 'Selected RFMOs',
         searchPlaceholder: 'Search RFMOs',
-        selectionLimit: 5,
+        selectionLimit: 1,
         getRegionData: function() {
           return sauAPI.Regions.get({region: 'rfmo', nospatial: true});
         },
