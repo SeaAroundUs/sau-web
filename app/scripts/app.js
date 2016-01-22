@@ -333,7 +333,8 @@ angular
       })
       .when('/topic/biodiversity', {
         templateUrl: 'views/topic-biodiversity.html',
-        controller: 'TopicBiodiversityCtrl'
+        controller: 'TopicBiodiversityCtrl',
+        reloadOnSearch: false
       })
       .when('/feru', {
         templateUrl: 'views/feru.html',
