@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('sauWebApp')
-  .directive('sauTaxonInfo', function ($filter, taxonLevels) {
+  .directive('sauTaxonInfo', function ($filter, $location, taxonLevels) {
 
     //Formats the link to FishBase.de based on the taxon level.
     function getFishBaseUrl(taxon) {
@@ -37,6 +37,19 @@ angular.module('sauWebApp')
       restrict: 'E',
       scope: {
         taxon: '='
+      },
+      controller: function($scope) {
+        // shows the habitat index chart and updates the url
+        $scope.toggleHabitatIndex = function() {
+          $scope.taxon.showHabitatIndex = !$scope.taxon.showHabitatIndex;
+          $location.search('showHabitatIndex', $scope.taxon.showHabitatIndex ? 'true' : null);
+        };
+
+        $scope.$watch('taxon', function(newTaxon) {
+          if (newTaxon && newTaxon.has_habitat_index && $location.search().showHabitatIndex === 'true') {
+            newTaxon.showHabitatIndex = true;
+          }
+        });
       },
       link: function(scope, element, attrs) {
         scope.$watch(attrs.taxon, function(value) { scope.fishBaseUrl = getFishBaseUrl(value); });
