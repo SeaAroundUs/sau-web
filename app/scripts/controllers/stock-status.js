@@ -8,15 +8,32 @@ angular.module('sauWebApp')
     var regionId = $routeParams.id || 1;
     $scope.data = {};
     $scope.regionName = region;
-    $scope.region = sauAPI.Region.get({region: region, region_id: regionId});
+    if ($routeParams.subRegion && region === 'eez') {
+      sauAPI.Regions.get({region: 'fao', nospatial: true}, function(res) {
+        var subRegionName = ' - Unknown';
+        for(var i = 0; i < res.data.length; i++) {
+          if (res.data[i].id === parseInt($routeParams.subRegion)) {
+            subRegionName = ' - ' + res.data[i].title;
+          }
+        }
+        $scope.subRegionName = subRegionName;
+      });
+    } else if ($routeParams.subRegion && region === 'global') {
+      $scope.subRegionName = parseInt($routeParams.subRegion) === 1 ?
+          ' - EEZs of the world' :
+          ' - High Seas of the world';
+    }
+    $scope.region = sauAPI.Region.get({region: region, region_id: regionId, fao_id: $routeParams.subRegion});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
-    var data = sauAPI.StockStatusData.get({region: region, region_id: regionId}, function() {
-      $scope.showDownload = true;
-      angular.forEach(data.data, function(data_set, key) {
-        $scope.data[key] = data_set;
-      });
-    });
+    var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
+        function() {
+          $scope.showDownload = true;
+          angular.forEach(data.data, function(data_set, key) {
+            $scope.data[key] = data_set;
+          });
+        }
+    );
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
