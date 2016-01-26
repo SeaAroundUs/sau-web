@@ -80,6 +80,10 @@ angular.module('sauWebApp')
                     if (link.ngUrl) {
                       link.url = $interpolate(link.ngUrl, false, null, true)(res.data);
                     }
+
+                    if (link.subRegion && scope.region.faoId) {
+                      link.url += (link.url.indexOf('?') === -1 ? '?' : '&') + 'subRegion=' + scope.region.faoId;
+                    }
                   });
 
                 } else if (section.eachOf) {

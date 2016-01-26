@@ -49,9 +49,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', url: '#/global/stock-status' },
-            { text: 'Multinational footprint', url: '#/global?chart=multinational-footprint' },
-            { text: 'Marine trophic index', url: '#/global/marine-trophic-index' }
+            { text: 'Stock status plots', url: '#/global/stock-status', subRegion: true },
+            { text: 'Multinational footprint', url: '#/global?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', url: '#/global/marine-trophic-index', subRegion: true }
           ]
         }
       ],
@@ -115,9 +115,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', ngUrl: '#/rfmo/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index' }
+            { text: 'Stock status plots', ngUrl: '#/rfmo/{{ id }}/stock-status', subRegion: true },
+            { text: 'Multinational footprint', ngUrl: '#/rfmo/{{ id }}?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', ngUrl: '#/rfmo/{{ id }}/marine-trophic-index', subRegion: true }
           ]
         }
       ],
@@ -136,9 +136,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', ngUrl: '#/highseas/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/highseas/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/highseas/{{ id }}/marine-trophic-index' }
+            { text: 'Stock status plots', ngUrl: '#/highseas/{{ id }}/stock-status', subRegion: true },
+            { text: 'Multinational footprint', ngUrl: '#/highseas/{{ id }}?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', ngUrl: '#/highseas/{{ id }}/marine-trophic-index', subRegion: true }
           ]
         }
       ],
@@ -222,9 +222,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index' },
+            { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status', subRegion: true },
+            { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
             { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' }
           ]
         }
@@ -257,9 +257,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
+            { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status', subRegion: true },
+            { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index', subRegion: true }
           ]
         }
       ]
