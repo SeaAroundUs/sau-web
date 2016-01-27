@@ -289,7 +289,7 @@ angular.module('sauWebApp')
           }
 
           // update EEZ declaration year display
-          updateDeclarationYear();
+          $timeout(updateDeclarationYear);
 
           // Raises the ceiling of of the catch chart by 10%.
           // The second parameter (which is null) is for any additional
