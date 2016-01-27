@@ -211,7 +211,8 @@ angular.module('sauWebApp')
           measure: $scope.formModel.measure.value,
           limit: $scope.formModel.limit.value,
           sciname: $scope.formModel.useScientificName,
-          managed_species: $scope.formModel.managedSpecies
+          managed_species: $scope.formModel.managedSpecies,
+          subRegion: $scope.region.faoId
         }).replace();
 
         //TODO clear params when leaving page

@@ -4,8 +4,8 @@
 
 angular.module('sauWebApp')
   .directive('regionDataMultinationalFootprint', function() {
-    var controller = function($scope, $rootScope, $timeout, regionDataCatchChartOptions, spinnerState,
-                              regionDataCatchChartTitleGenerator, sauAPI, sauChartUtils, faos) {
+    var controller = function($scope, $rootScope, $timeout, $location, regionDataCatchChartOptions,
+                              spinnerState, regionDataCatchChartTitleGenerator, sauAPI, sauChartUtils) {
 
       // chart options
       $scope.options = regionDataCatchChartOptions;
@@ -171,6 +171,9 @@ angular.module('sauWebApp')
 
           // update download url
           updateDataDownloadURL();
+
+          // update url for subregion
+          $location.search('subRegion', $scope.region.faoId);
 
           // end loading state
           spinnerState.loading = false;
