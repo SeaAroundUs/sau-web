@@ -11,6 +11,22 @@ angular.module('sauWebApp')
     $scope.noData = false;
     $scope.rmtiAPI = null;
 
+    if ($routeParams.subRegion && region === 'global') {
+      $scope.subregion = parseInt($routeParams.subRegion) === 1 ?
+          ' - EEZs of the world' :
+          ' - High Seas of the world';
+    } else if ($routeParams.subRegion && region === 'eez') {
+      sauAPI.Regions.get({region: 'fao', nospatial: true}, function(res) {
+        var subRegionName = ' - Unknown';
+        for(var i = 0; i < res.data.length; i++) {
+          if (res.data[i].id === parseInt($routeParams.subRegion)) {
+            subRegionName = ' - ' + res.data[i].title;
+          }
+        }
+        $scope.subregion = subRegionName;
+      });
+    }
+
     $scope.downloadModalGA = {
       category: 'DownloadModal',
       action: 'Open'
@@ -153,7 +169,8 @@ angular.module('sauWebApp')
         region_id: id,
         reference_year: $scope.fib.year,
         transfer_efficiency: $scope.fib.transferEfficiency,
-        exclude: excludedTaxons
+        exclude: excludedTaxons,
+        sub_area_id: $routeParams.subRegion
       };
 
       sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {
