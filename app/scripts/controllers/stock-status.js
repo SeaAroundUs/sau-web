@@ -80,7 +80,9 @@ angular.module('sauWebApp')
         '/stock-status',
         '/?format=csv',
         '&region_id=',
-        regionId
+        regionId,
+        '&sub_area_id=',
+        $routeParams.subRegion
       ];
 
       $modal.open({

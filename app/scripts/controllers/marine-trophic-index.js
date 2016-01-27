@@ -96,7 +96,7 @@ angular.module('sauWebApp')
         resolve: {
           dataUrl: function () {
             return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id +
-              '&transfer_efficiency=' + $scope.fib.transferEfficiency;
+              '&transfer_efficiency=' + $scope.fib.transferEfficiency + '&sub_area_id=' + $routeParams.subRegion;
           }
         }
       });
