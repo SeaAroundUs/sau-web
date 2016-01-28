@@ -90,6 +90,7 @@ angular.module('sauWebApp')
         }
       },
       Glossary: resourceFactory('glossary/'),
+      ProceduresAndOutcomes: resourceFactory('p-and-o/'),
       apiURL: SAU_CONFIG.apiURL
     };
 
