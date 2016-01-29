@@ -117,6 +117,9 @@ angular.module('sauWebApp')
         // get data from API
         sauAPI.MultinationalFootprintData.get(dataOptions, function(res) {
           var data = res.data;
+          var maxYear = Math.max.apply(null, res.data.countries.map(function(country) {
+            return country.values[country.values.length - 1][0];
+          }));
 
           // refresh chart if coming from a state with no data
           if ($scope.noData === true) {
@@ -144,7 +147,7 @@ angular.module('sauWebApp')
               .attr({
                 x1: chart.xAxis.scale()(1950),
                 y1: chart.yAxis.scale()(data.maximum_fraction),
-                x2: chart.xAxis.scale()(2010),
+                x2: chart.xAxis.scale()(maxYear),
                 y2: chart.yAxis.scale()(data.maximum_fraction)
               })
               .style('stroke', '#f70');
