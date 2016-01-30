@@ -185,6 +185,7 @@ angular.module('sauWebApp')
         }, function() {
           $scope.noData = true;
           $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, dataOptions.region_id);
+          $location.search('subRegion', $scope.region.faoId);
           spinnerState.loading = false;
         });
       }
