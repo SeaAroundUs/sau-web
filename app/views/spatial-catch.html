@@ -67,17 +67,13 @@
           </div>
         </div>
         <div class="row">
-        <div class="col-md-2" env-hide="prod stage">
-            <label for="compareInput" class="small-label">Compare</label>
-            <select id="compareInput" placeholder="Select" class="form-control" ng-model="query.comparableType" ng-options="item.name for item in comparableTypes track by item.name"></select>
-          </div>
-          <div class="timeline" ng-class="{'col-md-10': !inProd, 'col-md-12': inProd}">
-            <spatial-catch-timeline ng-model="query.year" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
+          <div class="timeline" class="col-md-12">
+            <spatial-catch-timeline loading-progress="0" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
           </div>
         </div>
       </form>
     </div>
-    <div class="row" env-hide="prod stage" style="margin-top: 20px">
+    <!-- <div class="row" env-hide="prod stage" style="margin-top: 20px">
       <div class="col-xs-12">
         <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
           <div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div>
@@ -85,39 +81,42 @@
           <a popover="Displays the latest range for the selected taxon/taxa." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
         </span>
       </div>
-    </div>
-    <div class="row" toggle-hide="taxon-distribution">
+    </div> -->
+    <!-- <div class="row" toggle-hide="taxon-distribution">
       <div class="col-md-12">
         <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput">
           <taxa-selectize options="taxa" items="query.taxonDistribution"></taxa-selectize>
         </div>
       </div>
-    </div>
-    <div class="row" ng-show="isQueryValid(query) && dataNeedsManualUpdate()">
+    </div> -->
+    <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query)">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
-        <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query)" scroll-click="cell-map">Update map</button>
+        <button id="update-map-button" type="button" class="btn btn-success btn-block" ng-click="submitQuery(query, currentYear)" scroll-click="cell-map">Update map</button>
       </div>
     </div>
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
-        <div ng-if="isQueryComparable(lastQuery)" class="col-md-3 legend-column" ng-repeat="comparee in getComparees(lastQuery)">
-          <spatial-catch-legend-key key-name="getCompareeName(comparee)" key-link="getCompareeLink(comparee)" key-name-second="'(Total: ' + totalCatch(comparee) + ')'" color="getAssignedColor(comparee)" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets[comparee]"></spatial-catch-legend-key>
-        </div>
-        <div ng-if="!isQueryComparable(lastQuery)" class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + totalCatch() + ')'" color="getAssignedColor('default')" min-label="minCatch()" max-label="maxCatch()" num-buckets="lastQuery.bucketCount || 5" bucket-rollovers="bucketBoundaryLabels" selected-bucket="highlightedBuckets.default"></spatial-catch-legend-key>
+        <div class="col-md-12 legend-column">
+          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch.forYear(currentYear) | totalCatchUnits).toString() + ')'" colors="themes.current().scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
         </div>
       </div>
-      <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
+      <div class="row">
+        <div class="col-md-12">
+          <ocean-legend color="themes.current().ocean"></ocean-legend>
+        </div>
+      </div>
+      <!-- <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
+        <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
         <div class="col-md-12 small-label">
-          Taxon distribution <span class="not-bold"> (Thin to dense)</span>
+          Taxon distribution <span class="not-bold"> (Thin to dense)</span>`
         </div>
-      </div>
-      <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
+      </div> -->
+      <!-- <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
         <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
-          <spatial-catch-legend-key key-name="getTaxonDisplayName(taxonId)" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="taxa.find('displayName', taxonId)" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
         </div>
-      </div>
+      </div> -->
       <div class="row" ng-show="queryResponseErrorMessage">
         <div class="col-xs-12">
           <div class="alert alert-warning text-center" ng-bind-html="queryResponseErrorMessage"></div>
@@ -129,10 +128,15 @@
         <a href ng-click="zoomMapIn()"><div class="zoom-in-control"></div></a>
         <a href ng-click="zoomMapOut()"><div class="zoom-out-control"></div></a>
       </div>
-      <div id="cell-map-loading-overlay" ng-show="(spatialCatchData && !spatialCatchData.$resolved) || isRendering">
-        <div>
+      <div id="cell-map-loading-overlay" ng-show="loadingProgress < 1 || !currentYearHasGrid()">
+        <div ng-show="!queryFailed">
           <p><i class="fa fa-spinner"></i></p>
-          <p>{{loadingText}}</p>
+          <p>
+            {{loadingText}}
+          </p>
+        </div>
+        <div ng-show="queryFailed">
+            <p>Oops! There was a problem. Try refreshing the page.</p>
         </div>
       </div>
     </div>

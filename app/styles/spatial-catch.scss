@@ -235,6 +235,7 @@
   .legend-color-swatch {
     height: 100%;
     background-color: #F68E1E;
+    
   }
 
   .legend-measure {
@@ -275,7 +276,7 @@
     div {
       position: relative;
       top: 20px;
-      left: 20px;
+      left: 18px;
     }
 
     .zoom-in-control {
@@ -311,8 +312,7 @@
   }
 
   .legend-column {
-    padding-bottom: 0;
-    padding-right: 3px;
+    /*padding: 0;*/
   }
 
   #taxonDistributionInput {
@@ -337,5 +337,20 @@
 
   .selectize-input {
     border: 1px solid #979797;
+  }
+
+  .ocean-legend {
+    position: relative;
+    height: 22px;
+    font-size: smaller;
+
+    .ocean-legend-key {
+      width: 24px;
+      height: 100%;
+      background-color: #F68E1E;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 }

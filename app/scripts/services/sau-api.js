@@ -59,23 +59,35 @@ angular.module('sauWebApp')
       FishingEntities: resourceFactory('fishing-entity/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
-      SpatialCatchData: $resource(SAU_CONFIG.apiURL + 'spatial-catch/cells',
-        {},
-        {
-          get: {
-            method: 'GET',
-            cache: true,
-            transformResponse: function (response) {
-              response = JSON.parse(response);
-              if (response.data && response.data.bucket_boundaries) {
-                response.data.bucket_boundaries.unshift(response.data.min_catch);
-                response.data.bucket_boundaries.push(response.data.max_catch);
-              }
-              return response;
+      SpatialCatchData: {
+        get: function (params) {
+          var url = SAU_CONFIG.apiURL + 'spatial-catch/cells';
+          var urlParams = [];
+          for (var key in params) {
+            if (!params.hasOwnProperty(key)) {
+              return;
+            }
+            urlParams.push(key + '=' + params[key]);
+          }
+          if (urlParams.length > 0) {
+            url += '?';
+          }
+          for (var i = 0; i < urlParams.length; i++) {
+            url += urlParams[i];
+            if (i < urlParams.length - 1) {
+              url += '&';
             }
           }
+          var requestConfig = null;
+          if (!params.stats) {
+            requestConfig = {
+              responseType: 'arraybuffer',
+              headers: {'Accept': 'application/octet-stream'}
+            };
+          }
+          return $http.get(url, requestConfig);
         }
-      ),
+      },
       TaxonDistribution: {
         get: function (params) {
           if (!params || !params.id) {
