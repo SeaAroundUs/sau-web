@@ -6,8 +6,8 @@ angular.module('sauWebApp')
       return $resource(SAU_CONFIG.authURL + authPath,
         {},
         {
-          get: {method: 'GET', cache: false, withCredentials: true},
-          post: {method: 'POST', cache: false, withCredentials: true}
+          get: {method: 'GET', cache: false, withCredentials: true, headers: {'X-Request-Source': 'web'}},
+          post: {method: 'POST', cache: false, withCredentials: true, headers: {'X-Request-Source': 'web'}}
         }
       );
     };

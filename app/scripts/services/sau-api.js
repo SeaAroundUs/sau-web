@@ -6,7 +6,10 @@ angular.module('sauWebApp')
     var resourceFactory = function(apiPath) {
       return $resource(SAU_CONFIG.apiURL + apiPath,
         {},
-        {get: {method: 'GET', cache: true}, post: {method: 'POST', cache: true}}
+        {
+          get: {method: 'GET', cache: true, headers: {'X-Request-Source': 'web'}},
+          post: {method: 'POST', cache: true, headers: {'X-Request-Source': 'web'}}
+        }
       );
     };
 
