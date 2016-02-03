@@ -16,7 +16,8 @@ angular.module('sauWebApp')
       // eez declaration
       $scope.declarationYear = {
         visible: false,
-        exists: $scope.region.name === 'eez' && $scope.region.id
+        exists: $scope.region.name === 'eez' && $scope.region.id,
+        year: null
       };
 
       // init chart model from URL and defaults
@@ -250,6 +251,11 @@ angular.module('sauWebApp')
           var tempData = [];
           var dataHash = {};
 
+          // expose max year to template
+          $scope.maxYear = Math.max.apply(null, data.map(function(dim) {
+            return dim.values[dim.values.length - 1][0];
+          }));
+
           // refresh chart if coming from a state with no data
           if ($scope.noData === true) {
             $timeout(function() { $scope.api.update(); });
@@ -299,6 +305,13 @@ angular.module('sauWebApp')
 
           // update chart title
           regionDataCatchChartTitleGenerator.updateTitle($scope.formModel, $scope.region, $scope.faos);
+
+          // expose declaration year to template
+          sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id}, function(res) {
+            if (res.data.declaration_year) {
+              $scope.declarationYear.year = res.data.declaration_year;
+            }
+          });
 
           // update download url
           updateDataDownloadURL();

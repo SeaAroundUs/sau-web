@@ -17,7 +17,8 @@ angular.module('sauWebApp')
       // eez declaration
       $scope.declarationYear = {
         visible: false,
-        exists: $scope.region.name === 'eez'
+        exists: $scope.region.name === 'eez',
+        year: null
       };
 
       // get chart data
@@ -58,6 +59,9 @@ angular.module('sauWebApp')
             container.select('#declaration-year').remove();
             var x = chart.xAxis.scale()(decYear);
             var g = container.append('g');
+
+            $scope.declarationYear.year = decYear;
+
             g.attr('id', 'declaration-year');
             g.append('line')
               .attr({
@@ -121,6 +125,9 @@ angular.module('sauWebApp')
             return country.values[country.values.length - 1][0];
           }));
 
+          // expose max year to template
+          $scope.maxYear = maxYear;
+
           // refresh chart if coming from a state with no data
           if ($scope.noData === true) {
             $timeout(function() { $scope.api.update(); });
@@ -170,6 +177,11 @@ angular.module('sauWebApp')
                 return fao.id === $scope.region.faoId ? fao.title : name;
               }, 'Unknown') : '')
             );
+
+            // expose declaration year to template
+            if (res.data.declaration_year) {
+              $scope.declarationYear.year = res.data.declaration_year;
+            }
           });
 
           // update download url
