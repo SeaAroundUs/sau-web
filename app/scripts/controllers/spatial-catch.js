@@ -15,6 +15,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.loadingProgress = 0;
       numQueriesMade++;
       $scope.lastQuery = angular.copy(query);
+      $scope.currentYear = visibleYear;
       updateUrlFromQuery();
       $scope.queryResponseErrorMessage = null;
       $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
