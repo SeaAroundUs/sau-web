@@ -487,8 +487,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLinkText (query) {
-      if (!query.isFilteredBy('fishingCountries')) {
-        return null;
+      if (!query.isFiltered()) {
+        return 'View graph of global catches.';
       }
 
       var text = 'View graph of catches by ' + query.catchesBy + ' by the fleets of ';
@@ -502,8 +502,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLink (query) {
-      if (!query.isFilteredBy('fishingCountries')) {
-        return null;
+      if (!query.isFiltered()) {
+        return '#/global';
       }
 
       var graphDimension = 'taxon';
@@ -635,6 +635,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       isFilteredBy: function isFilteredBy (queryProperty) {
         var globalIndex = queryProperty === 'functionalGroups' ? '-1': '0';
         return this[queryProperty] && this[queryProperty].length > 0 && this[queryProperty].indexOf(globalIndex) === -1;
+      },
+      isFiltered: function isFiltered () {
+        return this.isFilteredBy('fishingCountries') ||
+          this.isFilteredBy('taxa') ||
+          this.isFilteredBy('commercialGroups') ||
+          this.isFilteredBy('functionalGroups');
       }
     };
     $scope.totalCatch = [];
