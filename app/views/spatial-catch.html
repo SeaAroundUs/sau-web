@@ -73,22 +73,6 @@
         </div>
       </form>
     </div>
-    <!-- <div class="row" env-hide="prod stage" style="margin-top: 20px">
-      <div class="col-xs-12">
-        <span class="expand-collapse-button" ng-click="showTaxonDistributionBar = !showTaxonDistributionBar">
-          <div class="expand-collapse-icon" ng-class="{'expand-icon': !showTaxonDistributionBar, 'collapse-icon': showTaxonDistributionBar}"></div>
-          <span class="expand-collapse-label">MAP TAXON DISTRIBUTION <span ng-show="!showTaxonDistributionBar && query.taxonDistribution.length > 0">({{query.taxonDistribution.length}})</span> <span class="expand-collapse-sub-label" ng-show="showTaxonDistributionBar">as of DD/MM/YYYY</span></span>
-          <a popover="Displays the latest range for the selected taxon/taxa." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
-        </span>
-      </div>
-    </div> -->
-    <!-- <div class="row" toggle-hide="taxon-distribution">
-      <div class="col-md-12">
-        <div ng-show="showTaxonDistributionBar" id="taxonDistributionInput">
-          <taxa-selectize options="taxa" items="query.taxonDistribution"></taxa-selectize>
-        </div>
-      </div>
-    </div> -->
     <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query)">
       <div class="col-xs-12">
         <hr style="margin-top: 10px; margin-bottom: 4px" />
@@ -106,17 +90,6 @@
           <ocean-legend color="themes.current().ocean"></ocean-legend>
         </div>
       </div>
-      <!-- <div class="row" ng-show="isDistributionQueryValid(lastQuery)">
-        <hr class="legend-hr" ng-show="isAllocationQueryValid(lastQuery)" />
-        <div class="col-md-12 small-label">
-          Taxon distribution <span class="not-bold"> (Thin to dense)</span>`
-        </div>
-      </div> -->
-      <!-- <div class="row legend-row" ng-show="isDistributionQueryValid(lastQuery)">
-        <div class="col-md-3 legend-column" ng-repeat="taxonId in lastQuery.taxonDistribution">
-          <spatial-catch-legend-key key-name="taxa.find('displayName', taxonId)" key-link="'#/taxa/' + taxonId" color="getAssignedColor('#'+taxonId)" min-label="", max-label="" num-buckets="lastQuery.bucketCount || 5" selected-bucket="-1"></spatial-catch-legend-key>
-        </div>
-      </div> -->
       <div class="row" ng-show="queryResponseErrorMessage">
         <div class="col-xs-12">
           <div class="alert alert-warning text-center" ng-bind-html="queryResponseErrorMessage"></div>

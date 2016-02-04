@@ -4,6 +4,16 @@ angular.module('sauWebApp')
   .factory('spatialCatchThemes', function() {
     var allThemes = [
       {
+        name: 'White Water',
+        ocean: 'rgba(255, 255, 255, 1)',
+        graticule: 'rgba(203, 203, 203, 1)',
+        landStroke: 'rgba(203, 203, 203, 1)',
+        landFill: 'rgba(203, 203, 203, 1)',
+        eezStroke: 'rgba(203, 203, 203, 1)',
+        eezFill: 'rgba(255, 255, 255, 0)',
+        scale: ['#3d88f9', '#5be1c8', '#bee425', '#f8f660', '#f9cc50', '#f88932', '#e7493e']
+      },
+      {
         name: 'Nightly News',
         ocean: 'rgba(51, 125, 211, 1)',
         graticule: 'rgba(255, 255, 255, 0.3)',
