@@ -194,7 +194,7 @@ angular.module('sauWebApp')
       }
 
       function updateReportedLine() {
-        $scope.reportedLine ? $timeout(drawReportedLine) : hideReportedLine();
+        return $scope.reportedLine ? $timeout(drawReportedLine) : hideReportedLine();
       }
 
       function drawReportedLine() {
@@ -230,10 +230,7 @@ angular.module('sauWebApp')
           g.append('line')
             .attr('d', line(reportedData))
             .attr('stroke', 'red')
-            .attr('stroke-width', 5)
-            .attr('fill', 'none');
-
-          console.log(g);
+            .attr('stroke-width', 5);
         });
       }
 
@@ -352,6 +349,9 @@ angular.module('sauWebApp')
 
           // update EEZ declaration year display
           $timeout(updateDeclarationYear);
+
+          // update reported catch display
+          $timeout(updateReportedLine);
 
           // Raises the ceiling of of the catch chart by 10%.
           // The second parameter (which is null) is for any additional
