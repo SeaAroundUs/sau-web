@@ -12,6 +12,7 @@ angular.module('sauWebApp')
       $scope.limits = regionDimensionLimits[$scope.region.name];
       $scope.colors = regionDataCatchChartColors;
       $scope.managedSpecies = false;
+      $scope.reportedLine = true;
 
       // eez declaration
       $scope.declarationYear = {
@@ -42,8 +43,14 @@ angular.module('sauWebApp')
         $scope.updateDeclarationYear();
       };
 
+      // toggle rfmo managed species
       $scope.toggleManagedSpecies = function() {
         $scope.formModel.managedSpecies = !$scope.formModel.managedSpecies;
+      };
+
+      // toggle reported catch line
+      $scope.toggleReportedLine = function() {
+        $scope.reportedLine = !$scope.reportedLine;
       };
 
       // chart options
@@ -89,6 +96,7 @@ angular.module('sauWebApp')
         $timeout(function() { $scope.api.refresh(newOptions); });
       }, true);
       $scope.$watch('declarationYear', updateDeclarationYear, true);
+      $scope.$watch('reportedLine', updateReportedLine);
 
 
       /*
@@ -183,6 +191,54 @@ angular.module('sauWebApp')
           var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
           return $filter('significantDigits')(d, magnitude);
         };
+      }
+
+      function updateReportedLine() {
+        $scope.reportedLine ? $timeout(drawReportedLine) : hideReportedLine();
+      }
+
+      function drawReportedLine() {
+        var dataOptions = {
+          dimension: 'reporting-status',
+          measure: $scope.formModel.measure.value,
+          limit: $scope.formModel.limit.value,
+          region: $scope.region.name,
+          region_id: $scope.formModel.region_id,
+          fao_id: $scope.region.faoId
+        };
+
+        // get reported data
+        sauAPI.Data.get(dataOptions, function(res) {
+          var g, x, y, line;
+          var chart = $scope.api.getScope().chart;
+          var container = d3.select('.chart-container svg .nv-stackedarea');
+          var reportedData = res.data[0].values;
+
+          // remove existing line and create new line
+          container.select('#reported-line').remove();
+          g = container.append('g');
+          g.attr('id', 'reported-line');
+
+          // functions to help draw line
+          x = chart.xScale();
+          y = chart.yScale();
+          line = d3.svg.line()
+            .x(function(d) { return x(d[0]); })
+            .y(function(d) { return y(d[1]); });
+
+          // draw line
+          g.append('line')
+            .attr('d', line(reportedData))
+            .attr('stroke', 'red')
+            .attr('stroke-width', 5)
+            .attr('fill', 'none');
+
+          console.log(g);
+        });
+      }
+
+      function hideReportedLine() {
+        d3.select('.chart-container svg .nv-stackedarea g#reported-line').remove();
       }
 
       function updateDataDownloadURL() {
