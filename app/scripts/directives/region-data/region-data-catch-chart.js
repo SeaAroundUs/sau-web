@@ -194,7 +194,9 @@ angular.module('sauWebApp')
       }
 
       function updateReportedLine() {
-        return $scope.reportedLine ? $timeout(drawReportedLine) : hideReportedLine();
+        return $scope.reportedLine && ($scope.formModel.dimension.value !== 'reporting-status') ?
+          $timeout(drawReportedLine) :
+          hideReportedLine();
       }
 
       function drawReportedLine() {

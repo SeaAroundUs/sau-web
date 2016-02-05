@@ -64,10 +64,10 @@
         <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
         <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
 
-        <span ng-show="!reportedLine">
+        <span ng-show="!reportedLine && formModel.dimension.value !== 'reporting-status'">
           <a ng-click="toggleReportedLine()">Show reported catch</a><br />
         </span>
-        <span ng-show="reportedLine">
+        <span ng-show="reportedLine && formModel.dimension.value !== 'reporting-status'">
           <a ng-click="toggleReportedLine()">Hide reported catch</a><br />
         </span>
 
