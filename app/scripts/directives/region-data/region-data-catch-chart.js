@@ -209,7 +209,7 @@ angular.module('sauWebApp')
 
         // get reported data
         sauAPI.Data.get(dataOptions, function(res) {
-          var g, x, y, line;
+          var g, x, y, line, lineData;
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
           var reportedData = res.data[0].values;
@@ -227,10 +227,13 @@ angular.module('sauWebApp')
             .y(function(d) { return y(d[1]); });
 
           // draw line
-          g.append('line')
-            .attr('d', line(reportedData))
+          g.append('path')
+            .datum(reportedData)
+            .attr('d', line)
+            .attr('class', 'line')
             .attr('stroke', 'red')
-            .attr('stroke-width', 5);
+            .attr('stroke-width', 5)
+            .attr('fill', 'none');
         });
       }
 
