@@ -487,7 +487,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLinkText (query) {
-      if (!query.isFiltered()) {
+      if (!query.isFilteredBy('fishingCountries')) {
         return 'View graph of global catches.';
       }
 
@@ -502,7 +502,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function getCatchGraphLink (query) {
-      if (!query.isFiltered()) {
+      if (!query.isFilteredBy('fishingCountries')) {
         return '#/global';
       }
 
