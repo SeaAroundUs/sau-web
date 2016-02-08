@@ -12,6 +12,7 @@ angular.module('sauWebApp')
       $scope.limits = regionDimensionLimits[$scope.region.name];
       $scope.colors = regionDataCatchChartColors;
       $scope.managedSpecies = false;
+      $scope.reportedLine = true;
 
       // eez declaration
       $scope.declarationYear = {
@@ -42,8 +43,14 @@ angular.module('sauWebApp')
         $scope.updateDeclarationYear();
       };
 
+      // toggle rfmo managed species
       $scope.toggleManagedSpecies = function() {
         $scope.formModel.managedSpecies = !$scope.formModel.managedSpecies;
+      };
+
+      // toggle reported catch line
+      $scope.toggleReportedLine = function() {
+        $scope.reportedLine = !$scope.reportedLine;
       };
 
       // chart options
@@ -89,6 +96,7 @@ angular.module('sauWebApp')
         $timeout(function() { $scope.api.refresh(newOptions); });
       }, true);
       $scope.$watch('declarationYear', updateDeclarationYear, true);
+      $scope.$watch('reportedLine', updateReportedLine);
 
 
       /*
@@ -183,6 +191,84 @@ angular.module('sauWebApp')
           var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
           return $filter('significantDigits')(d, magnitude);
         };
+      }
+
+      function updateReportedLine() {
+        return $scope.reportedLine && ($scope.formModel.dimension.value !== 'reporting-status') ?
+          $timeout(drawReportedLine) :
+          hideReportedLine();
+      }
+
+      function drawReportedLine() {
+        var dataOptions = {
+          dimension: 'reporting-status',
+          measure: $scope.formModel.measure.value,
+          limit: $scope.formModel.limit.value,
+          region: $scope.region.name,
+          region_id: $scope.formModel.region_id,
+          fao_id: $scope.region.faoId
+        };
+
+        // get reported data
+        sauAPI.Data.get(dataOptions, function(res) {
+          var g, x, y, line;
+          var chart = $scope.api.getScope().chart;
+          var container = d3.select('.chart-container svg .nv-stackedarea');
+          var reportedData = res.data[0].values;
+
+          // remove existing line and create new line
+          container.select('#reported-line').remove();
+          g = container.append('g');
+          g.attr('id', 'reported-line');
+
+          // functions to help draw line
+          x = chart.xScale();
+          y = chart.yScale();
+          line = d3.svg.line()
+            .x(function(d) { return x(d[0]); })
+            .y(function(d) { return y(d[1]); });
+
+          // draw line
+          g.append('path')
+            .datum(reportedData)
+            .attr({
+              d: line,
+              class: 'line',
+              stroke: 'red',
+              'stroke-width': 5,
+              fill: 'none'
+            });
+
+          // add label
+          g.append('rect')
+            .attr({
+              fill: 'white',
+              stroke: 'black',
+              height: 20,
+              width: 113,
+              transform: 'translate(18,' + (y(reportedData[0][1]) - 115) +')'
+            });
+          g.append('line')
+            .attr({
+              stroke: 'black',
+              'stroke-width': 2,
+              x1: x(reportedData[4][0]),
+              y1: y(reportedData[0][1]) - 3,
+              x2: x(reportedData[4][0]),
+              y2: y(reportedData[0][1]) - 95
+            });
+          g.append('text')
+            .text('Reported catch')
+            .attr({
+              fill: 'black',
+              style: 'font-size: 16px;',
+              transform: 'translate(20,' + (y(reportedData[0][1]) - 100) +')'
+            });
+        });
+      }
+
+      function hideReportedLine() {
+        d3.select('.chart-container svg .nv-stackedarea g#reported-line').remove();
       }
 
       function updateDataDownloadURL() {
@@ -296,6 +382,9 @@ angular.module('sauWebApp')
 
           // update EEZ declaration year display
           $timeout(updateDeclarationYear);
+
+          // update reported catch display
+          $timeout(updateReportedLine);
 
           // Raises the ceiling of of the catch chart by 10%.
           // The second parameter (which is null) is for any additional
