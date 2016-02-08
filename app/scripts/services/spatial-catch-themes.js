@@ -11,7 +11,7 @@ angular.module('sauWebApp')
         landFill: 'rgba(203, 203, 203, 1)',
         eezStroke: 'rgba(203, 203, 203, 1)',
         eezFill: 'rgba(255, 255, 255, 0)',
-        scale: ['#3d88f9', '#5be1c8', '#bee425', '#f8f660', '#f9cc50', '#f88932', '#e7493e']
+        scale: ['#37beff', '#55ffe1', '#b4fa8c', '#ebfa4b', '#ffc800', '#ff7800', '#ff0000']
       },
       {
         name: 'Nightly News',
