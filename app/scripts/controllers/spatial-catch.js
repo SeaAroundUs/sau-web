@@ -1,6 +1,7 @@
 'use strict';
 
 /* global d3 */
+/* global gju */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
   function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route) {
@@ -661,9 +662,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         seaColor: $scope.themes.current().ocean,
         graticuleColor: $scope.themes.current().graticule,
         disableMouseZoom: true,
+        graticuleWidth: 0.5,
         onCellHover: function (cell) {
           $scope.cellValue = cell;
           $scope.$apply();
+        },
+        onMouseMove: function (coords) {
+          //Determine which EEZ the user is hovering their mouse over,
+          //And assign that EEZ to a scoped var to use in the UI.
+          if (!coords) {
+            return;
+          }
+          var point = {
+            type: 'Point',
+            coordinates: coords
+          };
+          $scope.hoverEEZ = null;
+          for (var i = 0; i < eezSpatialData.data.features.length; i++) {
+            var feature = eezSpatialData.data.features[i];
+            if (gju.pointInMultiPolygon(point, feature.geometry)) {
+              $scope.hoverEEZ = feature.properties;
+              break;
+            }
+          }
         }
       });
 

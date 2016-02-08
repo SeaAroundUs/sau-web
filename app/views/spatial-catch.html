@@ -96,7 +96,7 @@
         </div>
       </div>
     </div>
-    <div id="cell-map">
+    <div id="cell-map" ng-mouseleave="hoverEEZ = null">
       <div id="zoom-controls">
         <a href ng-click="zoomMapIn()"><div class="zoom-in-control"></div></a>
         <a href ng-click="zoomMapOut()"><div class="zoom-out-control"></div></a>
@@ -111,6 +111,9 @@
         <div ng-show="queryFailed">
             <p>Catch data for this query does not exist.</p>
         </div>
+      </div>
+      <div ng-show="hoverEEZ" class="hover-eez-tooltip">
+        EEZ: {{hoverEEZ.title}}
       </div>
     </div>
   </div>

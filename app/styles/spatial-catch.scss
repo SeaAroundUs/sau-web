@@ -249,7 +249,7 @@
     height: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
-    z-index: 4;
+    z-index: 10;
     color: #000000;
 
     div {
@@ -355,5 +355,15 @@
       vertical-align: middle;
       border: 1px solid #aaaaaa;
     }
+  }
+
+  .hover-eez-tooltip {
+    position: absolute;
+    z-index: 4;
+    top: 12px;
+    width: 100%;
+    text-align: center;
+    text-shadow: -1px 1px 0px #FFF, 1px -1px 1px #fff;
+    font-weight: 500;
   }
 }
