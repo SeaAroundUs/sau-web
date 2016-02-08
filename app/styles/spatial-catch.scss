@@ -12,7 +12,7 @@
   }
 
   #note {
-    font-size: smaller;
+    font-size: 12px;
   }
 
   #cell-map {
@@ -47,8 +47,8 @@
   	}
   }
 
-  .small-label {
-  	font-size: smaller;
+  .query-field-label {
+    font-size: normal;
   	font-weight: bold;
 
     .not-bold {
@@ -241,7 +241,7 @@
   }
 
   .legend-measure {
-    font-size: smaller;
+    font-size: normal;
   }
 
   #cell-map-loading-overlay {
@@ -344,7 +344,7 @@
   .ocean-legend {
     position: relative;
     height: 22px;
-    font-size: smaller;
+    font-size: normal;
 
     .ocean-legend-key {
       width: 24px;

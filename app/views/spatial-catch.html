@@ -40,11 +40,11 @@
       <form novalidate ng-show="showAllocationFields">
         <div class="row">
           <div class="col-md-4">
-            <label class="small-label" for="selectFishingCountries">Fishing countries</label>
+            <label class="query-field-label" for="selectFishingCountries">Fishing countries</label>
             <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
           </div>
           <div class="col-md-2">
-            <div class="catches-by-query"><label class="small-label" for="selectCatchesBy">Catches by</label></div>
+            <div class="catches-by-query"><label class="query-field-label" for="selectCatchesBy">Catches by</label></div>
             <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
               <option value="taxa">Taxon</option>
               <option value="commercial groups">Commercial group</option>
@@ -53,15 +53,15 @@
           </div>
           <div class="col-md-6">
             <div ng-show="query.catchesBy === 'taxa'">
-              <div class="catches-by-query"><label class="small-label">Taxon/taxa</label></div>
+              <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
               <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
-              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Commercial group(s)</label></div>
+              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group(s)</label></div>
               <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
             </div>
             <div ng-show="query.catchesBy === 'functional groups'">
-              <div class="catches-by-query"><label class="small-label" for="selectTaxa">Functional group(s)</label></div>
+              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group(s)</label></div>
               <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
             </div>
           </div>
