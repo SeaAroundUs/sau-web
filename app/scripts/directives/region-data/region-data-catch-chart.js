@@ -211,7 +211,7 @@ angular.module('sauWebApp')
 
         // get reported data
         sauAPI.Data.get(dataOptions, function(res) {
-          var g, x, y, line, lineData;
+          var g, x, y, line;
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
           var reportedData = res.data[0].values;
@@ -231,11 +231,39 @@ angular.module('sauWebApp')
           // draw line
           g.append('path')
             .datum(reportedData)
-            .attr('d', line)
-            .attr('class', 'line')
-            .attr('stroke', 'red')
-            .attr('stroke-width', 5)
-            .attr('fill', 'none');
+            .attr({
+              d: line,
+              class: 'line',
+              stroke: 'red',
+              'stroke-width': 5,
+              fill: 'none'
+            });
+
+          // add label
+          g.append('rect')
+            .attr({
+              fill: 'white',
+              stroke: 'red',
+              height: 20,
+              width: 113,
+              transform: 'translate(18,' + (y(reportedData[0][1]) - 55) +')'
+            });
+          g.append('line')
+            .attr({
+              stroke: 'red',
+              'stroke-width': 2,
+              x1: x(reportedData[4][0]),
+              y1: y(reportedData[0][1]),
+              x2: x(reportedData[4][0]),
+              y2: y(reportedData[0][1]) - 35
+            });
+          g.append('text')
+            .text('Reported catch')
+            .attr({
+              fill: 'red',
+              style: 'font-size: 16px;',
+              transform: 'translate(20,' + (y(reportedData[0][1]) - 40) +')'
+            });
         });
       }
 
