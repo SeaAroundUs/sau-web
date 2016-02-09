@@ -209,7 +209,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         label: 'in'
       });
 
-      map.zoomIn();
+      $scope.loadingText = "Rendering...";
+      $scope.isRendering = true;
+      $timeout(map.zoomIn, 100);
     };
 
     $scope.zoomMapOut = function() {
@@ -220,7 +222,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         label: 'out'
       });
 
-      map.zoomOut();
+      $scope.loadingText = "Rendering...";
+      $scope.isRendering = true;
+      $timeout(map.zoomOut, 100);
     };
 
     $scope.updateQueryWithExample = function (example) {
@@ -686,6 +690,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             }
           }
         }
+      });
+
+      map.dispatch.on('drawEnd', function () {
+        $scope.loadingText = '';
+        $scope.isRendering = false;
+        $scope.$apply();
       });
 
       map.addLayer(eezSpatialData.data, {
