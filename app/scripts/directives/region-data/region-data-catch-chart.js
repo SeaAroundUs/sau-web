@@ -194,9 +194,7 @@ angular.module('sauWebApp')
       }
 
       function updateReportedLine() {
-        return $scope.reportedLine && ($scope.formModel.dimension.value !== 'reporting-status') ?
-          $timeout(drawReportedLine) :
-          hideReportedLine();
+        return $scope.reportedLine ? $timeout(drawReportedLine) : hideReportedLine();
       }
 
       function drawReportedLine() {
@@ -214,7 +212,13 @@ angular.module('sauWebApp')
           var g, x, y, line;
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
-          var reportedData = res.data[0].values;
+          var reportedData;
+
+          res.data.forEach(function(d) {
+            if (d.key === 'Reported') {
+              reportedData = d.values;
+            }
+          });
 
           // remove existing line and create new line
           container.select('#reported-line').remove();
@@ -234,8 +238,8 @@ angular.module('sauWebApp')
             .attr({
               d: line,
               class: 'line',
-              stroke: 'red',
-              'stroke-width': 5,
+              stroke: 'black',
+              'stroke-width': 2,
               fill: 'none'
             });
 
@@ -253,7 +257,7 @@ angular.module('sauWebApp')
               stroke: 'black',
               'stroke-width': 2,
               x1: x(reportedData[4][0]),
-              y1: y(reportedData[4][1]) - 3,
+              y1: y(reportedData[4][1]),
               x2: x(reportedData[4][0]),
               y2: y(reportedData[4][1]) - 95
             });
