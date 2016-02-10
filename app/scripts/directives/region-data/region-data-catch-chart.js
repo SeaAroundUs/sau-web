@@ -246,23 +246,23 @@ angular.module('sauWebApp')
               stroke: 'black',
               height: 20,
               width: 113,
-              transform: 'translate(18,' + (y(reportedData[0][1]) - 115) +')'
+              transform: 'translate(18,' + (y(reportedData[4][1]) - 115) +')'
             });
           g.append('line')
             .attr({
               stroke: 'black',
               'stroke-width': 2,
               x1: x(reportedData[4][0]),
-              y1: y(reportedData[0][1]) - 3,
+              y1: y(reportedData[4][1]) - 3,
               x2: x(reportedData[4][0]),
-              y2: y(reportedData[0][1]) - 95
+              y2: y(reportedData[4][1]) - 95
             });
           g.append('text')
             .text('Reported catch')
             .attr({
               fill: 'black',
               style: 'font-size: 16px;',
-              transform: 'translate(20,' + (y(reportedData[0][1]) - 100) +')'
+              transform: 'translate(20,' + (y(reportedData[4][1]) - 100) +')'
             });
         });
       }
