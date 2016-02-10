@@ -209,7 +209,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         label: 'in'
       });
 
-      $scope.loadingText = "Rendering...";
+      $scope.loadingText = 'Rendering...';
       $scope.isRendering = true;
       $timeout(map.zoomIn, 100);
     };
@@ -222,7 +222,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         label: 'out'
       });
 
-      $scope.loadingText = "Rendering...";
+      $scope.loadingText = 'Rendering...';
       $scope.isRendering = true;
       $timeout(map.zoomOut, 100);
     };
