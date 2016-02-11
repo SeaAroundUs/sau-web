@@ -209,16 +209,16 @@ angular.module('sauWebApp')
 
         // get reported data
         sauAPI.Data.get(dataOptions, function(res) {
-          var g, x, y, line;
+          var i, g, x, y, line;
           var chart = $scope.api.getScope().chart;
           var container = d3.select('.chart-container svg .nv-stackedarea');
           var reportedData;
 
-          res.data.forEach(function(d) {
-            if (d.key === 'Reported') {
-              reportedData = d.values;
+          for (i = 0; i < res.data.length; i++) {
+            if (res.data[i].key === 'Reported') {
+              reportedData = res.data[i].values;
             }
-          });
+          }
 
           // remove existing line and create new line
           container.select('#reported-line').remove();
@@ -247,7 +247,6 @@ angular.module('sauWebApp')
           g.append('rect')
             .attr({
               fill: 'white',
-              stroke: 'black',
               height: 20,
               width: 113,
               transform: 'translate(18,' + (y(reportedData[4][1]) - 115) +')'
