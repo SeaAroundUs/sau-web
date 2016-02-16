@@ -27,51 +27,79 @@
   <div class="sau-panel">
     <div id="query-inputs">
 
-      <div class="row">
-        <div class="col-xs-12">
-          <span ng-init="showAllocationFields = true" class="expand-collapse-button" ng-click="showAllocationFields = !showAllocationFields">
-            <div class="expand-collapse-icon" ng-class="{'expand-icon': !showAllocationFields, 'collapse-icon': showAllocationFields}"></div>
-            <span class="expand-collapse-label">MAP CATCH ALLOCATION</span>
-            <a popover="Displays where fish are caught. Select a fishing country and a year." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
-          </span>
+       <!-- Allocation query section -->
+      <div id="allocation-query-section">
+        <!-- Allocation form header -->
+        <div class="row">
+          <div class="col-xs-12">
+            <span ng-init="visibleForm = 0" class="expand-collapse-button" ng-click="toggleFormVisibility()">
+              <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 0, 'collapse-icon': visibleForm === 0}"></div>
+              <span class="expand-collapse-label">MAP CATCH ALLOCATION</span>
+              <a popover="Displays where fish are caught. Select a fishing country and a year." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+            </span>
+          </div>
         </div>
+        <!-- Allocation form -->
+        <form novalidate ng-show="visibleForm === 0">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="query-field-label">Fishing countries</label>
+              <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
+            </div>
+            <div class="col-md-2">
+              <div class="catches-by-query"><label class="query-field-label" for="selectCatchesBy">Catches by</label></div>
+              <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
+                <option value="taxa">Taxon</option>
+                <option value="commercial groups">Commercial group</option>
+                <option value="functional groups">Functional group</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <div ng-show="query.catchesBy === 'taxa'">
+                <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
+                <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
+              </div>
+              <div ng-show="query.catchesBy === 'commercial groups'">
+                <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group(s)</label></div>
+                <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              </div>
+              <div ng-show="query.catchesBy === 'functional groups'">
+                <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group(s)</label></div>
+                <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="timeline" class="col-md-12">
+              <spatial-catch-timeline loading-progress="0" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
+            </div>
+          </div>
+        </form>
       </div>
 
-      <form novalidate ng-show="showAllocationFields">
+      <!-- Distribution query section -->
+      <div id="distribution-query-section">
+        <!-- Distribution form header -->
         <div class="row">
-          <div class="col-md-4">
-            <label class="query-field-label" for="selectFishingCountries">Fishing countries</label>
-            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
-          </div>
-          <div class="col-md-2">
-            <div class="catches-by-query"><label class="query-field-label" for="selectCatchesBy">Catches by</label></div>
-            <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
-              <option value="taxa">Taxon</option>
-              <option value="commercial groups">Commercial group</option>
-              <option value="functional groups">Functional group</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <div ng-show="query.catchesBy === 'taxa'">
-              <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
-              <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
-            </div>
-            <div ng-show="query.catchesBy === 'commercial groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group(s)</label></div>
-              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
-            </div>
-            <div ng-show="query.catchesBy === 'functional groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group(s)</label></div>
-              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
-            </div>
+          <div class="col-xs-12">
+            <span class="expand-collapse-button" ng-click="toggleFormVisibility()">
+              <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 1, 'collapse-icon': visibleForm === 1}"></div>
+              <span class="expand-collapse-label">TAXON DISTRIBUTION</span>
+              <a popover="Displays where fish live. Select one or more taxa to see their distribution on the map." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+            </span>
           </div>
         </div>
-        <div class="row">
-          <div class="timeline" class="col-md-12">
-            <spatial-catch-timeline loading-progress="0" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
+        <!-- Distribution form -->
+        <form novalidate ng-show="visibleForm === 1">
+          <div class="row">
+            <div class="col-md-12">
+              <label class="query-field-label">Taxa</label>
+              <taxa-selectize options="taxa" items="distributionTaxa"></taxa-selectize>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+
     </div>
     <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query)">
       <div class="col-xs-12">

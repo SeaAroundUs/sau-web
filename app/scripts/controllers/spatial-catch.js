@@ -246,6 +246,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return gridLayers.forYear($scope.currentYear) ? true : false;
     };
 
+    /**
+    Toggles the visibility of the allocation/distribution forms
+    so that only one shows at a time.
+    **/
+    $scope.toggleFormVisibility = function () {
+      $scope.visibleForm = ($scope.visibleForm === 0) ? 1 : 0
+    }
+
     //////////////////////////////////////////////////////
     //PRIVATE METHODS
     //////////////////////////////////////////////////////
