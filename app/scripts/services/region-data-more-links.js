@@ -65,7 +65,7 @@ angular.module('sauWebApp')
             { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
             {
               text: 'Treaties & conventions',
-              ngUrl: 'http://www.fishbase.com/Country/CountryTreatyList.php?' +
+              ngUrl: 'http://www.fishbase.org/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
