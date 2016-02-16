@@ -251,8 +251,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     so that only one shows at a time.
     **/
     $scope.toggleFormVisibility = function () {
-      $scope.visibleForm = ($scope.visibleForm === 0) ? 1 : 0
-    }
+      $scope.visibleForm = ($scope.visibleForm === 0) ? 1 : 0;
+    };
 
     //////////////////////////////////////////////////////
     //PRIVATE METHODS

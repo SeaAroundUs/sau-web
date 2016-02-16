@@ -85,7 +85,7 @@
             <span class="expand-collapse-button" ng-click="toggleFormVisibility()">
               <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 1, 'collapse-icon': visibleForm === 1}"></div>
               <span class="expand-collapse-label">TAXON DISTRIBUTION</span>
-              <a popover="Displays where fish live. Select one or more taxa to see their distribution on the map." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+              <a popover="Displays where fish live. Select a taxon to see its distribution on the map." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
             </span>
           </div>
         </div>
@@ -94,7 +94,7 @@
           <div class="row">
             <div class="col-md-12">
               <label class="query-field-label">Taxa</label>
-              <taxa-selectize options="taxa" items="distributionTaxa"></taxa-selectize>
+              <taxa-selectize options="taxa" items="distributionTaxa" max-items="1"></taxa-selectize>
             </div>
           </div>
         </form>
