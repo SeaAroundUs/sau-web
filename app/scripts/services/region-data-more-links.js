@@ -125,15 +125,6 @@ angular.module('sauWebApp')
       // High seas links
       highseas: [
         {
-          section: 'Ecosystems',
-          links: [
-            {
-              text: 'Ecopath models',
-              url: 'http://www.ecopath.org/models/'
-            }
-          ]
-        },
-        {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
             { text: 'Stock status plots', ngUrl: '#/highseas/{{ id }}/stock-status' },
