@@ -81,13 +81,14 @@ angular.module('sauWebApp')
               url += '&';
             }
           }
-          var requestConfig = null;
+          var requestConfig = {headers:{}};
           if (!params.stats) {
             requestConfig = {
               responseType: 'arraybuffer',
               headers: {'Accept': 'application/octet-stream'}
             };
           }
+          requestConfig.headers['X-Request-Source'] = 'web';
           return $http.get(url, requestConfig);
         }
       },
@@ -100,7 +101,7 @@ angular.module('sauWebApp')
           return $http.get(SAU_CONFIG.apiURL + 'taxa/' + params.id + '/distribution',
           {
             responseType: 'arraybuffer',
-            headers: {'Accept': 'application/octet-stream'}
+            headers: {'Accept': 'application/octet-stream', 'X-Request-Source': 'web'}
           });
         }
       },

@@ -65,7 +65,7 @@ angular.module('sauWebApp')
             { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
             {
               text: 'Treaties & conventions',
-              ngUrl: 'http://www.fishbase.com/Country/CountryTreatyList.php?' +
+              ngUrl: 'http://www.fishbase.org/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
@@ -124,15 +124,6 @@ angular.module('sauWebApp')
 
       // High seas links
       highseas: [
-        {
-          section: 'Ecosystems',
-          links: [
-            {
-              text: 'Ecopath models',
-              url: 'http://www.ecopath.org/models/'
-            }
-          ]
-        },
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
