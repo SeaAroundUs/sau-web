@@ -97,6 +97,7 @@ angular.module('sauWebApp')
       }, true);
       $scope.$watch('declarationYear', updateDeclarationYear, true);
       $scope.$watch('reportedLine', updateReportedLine);
+      $scope.$watch(function() { return $scope.formModel.managedSpecies; }, updateReportedLine);
 
 
       /*
@@ -206,6 +207,10 @@ angular.module('sauWebApp')
           region_id: $scope.formModel.region_id,
           fao_id: $scope.region.faoId
         };
+
+        if ($scope.formModel.managedSpecies) {
+          dataOptions.managed_species = true;
+        }
 
         // get reported data
         sauAPI.Data.get(dataOptions, function(res) {
