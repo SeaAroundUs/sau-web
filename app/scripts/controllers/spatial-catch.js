@@ -146,6 +146,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $scope.queryFailed = true;
           console.log('query failed.');
         }));
+
       }
 
       //Google Analytics Event
