@@ -1,4 +1,41 @@
 <div class="procedures-outcomes">
   <h2>{{ regionName }} Procedures &amp; Outcomes</h2>
-  <div ng-include="template"></div>
+  <div>
+    <p ng-if="data.contracting_parties">
+      <b>Contracting parties:</b>
+      <span ng-bind-html="data.contracting_parties"></span>
+    </p>
+
+    <p ng-if="data.area">
+      <b>Area:</b>
+      <span ng-bind-html="data.area"></span>
+    </p>
+
+    <p ng-if="data.date_entered_into_force">
+      <b>Date entered into force:</b>
+      <span ng-bind-html="data.date_entered_into_force"></span>
+    </p>
+
+    <p ng-if="data.fao_association !== null">
+      <b>FAO association:</b>
+      <span ng-show="data.fao_association">Yes.</span>
+      <span ng-hide="data.fao_association">No.</span>
+    </p>
+
+    <p ng-if="data.fao_statistical_area">
+      <b>FAO statistical area:</b>
+      <span ng-bind-html="data.fao_statistical_area"></span>
+
+    <p ng-if="data.objectives">
+      <b>Objectives:</b>
+      <span ng-bind-html="data.objectives"></span>
+    </p>
+
+    <p ng-if="data.primary_species">
+      <b>Primary species:</b>
+      <span ng-bind-html="data.primary_species"></span>
+    </p>
+
+    <p ng-if="data.content" ng-bind-html="data.content"></p>
+  </div>
 </div>

@@ -13,6 +13,11 @@
           title: 'LME',
           text: 'Select Large Marine Ecosystem (LME)',
           regions: sauAPI.Regions.get({region: 'lme'})
+        },
+        {
+          title: 'RFMO',
+          text: 'Select Regional Fisheries Management Organization (RFMO)',
+          regions: sauAPI.Regions.get({region: 'rfmo'})
         }
       ];
 

@@ -4,9 +4,17 @@
     <meta charset="utf-8">
     <title>Sea Around Us | Fisheries, Ecosystems and Biodiversity</title>
 
+    <!-- opengraph (facebook) meta -->
     <meta property="og:title" content="Sea Around Us | Fisheries, Ecosystems and Biodiversity" />
     <meta property="og:description" content="The Sea Around Us Project investigates the impact of fisheries on the world&#039;s marine ecosystems. This is achieved by using a Geographic Information System" />
     <meta property="og:image" content="http://www.seaaroundus.org/wp-content/uploads/2015/05/HeroImage1.jpg" />
+
+    <!-- twitter card meta -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@seaaroundus">
+    <meta name="twitter:title" content="Sea Around Us">
+    <meta name="twitter:description" content="The Sea Around Us Project investigates the impact of fisheries on the world&#039;s marine ecosystems. This is achieved by using a Geographic Information System">
+    <meta name="twitter:image" content="http://www.seaaroundus.org/wp-content/uploads/2015/05/HeroImage1.jpg">
 
     <meta name="description" content="The Sea Around Us Project investigates the impact of fisheries on the world&#039;s marine ecosystems. This is achieved by using a Geographic Information System">
     <meta name="viewport" content="width=device-width">
@@ -175,7 +183,7 @@
               <a href="/citation-policy/">Citation Policy</a>
               <a href="/privacy-policy/">Privacy Policy</a>
               <a href="/terms-and-conditions/">Terms and Conditions</a>
-              <a href="https://github.com/seaaroundus/" target="_blank">
+              <a href="https://github.com/seaaroundus/" target="_blank" ga-event="{category: 'GitHub', action: 'Footer link'}">
                 View code on GitHub <img src="images/gh.png" />
               </a>
             </div>
@@ -334,6 +342,7 @@
     <script src="scripts/filters/fishbase-country-id.js"></script>
     <script src="scripts/filters/file-of-url.js"></script>
     <script src="scripts/filters/unique.js"></script>
+    <script src="scripts/filters/decimal-to-pct.js"></script>
 
     <script src="scripts/services/sau-api.js"></script>
     <script src="scripts/services/sau-d3-utils.js"></script>
@@ -370,6 +379,8 @@
     <script src="scripts/services/adv-search-region-config.js"></script>
     <script src="scripts/services/under-review-list.js"></script>
     <script src="scripts/services/spatial-catch-examples.js"></script>
+    <script src="scripts/services/keychain.js"></script>
+    <script src="scripts/services/spatial-catch-themes.js"></script>
     <!-- endbuild -->
 
     <script>

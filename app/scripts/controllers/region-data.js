@@ -28,7 +28,7 @@ angular.module('sauWebApp')
         name: region,
         id: ids.length > 1 ? null : ids[0],
         ids: ids,
-        faoId: null
+        faoId: $routeParams.subRegion ? parseInt($routeParams.subRegion) : null
       }
     });
 

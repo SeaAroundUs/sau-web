@@ -4,8 +4,8 @@
 
 angular.module('sauWebApp')
   .directive('regionDataMultinationalFootprint', function() {
-    var controller = function($scope, $rootScope, $timeout, regionDataCatchChartOptions, spinnerState,
-                              regionDataCatchChartTitleGenerator, sauAPI, sauChartUtils, faos) {
+    var controller = function($scope, $rootScope, $timeout, $location, regionDataCatchChartOptions,
+                              spinnerState, regionDataCatchChartTitleGenerator, sauAPI, sauChartUtils) {
 
       // chart options
       $scope.options = regionDataCatchChartOptions;
@@ -17,7 +17,8 @@ angular.module('sauWebApp')
       // eez declaration
       $scope.declarationYear = {
         visible: false,
-        exists: $scope.region.name === 'eez'
+        exists: $scope.region.name === 'eez',
+        year: null
       };
 
       // get chart data
@@ -58,6 +59,9 @@ angular.module('sauWebApp')
             container.select('#declaration-year').remove();
             var x = chart.xAxis.scale()(decYear);
             var g = container.append('g');
+
+            $scope.declarationYear.year = decYear;
+
             g.attr('id', 'declaration-year');
             g.append('line')
               .attr({
@@ -117,6 +121,12 @@ angular.module('sauWebApp')
         // get data from API
         sauAPI.MultinationalFootprintData.get(dataOptions, function(res) {
           var data = res.data;
+          var maxYear = Math.max.apply(null, res.data.countries.map(function(country) {
+            return country.values[country.values.length - 1][0];
+          }));
+
+          // expose max year to template
+          $scope.maxYear = maxYear;
 
           // refresh chart if coming from a state with no data
           if ($scope.noData === true) {
@@ -144,7 +154,7 @@ angular.module('sauWebApp')
               .attr({
                 x1: chart.xAxis.scale()(1950),
                 y1: chart.yAxis.scale()(data.maximum_fraction),
-                x2: chart.xAxis.scale()(2010),
+                x2: chart.xAxis.scale()(maxYear),
                 y2: chart.yAxis.scale()(data.maximum_fraction)
               })
               .style('stroke', '#f70');
@@ -167,10 +177,18 @@ angular.module('sauWebApp')
                 return fao.id === $scope.region.faoId ? fao.title : name;
               }, 'Unknown') : '')
             );
+
+            // expose declaration year to template
+            if (res.data.declaration_year) {
+              $scope.declarationYear.year = res.data.declaration_year;
+            }
           });
 
           // update download url
           updateDataDownloadURL();
+
+          // update url for subregion
+          $location.search('subRegion', $scope.region.faoId);
 
           // end loading state
           spinnerState.loading = false;
@@ -179,6 +197,7 @@ angular.module('sauWebApp')
         }, function() {
           $scope.noData = true;
           $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, dataOptions.region_id);
+          $location.search('subRegion', $scope.region.faoId);
           spinnerState.loading = false;
         });
       }

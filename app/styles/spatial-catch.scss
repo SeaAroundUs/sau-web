@@ -12,10 +12,12 @@
   }
 
   #note {
-    font-size: smaller;
+    font-size: 12px;
   }
 
   #cell-map {
+    background-color: #ebebeb;
+    border-top: 1px solid #aaaaaa;
     width: 100%;
     height: 550px;
     position: relative;
@@ -45,8 +47,8 @@
   	}
   }
 
-  .small-label {
-  	font-size: smaller;
+  .query-field-label {
+    font-size: normal;
   	font-weight: bold;
 
     .not-bold {
@@ -235,10 +237,11 @@
   .legend-color-swatch {
     height: 100%;
     background-color: #F68E1E;
+    
   }
 
   .legend-measure {
-    font-size: smaller;
+    font-size: normal;
   }
 
   #cell-map-loading-overlay {
@@ -246,7 +249,7 @@
     height: 100%;
     background-color: rgba(255, 255, 255, 0.5);
     position: absolute;
-    z-index: 4;
+    z-index: 10;
     color: #000000;
 
     div {
@@ -275,7 +278,7 @@
     div {
       position: relative;
       top: 20px;
-      left: 20px;
+      left: 18px;
     }
 
     .zoom-in-control {
@@ -311,8 +314,7 @@
   }
 
   .legend-column {
-    padding-bottom: 0;
-    padding-right: 3px;
+    /*padding: 0;*/
   }
 
   #taxonDistributionInput {
@@ -337,5 +339,31 @@
 
   .selectize-input {
     border: 1px solid #979797;
+  }
+
+  .ocean-legend {
+    position: relative;
+    height: 22px;
+    font-size: normal;
+
+    .ocean-legend-key {
+      width: 24px;
+      height: 100%;
+      background-color: #F68E1E;
+      margin-right: 10px;
+      display: inline-block;
+      vertical-align: middle;
+      border: 1px solid #aaaaaa;
+    }
+  }
+
+  .hover-eez-tooltip {
+    position: absolute;
+    z-index: 4;
+    top: 12px;
+    width: 100%;
+    text-align: center;
+    text-shadow: -1px 1px 0px #FFF, 1px -1px 1px #fff;
+    font-weight: 500;
   }
 }

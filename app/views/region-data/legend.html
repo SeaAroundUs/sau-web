@@ -1,9 +1,11 @@
 <div ng-if="toggles.showFAOAndLegend" class="region-data-legend">
   <div ng-if="faos && toggles.showFAOs">
     <h3>Select FAO area boundaries</h3>
-    <a ng-click="selectFAO(null)" scroll-click="region-title">All</a>
-    <span ng-repeat="fao in faos">
-      | <a ng-click="selectFAO(fao.id)" scroll-click="region-title" ng-bind="fao.title"></a>
+    <a ng-hide="region.faoId === null" ng-click="selectFAO(null)" scroll-click="region-title">All</a>
+    <span ng-show="region.faoId === null">All</span>
+    <span ng-repeat="fao in faos"> |
+      <a ng-hide="fao.id === region.faoId" ng-click="selectFAO(fao.id)" scroll-click="region-title" ng-bind="fao.title"></a>
+      <span ng-show="fao.id === region.faoId" ng-bind="fao.title"></span>
     </span>
   </div>
 

@@ -6,7 +6,10 @@ angular.module('sauWebApp')
     var resourceFactory = function(apiPath) {
       return $resource(SAU_CONFIG.apiURL + apiPath,
         {},
-        {get: {method: 'GET', cache: true}, post: {method: 'POST', cache: true}}
+        {
+          get: {method: 'GET', cache: true, headers: {'X-Request-Source': 'web'}},
+          post: {method: 'POST', cache: true, headers: {'X-Request-Source': 'web'}}
+        }
       );
     };
 
@@ -59,23 +62,36 @@ angular.module('sauWebApp')
       FishingEntities: resourceFactory('fishing-entity/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
-      SpatialCatchData: $resource(SAU_CONFIG.apiURL + 'spatial-catch/cells',
-        {},
-        {
-          get: {
-            method: 'GET',
-            cache: true,
-            transformResponse: function (response) {
-              response = JSON.parse(response);
-              if (response.data && response.data.bucket_boundaries) {
-                response.data.bucket_boundaries.unshift(response.data.min_catch);
-                response.data.bucket_boundaries.push(response.data.max_catch);
-              }
-              return response;
+      SpatialCatchData: {
+        get: function (params) {
+          var url = SAU_CONFIG.apiURL + 'spatial-catch/cells';
+          var urlParams = [];
+          for (var key in params) {
+            if (!params.hasOwnProperty(key)) {
+              return;
+            }
+            urlParams.push(key + '=' + params[key]);
+          }
+          if (urlParams.length > 0) {
+            url += '?';
+          }
+          for (var i = 0; i < urlParams.length; i++) {
+            url += urlParams[i];
+            if (i < urlParams.length - 1) {
+              url += '&';
             }
           }
+          var requestConfig = {headers:{}};
+          if (!params.stats) {
+            requestConfig = {
+              responseType: 'arraybuffer',
+              headers: {'Accept': 'application/octet-stream'}
+            };
+          }
+          requestConfig.headers['X-Request-Source'] = 'web';
+          return $http.get(url, requestConfig);
         }
-      ),
+      },
       TaxonDistribution: {
         get: function (params) {
           if (!params || !params.id) {
@@ -85,11 +101,12 @@ angular.module('sauWebApp')
           return $http.get(SAU_CONFIG.apiURL + 'taxa/' + params.id + '/distribution',
           {
             responseType: 'arraybuffer',
-            headers: {'Accept': 'application/octet-stream'}
+            headers: {'Accept': 'application/octet-stream', 'X-Request-Source': 'web'}
           });
         }
       },
       Glossary: resourceFactory('glossary/'),
+      ProceduresAndOutcomes: resourceFactory('p-and-o/'),
       apiURL: SAU_CONFIG.apiURL
     };
 

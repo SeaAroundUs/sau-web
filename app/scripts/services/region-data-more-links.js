@@ -49,9 +49,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', url: '#/global/stock-status' },
-            { text: 'Multinational footprint', url: '#/global?chart=multinational-footprint' },
-            { text: 'Marine trophic index', url: '#/global/marine-trophic-index' }
+            { text: 'Stock status plots', url: '#/global/stock-status', subRegion: true },
+            { text: 'Multinational footprint', url: '#/global?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', url: '#/global/marine-trophic-index', subRegion: true }
           ]
         }
       ],
@@ -65,7 +65,7 @@ angular.module('sauWebApp')
             { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
             {
               text: 'Treaties & conventions',
-              ngUrl: 'http://www.fishbase.de/Country/CountryTreatyList.php?' +
+              ngUrl: 'http://www.fishbase.org/Country/CountryTreatyList.php?' +
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
@@ -124,15 +124,6 @@ angular.module('sauWebApp')
 
       // High seas links
       highseas: [
-        {
-          section: 'Ecosystems',
-          links: [
-            {
-              text: 'Ecopath models',
-              url: 'http://www.ecopath.org/models/'
-            }
-          ]
-        },
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
@@ -205,7 +196,7 @@ angular.module('sauWebApp')
             { text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
             {
               text: 'EcoBase',
-              ngUrl: 'http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=base&m_EEZ={{ id }}'
+              ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_EEZ={{ id }}'
             },
             { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' },
             {
@@ -222,9 +213,9 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
-            { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index' },
+            { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status', subRegion: true },
+            { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint', subRegion: true },
+            { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
             { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' }
           ]
         }
@@ -250,7 +241,7 @@ angular.module('sauWebApp')
           links: [
             {
               text: 'EcoBase',
-              ngUrl: 'http://sirs.agrocampus-ouest.fr/EcoBase/index.php?action=base&m_LME={{ id }}'
+              ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_LME={{ id }}'
             }
           ]
         },

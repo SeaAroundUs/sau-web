@@ -1,5 +1,7 @@
 'use strict';
 
+/*global $*/
+
 angular.module('sauWebApp')
   .directive('spatialCatchLegendKey', function () {
     return {
@@ -8,64 +10,46 @@ angular.module('sauWebApp')
       scope: {
         keyName: '=',
         keyNameSecond: '=',
-        color: '=',
+        colors: '=',
         maxLabel: '=',
         minLabel: '=',
         keyLink: '=',
-        numBuckets: '=',
-        bucketRollovers: '=',
-        selectedBucket: '='
+        boundaries: '=',
+        selectedBucket: '=',
+        currValue: '='
       },
       link: function(scope, element) {
         scope.legendColorBar = element.children('.legend-color-bar').first();
       },
-      controller: function ($scope) {
-        $scope.$watch('color', colorAll);
-        if (!$scope.numBuckets) {
-          $scope.numBuckets = 5;
-        }
+      controller: function ($scope, $timeout) {
 
         function colorAll() {
-          for (var i = 0; i < +$scope.numBuckets; i++) {
+          if (!$scope.colors) {
+            console.log('No colors specified in spatial catch legend key. Cannot render.');
+            return;
+          }
+          for (var i = 0; i < $scope.colors.length; i++) {
             $scope.colorMe(i);
           }
         }
 
-        $scope.colorMe = function(index) {
-          var lightenPct = ($scope.numBuckets - 1 - index) / (+$scope.numBuckets + 1);
-          var color = lightenColor($scope.color, lightenPct);
-          var swatch = $scope.legendColorBar.children('.legend-color-swatch')[index];
+        $scope.colorMe = function(colorIndex) {
+          var swatch = $scope.legendColorBar.children('.legend-color-swatch')[colorIndex];
           //Swatch will be null if this function gets called befor the DOM is ready.
           if (swatch) {
-            swatch.style.backgroundColor = colorArrayToCss(color);
-            swatch.style.width = pctToCss(1 / +$scope.numBuckets);
+            swatch.style.backgroundColor = $scope.colors[colorIndex];
+            swatch.style.width = pctToCss(1 / $scope.colors.length);
           }
         };
 
-        $scope.repeatForRange = function (range) {
-          return new Array(+range);
-        };
-
-        function lightenColor (color, pct) {
-          return [
-            lightenChannel(color[0], pct),
-            lightenChannel(color[1], pct),
-            lightenChannel(color[2], pct),
-            255
-          ];
-        }
-
-        function lightenChannel (channel, pct) {
-          return ~~((255 - channel) * pct + channel);
-        }
-
-        function colorArrayToCss (color) {
-          return 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-        }
-
         function pctToCss(pct) {
-          return Math.round(pct * 100) + '%';
+          return Math.round(pct * 10000) / 100 - 0.01 + '%';
         }
+
+        $timeout(function initColors() {
+          colorAll();
+          $scope.$watch('color', colorAll);
+        });
       }
     };
   })
@@ -75,11 +59,13 @@ angular.module('sauWebApp')
       restrict: 'E',
       require: 'ngModel',
       scope: {
-        'onSlideStopDebounce': '&'
+        onSlideStopDebounce: '&',
+        loadingProgress: '='
       },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
         var sliderReleasedPromise;
+        var progressBarElement;
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
@@ -109,6 +95,18 @@ angular.module('sauWebApp')
 
         ngModelCtrl.$parsers.push(function(viewValue) {
           return +viewValue;
+        });
+
+        function progressToCssWidth() {
+          return Math.round(scope.loadingProgress * 100) + '%';
+        }
+
+        //Create the progress bar.
+        $timeout(function createProgressBar () {
+          progressBarElement = $('.slider-track-high').clone().insertBefore('.slider-track-high').removeClass('right').css({left: '0px', backgroundColor: '#2F5B82', width: progressToCssWidth()});
+          scope.$watch('loadingProgress', function updateProgressBar() {
+            progressBarElement.css('width', progressToCssWidth());
+          });
         });
       }
     };
@@ -171,6 +169,19 @@ angular.module('sauWebApp')
         var component = query[0].selectize;
         query.on('change', onComponentChanged);
         scope.$watchCollection('items', onModelChanged);
+      }
+    };
+  })
+  .directive('oceanLegend', function () {
+    return {
+      templateUrl: 'views/spatial-catch/spatial-catch-ocean-legend.html',
+      restrict: 'E',
+      scope: {
+        color: '='
+      },
+      link: function (scope, element) {
+        var keyElement = element.find('.ocean-legend-key');
+        keyElement.css('background-color', scope.color);
       }
     };
   });

@@ -40,8 +40,12 @@
       </div>
 
       <div class="pull-right header-links">
-        <span ng-show="(!declarationYear.visible) && declarationYear.exists"><a ng-click="declarationYear.visible = true">Show declaration year</a><br /></span>
-        <span ng-show="declarationYear.visible && declarationYear.exists"><a ng-click="declarationYear.visible = false">Hide declaration year</a><br /></span>
+        <span ng-show="(!declarationYear.visible) && declarationYear.exists && (declarationYear.year <= maxYear)">
+          <a ng-click="declarationYear.visible = true">Show declaration year</a><br />
+        </span>
+        <span ng-show="declarationYear.visible && declarationYear.exists">
+          <a ng-click="declarationYear.visible = false">Hide declaration year</a><br />
+        </span>
 
         <div id="managed-species-toggle" ng-if="region.name === 'rfmo'">
           <span ng-show="!formModel.managedSpecies">
@@ -59,6 +63,13 @@
 
         <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
         <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
+
+        <span ng-show="!reportedLine">
+          <a ng-click="toggleReportedLine()">Show 'Reported catch' line</a><br />
+        </span>
+        <span ng-show="reportedLine">
+          <a ng-click="toggleReportedLine()">Hide 'Reported catch' line</a><br />
+        </span>
 
         <method anchor="13"></method><br />
       </div>

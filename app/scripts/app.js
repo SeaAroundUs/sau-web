@@ -74,7 +74,8 @@ angular
       .when('/eez/:id/exploited-organisms', {
         templateUrl: 'views/exploited-organisms.html',
         controller: 'ExploitedOrganismsCtrl',
-        resolve: {region: function() {return 'eez';}}
+        resolve: {region: function() {return 'eez';}},
+        reloadOnSearch: false
       })
       .when('/eez/:id/estuaries', {
         templateUrl: 'views/estuaries.html',
@@ -120,7 +121,8 @@ angular
       .when('/lme/:id/exploited-organisms', {
         templateUrl: 'views/exploited-organisms.html',
         controller: 'ExploitedOrganismsCtrl',
-        resolve: {region: function() {return 'lme';}}
+        resolve: {region: function() {return 'lme';}},
+        reloadOnSearch: false
       });
 
     // RFMO routes
@@ -191,7 +193,8 @@ angular
         .when('/global/exploited-organisms', {
           templateUrl: 'views/exploited-organisms.html',
           controller: 'ExploitedOrganismsCtrl',
-          resolve: {region: function() {return 'global';}}
+          resolve: {region: function() {return 'global';}},
+          reloadOnSearch: false
         })
         .when('/global/marine-trophic-index', {
           templateUrl: 'views/marine-trophic-index.html',
@@ -274,7 +277,8 @@ angular
         .when('/fao/:id/exploited-organisms', {
           templateUrl: 'views/exploited-organisms.html',
           controller: 'ExploitedOrganismsCtrl',
-          resolve: {region: function() {return 'fao';}}
+          resolve: {region: function() {return 'fao';}},
+          reloadOnSearch: false
         })
         .when('/fao/:id/marine-trophic-index', {
           templateUrl: 'views/marine-trophic-index.html',
@@ -329,7 +333,8 @@ angular
       })
       .when('/topic/biodiversity', {
         templateUrl: 'views/topic-biodiversity.html',
-        controller: 'TopicBiodiversityCtrl'
+        controller: 'TopicBiodiversityCtrl',
+        reloadOnSearch: false
       })
       .when('/feru', {
         templateUrl: 'views/feru.html',
