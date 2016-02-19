@@ -170,7 +170,7 @@ angular.module('sauWebApp')
         reference_year: $scope.fib.year,
         transfer_efficiency: $scope.fib.transferEfficiency,
         exclude: excludedTaxons,
-        sub_area_id: $routeParams.subRegion
+        sub_area_id: $routeParams.subRegion || null
       };
 
       sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {
