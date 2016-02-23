@@ -12,6 +12,7 @@ angular.module('sauWebApp')
     });
 
     $scope.$watch('region', getFAOs, true);
+    $scope.$watch('region', handleURL, true);
 
     $scope.$on('$locationChangeSuccess', function() {
       if ($location.path() !== thisPath) {
@@ -40,5 +41,12 @@ angular.module('sauWebApp')
 
     function getChartType() {
       return $location.search().chart || 'catch-chart';
+    }
+
+    function handleURL(newRegion, oldRegion) {
+      if (newRegion.id === null || newRegion.id !== oldRegion.id) {
+        $scope.region.faoId = null;
+        console.log($scope.region);
+      }
     }
   });
