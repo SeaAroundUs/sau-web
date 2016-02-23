@@ -634,6 +634,20 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //WATCHERS
     //////////////////////////////////////////////////////
     $scope.$watch('currentYear', updateYearLayerVisibility);
+    //The four watchers below are a patch to keep <selectize> using an Array as the model rather
+    //than switching to an integer when the maxItems is 1.
+    $scope.$watch('queryCommercialGroup', function syncCommercialGroup() {
+      $scope.query.commercialGroups = [$scope.queryCommercialGroup];
+    });
+    $scope.$watch('query.commercialGroups', function syncCommercialGroups() {
+      $scope.queryCommercialGroup = $scope.query.commercialGroups[0];
+    });
+    $scope.$watch('queryFunctionalGroup', function syncFunctionalGroup() {
+      $scope.query.functionalGroups = [$scope.queryFunctionalGroup];
+    });
+    $scope.$watch('query.functionalGroups', function syncFunctionalGroups() {
+      $scope.queryFunctionalGroup = $scope.query.functionalGroups[0];
+    });
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {
       //A quick function to find out if a particular query property is filtering the query.
