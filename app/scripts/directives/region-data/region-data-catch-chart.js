@@ -225,6 +225,11 @@ angular.module('sauWebApp')
             }
           }
 
+          // short circuit if we don't have reported data
+          if (reportedData === undefined) {
+            return;
+          }
+
           // remove existing line and create new line
           container.select('#reported-line').remove();
           g = container.append('g');
