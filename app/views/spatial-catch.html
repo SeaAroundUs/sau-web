@@ -57,12 +57,12 @@
               <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
             </div>
             <div ng-show="query.catchesBy === 'commercial groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group(s)</label></div>
-              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group</label></div>
+              <selectize ng-model="query.commercialGroups" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select one...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
             </div>
             <div ng-show="query.catchesBy === 'functional groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group(s)</label></div>
-              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 10}" ></selectize>
+              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group</label></div>
+              <selectize ng-model="query.functionalGroups" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select one...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
             </div>
           </div>
         </div>
