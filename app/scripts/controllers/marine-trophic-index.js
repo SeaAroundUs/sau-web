@@ -96,7 +96,8 @@ angular.module('sauWebApp')
         resolve: {
           dataUrl: function () {
             return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id +
-              '&transfer_efficiency=' + $scope.fib.transferEfficiency + '&sub_area_id=' + $routeParams.subRegion;
+              '&transfer_efficiency=' + $scope.fib.transferEfficiency + '&sub_area_id=' +
+              ($routeParams.subRegion || '');
           }
         }
       });
@@ -170,7 +171,7 @@ angular.module('sauWebApp')
         reference_year: $scope.fib.year,
         transfer_efficiency: $scope.fib.transferEfficiency,
         exclude: excludedTaxons,
-        sub_area_id: $routeParams.subRegion
+        sub_area_id: $routeParams.subRegion || null
       };
 
       sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {

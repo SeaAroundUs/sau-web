@@ -97,6 +97,7 @@ angular.module('sauWebApp')
       }, true);
       $scope.$watch('declarationYear', updateDeclarationYear, true);
       $scope.$watch('reportedLine', updateReportedLine);
+      $scope.$watch(function() { return $scope.formModel.managedSpecies; }, updateReportedLine);
 
 
       /*
@@ -207,6 +208,10 @@ angular.module('sauWebApp')
           fao_id: $scope.region.faoId
         };
 
+        if ($scope.formModel.managedSpecies) {
+          dataOptions.managed_species = true;
+        }
+
         // get reported data
         sauAPI.Data.get(dataOptions, function(res) {
           var i, g, x, y, line;
@@ -218,6 +223,11 @@ angular.module('sauWebApp')
             if (res.data[i].key === 'Reported') {
               reportedData = res.data[i].values;
             }
+          }
+
+          // short circuit if we don't have reported data
+          if (reportedData === undefined) {
+            return;
           }
 
           // remove existing line and create new line

@@ -178,7 +178,8 @@ angular.module('sauWebApp')
       templateUrl: 'views/spatial-catch/spatial-catch-ocean-legend.html',
       restrict: 'E',
       scope: {
-        color: '='
+        color: '=',
+        label: '='
       },
       link: function (scope, element) {
         var keyElement = element.find('.ocean-legend-key');
