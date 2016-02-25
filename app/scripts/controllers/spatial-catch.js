@@ -777,7 +777,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             }
           }
 
-          if (oldHoverEEZ != $scope.hoverEEZ) {
+          if (oldHoverEEZ !== $scope.hoverEEZ) {
             $scope.$apply();
           }
         }
