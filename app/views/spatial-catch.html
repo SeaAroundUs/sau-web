@@ -1,7 +1,6 @@
 <div id="spatial-catch" class="page-controller saustrap">
   <h1 class="main-title">Mapped data</h1>
   <ul id="side-menu" class="pull-right list-unstyled text-right">
-    <li><method anchor="13"></method></li>
     <li><a href="/using-spatial-data-displays" target="_blank">How to use this tool</a></li>
   </ul>
 
@@ -31,13 +30,14 @@
       <div id="allocation-query-section">
         <!-- Allocation form header -->
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-10">
             <span ng-init="visibleForm = 0" class="expand-collapse-button" ng-click="toggleFormVisibility()">
               <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 0, 'collapse-icon': visibleForm === 0}"></div>
-              <span class="expand-collapse-label">MAP CATCH ALLOCATION</span>
+              <span class="expand-collapse-label">CATCH ALLOCATION</span>
               <a popover="Displays where fish are caught. Select a fishing country and a year." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
             </span>
           </div>
+          <div class="col-xs-2"><method class="pull-right" anchor="13"></method></div>
         </div>
         <!-- Allocation form -->
         <form novalidate ng-show="visibleForm === 0">
@@ -81,13 +81,14 @@
       <div id="distribution-query-section">
         <!-- Distribution form header -->
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-10">
             <span class="expand-collapse-button" ng-click="toggleFormVisibility()">
               <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 1, 'collapse-icon': visibleForm === 1}"></div>
               <span class="expand-collapse-label">TAXON DISTRIBUTION</span>
               <a popover="Displays where fish live. Select a taxon to see its distribution on the map." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
             </span>
           </div>
+          <div class="col-xs-2"><method class="pull-right" anchor="catch-reconstruction-and-allocation-methods/taxon-distributions"></method></div>
         </div>
         <!-- Distribution form -->
         <form novalidate ng-show="visibleForm === 1">
