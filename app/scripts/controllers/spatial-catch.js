@@ -11,6 +11,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //SCOPE METHODS
     //////////////////////////////////////////////////////
     $scope.submitQuery = function (query, visibleYear) {
+      if ($scope.visibleForm === 0) {
+        clearDistributionParams(query);
+      } else if ($scope.visibleForm === 1) {
+        clearAllocationQueryParams(query);
+      }
       clearGrid();
       $scope.queryFailed = false;
       $scope.loadingProgress = 0;
@@ -96,6 +101,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             $scope.minCatch = $scope.boundaries[0];
             $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
             $scope.totalCatch.setAllYears(response.data.data.total_catch);
+            $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
             map.colorScale = makeCatchMapScale($scope.boundaries, $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
             //Request the current year so that the user can look at it while the other years are loading.
@@ -159,6 +165,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         });
       //MAKE DISTRIBUTION QUERY
       } else if ($scope.visibleForm === 1) {
+
         var taxonDistQuery = sauAPI.TaxonDistribution.get({id: query.taxonDistribution[0]});
         taxonDistQuery.then(makeCancellableCallback(numQueriesMade, function processDistributionResponse(response) {
           console.log('got distribution data');
@@ -317,7 +324,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       var showLayer = isYearDefined ? $scope.currentYear === year : true;
-      var zIndex = isYearDefined ? year - firstYearOfData : 1;
+      var zIndex = isYearDefined ? year - firstYearOfData : singleYearGridLayerIndex;
 
       //Then make the layer
       var newLayer = map.addLayer(data, {
@@ -335,10 +342,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       //Add it to the cache
       if (isYearDefined) {
         gridLayers.forYear(year, newLayer);
+      } else {
+        gridLayers.yearlessLayer = newLayer;
       }
     }
 
-    function deleteGridLayer(year) {
+    function deleteGridLayerForYear(year) {
       //Remove layer from the gridmap
       var deadLayerWalking = gridLayers.forYear(year);
       if (deadLayerWalking) {
@@ -350,7 +359,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function clearGrid() {
-      forEachYear(deleteGridLayer);
+      forEachYear(deleteGridLayerForYear);
+
+      if (gridLayers.yearlessLayer) {
+        map.removeLayer(gridLayers.yearlessLayer);
+        delete gridLayers.yearlessLayer;
+      }
     }
 
     //Ensures that outdated query responses don't fire after newer ones.
@@ -364,6 +378,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function updateQueryFromUrl() {
       var search = $location.search();
 
+      //Taxon distribution
+      if (search.dist) {
+        $scope.query.taxonDistribution = search.dist.split(',');
+      }
+
+      //Allocation
       //Fishing countries
       if (search.entities) {
         $scope.query.fishingCountries = search.entities.split(',');
@@ -385,11 +405,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //Year
       $scope.currentYear = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
-
-      //Taxon distribution
-      if (search.dist) {
-        $scope.query.taxonDistribution = search.dist.split(',');
-      }
     }
 
     function updateUrlFromQuery() {
@@ -451,7 +466,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
       //But then our typical sentence structure doesn't make any sense.
-      if ($scope.taxonDistribution && $scope.taxonDistribution.length > 0) {
+      if ($scope.isDistributionQueryValid(query)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
@@ -502,6 +517,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Year
         sentence.push('in ' + (year || lastYearOfData));
+
+        var totalCatch = $scope.totalCatch.forYear(year);
+        if (totalCatch) {
+          sentence.push('(Total: ' + $filter('totalCatchUnits')(totalCatch).toString() + ')');
+        }
       }
 
       return sentence.join(' ');
@@ -595,6 +615,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       };
     }
 
+    function clearAllocationQueryParams(query) {
+      //Remove allocation params
+      if (query.fishingCountries) {
+        query.fishingCountries.length = 0;
+      }
+      if (query.taxa) {
+        query.taxa.length = 0;
+      }
+      if (query.commercialGroups) {
+        query.commercialGroups.length = 0;
+      }
+      if (query.functionalGroups) {
+        query.functionalGroups.length = 0;
+      }
+    }
+
+    function clearDistributionParams(query) {
+      //Remove distribution params
+      if (query.taxonDistribution) {
+        query.taxonDistribution.length = 0;
+      }
+    }
+
     //////////////////////////////////////////////////////
     //LOCAL VARS
     //////////////////////////////////////////////////////
@@ -602,6 +645,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var firstYearOfData = 1950; //Dynamic later.
     var lastYearOfData = 2010; //Dynamic later.
     var numCellsInGrid = 720 * 360;
+    var singleYearGridLayerIndex = 98;
+    var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+    var countriesMapLayerIndex = 100; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
     var gridLayers = [];
@@ -742,13 +789,13 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         strokeColor: $scope.themes.current().eezStroke,
         strokeWidth: 1.5,
         renderOnAnimate: false,
-        zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+        zIndex: eezMapLayerIndex
       });
 
       map.addLayer(countries, {
         fillColor: $scope.themes.current().landFill,
         strokeColor: $scope.themes.current().landStroke,
-        zIndex: 100 ////Ensure this layer is far above all of the grid layers. There could be one-per-year.
+        zIndex: countriesMapLayerIndex
       });
 
       updateQueryFromUrl();
