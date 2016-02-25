@@ -46,7 +46,6 @@ angular.module('sauWebApp')
     function handleURL(newRegion, oldRegion) {
       if (newRegion.id === null || newRegion.id !== oldRegion.id) {
         $scope.region.faoId = null;
-        console.log($scope.region);
       }
     }
   });
