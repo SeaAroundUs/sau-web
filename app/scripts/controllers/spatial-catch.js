@@ -767,6 +767,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             type: 'Point',
             coordinates: coords
           };
+          var oldHoverEEZ = $scope.hoverEEZ;
           $scope.hoverEEZ = null;
           for (var i = 0; i < eezSpatialData.data.features.length; i++) {
             var feature = eezSpatialData.data.features[i];
@@ -774,6 +775,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               $scope.hoverEEZ = feature.properties;
               break;
             }
+          }
+
+          if (oldHoverEEZ != $scope.hoverEEZ) {
+            $scope.$apply();
           }
         }
       });
