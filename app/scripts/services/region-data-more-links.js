@@ -160,7 +160,6 @@ angular.module('sauWebApp')
             { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
         },
-        /*
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
@@ -169,7 +168,6 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/fao/{{ id }}/marine-trophic-index' }
           ]
         }
-        */
       ],
 
       // EEZ Bordering

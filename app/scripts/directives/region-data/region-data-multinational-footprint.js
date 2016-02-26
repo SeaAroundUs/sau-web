@@ -171,8 +171,11 @@ angular.module('sauWebApp')
 
           // update chart title
           sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id}, function(res) {
+            var isFAO = $scope.region.name === 'fao';
+            var faoPrefix = isFAO ? 'FAO area ' : '';
+            var faoSuffix = isFAO ? ' ('+ $scope.region.id +')' : '';
             regionDataCatchChartTitleGenerator.setTitle('Primary Production Required for catches in ' +
-              (res.data.title ? 'the waters of ' + res.data.title : 'the global ocean') +
+              (res.data.title ? 'the waters of ' + faoPrefix + res.data.title + faoSuffix : 'the global ocean') +
               ($scope.region.faoId && $scope.faos ? ' - ' + $scope.faos.reduce(function(name, fao) {
                 return fao.id === $scope.region.faoId ? fao.title : name;
               }, 'Unknown') : '')
