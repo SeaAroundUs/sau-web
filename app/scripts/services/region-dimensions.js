@@ -78,7 +78,13 @@ angular.module('sauWebApp')
       showDimensionLimit: false
     };
 
+    var layer = {
+      'label': 'Layer',
+      'value': 'layer',
+      showDimensionLimit: false
+    };
     //TODO this is getting cumbersome and deserves a refactor
+    var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus, layer];
     var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
     var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
     var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
@@ -87,7 +93,7 @@ angular.module('sauWebApp')
     var taxonDimension = [eez, lme, highseas, fishingCountry, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
 
     return {
-      eez: defaultDimensions,
+      eez: eezDefaultDimensions,
       lme: defaultDimensions,
       highseas: defaultDimensions,
       mariculture: maricultureDimensions,
