@@ -13,3 +13,4 @@ bower_components
 aws-keys.json
 
 .DS_Store
+.idea/*.*
