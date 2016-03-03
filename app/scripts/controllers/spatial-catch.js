@@ -168,7 +168,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         var taxonDistQuery = sauAPI.TaxonDistribution.get({id: query.taxonDistribution[0]});
         taxonDistQuery.then(makeCancellableCallback(numQueriesMade, function processDistributionResponse(response) {
-          console.log('got distribution data');
           $scope.queryResolved = true;
           $scope.loadingProgress = 1;
 
@@ -273,6 +272,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     $scope.updateQueryWithExample = function (example) {
       $scope.query = angular.extend($scope.query, example);
+
+      $scope.visibleForm = $scope.isDistributionQueryValid($scope.query) ? 1 : 0;
 
       //Submit the query
       if ($scope.isQueryValid($scope.query)) {
@@ -697,7 +698,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.mappedCatchExamples = spatialCatchExamples;
 
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
-    $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
     $scope.themes = spatialCatchThemes;
