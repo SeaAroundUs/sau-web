@@ -118,7 +118,8 @@ angular.module('sauWebApp')
       replace: true,
       scope: {
         options: '=',
-        items: '='
+        items: '=',
+        maxItems: '='
       },
       link: function (scope, element) {
         /*
@@ -160,7 +161,7 @@ angular.module('sauWebApp')
           searchField: ['common_name', 'scientific_name'],
           plugins: ['remove_button'],
           maxOptions: null,
-          maxItems: 10,
+          maxItems: scope.maxItems || 10,
           render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}
         };
 
@@ -177,7 +178,8 @@ angular.module('sauWebApp')
       templateUrl: 'views/spatial-catch/spatial-catch-ocean-legend.html',
       restrict: 'E',
       scope: {
-        color: '='
+        color: '=',
+        label: '='
       },
       link: function (scope, element) {
         var keyElement = element.find('.ocean-legend-key');

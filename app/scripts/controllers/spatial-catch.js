@@ -11,150 +11,193 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //SCOPE METHODS
     //////////////////////////////////////////////////////
     $scope.submitQuery = function (query, visibleYear) {
+      if ($scope.visibleForm === 0) {
+        clearDistributionParams(query);
+      } else if ($scope.visibleForm === 1) {
+        clearAllocationQueryParams(query);
+      }
       clearGrid();
       $scope.queryFailed = false;
       $scope.loadingProgress = 0;
       numQueriesMade++;
       $scope.lastQuery = angular.copy(query);
-      $scope.currentYear = visibleYear;
+      $scope.currentYear = visibleYear || null;
       updateUrlFromQuery();
       $scope.queryResponseErrorMessage = null;
       $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
       $scope.catchGraphLinkText = getCatchGraphLinkText(query);
       $scope.catchGraphLink = getCatchGraphLink(query);
-
+      $scope.oceanLegendLabel = getOceanLegendLabel(query);
       $scope.loadingText = 'Downloading cells';
       $scope.queryResolved = false;
 
-      //Form the query...
-      var queryParams = {format: 'binary', buckets: 7};
       var gaAction = ['query'];
 
-      //...Fishing countries
-      if (query.isFilteredBy('fishingCountries')) {
-        queryParams.entities = query.fishingCountries.join(',');
-        //Form GA event action
-        if (query.fishingCountries.length > 1) {
-          gaAction.push(['multi-entity']);
+      if ($scope.visibleForm === 0) {
+        //Form the query...
+        var queryParams = {format: 'binary', buckets: 7};
+
+        //...Fishing countries
+        if (query.isFilteredBy('fishingCountries')) {
+          queryParams.entities = query.fishingCountries.join(',');
+          //Form GA event action
+          if (query.fishingCountries.length > 1) {
+            gaAction.push(['multi-entity']);
+          } else {
+            gaAction.push(['single-entity']);
+          }
         } else {
-          gaAction.push(['single-entity']);
+          gaAction.push(['global-entity']);
         }
-      } else {
-        gaAction.push(['global-entity']);
-      }
 
-      switch (query.catchesBy) {
-        //...Taxa
-        case 'taxa':
-          if (query.isFilteredBy('taxa')) {
-            queryParams.taxa = query.taxa.join(',');
+        switch (query.catchesBy) {
+          //...Taxa
+          case 'taxa':
+            if (query.isFilteredBy('taxa')) {
+              queryParams.taxa = query.taxa.join(',');
 
-            //Form GA event action
-            if (query.taxa.length > 1) {
-              gaAction.push(['multi-taxa']);
-            } else {
-              gaAction.push(['single-taxa']);
+              //Form GA event action
+              if (query.taxa.length > 1) {
+                gaAction.push(['multi-taxa']);
+              } else {
+                gaAction.push(['single-taxa']);
+              }
             }
-          }
-          break;
-        //...Commercial groups
-        case 'commercial groups':
-          if (query.isFilteredBy('commercialGroups')) {
-            queryParams.commgroups = query.commercialGroups.join(',');
+            break;
+          //...Commercial groups
+          case 'commercial groups':
+            if (query.isFilteredBy('commercialGroups')) {
+              queryParams.commgroups = query.commercialGroups.join(',');
 
-            //Form GA event action
-            if (query.commercialGroups.length > 1) {
-              gaAction.push(['multi-commgroup']);
-            } else {
-              gaAction.push(['single-commgroup']);
+              //Form GA event action
+              if (query.commercialGroups.length > 1) {
+                gaAction.push(['multi-commgroup']);
+              } else {
+                gaAction.push(['single-commgroup']);
+              }
             }
-          }
-          break;
-        //...Functional groups
-        case 'functional groups':
-          if (query.isFilteredBy('functionalGroups')) {
-            queryParams.funcgroups = query.functionalGroups.join(',');
+            break;
+          //...Functional groups
+          case 'functional groups':
+            if (query.isFilteredBy('functionalGroups')) {
+              queryParams.funcgroups = query.functionalGroups.join(',');
 
-            //Form GA event action
-            if (query.functionalGroups.length > 1) {
-              gaAction.push(['multi-funcgroup']);
-            } else {
-              gaAction.push(['single-funcgroup']);
+              //Form GA event action
+              if (query.functionalGroups.length > 1) {
+                gaAction.push(['multi-funcgroup']);
+              } else {
+                gaAction.push(['single-funcgroup']);
+              }
             }
-          }
-          break;
-      }
+            break;
+        }
 
-      if ($scope.isAllocationQueryValid($scope.lastQuery)) {
-        //Request data about the grid scale, relative to all years.
-        queryParams.stats = true;
-        var scaleQuery = sauAPI.SpatialCatchData.get(queryParams);
-        scaleQuery.then(makeCancellableCallback(numQueriesMade, function requestMapScale(response) {
-          $scope.boundaries = response.data.data.quantiles;
-          $scope.minCatch = $scope.boundaries[0];
-          $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
-          $scope.totalCatch.setAllYears(response.data.data.total_catch);
-          map.colorScale = makeCatchMapScale($scope.boundaries, $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
+        if ($scope.isAllocationQueryValid($scope.lastQuery)) {
+          //Request data about the grid scale, relative to all years.
+          queryParams.stats = true;
+          var scaleQuery = sauAPI.SpatialCatchData.get(queryParams);
+          scaleQuery.then(makeCancellableCallback(numQueriesMade, function requestMapScale(response) {
+            $scope.boundaries = response.data.data.quantiles;
+            $scope.minCatch = $scope.boundaries[0];
+            $scope.maxCatch = $scope.boundaries[$scope.boundaries.length - 1];
+            $scope.totalCatch.setAllYears(response.data.data.total_catch);
+            $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
+            map.colorScale = makeCatchMapScale($scope.boundaries, $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
 
-          //Request the current year so that the user can look at it while the other years are loading.
-          queryParams.year = visibleYear;
-          delete queryParams.stats;
-          return sauAPI.SpatialCatchData.get(queryParams);
-        }))
-        //Process visible year response
-        .then(makeCancellableCallback(numQueriesMade, function processCurrYear(currYearResponse) {
+            //Request the current year so that the user can look at it while the other years are loading.
+            queryParams.year = visibleYear;
+            delete queryParams.stats;
+            return sauAPI.SpatialCatchData.get(queryParams);
+          }))
+          //Process visible year response
+          .then(makeCancellableCallback(numQueriesMade, function processCurrYear(currYearResponse) {
 
+            $scope.queryResolved = true;
+            $scope.loadingProgress = 1;
+
+            //Rendering the visible year is main-thread-blocking, so we delay it a bit to make sure that the
+            //mega array request gets fired first.
+            $timeout(function makeFirstYearLayer() {
+              var layerData = transformCatchResponse(currYearResponse.data);
+              makeGridLayer(layerData, visibleYear);
+            }, 100);
+
+            //Request all years.
+            delete queryParams.year;
+            return sauAPI.SpatialCatchData.get(queryParams);
+          }))
+          //Process all years
+          .then(makeCancellableCallback(numQueriesMade, function processAllYears(allYearsResponse) {
+            var superGridData = transformCatchResponse(allYearsResponse.data);
+
+            //Creates a histogram of the cells in the buckets, used for debugging.
+            /*var buckets = [0, 0, 0, 0, 0, 0, 0];
+            for (var i = 0; i < superGridData.length; i++) {
+              if (isNaN(superGridData[i])) {
+                continue;
+              }
+              buckets[map.colorScale.getQuantile(superGridData[i])]++;
+            }
+            debugger;*/
+
+            //Makes a grid layer for each year. NOTE: VERY SLOW
+            forEachYear(function makeAllGrids(currYear, yearIndex) {
+              if (currYear === visibleYear) {
+                return;
+              }
+              var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
+              var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
+              makeGridLayer(gridDataForYear, currYear);
+            });
+          }))
+          .catch(makeCancellableCallback(numQueriesMade, function notifyFailedQuery() {
+            $scope.queryFailed = true;
+            console.log('query failed.');
+          }));
+
+        }
+
+        //Google Analytics Event
+        ga.sendEvent({
+          category: 'Mapped Catch',
+          action: gaAction.join(' '),
+          label: $location.url()
+        });
+      //MAKE DISTRIBUTION QUERY
+      } else if ($scope.visibleForm === 1) {
+
+        var taxonDistQuery = sauAPI.TaxonDistribution.get({id: query.taxonDistribution[0]});
+        taxonDistQuery.then(makeCancellableCallback(numQueriesMade, function processDistributionResponse(response) {
           $scope.queryResolved = true;
           $scope.loadingProgress = 1;
 
-          //Rendering the visible year is main-thread-blocking, so we delay it a bit to make sure that the
-          //mega array request gets fired first.
-          $timeout(function makeFirstYearLayer() {
-            var layerData = transformCatchResponse(currYearResponse.data);
-            makeGridLayer(layerData, visibleYear);
-          }, 100);
-
-          //Request all years.
-          delete queryParams.year;
-          return sauAPI.SpatialCatchData.get(queryParams);
-        }))
-        //Process all years
-        .then(makeCancellableCallback(numQueriesMade, function processAllYears(allYearsResponse) {
-          var superGridData = transformCatchResponse(allYearsResponse.data);
-
-          //Creates a histogram of the cells in the buckets, used for debugging.
-          /*var buckets = [0, 0, 0, 0, 0, 0, 0];
-          for (var i = 0; i < superGridData.length; i++) {
-            if (isNaN(superGridData[i])) {
-              continue;
+          //Make sure the data is valid.
+          if (!response.data || response.data.byteLength === 0) {
+            throw 'Distribution query data is bad or empty.';
+          } else {
+            //$scope.boundaries = [0, 1, 2, 3, 4, 5, 6, 7];
+            $scope.minCatch = 'Thin';
+            $scope.maxCatch = 'Dense';
+            //$scope.totalCatch.setAllYears(response.data.data.total_catch);
+            map.colorScale = makeCatchMapScale([0, 1/7*255, 2/7*255, 3/7*255, 4/7*255, 5/7*255, 6/7*255, 255], $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
+            response = transformCatchResponse(response.data);
+            //Creates a histogram of the cells in the buckets, used for debugging.
+            /*var buckets = [0, 0, 0, 0, 0, 0, 0];
+            for (var i = 0; i < response.length; i++) {
+              if (isNaN(response[i])) {
+                continue;
+              }
+              buckets[map.colorScale.getQuantile(response[i])]++;
             }
-            buckets[map.colorScale.getQuantile(superGridData[i])]++;
+            debugger;*/
+            makeGridLayer(response);
           }
-          debugger;*/
-
-          //Makes a grid layer for each year. NOTE: VERY SLOW
-          forEachYear(function makeAllGrids(currYear, yearIndex) {
-            if (currYear === visibleYear) {
-              return;
-            }
-            var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
-            var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
-            makeGridLayer(gridDataForYear, currYear);
-          });
         }))
-        .catch(makeCancellableCallback(queryParams, function notifyFailedQuery() {
+        .catch(makeCancellableCallback(numQueriesMade, function notifyFailedQuery() {
           $scope.queryFailed = true;
-          console.log('query failed.');
+          console.log('distribution query failed.');
         }));
-
       }
-
-      //Google Analytics Event
-      ga.sendEvent({
-        category: 'Mapped Catch',
-        action: gaAction.join(' '),
-        label: $location.url()
-      });
     };
 
     //Return true if any data except the year is different.
@@ -193,12 +236,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.isDistributionQueryValid = function(query) {
-      return query.taxonDistribution && query.taxonDistribution.length > 0;
+      return query.taxonDistribution && query.taxonDistribution.length > 0 ? true : false;
     };
 
     $scope.isQueryValid = function (query) {
-      //return $scope.isAllocationQueryValid(query) || $scope.isDistributionQueryValid(query);
-      return $scope.isAllocationQueryValid(query);
+      return ($scope.visibleForm === 0 && $scope.isAllocationQueryValid(query)) ||
+      ($scope.visibleForm && $scope.isDistributionQueryValid(query));
     };
 
     $scope.zoomMapIn = function() {
@@ -230,6 +273,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.updateQueryWithExample = function (example) {
       $scope.query = angular.extend($scope.query, example);
 
+      $scope.visibleForm = $scope.isDistributionQueryValid($scope.query) ? 1 : 0;
+
       //Submit the query
       if ($scope.isQueryValid($scope.query)) {
         $scope.submitQuery($scope.query, example.year);
@@ -243,7 +288,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     };
 
     $scope.currentYearHasGrid = function () {
+      if (map && map.layers.length < 10) {
+        return true;
+      }
       return gridLayers.forYear($scope.currentYear) ? true : false;
+    };
+
+    /**
+    Toggles the visibility of the allocation/distribution forms
+    so that only one shows at a time.
+    **/
+    $scope.toggleFormVisibility = function () {
+      $scope.visibleForm = ($scope.visibleForm === 0) ? 1 : 0;
     };
 
     //////////////////////////////////////////////////////
@@ -259,19 +315,23 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function makeGridLayer(data, year) {
+      var isYearDefined = (typeof year !== 'undefined');
       //First delete any previous layer in that year slot.
-      var oldLayer = gridLayers.forYear(year);
-      if (oldLayer) {
-        map.removeLayer(oldLayer);
+      if (isYearDefined) {
+        var oldLayer = gridLayers.forYear(year);
+        if (oldLayer) {
+          map.removeLayer(oldLayer);
+        }
       }
 
-      var showLayer = $scope.currentYear === year;
+      var showLayer = isYearDefined ? $scope.currentYear === year : true;
+      var zIndex = isYearDefined ? year - firstYearOfData : singleYearGridLayerIndex;
 
       //Then make the layer
       var newLayer = map.addLayer(data, {
         gridSize: [720, 360],
         renderOnAnimate: false,
-        zIndex: year - firstYearOfData,
+        zIndex: zIndex,
         renderOnAdd: showLayer
       });
 
@@ -281,10 +341,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Add it to the cache
-      gridLayers.forYear(year, newLayer);
+      if (isYearDefined) {
+        gridLayers.forYear(year, newLayer);
+      } else {
+        gridLayers.yearlessLayer = newLayer;
+      }
     }
 
-    function deleteGridLayer(year) {
+    function deleteGridLayerForYear(year) {
       //Remove layer from the gridmap
       var deadLayerWalking = gridLayers.forYear(year);
       if (deadLayerWalking) {
@@ -296,7 +360,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function clearGrid() {
-      forEachYear(deleteGridLayer);
+      forEachYear(deleteGridLayerForYear);
+
+      if (gridLayers.yearlessLayer) {
+        map.removeLayer(gridLayers.yearlessLayer);
+        delete gridLayers.yearlessLayer;
+      }
     }
 
     //Ensures that outdated query responses don't fire after newer ones.
@@ -310,6 +379,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function updateQueryFromUrl() {
       var search = $location.search();
 
+      //Taxon distribution
+      if (search.dist) {
+        $scope.query.taxonDistribution = search.dist.split(',');
+      }
+
+      //Allocation
       //Fishing countries
       if (search.entities) {
         $scope.query.fishingCountries = search.entities.split(',');
@@ -329,23 +404,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         $scope.query.catchesBy = 'taxa';
       }
 
-      //Reporting statuses
-      if (search.repstatuses) {
-        $scope.query.reportingStatuses = search.repstatuses.split(',');
-      }
-
-      //Catch types
-      if (search.catchtypes) {
-        $scope.query.catchTypes = search.catchtypes.split(',');
-      }
-
       //Year
       $scope.currentYear = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
-
-      //Taxon distribution
-      if (search.dist) {
-        $scope.query.taxonDistribution = search.dist.split(',');
-      }
     }
 
     function updateUrlFromQuery() {
@@ -379,20 +439,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           break;
       }
 
-      //Reporting Statuses
-      if ($scope.query.reportingStatuses && $scope.query.reportingStatuses.length > 0) {
-        $location.search('repstatuses', $scope.query.reportingStatuses.join(','));
-      } else {
-        $location.search('repstatuses', null);
-      }
-
-      //Catch types
-      if ($scope.query.catchTypes && $scope.query.catchTypes.length > 0) {
-        $location.search('catchtypes', $scope.query.catchTypes.join(','));
-      } else {
-        $location.search('catchtypes', null);
-      }
-
       //Year
       var queryYear = $scope.currentYear || lastYearOfData;
       if (queryYear !== lastYearOfData) {
@@ -421,7 +467,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
       //But then our typical sentence structure doesn't make any sense.
-      if ($scope.taxonDistribution && $scope.taxonDistribution.length > 0) {
+      if ($scope.isDistributionQueryValid(query)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
@@ -431,23 +477,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
       } else {
         if (!query.isFilteredBy('fishingCountries')) {
-          sentence.push('Global');
+          sentence.push('Global fishing');
         } else {
-          sentence.push('All');
-        }
-
-        //Reporting status
-        if (query.reportingStatuses && query.reportingStatuses.length === 1) {
-          var reportingStatusName = $scope.reportingStatuses.find('name', query.reportingStatuses[0]);
-          sentence.push(reportingStatusName.toLowerCase());
-        }
-
-        //Catch type
-        if (query.catchTypes && query.catchTypes.length === 1) {
-          var catchTypeName = $scope.catchTypes.find('name', query.catchTypes[0]);
-          sentence.push(catchTypeName.toLowerCase());
-        } else {
-          sentence.push('fishing');
+          sentence.push('All fishing');
         }
 
         //Catches by
@@ -486,6 +518,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
         //Year
         sentence.push('in ' + (year || lastYearOfData));
+
+        var totalCatch = $scope.totalCatch.forYear(year);
+        if (totalCatch) {
+          sentence.push('(Total: ' + $filter('totalCatchUnits')(totalCatch).toString() + ')');
+        }
       }
 
       return sentence.join(' ');
@@ -529,6 +566,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       return '#' + createQueryUrl.forRegionCatchChart(urlConfig);
     }
 
+    function getOceanLegendLabel (query) {
+      if ($scope.isDistributionQueryValid(query)) {
+        var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
+        return 'No ' + taxonName;
+      } else {
+        return 'No catch';
+      }
+    }
+
     function forEachYear(cb) {
       for (var currYear = firstYearOfData; currYear <= lastYearOfData; currYear++) {
         cb(currYear, currYear - firstYearOfData);
@@ -570,6 +616,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       };
     }
 
+    function clearAllocationQueryParams(query) {
+      //Remove allocation params
+      if (query.fishingCountries) {
+        query.fishingCountries.length = 0;
+      }
+      if (query.taxa) {
+        query.taxa.length = 0;
+      }
+      if (query.commercialGroups) {
+        query.commercialGroups.length = 0;
+      }
+      if (query.functionalGroups) {
+        query.functionalGroups.length = 0;
+      }
+    }
+
+    function clearDistributionParams(query) {
+      //Remove distribution params
+      if (query.taxonDistribution) {
+        query.taxonDistribution.length = 0;
+      }
+    }
+
     //////////////////////////////////////////////////////
     //LOCAL VARS
     //////////////////////////////////////////////////////
@@ -577,6 +646,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var firstYearOfData = 1950; //Dynamic later.
     var lastYearOfData = 2010; //Dynamic later.
     var numCellsInGrid = 720 * 360;
+    var singleYearGridLayerIndex = 98;
+    var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+    var countriesMapLayerIndex = 100; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+
     //var lastCatchQueryResponse;
     var numQueriesMade = 0; //Used to tell a query response if it's old and outdated.
     var gridLayers = [];
@@ -625,7 +698,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.mappedCatchExamples = spatialCatchExamples;
 
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
-    $scope.query = {};
     $scope.currentYear = lastYearOfData;
     $scope.loadingProgress = 1;
     $scope.themes = spatialCatchThemes;
@@ -695,6 +767,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             type: 'Point',
             coordinates: coords
           };
+          var oldHoverEEZ = $scope.hoverEEZ;
           $scope.hoverEEZ = null;
           for (var i = 0; i < eezSpatialData.data.features.length; i++) {
             var feature = eezSpatialData.data.features[i];
@@ -702,6 +775,10 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
               $scope.hoverEEZ = feature.properties;
               break;
             }
+          }
+
+          if (oldHoverEEZ !== $scope.hoverEEZ) {
+            $scope.$apply();
           }
         }
       });
@@ -717,19 +794,23 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         strokeColor: $scope.themes.current().eezStroke,
         strokeWidth: 1.5,
         renderOnAnimate: false,
-        zIndex: 99 //Ensure this layer is far above all of the grid layers. There could be one-per-year.
+        zIndex: eezMapLayerIndex
       });
 
       map.addLayer(countries, {
         fillColor: $scope.themes.current().landFill,
         strokeColor: $scope.themes.current().landStroke,
-        zIndex: 100 ////Ensure this layer is far above all of the grid layers. There could be one-per-year.
+        zIndex: countriesMapLayerIndex
       });
 
       updateQueryFromUrl();
 
       //Boostrap the initial query if there are query params in the URL when the page loads.
       if ($scope.isQueryValid($scope.query)) {
+        //Switch the UI to show the distribution tab if the URL is a distribution URL.
+        if ($scope.isDistributionQueryValid($scope.query)) {
+          $scope.visibleForm = 1;
+        }
         $scope.submitQuery($scope.query, $scope.currentYear);
       }
     });

@@ -13,6 +13,9 @@
     })
     .filter('catchGridUnits', function() {
       return function (input) {
+        if (isNaN(input)) {
+          return input;
+        }
         return input.toExponential(1) + ' t/km²';
       };
     })
