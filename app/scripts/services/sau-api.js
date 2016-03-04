@@ -16,6 +16,7 @@ angular.module('sauWebApp')
     var methods = {
 
       Region: resourceFactory(':region/:region_id'),
+      MultiRegionMetrics: resourceFactory(':region/metrics/'),
       Regions: resourceFactory(':region/'),
       IFA: resourceFactory('eez/:region_id/ifa/'),
       AccessAgreementExternal: resourceFactory('fishing-entity/:region_id/access-agreement-external/'),
