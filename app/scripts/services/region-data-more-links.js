@@ -179,6 +179,10 @@ angular.module('sauWebApp')
           url: '#/eez/{{ id }}',
           text: '{{ title }}',
           checkUnderReview: true
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-multi.html'
         }
       ],
 
@@ -187,6 +191,10 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
         },
         {
           section: 'Ecosystems',
@@ -233,6 +241,10 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity-lme.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
         },
         {
           section: 'Ecosystems',

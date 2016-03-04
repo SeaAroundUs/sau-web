@@ -300,6 +300,12 @@ angular
           controller: 'RegionDataCtrl',
           reloadOnSearch: false,
           resolve: {region: function() {return 'eez-bordering';}}
+        })
+        .when('/eez-bordering/:id/exploited-organisms', {
+          templateUrl: 'views/exploited-organisms.html',
+          controller: 'ExploitedOrganismsCtrl',
+          resolve: {region: function() {return 'eez-bordering';}},
+          reloadOnSearch: false
         });
     }
 
