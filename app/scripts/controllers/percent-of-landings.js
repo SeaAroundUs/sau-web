@@ -27,7 +27,7 @@ angular.module('sauWebApp').controller('PercentOfLandingsChartCtrl',
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1955,1960,1965,1970,1975,1980,1985,1990,1995,2000,2005,2010,2015,2020]
+          tickValues: [1950,1955,1960,1965,1970,1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2025,2030]
         },
         yAxis: {
           axisLabel: 'Percent of global catch'
