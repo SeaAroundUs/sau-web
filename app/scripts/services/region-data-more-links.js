@@ -69,8 +69,8 @@ angular.module('sauWebApp')
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
-            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
-            // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' },
+            { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }, {
           section: 'Other topics',
