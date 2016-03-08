@@ -72,6 +72,7 @@ angular.module('sauWebApp')
         useInteractiveGuideline: false,
         tooltipContent: rmtiTooltip,
         xAxis: {
+          showMaxMin: false,
           axisLabel: 'Year'
         },
         yDomain: [2,5],
