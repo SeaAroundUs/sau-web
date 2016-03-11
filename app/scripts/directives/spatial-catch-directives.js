@@ -67,6 +67,11 @@ angular.module('sauWebApp')
         var sliderReleasedPromise;
         var progressBarElement;
 
+        //Updates the slider's layout when it goes from hidden to visible and vice versa.
+        scope.$on('toggleFormVis', function() {
+          refreshSlider();
+        })
+
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
         });
@@ -87,10 +92,7 @@ angular.module('sauWebApp')
         });
 
         ngModelCtrl.$render = function() {
-          $timeout(function() {
-            slider.slider('refresh');
-            slider.slider('setValue', ngModelCtrl.$viewValue);
-          });
+          refreshSlider();
         };
 
         ngModelCtrl.$parsers.push(function(viewValue) {
@@ -99,6 +101,13 @@ angular.module('sauWebApp')
 
         function progressToCssWidth() {
           return Math.round(scope.loadingProgress * 100) + '%';
+        }
+
+        function refreshSlider() {
+          $timeout(function() {
+            slider.slider('refresh');
+            slider.slider('setValue', ngModelCtrl.$viewValue);
+          });
         }
 
         //Create the progress bar.

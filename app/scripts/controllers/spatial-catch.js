@@ -300,6 +300,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     **/
     $scope.toggleFormVisibility = function () {
       $scope.visibleForm = ($scope.visibleForm === 0) ? 1 : 0;
+      //Tell form children to refresh their views because they're going from shown to hidden or vice versa.
+      $scope.$broadcast('toggleFormVis', $scope.visibleForm);
     };
 
     //////////////////////////////////////////////////////
