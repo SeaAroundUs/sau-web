@@ -407,7 +407,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Year
-      $scope.currentYear = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2010). Why does JS not have a clamp function?
+      $scope.currentYear = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2013). Why does JS not have a clamp function?
     }
 
     function updateUrlFromQuery() {
@@ -646,7 +646,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     var map;
     var firstYearOfData = 1950; //Dynamic later.
-    var lastYearOfData = 2010; //Dynamic later.
+    var lastYearOfData = 2013; //Dynamic later.
     var numCellsInGrid = 720 * 360;
     var singleYearGridLayerIndex = 98;
     var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
