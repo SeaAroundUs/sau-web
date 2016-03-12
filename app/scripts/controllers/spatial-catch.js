@@ -470,8 +470,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if ($scope.isDistributionQueryValid(query)) {
         sentence.push('Global biological distribution of ');
         if (query.taxonDistribution.length === 1) {
-          var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
-          taxonName += ' (<em>' + $scope.taxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
+          var taxonName = $scope.allocTaxa.find('common_name', query.taxonDistribution[0]);
+          taxonName += ' (<em>' + $scope.allocTaxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
           sentence.push(taxonName);
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
@@ -487,7 +487,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         //Catches by
         if (query.catchesBy === 'taxa' && query.isFilteredBy('taxa')) {
           if (query.taxa && query.taxa.length === 1) {
-            var taxaName = $scope.taxa.find('common_name', query.taxa[0]);
+            var taxaName = $scope.allocTaxa.find('common_name', query.taxa[0]);
             sentence.push('of ' + taxaName.toLowerCase());
           } else if (query.taxa && query.taxa.length > 1) {
             sentence.push('of ' + query.taxa.length + ' taxa');
@@ -670,15 +670,21 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.fishingCountries.unshift({id: 0, title: '-- All fishing countries --'});
     }
 
-    $scope.taxa = taxa.data;
-    $scope.taxa.find = makeArrayQueryable('taxon_key');
-    for (var i = 0; i < $scope.taxa.length; i++) {
-      $scope.taxa[i].displayName = $scope.taxa[i].common_name + ' (' + $scope.taxa[i].scientific_name + ')';
+    //Appending a new property to the taxa list, which concatenates the common name and scientific name.
+    for (var i = 0; i < taxa.data.length; i++) {
+      taxa.data[i].displayName = taxa.data[i].common_name + ' (' + taxa.data[i].scientific_name + ')';
     }
 
-    //"All taxa" pseudo-item
+    //Copying the taxa array for use in populating the taxa dropdown in the allocation query UI fields.
+    $scope.allocTaxa = [];
+    for (i = 0; i < taxa.data.length; i++) {
+      $scope.allocTaxa[i] = taxa.data[i];
+    }
+    $scope.allocTaxa.find = makeArrayQueryable('taxon_key');
+
+    //"All taxa" pseudo-item for drop-downs
     if (toggles.isEnabled('global')) {
-      $scope.taxa.unshift({taxon_key: 0, common_name: '-- All taxa --', displayName: '-- All taxa --'});
+      $scope.allocTaxa.unshift({taxon_key: 0, common_name: '-- All taxa --', displayName: '-- All taxa --'});
     }
 
     $scope.commercialGroups = commercialGroups.data;

@@ -57,7 +57,7 @@
             <div class="col-md-6">
               <div ng-show="query.catchesBy === 'taxa'">
                 <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
-                <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
+                <taxa-selectize options="allocTaxa" items="query.taxa"></taxa-selectize>
               </div>
               <div ng-show="query.catchesBy === 'commercial groups'">
                 <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group</label></div>
@@ -95,7 +95,7 @@
           <div class="row">
             <div class="col-md-12">
               <label class="query-field-label">Taxa</label>
-              <taxa-selectize options="taxa" items="query.taxonDistribution" max-items="1"></taxa-selectize>
+              <taxa-selectize options="allocTaxa" items="query.taxonDistribution" max-items="1"></taxa-selectize>
             </div>
           </div>
         </form>
