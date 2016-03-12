@@ -17,7 +17,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         clearAllocationQueryParams(query);
       }
       clearGrid();
-      $scope.queryFailed = false;
+      $scope.queryFailed = null;
       $scope.loadingProgress = 0;
       numQueriesMade++;
       $scope.lastQuery = angular.copy(query);
@@ -151,7 +151,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             });
           }))
           .catch(makeCancellableCallback(numQueriesMade, function notifyFailedQuery() {
-            $scope.queryFailed = true;
+            $scope.queryFailed = 'Catch data for this query does not exist.';
             console.log('query failed.');
           }));
 
@@ -175,7 +175,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           if (!response.data || response.data.byteLength === 0) {
             throw 'Distribution query data is bad or empty.';
           } else {
-            //$scope.boundaries = [0, 1, 2, 3, 4, 5, 6, 7];
+            $scope.boundaries = null;
             $scope.minCatch = 'Thin';
             $scope.maxCatch = 'Dense';
             //$scope.totalCatch.setAllYears(response.data.data.total_catch);
@@ -194,7 +194,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           }
         }))
         .catch(makeCancellableCallback(numQueriesMade, function notifyFailedQuery() {
-          $scope.queryFailed = true;
+          $scope.queryFailed = 'No taxon distribution exists for the selected taxon.';
           console.log('distribution query failed.');
         }));
       }
@@ -468,7 +468,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       var sentence = [];
 
       if ($scope.isDistributionQueryValid(query)) {
-        sentence.push('Global distribution of ');
+        sentence.push('Global biological distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
           taxonName += ' (<em>' + $scope.taxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
@@ -476,6 +476,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
+        sentence.push(' as of MM/DD/YYYY');
       } else {
         if (!query.isFilteredBy('fishingCountries')) {
           sentence.push('Global fishing');
@@ -568,7 +569,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
     function getOceanLegendLabel (query) {
       if ($scope.isDistributionQueryValid(query)) {
-        var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
         return 'No distribution';
       } else {
         return 'No catch';

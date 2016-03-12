@@ -70,7 +70,7 @@ angular.module('sauWebApp')
         //Updates the slider's layout when it goes from hidden to visible and vice versa.
         scope.$on('toggleFormVis', function() {
           refreshSlider();
-        })
+        });
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
