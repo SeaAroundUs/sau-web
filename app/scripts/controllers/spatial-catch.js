@@ -569,7 +569,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     function getOceanLegendLabel (query) {
       if ($scope.isDistributionQueryValid(query)) {
         var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
-        return 'No ' + taxonName;
+        return 'No distribution';
       } else {
         return 'No catch';
       }
