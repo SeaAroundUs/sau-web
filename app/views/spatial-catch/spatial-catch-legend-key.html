@@ -1,7 +1,7 @@
 
-<label class="small-label">
-	<span ng-show="!keyLink">{{keyName}}</span>
-	<span ng-show="keyLink"><a ng-href="{{keyLink}}">{{keyName}}</a></span>
+<label class="query-field-label">
+	<span ng-show="!keyLink" ng-bind-html="keyName"></span>
+	<span ng-show="keyLink" ng-bind-html="keyName"><a ng-href="{{keyLink}}"></a></span>
 	<span class="not-bold">{{keyNameSecond}}</span>
 </label>
 <ul class="legend-color-bar list-inline">

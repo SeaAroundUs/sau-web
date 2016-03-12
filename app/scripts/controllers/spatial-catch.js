@@ -4,7 +4,7 @@
 /* global gju */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route, $sce) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       $scope.currentYear = visibleYear || null;
       updateUrlFromQuery();
       $scope.queryResponseErrorMessage = null;
-      $scope.lastQuerySentence = getQuerySentence(query, visibleYear);
+      $scope.lastQuerySentence = $sce.trustAsHtml(getQuerySentence(query, visibleYear));
       $scope.catchGraphLinkText = getCatchGraphLinkText(query);
       $scope.catchGraphLink = getCatchGraphLink(query);
       $scope.oceanLegendLabel = getOceanLegendLabel(query);
@@ -467,12 +467,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
 
       var sentence = [];
 
-      //A query is still valid if there are no fishing countries or taxa selected, if instead there are taxa distribution parameters set.
-      //But then our typical sentence structure doesn't make any sense.
       if ($scope.isDistributionQueryValid(query)) {
         sentence.push('Global distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.taxa.find('common_name', query.taxonDistribution[0]);
+          taxonName += ' (<em>' + $scope.taxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
           sentence.push(taxonName);
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
@@ -526,7 +525,6 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           sentence.push('(Total: ' + $filter('totalCatchUnits')(totalCatch).toString() + ')');
         }
       }
-
       return sentence.join(' ');
     }
 
@@ -646,7 +644,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     var map;
     var firstYearOfData = 1950; //Dynamic later.
-    var lastYearOfData = 2013; //Dynamic later.
+    var lastYearOfData = 2010; //Dynamic later.
     var numCellsInGrid = 720 * 360;
     var singleYearGridLayerIndex = 98;
     var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
