@@ -141,11 +141,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             debugger;*/
 
             //Makes a grid layer for each year. NOTE: VERY SLOW
-            forEachYear(function makeAllGrids(currYear, yearIndex) {
+            forEachYear(function makeAllGrids(currYear, offsetFromFirstYear) {
               if (currYear === visibleYear) {
                 return;
               }
-              var bufferOffsetForYear = yearIndex * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
+              var bufferOffsetForYear = offsetFromFirstYear * numCellsInGrid * Float32Array.BYTES_PER_ELEMENT;
               var gridDataForYear = new Float32Array(superGridData.buffer, bufferOffsetForYear, numCellsInGrid);
               makeGridLayer(gridDataForYear, currYear);
             });
@@ -644,7 +644,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     var map;
     var firstYearOfData = 1950; //Dynamic later.
-    var lastYearOfData = 2010; //Dynamic later.
+    var lastYearOfData = 2013; //Dynamic later.
     var numCellsInGrid = 720 * 360;
     var singleYearGridLayerIndex = 98;
     var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
