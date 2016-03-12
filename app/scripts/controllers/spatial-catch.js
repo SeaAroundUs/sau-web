@@ -470,8 +470,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       if ($scope.isDistributionQueryValid(query)) {
         sentence.push('Global biological distribution of ');
         if (query.taxonDistribution.length === 1) {
-          var taxonName = $scope.allocTaxa.find('common_name', query.taxonDistribution[0]);
-          taxonName += ' (<em>' + $scope.allocTaxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
+          var taxonName = $scope.distTaxa.find('common_name', query.taxonDistribution[0]);
+          taxonName += ' (<em>' + $scope.distTaxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
           sentence.push(taxonName);
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
@@ -663,6 +663,11 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //////////////////////////////////////////////////////
     //SCOPE VARS
     //////////////////////////////////////////////////////
+
+    //Taxon distribution dropdown options
+    $scope.distTaxa = taxa.data;
+    $scope.distTaxa.find = makeArrayQueryable('taxon_key');
+
     $scope.fishingCountries = fishingCountries.data;
     $scope.fishingCountries.find = makeArrayQueryable('id');
     //"All countries" pseudo-item
