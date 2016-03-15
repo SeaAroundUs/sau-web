@@ -23,6 +23,17 @@ angular.module('sauWebApp')
       },
       controller: function ($scope, $timeout) {
 
+        $scope.$watch('boundaries', function() {
+          $scope.boundariesTooltips = [];
+          if (!$scope.boundaries) {
+            return;
+          }
+          
+          for (var i = 0; i < $scope.boundaries.length - 1; i++) {
+            $scope.boundariesTooltips[i] = $scope.boundaries[i].toExponential(1) + ' to ' + $scope.boundaries[i + 1].toExponential(1) + ' t/km²';
+          }
+        })
+
         function colorAll() {
           if (!$scope.colors) {
             console.log('No colors specified in spatial catch legend key. Cannot render.');
