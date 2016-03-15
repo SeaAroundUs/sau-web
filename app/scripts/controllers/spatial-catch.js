@@ -4,7 +4,7 @@
 /* global gju */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route, $sce) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route, $sce, years) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -327,7 +327,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       var showLayer = isYearDefined ? $scope.currentYear === year : true;
-      var zIndex = isYearDefined ? year - firstYearOfData : singleYearGridLayerIndex;
+      var zIndex = isYearDefined ? year - $scope.years.first : singleYearGridLayerIndex;
 
       //Then make the layer
       var newLayer = map.addLayer(data, {
@@ -407,7 +407,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Year
-      $scope.currentYear = Math.min(Math.max(+search.year || lastYearOfData, firstYearOfData), lastYearOfData); //Clamp(year, 1950, 2013). Why does JS not have a clamp function?
+      $scope.currentYear = Math.min(Math.max(+search.year || $scope.years.last, $scope.years.first), $scope.years.last); //Clamp(year, 1950, 2013). Why does JS not have a clamp function?
     }
 
     function updateUrlFromQuery() {
@@ -442,8 +442,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
 
       //Year
-      var queryYear = $scope.currentYear || lastYearOfData;
-      if (queryYear !== lastYearOfData) {
+      var queryYear = $scope.currentYear || $scope.years.last;
+      if (queryYear !== $scope.years.last) {
         $location.search('year', queryYear);
       } else {
         $location.search('year', null);
@@ -519,7 +519,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         }
 
         //Year
-        sentence.push('in ' + (year || lastYearOfData));
+        sentence.push('in ' + (year || $scope.years.last));
 
         var totalCatch = $scope.totalCatch.forYear(year);
         if (totalCatch) {
@@ -576,8 +576,8 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     }
 
     function forEachYear(cb) {
-      for (var currYear = firstYearOfData; currYear <= lastYearOfData; currYear++) {
-        cb(currYear, currYear - firstYearOfData);
+      for (var currYear = $scope.years.first; currYear <= $scope.years.last; currYear++) {
+        cb(currYear, currYear - $scope.years.first);
       }
     }
 
@@ -643,8 +643,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //LOCAL VARS
     //////////////////////////////////////////////////////
     var map;
-    var firstYearOfData = 1950; //Dynamic later.
-    var lastYearOfData = 2013; //Dynamic later.
+
     var numCellsInGrid = 720 * 360;
     var singleYearGridLayerIndex = 98;
     var eezMapLayerIndex = 99; //Ensure this layer is far above all of the grid layers. There could be one-per-year.
@@ -655,14 +654,18 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     var gridLayers = [];
     gridLayers.forYear = function (year, layer) {
       if (arguments.length === 1) {
-        return this[year - firstYearOfData];
+        return this[year - $scope.years.first];
       } else {
-        this[year - firstYearOfData] = layer;
+        this[year - $scope.years.first] = layer;
       }
     };
     //////////////////////////////////////////////////////
     //SCOPE VARS
     //////////////////////////////////////////////////////
+
+    $scope.years = years.data.years;
+    $scope.years.first = $scope.years[0];
+    $scope.years.last = $scope.years[$scope.years.length - 1];
 
     //Taxon distribution dropdown options
     $scope.distTaxa = taxa.data;
@@ -709,7 +712,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.mappedCatchExamples = spatialCatchExamples;
 
     $scope.inProd = SAU_CONFIG.env === 'stage' || SAU_CONFIG.env === 'prod';
-    $scope.currentYear = lastYearOfData;
+    $scope.currentYear = $scope.years.last;
     $scope.loadingProgress = 1;
     $scope.themes = spatialCatchThemes;
 
@@ -752,7 +755,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       }
     };
     $scope.totalCatch.forYear = function (year) {
-      return this[year - firstYearOfData];
+      return this[year - $scope.years.first];
     };
 
     //////////////////////////////////////////////////////

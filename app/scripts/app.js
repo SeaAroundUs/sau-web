@@ -390,6 +390,9 @@ angular
             },
             eezSpatialData: function (sauAPI) {
               return sauAPI.Regions.get({region: 'eez'}).$promise;
+            },
+            years: function (sauAPI) {
+              return sauAPI.Years.get().$promise;
             }
           }
         });

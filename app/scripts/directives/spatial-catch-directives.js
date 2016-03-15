@@ -60,12 +60,16 @@ angular.module('sauWebApp')
       require: 'ngModel',
       scope: {
         onSlideStopDebounce: '&',
-        loadingProgress: '='
+        loadingProgress: '=',
+        firstYear: '=',
+        lastYear: '='
       },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
         var sliderReleasedPromise;
         var progressBarElement;
+        scope.yearTicks = getYearTicks();
+        scope.yearTickLabels = getYearTickLabels();
 
         //Updates the slider's layout when it goes from hidden to visible and vice versa.
         scope.$on('toggleFormVis', function() {
@@ -117,6 +121,22 @@ angular.module('sauWebApp')
             progressBarElement.css('width', progressToCssWidth());
           });
         });
+
+        function getYearTicks() {
+          var yearTicks = [];
+          for (var i = scope.firstYear; i <= scope.lastYear; i++) {
+            if (i % 10 === 0 || i === scope.lastYear) {
+              yearTicks.push(i);
+            }
+          }
+          return yearTicks;
+        }
+
+        function getYearTickLabels() {
+          var ticks = getYearTicks();
+          var labels = [ticks[0], ticks[ticks.length]];
+          return labels;
+        }
       }
     };
   })
