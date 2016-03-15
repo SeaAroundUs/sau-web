@@ -476,7 +476,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         } else {
           sentence.push(query.taxonDistribution.length + ' taxa');
         }
-        sentence.push(' as of DD/MM/YYYY');
+        //sentence.push(' as of DD/MM/YYYY');
       } else {
         if (!query.isFilteredBy('fishingCountries')) {
           sentence.push('Global fishing');
