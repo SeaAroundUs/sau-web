@@ -28,11 +28,11 @@ angular.module('sauWebApp')
           if (!$scope.boundaries) {
             return;
           }
-          
+
           for (var i = 0; i < $scope.boundaries.length - 1; i++) {
             $scope.boundariesTooltips[i] = $scope.boundaries[i].toExponential(1) + ' to ' + $scope.boundaries[i + 1].toExponential(1) + ' t/km²';
           }
-        })
+        });
 
         function colorAll() {
           if (!$scope.colors) {

@@ -285,6 +285,12 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
       /*if ($scope.isQueryValid($scope.query)) {
         $scope.submitQuery($scope.query);
       }*/
+      var queryYear = $scope.currentYear || $scope.years.last;
+      if (queryYear !== $scope.years.last) {
+        $location.search('year', queryYear);
+      } else {
+        $location.search('year', null);
+      }
     };
 
     $scope.currentYearHasGrid = function () {
