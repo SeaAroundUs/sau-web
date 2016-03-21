@@ -29,9 +29,14 @@ angular.module('sauWebApp')
     var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
         function() {
           $scope.showDownload = true;
-          angular.forEach(data.data, function(data_set, key) {
-            $scope.data[key] = data_set;
-          });
+          if (!data.data) {
+            $scope.data.css = [];
+            $scope.data.nss = [];
+          } else {
+            angular.forEach(data.data, function(data_set, key) {
+              $scope.data[key] = data_set;
+            });
+          }
         }
     );
 
