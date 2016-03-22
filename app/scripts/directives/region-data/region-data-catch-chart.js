@@ -423,8 +423,9 @@ angular.module('sauWebApp')
 
         // handle no data
         }, function() {
+          var regionId = angular.isArray(dataOptions.region_id) ? dataOptions.region_id[0] : dataOptions.region_id;
           $scope.noData = true;
-          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, dataOptions.region_id);
+          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, regionId);
           spinnerState.loading = false;
         });
       }
