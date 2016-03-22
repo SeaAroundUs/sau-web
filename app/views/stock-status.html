@@ -1,9 +1,12 @@
 
 <div class="content-container" id="stock-status">
-    <p ng-show="data.css.length === 0 && data.nss.length === 0" class="not-meaningful">
+    <p ng-show="data.css.length === 0 && data.nss.length === 0 && !iceCover" class="not-meaningful">
       Stock status not presented, as too few data are available for meaningful use.
     </p>
-    <div ng-hide="data.css.length === 0 && data.nss.length === 0">
+    <p ng-show="iceCover" class="not-meaningful">
+      Currently no catches due to ice cover
+    </p>
+    <div ng-hide="(data.css.length === 0 && data.nss.length === 0) || iceCover">
       <h1>Stock status <span ng-hide="regionName === 'global'">in the waters of </span>
         <span ng-hide="regionName === 'global'">{{ region.data.title }}{{ subRegionName }}</span>
         <span ng-show="regionName === 'global'">in the global ocean{{ subRegionName }}</span>

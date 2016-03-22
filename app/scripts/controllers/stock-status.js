@@ -26,7 +26,11 @@ angular.module('sauWebApp')
     $scope.region = sauAPI.Region.get({region: region, region_id: regionId, fao_id: $routeParams.subRegion});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
-    var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
+    if ((region == 'lme' && regionId == 64) || (region == 'highseas' && regionId == 18)) {
+      $scope.iceCover = true;
+
+    } else {
+      var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
         function() {
           $scope.showDownload = true;
           if (!data.data) {
@@ -38,7 +42,8 @@ angular.module('sauWebApp')
             });
           }
         }
-    );
+      );
+    }
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
