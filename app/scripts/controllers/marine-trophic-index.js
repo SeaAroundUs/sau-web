@@ -192,13 +192,18 @@ angular.module('sauWebApp')
         $scope.noData = true;
       });
 
-      var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true}, function() {
-        $scope.speciesList = species.data;
-      });
+      if ((region === 'lme' && parseInt(id) === 64) || (region === 'highseas' && parseInt(id) === 18)) {
+        $scope.iceCover = true;
 
-      $q.all([species.$promise]).then(function() {
-        $scope.compute();
-      });
+      } else {
+        var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true}, function() {
+          $scope.speciesList = species.data;
+        });
+
+        $q.all([species.$promise]).then(function() {
+          $scope.compute();
+        });
+      }
     };
 
     init();

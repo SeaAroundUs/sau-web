@@ -64,7 +64,7 @@ angular.module('sauWebApp')
     //Provide the region type and ID, and it will return you there proper message.
     getNoDataMessage: function(regionName, regionId) {
       if ((regionName === 'lme' && regionId === 64) || (regionName === 'highseas' && regionId === 18)) {
-        return 'Currently no catches due to ice cover';
+        return 'Currently no catches due to ice cover.';
       } else {
         return 'No data is available for this selection';
       }
