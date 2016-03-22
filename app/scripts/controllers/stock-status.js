@@ -26,7 +26,7 @@ angular.module('sauWebApp')
     $scope.region = sauAPI.Region.get({region: region, region_id: regionId, fao_id: $routeParams.subRegion});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
-    if ((region == 'lme' && regionId == 64) || (region == 'highseas' && regionId == 18)) {
+    if ((region === 'lme' && regionId === 64) || (region === 'highseas' && regionId === 18)) {
       $scope.iceCover = true;
 
     } else {
