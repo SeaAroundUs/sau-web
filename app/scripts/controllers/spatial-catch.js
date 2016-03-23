@@ -175,22 +175,29 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           if (!response.data || response.data.byteLength === 0) {
             throw 'Distribution query data is bad or empty.';
           } else {
-            $scope.boundaries = null;
-            $scope.minCatch = 'Thin';
-            $scope.maxCatch = 'Dense';
-            //$scope.totalCatch.setAllYears(response.data.data.total_catch);
-            map.colorScale = makeCatchMapScale([0, 1/7*255, 2/7*255, 3/7*255, 4/7*255, 5/7*255, 6/7*255, 255], $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
             response = transformCatchResponse(response.data);
-            //Creates a histogram of the cells in the buckets, used for debugging.
-            /*var buckets = [0, 0, 0, 0, 0, 0, 0];
-            for (var i = 0; i < response.length; i++) {
-              if (isNaN(response[i])) {
-                continue;
+            //Show a message to the user if there is no distribution for this taxon.
+            if (response.every(isNaN)) {
+              $scope.queryFailed = 'No taxon distribution exists for the selected taxon.';
+            //Response is successful. Render the layers.
+            } else {
+              $scope.boundaries = null;
+              $scope.minCatch = 'Thin';
+              $scope.maxCatch = 'Dense';
+              //$scope.totalCatch.setAllYears(response.data.data.total_catch);
+              map.colorScale = makeCatchMapScale([0, 1/7*255, 2/7*255, 3/7*255, 4/7*255, 5/7*255, 6/7*255, 255], $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
+            
+              //Creates a histogram of the cells in the buckets, used for debugging.
+              /*var buckets = [0, 0, 0, 0, 0, 0, 0];
+              for (var i = 0; i < response.length; i++) {
+                if (isNaN(response[i])) {
+                  continue;
+                }
+                buckets[map.colorScale.getQuantile(response[i])]++;
               }
-              buckets[map.colorScale.getQuantile(response[i])]++;
+              debugger;*/
+              makeGridLayer(response);
             }
-            debugger;*/
-            makeGridLayer(response);
           }
         }))
         .catch(makeCancellableCallback(numQueriesMade, function notifyFailedQuery() {
