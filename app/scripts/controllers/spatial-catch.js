@@ -175,15 +175,15 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           if (!response.data || response.data.byteLength === 0) {
             throw 'Distribution query data is bad or empty.';
           } else {
+            $scope.boundaries = null;
+            $scope.minCatch = 'Thin';
+            $scope.maxCatch = 'Dense';
             response = transformCatchResponse(response.data);
             //Show a message to the user if there is no distribution for this taxon.
             if (response.every(isNaN)) {
               $scope.queryFailed = 'No taxon distribution exists for the selected taxon.';
             //Response is successful. Render the layers.
             } else {
-              $scope.boundaries = null;
-              $scope.minCatch = 'Thin';
-              $scope.maxCatch = 'Dense';
               //$scope.totalCatch.setAllYears(response.data.data.total_catch);
               map.colorScale = makeCatchMapScale([0, 1/7*255, 2/7*255, 3/7*255, 4/7*255, 5/7*255, 6/7*255, 255], $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
             
@@ -484,6 +484,9 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
         sentence.push('Global biological distribution of ');
         if (query.taxonDistribution.length === 1) {
           var taxonName = $scope.distTaxa.find('common_name', query.taxonDistribution[0]);
+          if (taxonName === null) {
+            return '';
+          }
           taxonName += ' (<em>' + $scope.distTaxa.find('scientific_name', query.taxonDistribution[0]) + '</em>)';
           sentence.push(taxonName);
         } else {
