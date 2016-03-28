@@ -186,7 +186,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             } else {
               //$scope.totalCatch.setAllYears(response.data.data.total_catch);
               map.colorScale = makeCatchMapScale([0, 1/7*255, 2/7*255, 3/7*255, 4/7*255, 5/7*255, 6/7*255, 255], $scope.themes.current().scale.slice()); //Maps cell values to their colors on a rainbow color range.
-            
+
               //Creates a histogram of the cells in the buckets, used for debugging.
               /*var buckets = [0, 0, 0, 0, 0, 0, 0];
               for (var i = 0; i < response.length; i++) {
