@@ -739,16 +739,28 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     //The four watchers below are a patch to keep <selectize> using an Array as the model rather
     //than switching to an integer when the maxItems is 1.
     $scope.$watch('queryCommercialGroup', function syncCommercialGroup() {
-      $scope.query.commercialGroups = [$scope.queryCommercialGroup];
+      $scope.query.commercialGroups = [];
+      if ($scope.queryCommercialGroup) {
+        $scope.query.commercialGroups = [$scope.queryCommercialGroup];
+      }
     });
     $scope.$watch('query.commercialGroups', function syncCommercialGroups() {
-      $scope.queryCommercialGroup = $scope.query.commercialGroups[0];
+      $scope.queryCommercialGroup = null;
+      if ($scope.query.commercialGroups && $scope.query.commercialGroups.length > 0) {
+        $scope.queryCommercialGroup = $scope.query.commercialGroups[0];
+      }
     });
     $scope.$watch('queryFunctionalGroup', function syncFunctionalGroup() {
-      $scope.query.functionalGroups = [$scope.queryFunctionalGroup];
+      $scope.query.functionalGroups = [];
+      if ($scope.queryFunctionalGroup) {
+        $scope.query.functionalGroups = [$scope.queryFunctionalGroup];
+      }
     });
     $scope.$watch('query.functionalGroups', function syncFunctionalGroups() {
-      $scope.queryFunctionalGroup = $scope.query.functionalGroups[0];
+      $scope.queryFunctionalGroup = null;
+      if ($scope.query.functionalGroups && $scope.query.functionalGroups.length > 0) {
+        $scope.queryFunctionalGroup = $scope.query.functionalGroups[0];
+      }
     });
     $scope.$on('$destroy', $scope.$on('$locationChangeSuccess', updateQueryFromUrl));
     $scope.query = {
