@@ -4,7 +4,9 @@
 /* global gju */
 
 angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
-  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location, $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses, catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route, $sce, years) {
+  function ($scope, fishingCountries, taxa, commercialGroups, functionalGroups, sauAPI, $timeout, $location,
+            $filter, $q, createQueryUrl, eezSpatialData, SAU_CONFIG, ga, spatialCatchExamples, reportingStatuses,
+            catchTypes, toggles, spatialCatchThemes, makeCatchMapScale, Keychain, $route, $sce, years) {
     //SAU_CONFIG.env = 'stage'; //Used to fake the staging environment.
 
     //////////////////////////////////////////////////////
@@ -684,7 +686,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
     $scope.years.last = $scope.years[$scope.years.length - 1];
 
     //Taxon distribution dropdown options
-    $scope.distTaxa = taxa.data;
+    $scope.distTaxa = taxa.data.filter(function(taxon) { return taxon.is_taxon_distribution_backfilled !== true; });
     $scope.distTaxa.find = makeArrayQueryable('taxon_key');
 
     $scope.fishingCountries = fishingCountries.data;
