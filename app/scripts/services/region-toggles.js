@@ -62,6 +62,10 @@
         showLegend: false
       }),
 
+      fao: angular.extend({}, defaultToggles, {
+        showDisclaimer: false
+      }),
+
       default: defaultToggles
     };
 

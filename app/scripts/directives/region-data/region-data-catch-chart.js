@@ -225,6 +225,11 @@ angular.module('sauWebApp')
             }
           }
 
+          // short circuit if we don't have reported data
+          if (reportedData === undefined) {
+            return;
+          }
+
           // remove existing line and create new line
           container.select('#reported-line').remove();
           g = container.append('g');
@@ -418,8 +423,9 @@ angular.module('sauWebApp')
 
         // handle no data
         }, function() {
+          var regionId = angular.isArray(dataOptions.region_id) ? dataOptions.region_id[0] : dataOptions.region_id;
           $scope.noData = true;
-          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, dataOptions.region_id);
+          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, regionId);
           spinnerState.loading = false;
         });
       }

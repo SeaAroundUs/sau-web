@@ -35,8 +35,7 @@ angular.module('sauWebApp')
         {
           section: 'Other topics',
           links: [
-            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
-            { text: 'Exploited organisms', url: '#/global/exploited-organisms' }
+            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' }
           ]
         },
         {
@@ -69,8 +68,8 @@ angular.module('sauWebApp')
                 'Country={{ country_id | fishbaseCountryId }}'
             },
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
-            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' }
-            // { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' },
+            { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
           ]
         }, {
           section: 'Other topics',
@@ -160,7 +159,6 @@ angular.module('sauWebApp')
             { text: 'FAO FIRMS', ngUrl: 'http://firms.fao.org/firms/search/area/{{ id }}/en' }
           ]
         },
-        /*
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
@@ -169,7 +167,6 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/fao/{{ id }}/marine-trophic-index' }
           ]
         }
-        */
       ],
 
       // EEZ Bordering
@@ -181,6 +178,10 @@ angular.module('sauWebApp')
           url: '#/eez/{{ id }}',
           text: '{{ title }}',
           checkUnderReview: true
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-multi.html'
         }
       ],
 
@@ -189,6 +190,10 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
         },
         {
           section: 'Ecosystems',
@@ -235,6 +240,10 @@ angular.module('sauWebApp')
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity-lme.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
         },
         {
           section: 'Ecosystems',

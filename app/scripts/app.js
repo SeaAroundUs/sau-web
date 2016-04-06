@@ -300,6 +300,12 @@ angular
           controller: 'RegionDataCtrl',
           reloadOnSearch: false,
           resolve: {region: function() {return 'eez-bordering';}}
+        })
+        .when('/eez-bordering/:id/exploited-organisms', {
+          templateUrl: 'views/exploited-organisms.html',
+          controller: 'ExploitedOrganismsCtrl',
+          resolve: {region: function() {return 'eez-bordering';}},
+          reloadOnSearch: false
         });
     }
 
@@ -384,6 +390,9 @@ angular
             },
             eezSpatialData: function (sauAPI) {
               return sauAPI.Regions.get({region: 'eez'}).$promise;
+            },
+            years: function (sauAPI) {
+              return sauAPI.Years.get().$promise;
             }
           }
         });

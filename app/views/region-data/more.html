@@ -1,11 +1,15 @@
 <div id="region-data-more">
   <h2>More info</h2>
   <p ng-repeat="section in moreData" ng-class="section.class">
-    <span ng-if="section.section && (!section.template || region.id)" ng-bind-html="trustAsHtml(section.section)" class="section"></span>
+    <span ng-if="section.section && ((!section.template && !section.multiTemplate) ||
+                                     (section.multiTemplate && !region.id) ||
+                                     (section.template && region.id))"
+          ng-bind-html="trustAsHtml(section.section)" class="section"></span>
     <span ng-if="link.url" ng-repeat="link in section.links" class="link">
       <a ng-href="{{ link.url }}" ng-class="{ 'under-review': link.underReview }" ng-bind="link.text"></a>
     </span>
     <span ng-if="section.underReview" class="under-review-label"><span>*</span> Data under review</span>
     <span ng-if="section.template && region.id" ng-include="section.template"></span>
+    <span ng-if="section.multiTemplate && !region.id" ng-include="section.multiTemplate"></span>
   </p>
 </div>

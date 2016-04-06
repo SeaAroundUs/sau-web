@@ -26,14 +26,24 @@ angular.module('sauWebApp')
     $scope.region = sauAPI.Region.get({region: region, region_id: regionId, fao_id: $routeParams.subRegion});
     $scope.docsMethodsURL = externalURLs.sspMethods;
 
-    var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
+    if ((region === 'lme' && parseInt(regionId) === 64) || (region === 'highseas' && parseInt(regionId) === 18)) {
+      $scope.iceCover = true;
+
+    } else {
+      var data = sauAPI.StockStatusData.get({region: region, region_id: regionId, sub_area_id: $routeParams.subRegion},
         function() {
           $scope.showDownload = true;
-          angular.forEach(data.data, function(data_set, key) {
-            $scope.data[key] = data_set;
-          });
+          if (!data.data) {
+            $scope.data.css = [];
+            $scope.data.nss = [];
+          } else {
+            angular.forEach(data.data, function(data_set, key) {
+              $scope.data[key] = data_set;
+            });
+          }
         }
-    );
+      );
+    }
 
     $scope.downloadModalGA = {
       category: 'DownloadModal',
@@ -57,7 +67,7 @@ angular.module('sauWebApp')
         useInteractiveGuideline: true,
         xAxis: {
           showMaxMin: false,
-          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020],
+          tickValues: [1950,1960,1970,1980,1990,2000,2010,2020,2030],
           axisLabel: 'Year'
         },
         yAxis: {

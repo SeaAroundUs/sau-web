@@ -1,7 +1,6 @@
 <div id="spatial-catch" class="page-controller saustrap">
-  <h1 class="main-title">Catch allocations map</h1>
+  <h1 class="main-title">Mapped data</h1>
   <ul id="side-menu" class="pull-right list-unstyled text-right">
-    <li><method anchor="13"></method></li>
     <li><a href="/using-spatial-data-displays" target="_blank">How to use this tool</a></li>
   </ul>
 
@@ -21,57 +20,87 @@
   <p><a ng-show="catchGraphLink" ng-href="{{catchGraphLink}}" toggle-hide="fishingEntity"><i class="fa fa-area-chart"></i> {{catchGraphLinkText}}</a></p>
 
   <!-- NOTE -->
-  <p id="note"><strong>Note:</strong> The data we present ('reconstructed data') combine official reported data and reconstructed estimates of unreported data (including major discards), with reference to individual EEZs. Official reported data are <a popover="National data are used for some countries." popover-trigger="mouseenter">mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) <a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. For background information on reconstruction data, download the .pdf associated with each relevant EEZ.</p>
+  <p id="note"><strong>Note:</strong> The catch data we present ('reconstructed data') combine official reported catch data and reconstructed estimates of unreported catches (including major discards), with reference to individual EEZs. Official reported catch data are <a popover="National data are used for some countries." popover-trigger="mouseenter">mainly</a> extracted from the Food and Agriculture Organization of the United Nations (FAO) <a href="http://www.fao.org/fishery/statistics/en" target="_blank">FishStat database</a>. For background information on reconstruction data, download the .pdf associated with each relevant EEZ. The taxon distributions represent the most up-to-date information on biological distribution of taxa, as assembled by <a href="http://www.fishbase.org/" target="_blank">FishBase​</a> ​and <a href="http://www.sealifebase.org/" target="_blank">SeaLifeBase​</a>.
 
   <!-- MAIN QUERY PANEL -->
   <div class="sau-panel">
     <div id="query-inputs">
 
-      <div class="row">
-        <div class="col-xs-12">
-          <span ng-init="showAllocationFields = true" class="expand-collapse-button" ng-click="showAllocationFields = !showAllocationFields">
-            <div class="expand-collapse-icon" ng-class="{'expand-icon': !showAllocationFields, 'collapse-icon': showAllocationFields}"></div>
-            <span class="expand-collapse-label">MAP CATCH ALLOCATION</span>
-            <a popover="Displays where fish are caught. Select a fishing country and a year." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
-          </span>
+       <!-- Allocation query section -->
+      <div id="allocation-query-section">
+        <!-- Allocation form header -->
+        <div class="row">
+          <div class="col-xs-10">
+            <span ng-init="visibleForm = 0" class="expand-collapse-button" ng-click="toggleFormVisibility()">
+              <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 0, 'collapse-icon': visibleForm === 0}"></div>
+              <span class="expand-collapse-label">CATCH ALLOCATION</span>
+              <a popover="Select fishing countries and/or taxa and use the slider to see catch allocation over time." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+            </span>
+          </div>
+          <div class="col-xs-2"><method class="pull-right" anchor="13"></method></div>
         </div>
+        <!-- Allocation form -->
+        <form novalidate ng-show="visibleForm === 0">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="query-field-label">Fishing countries</label>
+              <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
+            </div>
+            <div class="col-md-2">
+              <div class="catches-by-query"><label class="query-field-label" for="selectCatchesBy">Catches by</label></div>
+              <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
+                <option value="taxa">Taxon</option>
+                <option value="commercial groups">Commercial group</option>
+                <option value="functional groups">Functional group</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <div ng-show="query.catchesBy === 'taxa'">
+                <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
+                <taxa-selectize options="allocTaxa" items="query.taxa"></taxa-selectize>
+              </div>
+              <div ng-show="query.catchesBy === 'commercial groups'">
+                <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group</label></div>
+                <selectize ng-model="queryCommercialGroup" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select one...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
+              </div>
+              <div ng-show="query.catchesBy === 'functional groups'">
+                <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group</label></div>
+                <selectize ng-model="queryFunctionalGroup" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select one...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="timeline" class="col-md-12">
+              <spatial-catch-timeline loading-progress="0" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()" first-year="years.first" last-year="years.last"></spatial-catch-timeline>
+            </div>
+          </div>
+        </form>
       </div>
 
-      <form novalidate ng-show="showAllocationFields">
+      <!-- Distribution query section -->
+      <div id="distribution-query-section">
+        <!-- Distribution form header -->
         <div class="row">
-          <div class="col-md-4">
-            <label class="query-field-label" for="selectFishingCountries">Fishing countries</label>
-            <selectize ng-model="query.fishingCountries" options="fishingCountries" config="{valueField: 'id', labelField: 'title', placeholder: 'Select...', sortField: 'title', searchField: ['title'], plugins: ['remove_button']}"></selectize>
+          <div class="col-xs-10">
+            <span class="expand-collapse-button" ng-click="toggleFormVisibility()">
+              <div class="expand-collapse-icon" ng-class="{'expand-icon': visibleForm !== 1, 'collapse-icon': visibleForm === 1}"></div>
+              <span class="expand-collapse-label">TAXON DISTRIBUTION</span>
+              <a popover="Displays where animals live. Select a taxon to see its biological distribution on a map." popover-trigger="mouseenter"><i class="info-icon fa fa-info-circle"></i></a>
+            </span>
           </div>
-          <div class="col-md-2">
-            <div class="catches-by-query"><label class="query-field-label" for="selectCatchesBy">Catches by</label></div>
-            <select id="selectCatchesBy" placeholder="Select" class="form-control" ng-model="query.catchesBy">
-              <option value="taxa">Taxon</option>
-              <option value="commercial groups">Commercial group</option>
-              <option value="functional groups">Functional group</option>
-            </select>
-          </div>
-          <div class="col-md-6">
-            <div ng-show="query.catchesBy === 'taxa'">
-              <div class="catches-by-query"><label class="query-field-label">Taxon/taxa</label></div>
-              <taxa-selectize options="taxa" items="query.taxa"></taxa-selectize>
-            </div>
-            <div ng-show="query.catchesBy === 'commercial groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Commercial group</label></div>
-              <selectize ng-model="queryCommercialGroup" options="commercialGroups" config="{valueField: 'commercial_group_id', labelField: 'name', placeholder: 'Select one...', sortField: 'name', searchField: ['name'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
-            </div>
-            <div ng-show="query.catchesBy === 'functional groups'">
-              <div class="catches-by-query"><label class="query-field-label" for="selectTaxa">Functional group</label></div>
-              <selectize ng-model="queryFunctionalGroup" options="functionalGroups" config="{valueField: 'functional_group_id', labelField: 'description', placeholder: 'Select one...', sortField: 'description', searchField: ['description'], plugins: ['remove_button'], maxItems: 1}" ></selectize>
-            </div>
-          </div>
+          <div class="col-xs-2"><method class="pull-right" anchor="catch-reconstruction-and-allocation-methods/taxon-distributions"></method></div>
         </div>
-        <div class="row">
-          <div class="timeline" class="col-md-12">
-            <spatial-catch-timeline loading-progress="0" ng-model="currentYear" on-slide-stop-debounce="onTimelineRelease()"></spatial-catch-timeline>
+        <!-- Distribution form -->
+        <form novalidate ng-show="visibleForm === 1">
+          <div class="row">
+            <div class="col-md-12">
+              <label class="query-field-label">Taxa</label>
+              <taxa-selectize options="distTaxa" items="query.taxonDistribution" max-items="1"></taxa-selectize>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
+
     </div>
     <div class="row" ng-show="isQueryValid(query) && !isQueryEqual(lastQuery, query)">
       <div class="col-xs-12">
@@ -82,12 +111,12 @@
     <div id="spatial-catch-legend" ng-if="queryResolved">
       <div class="row legend-row" ng-if="isAllocationQueryValid(lastQuery)">
         <div class="col-md-12 legend-column">
-          <spatial-catch-legend-key key-name="lastQuerySentence" key-name-second="'(Total: ' + (totalCatch.forYear(currentYear) | totalCatchUnits).toString() + ')'" colors="themes.current().scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
+          <spatial-catch-legend-key key-name="lastQuerySentence" colors="themes.current().scale" min-label="minCatch | catchGridUnits" max-label="maxCatch | catchGridUnits" boundaries="boundaries" curr-value="cellValue"></spatial-catch-legend-key>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
-          <ocean-legend color="themes.current().ocean"></ocean-legend>
+          <ocean-legend label="oceanLegendLabel" color="themes.current().ocean"></ocean-legend>
         </div>
       </div>
       <div class="row" ng-show="queryResponseErrorMessage">
@@ -101,7 +130,7 @@
         <a href ng-click="zoomMapIn()"><div class="zoom-in-control"></div></a>
         <a href ng-click="zoomMapOut()"><div class="zoom-out-control"></div></a>
       </div>
-      <div id="cell-map-loading-overlay" ng-show="loadingProgress < 1 || !currentYearHasGrid() || isRendering">
+      <div id="cell-map-loading-overlay" ng-show="loadingProgress < 1 || !currentYearHasGrid() || isRendering || queryFailed">
         <div ng-show="!queryFailed">
           <p><i class="fa fa-spinner"></i></p>
           <p>
@@ -109,7 +138,7 @@
           </p>
         </div>
         <div ng-show="queryFailed">
-            <p>Catch data for this query does not exist.</p>
+            <p>{{queryFailed}}</p>
         </div>
       </div>
       <div ng-show="hoverEEZ" class="hover-eez-tooltip">

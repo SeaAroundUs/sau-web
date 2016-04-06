@@ -31,7 +31,7 @@ angular.module('sauWebApp')
             useInteractiveGuideline: true,
             xAxis: {
               showMaxMin: false,
-              tickValues: [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020]
+              tickValues: [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020, 2030]
             },
             yAxis: {
               axisLabel: 'Percent of global catch'

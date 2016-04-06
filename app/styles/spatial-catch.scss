@@ -30,7 +30,7 @@
   }
 
   #query-inputs {
-  	padding-top: 20px;zoom-controls
+  	padding-top: 20px;
 
   	.col-md-2, .col-md-4 {
   		padding-left: 8px;
@@ -365,5 +365,13 @@
     text-align: center;
     text-shadow: -1px 1px 0px #FFF, 1px -1px 1px #fff;
     font-weight: 500;
+  }
+
+  #allocation-query-section {
+    border-bottom: 1px solid #aaaaaa;
+  }
+
+  #distribution-query-section {
+    margin-top: 20px;
   }
 }

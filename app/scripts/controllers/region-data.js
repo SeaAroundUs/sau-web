@@ -24,7 +24,7 @@ angular.module('sauWebApp')
 
     angular.extend($scope, {
       chart: getChartType(),
-      leftCol: ['fishing-entity', 'taxa'].indexOf(region) === -1 && ids.length === 1,
+      leftCol: ['fishing-entity', 'taxa'].indexOf(region) === -1,
       region: {
         name: region,
         id: ids.length > 1 ? null : ids[0],
@@ -46,7 +46,6 @@ angular.module('sauWebApp')
     function handleURL(newRegion, oldRegion) {
       if (newRegion.id === null || newRegion.id !== oldRegion.id) {
         $scope.region.faoId = null;
-        console.log($scope.region);
       }
     }
   });

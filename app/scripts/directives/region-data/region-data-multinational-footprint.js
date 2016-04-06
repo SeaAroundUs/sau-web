@@ -118,6 +118,17 @@ angular.module('sauWebApp')
         // reset download url
         clearDataDownloadURL();
 
+        // check for ice cover
+        var regionId = angular.isArray($scope.region.id) ? $scope.region.id[0] : $scope.region.id;
+        if (($scope.region.name === 'lme' && regionId === 64) ||
+          ($scope.region.name === 'highseas' && regionId === 18)) {
+          $scope.noData = true;
+          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, regionId);
+          $location.search('subRegion', $scope.region.faoId);
+          spinnerState.loading = false;
+          return null;
+        }
+
         // get data from API
         sauAPI.MultinationalFootprintData.get(dataOptions, function(res) {
           var data = res.data;
@@ -171,8 +182,11 @@ angular.module('sauWebApp')
 
           // update chart title
           sauAPI.Region.get({ region: $scope.region.name, region_id: $scope.region.id}, function(res) {
+            var isFAO = $scope.region.name === 'fao';
+            var faoPrefix = isFAO ? 'FAO area ' : '';
+            var faoSuffix = isFAO ? ' ('+ $scope.region.id +')' : '';
             regionDataCatchChartTitleGenerator.setTitle('Primary Production Required for catches in ' +
-              (res.data.title ? 'the waters of ' + res.data.title : 'the global ocean') +
+              (res.data.title ? 'the waters of ' + faoPrefix + res.data.title + faoSuffix : 'the global ocean') +
               ($scope.region.faoId && $scope.faos ? ' - ' + $scope.faos.reduce(function(name, fao) {
                 return fao.id === $scope.region.faoId ? fao.title : name;
               }, 'Unknown') : '')
@@ -195,8 +209,9 @@ angular.module('sauWebApp')
 
           // handle no data
         }, function() {
+          var regionId = angular.isArray(dataOptions.region_id) ? dataOptions.region_id[0] : dataOptions.region_id;
           $scope.noData = true;
-          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, dataOptions.region_id);
+          $scope.noDataMessage = sauChartUtils.getNoDataMessage(dataOptions.region, regionId);
           $location.search('subRegion', $scope.region.faoId);
           spinnerState.loading = false;
         });

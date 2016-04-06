@@ -9,7 +9,7 @@
       </td>
       <td>{{ metric.value | number }} <span ng-bind-html="metric.units"></span></td>
     </tr>
-    <tr ng-if="region.name === 'eez'">
+    <tr ng-if="region.name === 'eez' && region.id">
       <td><a target="_blank" href="/sea-around-us-area-parameters-and-definitions/#_Toc421807904">EEZ declaration year</a></td>
       <td ng-bind="declaration_year"></td>
     </tr>

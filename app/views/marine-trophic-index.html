@@ -15,7 +15,7 @@
       </h2>
       <div class='menu pull-right'>
         <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
-              ga-event="downloadModalGA" ng-hide="noData">Download Data</button>
+              ga-event="downloadModalGA" ng-hide="noData || iceCover">Download Data</button>
         <p>
           <feedback></feedback>
         </p>
@@ -28,7 +28,12 @@
   <div ng-show="noData">
     <p class="no-data">Not enough data available</p>
   </div>
-  <div ng-hide="noData">
+
+  <div ng-show="iceCover">
+    <p class="no-data">Currently no catches due to ice cover.</p>
+  </div>
+
+  <div ng-hide="noData || iceCover">
 
     <nvd3 options='rmtiOptions' data='rmtiData' api='rmtiAPI'></nvd3>
 
@@ -43,7 +48,7 @@
           <h2>Fishing in Balance Index</h2>
           <div class="menu pull-right">
             <button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
-              ga-event="downloadModalGA" ng-hide="noData">Download Data</button>
+              ga-event="downloadModalGA" ng-hide="noData || iceCover">Download Data</button>
 
               <p>
                 <a class="show-hide-tabular" ng-hide="showTabular" ng-click="showTabular = true">Show tabular data</a>

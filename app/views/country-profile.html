@@ -1,6 +1,6 @@
 <div class="content-container" id="country-profile">
     <h2>Country profile: <span ng-bind="profile.country"></span></h2>
-    <a target="_blank" ng-href="{{profile.fao_profile_url}}">FAO Profile</a>
+    <a target="_blank" ng-href="{{profile.fao_profile_url}}" ng-show="profile.fao_profile_url">FAO Profile</a>
 
     <h4>Governmental Organization(s)</h4>
     <p>
@@ -9,7 +9,10 @@
         <br />
         <span class="title">Fisheries management entity:</span>
         <br />
-        <a target="_blank" ng-href="{{profile.url_fish_mgt_plan}}" ng-bind="profile.fish_mgt_plan"></a>
+        <a target="_blank"
+           ng-href="{{profile.url_fish_mgt_plan}}"
+           ng-bind="profile.fish_mgt_plan"
+           ng-show="profile.url_fish_mgt_plan"></a>
     </p>
 
     <p>
@@ -18,7 +21,10 @@
         <br />
         <span class="title">Major law/legislation:</span>
         <br />
-        <a target="_blank" ng-href="{{profile.url_major_law_plan}}" ng-bind="profile.major_law_plan"></a>
+        <a target="_blank"
+           ng-href="{{profile.url_major_law_plan}}"
+           ng-bind="profile.major_law_plan"
+           ng-show="profile.url_major_law_plan"></a>
     </p>
 
     <h4>Non-governmental organization(s) covering marine issues:</h4>
@@ -31,7 +37,10 @@
         email:
         <span ng-bind="ngo.email"></span></span><span ng-show="ngo.website">,
             Website:
-            <a target="_blank" ng-href="{{ngo.website}}" ng-bind="ngo.website"></a>
+            <a target="_blank"
+               ng-href="{{ngo.website}}"
+               ng-bind="ngo.website"
+               ng-show="ngo.website"></a>
         </span>
     </p>
 </div>

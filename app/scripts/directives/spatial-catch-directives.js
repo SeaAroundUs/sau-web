@@ -23,6 +23,17 @@ angular.module('sauWebApp')
       },
       controller: function ($scope, $timeout) {
 
+        $scope.$watch('boundaries', function() {
+          $scope.boundariesTooltips = [];
+          if (!$scope.boundaries) {
+            return;
+          }
+
+          for (var i = 0; i < $scope.boundaries.length - 1; i++) {
+            $scope.boundariesTooltips[i] = $scope.boundaries[i].toExponential(1) + ' to ' + $scope.boundaries[i + 1].toExponential(1) + ' t/km²';
+          }
+        });
+
         function colorAll() {
           if (!$scope.colors) {
             console.log('No colors specified in spatial catch legend key. Cannot render.');
@@ -60,12 +71,21 @@ angular.module('sauWebApp')
       require: 'ngModel',
       scope: {
         onSlideStopDebounce: '&',
-        loadingProgress: '='
+        loadingProgress: '=',
+        firstYear: '=',
+        lastYear: '='
       },
       link: function (scope, element, attrs, ngModelCtrl) {
         var slider = angular.element('#timeline-slider').slider();
         var sliderReleasedPromise;
         var progressBarElement;
+        scope.yearTicks = getYearTicks();
+        scope.yearTickLabels = getYearTickLabels();
+
+        //Updates the slider's layout when it goes from hidden to visible and vice versa.
+        scope.$on('toggleFormVis', function() {
+          refreshSlider();
+        });
 
         slider.on('change', function(event) {
           ngModelCtrl.$setViewValue(event.value.newValue);
@@ -87,10 +107,7 @@ angular.module('sauWebApp')
         });
 
         ngModelCtrl.$render = function() {
-          $timeout(function() {
-            slider.slider('refresh');
-            slider.slider('setValue', ngModelCtrl.$viewValue);
-          });
+          refreshSlider();
         };
 
         ngModelCtrl.$parsers.push(function(viewValue) {
@@ -101,6 +118,13 @@ angular.module('sauWebApp')
           return Math.round(scope.loadingProgress * 100) + '%';
         }
 
+        function refreshSlider() {
+          $timeout(function() {
+            slider.slider('refresh');
+            slider.slider('setValue', ngModelCtrl.$viewValue);
+          });
+        }
+
         //Create the progress bar.
         $timeout(function createProgressBar () {
           progressBarElement = $('.slider-track-high').clone().insertBefore('.slider-track-high').removeClass('right').css({left: '0px', backgroundColor: '#2F5B82', width: progressToCssWidth()});
@@ -108,6 +132,22 @@ angular.module('sauWebApp')
             progressBarElement.css('width', progressToCssWidth());
           });
         });
+
+        function getYearTicks() {
+          var yearTicks = [];
+          for (var i = scope.firstYear; i <= scope.lastYear; i++) {
+            if (i % 10 === 0 || i === scope.lastYear) {
+              yearTicks.push(i);
+            }
+          }
+          return yearTicks;
+        }
+
+        function getYearTickLabels() {
+          var ticks = getYearTicks();
+          var labels = [ticks[0], ticks[ticks.length]];
+          return labels;
+        }
       }
     };
   })
@@ -118,7 +158,8 @@ angular.module('sauWebApp')
       replace: true,
       scope: {
         options: '=',
-        items: '='
+        items: '=',
+        maxItems: '='
       },
       link: function (scope, element) {
         /*
@@ -160,7 +201,7 @@ angular.module('sauWebApp')
           searchField: ['common_name', 'scientific_name'],
           plugins: ['remove_button'],
           maxOptions: null,
-          maxItems: 10,
+          maxItems: scope.maxItems || 10,
           render: {item: makeTaxaDropdownItem, option: makeTaxaDropdownItem}
         };
 
@@ -177,7 +218,8 @@ angular.module('sauWebApp')
       templateUrl: 'views/spatial-catch/spatial-catch-ocean-legend.html',
       restrict: 'E',
       scope: {
-        color: '='
+        color: '=',
+        label: '='
       },
       link: function (scope, element) {
         var keyElement = element.find('.ocean-legend-key');
