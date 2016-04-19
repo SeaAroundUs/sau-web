@@ -53,8 +53,9 @@
 				<td>{{x.end_year}}</td>
 				<td>Data not available</td>
 				<td>
-					<a ng-href="{{x.source_link}}" target="_blank" ng-show="!!x.source_link">Link</a>
-					<span ng-show="!x.source_link">No link</span>
+					<a ng-href="{{x.source_link}}" target="_blank" ng-show="!!x.source_link && x.source_link.indexOf('http://')==0">Link</a>
+          <span ng-show="!!x.source_link && x.source_link.indexOf('http://')!=0">{{x.source_link}}</span>
+          <span ng-show="!x.source_link">No link</span>
 				</td>
 			</tr>
 		</table>
