@@ -182,7 +182,14 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
             $scope.maxCatch = 'Dense';
             response = transformCatchResponse(response.data);
             //Show a message to the user if there is no distribution for this taxon.
-            if (response.every(isNaN)) {
+            var hasOneValue = false;
+            for (var i = 0; i < response.length; i++) {
+              if (! isNaN(response[i])) {
+                hasOneValue = true;
+                break;
+              }
+            }
+            if (!hasOneValue) {
               $scope.queryFailed = 'No taxon distribution exists for the selected taxon.';
             //Response is successful. Render the layers.
             } else {
