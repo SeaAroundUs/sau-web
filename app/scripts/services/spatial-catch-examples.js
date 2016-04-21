@@ -48,16 +48,6 @@ angular.module('sauWebApp')
             600069
           ]
         }
-      }, {
-        sentence: 'See global yellowfin tuna distribution',
-        query: {
-          fishingCountries: [],
-          catchesBy: 'taxa',
-          taxa: [],
-          taxonDistribution: [
-            600143
-          ]
-        }
       }
     ];
   });
