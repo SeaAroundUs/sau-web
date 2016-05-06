@@ -259,7 +259,7 @@ angular.module('sauWebApp')
               fill: 'white',
               height: 20,
               width: 113,
-              transform: 'translate(18,' + (y(reportedData[4][1]) - 115) +')'
+              transform: 'translate('+ (x(reportedData[4][0]) - 50) +',' + (y(reportedData[4][1]) - 115) +')'
             });
           g.append('line')
             .attr({
@@ -275,7 +275,7 @@ angular.module('sauWebApp')
             .attr({
               fill: 'black',
               style: 'font-size: 16px;',
-              transform: 'translate(20,' + (y(reportedData[4][1]) - 100) +')'
+              transform: 'translate('+ (x(reportedData[4][0]) - 50) + ',' + (y(reportedData[4][1]) - 100) +')'
             });
         });
       }

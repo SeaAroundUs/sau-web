@@ -79,7 +79,7 @@ angular.module('sauWebApp')
     };
 
     var layer = {
-      'label': 'Layer',
+      'label': 'Data layer',
       'value': 'layer',
       showDimensionLimit: false
     };
