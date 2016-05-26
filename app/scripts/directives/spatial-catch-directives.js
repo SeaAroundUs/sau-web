@@ -88,6 +88,11 @@ angular.module('sauWebApp')
         });
 
         slider.on('change', function(event) {
+          if (event.value.newValue > scope.lastYear) {
+            event.value.newValue = scope.lastYear;
+            slider.slider('setValue', scope.lastYear);
+            return;
+          }
           ngModelCtrl.$setViewValue(event.value.newValue);
         });
 
