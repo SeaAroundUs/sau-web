@@ -20,7 +20,7 @@ angular.module('sauWebApp')
 
           ele.find('#important-note').append(popup);
 
-          popup.find('.x').on('load', function() {
+          popup.find('.x').on('click', function() {
             popup.addClass('hidden');
           });
 
