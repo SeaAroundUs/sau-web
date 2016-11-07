@@ -11,7 +11,7 @@ angular.module('sauWebApp')
         scope.$watch('region', updateScope, true);
 
         $timeout(function() {
-          var popup = angular.element('<div class="important-note-popup hidden">' +
+          var popup = angular.element('<div class="important-note-popup">' +
             '<div class="blue-bar"><span class="x"><i class="fa fa-times"></i></span></div>' +
             '<i class="fa fa-exclamation-triangle"></i> ' +
             regionDataMoreLinks.getImportantNote(scope.region) +
@@ -20,7 +20,7 @@ angular.module('sauWebApp')
 
           ele.find('#important-note').append(popup);
 
-          popup.find('.x').on('click', function() {
+          popup.find('.x').on('load', function() {
             popup.addClass('hidden');
           });
 
