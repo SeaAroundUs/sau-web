@@ -11,7 +11,7 @@ angular.module('sauWebApp')
         scope.$watch('region', updateScope, true);
 
         $timeout(function() {
-          var popup = angular.element('<div class="important-note-popup">' +
+          var popup = angular.element('<div class="important-note-popup hidden">' +
             '<div class="blue-bar"><span class="x"><i class="fa fa-times"></i></span></div>' +
             '<i class="fa fa-exclamation-triangle"></i> ' +
             regionDataMoreLinks.getImportantNote(scope.region) +
