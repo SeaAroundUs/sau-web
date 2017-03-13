@@ -40,7 +40,7 @@
         Northern limit:
           <span ng-show="taxon.lat_north < 0">{{taxon.lat_north * -1}}&deg;S;</span>
           <span ng-hide="taxon.lat_north < 0">{{taxon.lat_north}}&deg;N;</span>
-        Southern limit:
+        southern limit:
           <span ng-show="taxon.lat_south < 0">{{taxon.lat_south * -1}}&deg;S</span>
           <span ng-hide="taxon.lat_south < 0">{{taxon.lat_south}}&deg;N</span>
       </td>
@@ -49,7 +49,7 @@
 			<td class="table-key">Bottom depth range:</td>
       <td class="table-value">
         Min. depth: {{taxon.min_depth}} m;
-        Max depth:
+        max. depth:
         <span ng-hide="taxon.max_depth === 9999">{{taxon.max_depth}} m</span>
         <span ng-show="taxon.max_depth === 9999">none</span>
       </td>
