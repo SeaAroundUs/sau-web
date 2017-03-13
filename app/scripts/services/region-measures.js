@@ -12,12 +12,12 @@ angular.module('sauWebApp')
 
     var defaultMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
-      {label: 'Landed value', value: 'value', chartlabel: 'Real 2005 value (million US$)', titleLabel: 'Real 2005 value (US$) by'}
+      {label: 'Landed value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) by'}
     ];
 
     var taxonMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Global catches of'},
-      {label: 'Landed value', value: 'value', chartlabel: 'Real 2005 value (million US$)', titleLabel: 'Real 2005 value (US$) of global catches of'}
+      {label: 'Landed value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) of global catches of'}
     ];
 
     return {
