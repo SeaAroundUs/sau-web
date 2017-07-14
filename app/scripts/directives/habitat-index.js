@@ -76,6 +76,7 @@
         var xLabels = [
           'estuaries',
           'coral',
+          'front',
           'seamount',
           'others',
           'shelf',
