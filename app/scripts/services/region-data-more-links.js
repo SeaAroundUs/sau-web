@@ -218,6 +218,7 @@ angular.module('sauWebApp')
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
           links: [
+            { text: 'Global Slavery Index', ngUrl: '{{ gsi_link }}' },
             { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status', subRegion: true },
             { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint', subRegion: true },
             { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
