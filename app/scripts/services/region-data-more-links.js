@@ -5,13 +5,14 @@ angular.module('sauWebApp')
     var importantNotes = {
       global: 'Much confusion surrounds the notion of ecosystem indicators. Some believe ecosystem ' +
       'indicators are whatever one can measure that impacts ecosystems, i.e. sea surface temperatures. ' +
-      'However, to be of use, indicators must summarize in a single number a variety of complex ' +
-      'processes that are otherwise hard to apprehend. Moreover, besides description, indicators ' +
-      'must allow for communication, and, ideally, for intervention. We present a small number of ' +
-      'indicators based on the only data available globally on fisheries (i.e., catch data) that we ' +
-      'think are useable. Select an indicator to view analysis based on Sea Around Us and other data.'
+      'However, to be of use, indicators must summarize in a single number a variety of complex processes ' +
+      'that are otherwise hard to apprehend. Moreover, besides description, indicators must allow for ' +
+      'communication, and, ideally, for intervention. We present a small number of indicators that are ' +
+      'either available globally, or could be derived, on a global basis, from the Sea Around Us ' +
+      'reconstructed catches. Contact us for suggestion of other indicators, either from third parties, ' +
+      'or which could be derived from catch data.'
     };
-
+	
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
