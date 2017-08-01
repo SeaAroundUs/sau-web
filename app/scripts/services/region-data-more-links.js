@@ -4,7 +4,7 @@ angular.module('sauWebApp')
   .factory('regionDataMoreLinks', function() {
     var importantNotes = {
       global: 'Much confusion surrounds the notion of ecosystem indicators. Some believe ecosystem ' +
-      'indicators are whatever one can measure that impacts ecosystems, i.e. sea surface temperatures. ' +
+      'indicators are whatever one can measure that impacts ecosystems, i.e., sea surface temperatures. ' +
       'However, to be of use, indicators must summarize in a single number a variety of complex processes ' +
       'that are otherwise hard to apprehend. Moreover, besides description, indicators must allow for ' +
       'communication, and, ideally, for intervention. We present a small number of indicators that are ' +
