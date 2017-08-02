@@ -34,9 +34,10 @@ angular.module('sauWebApp')
           ]
         },
         {
-          section: 'Other topics',
+          section: 'Other global datasets',
           links: [
-            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' }
+            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
+            { text: 'Mesopelagic Biomass', url: '/mesopelagic-biomass/' }
           ]
         },
         {
