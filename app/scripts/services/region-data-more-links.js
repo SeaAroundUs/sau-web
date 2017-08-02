@@ -12,7 +12,7 @@ angular.module('sauWebApp')
       'reconstructed catches. Contact us for suggestion of other indicators, either from third parties, ' +
       'or which could be derived from catch data.'
     };
-	
+  
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
