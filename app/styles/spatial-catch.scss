@@ -50,6 +50,7 @@
   .query-field-label {
     font-size: normal;
   	font-weight: bold;
+	padding-bottom: 3px;
 
     .not-bold {
       font-weight: normal !important;
@@ -319,7 +320,7 @@
 
   #taxonDistributionInput {
     .selectize-control {
-      padding-bottom: 10px;
+      padding-bottom: 0;
     }
   }
 
