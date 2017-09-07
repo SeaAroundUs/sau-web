@@ -45,7 +45,7 @@ angular.module('sauWebApp')
       rfmo: {
         graphResultsPath: 'rfmo',
         regionListTitle: 'RFMOs',
-        selectedListTitle: 'Selected RFMOs',
+        selectedListTitle: 'Selected RFMO',
         searchPlaceholder: 'Search RFMOs',
         selectionLimit: 1,
         getRegionData: function() {

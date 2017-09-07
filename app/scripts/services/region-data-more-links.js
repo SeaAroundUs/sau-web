@@ -12,7 +12,7 @@ angular.module('sauWebApp')
       'reconstructed catches. Contact us for suggestion of other indicators, either from third parties, ' +
       'or which could be derived from catch data.'
     };
-	
+
     importantNotes['country-eezs'] = importantNotes.global;
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
@@ -34,9 +34,10 @@ angular.module('sauWebApp')
           ]
         },
         {
-          section: 'Other topics',
+          section: 'Other global datasets',
           links: [
-            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' }
+            { text: 'Fuel consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
+            { text: 'Mesopelagic biomass', url: '/mesopelagic-biomass/' }
           ]
         },
         {
