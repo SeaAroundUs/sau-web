@@ -15,6 +15,11 @@
           regions: sauAPI.Regions.get({region: 'lme'})
         },
         {
+          title: 'MEOW',
+          text: 'Select Marine Ecoregions of the World (MEOW)',
+          regions: sauAPI.Regions.get({region: 'meow'})
+        },
+        {
           title: 'RFMO',
           text: 'Select Regional Fisheries Management Organization (RFMO)',
           regions: sauAPI.Regions.get({region: 'rfmo'})

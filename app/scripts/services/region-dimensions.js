@@ -72,6 +72,12 @@ angular.module('sauWebApp')
       showDimensionLimit: true
     };
 
+    var meow = {
+      'label': 'MEOW',
+      'value': 'meow',
+      showDimensionLimit: true
+    };
+
     var highseas = {
       'label': 'High Seas',
       'value': 'highseas',
@@ -95,6 +101,7 @@ angular.module('sauWebApp')
     return {
       eez: eezDefaultDimensions,
       lme: defaultDimensions,
+      meow: defaultDimensions,
       highseas: defaultDimensions,
       mariculture: maricultureDimensions,
       global: defaultDimensions,

@@ -42,6 +42,17 @@ angular.module('sauWebApp')
         },
         getSearchOptions: defaultGetSearchOptions
       },
+      meow: {
+        graphResultsPath: 'meow',
+        regionListTitle: 'MEOWs',
+        selectedListTitle: 'Selected MEOWs',
+        searchPlaceholder: 'Search MEOWs',
+        selectionLimit: 10,
+        getRegionData: function() {
+          return sauAPI.Regions.get({region: 'meow', nospatial: true});
+        },
+        getSearchOptions: defaultGetSearchOptions
+      },
       rfmo: {
         graphResultsPath: 'rfmo',
         regionListTitle: 'RFMOs',

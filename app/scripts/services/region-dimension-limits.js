@@ -20,6 +20,7 @@ angular.module('sauWebApp')
     return {
       eez: defaultLimits,
       lme: defaultLimits,
+      meow: defaultLimits,
       highseas: defaultLimits,
       mariculture: defaultLimits,
       global: defaultLimits,

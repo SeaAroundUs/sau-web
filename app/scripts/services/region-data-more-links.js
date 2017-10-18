@@ -17,6 +17,7 @@ angular.module('sauWebApp')
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
     importantNotes.lme = importantNotes.global;
+    importantNotes.meow = importantNotes.global;
     importantNotes.eez = importantNotes.global;
     importantNotes.highseas = importantNotes.global;
 

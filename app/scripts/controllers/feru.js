@@ -29,8 +29,17 @@ angular.module('sauWebApp')
         regions: sauAPI.Regions.get({region: 'lme'}),
         dims: dims,
         selected: {}
+      },
+      {
+        title: 'MEOW',
+        active: false,
+        longTitle: 'MEOW Values',
+        regions: sauAPI.Regions.get({region: 'meow'}),
+        dims: dims,
+        selected: {}
       }
-    ];
+    ]
+    ;
 
     $scope.country = {};
 

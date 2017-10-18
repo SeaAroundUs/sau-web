@@ -11,6 +11,7 @@
     $scope.regions = [
       {title: 'EEZ', value: 'eez'},
       {title: 'LME', value: 'lme'},
+      {title: 'MEOW', value: 'meow'},
       {title: 'RFMO', value: 'rfmo'}
     ];
 
