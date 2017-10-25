@@ -33,6 +33,12 @@
         }
     }
 
+    &.meow {
+        .metrics {
+            min-height: 165px;
+        }
+    }
+
     .btn {
       border-radius: 0;
       background-color: $lightBlue;

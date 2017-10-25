@@ -268,6 +268,44 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
           ]
         }
+      ],
+
+      // MEOW
+      meow: [
+        {
+          section: 'Reference',
+          links: [
+            {
+              text: 'MEOW profile (WWF)',
+              ngUrl: '{{ profile_url }}'
+            }
+          ]
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-meow.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'EcoBase',
+              ngUrl: ''
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/meow/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/meow/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/meow/{{ id }}/marine-trophic-index' }
+          ]
+        }
       ]
     };
 

@@ -68,6 +68,8 @@ angular.module('sauWebApp')
 
               } else if (scope.region.name === 'lme') {
                 scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
+              } else if (scope.region.name === 'meow') {
+                scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
               }
 
               scope.moreData = scope.moreData.map(function(section) {
@@ -176,6 +178,9 @@ angular.module('sauWebApp')
               break;
             case 'lme':
               sectionTitle += 'LMEs';
+              break;
+            case 'meow':
+              sectionTitle += 'MEOWs';
               break;
           }
 

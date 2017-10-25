@@ -58,6 +58,10 @@
         <h3>Reference</h3>
         <p><a ng-href="{{ feature.data.profile_url }}" target="_blank">LME profile (NOAA)</a></p>
       </div>
+       <div class="meow-ref" ng-show="region.name ==='meow'">
+        <h3>Reference</h3>
+        <p><a ng-href="{{ feature.data.profile_url }}" target="_blank">MEOW profile (WWF)</a></p>
+      </div>
       <div class="rfmo-ref" ng-show="region.name === 'rfmo'">
         <p><a ng-href="{{ rfmoLinks.reportURL }}" target="_blank">
           <i class="fa fa-file-pdf-o red"></i> {{rfmoLinks.reportURL | fileOfUrl | breakUnderscores}}

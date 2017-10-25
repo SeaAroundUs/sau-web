@@ -154,6 +154,7 @@ angular
         resolve: {region: function() {return 'meow';}},
         reloadOnSearch: false
       });
+
     // RFMO routes
     $routeProvider
       .when('/rfmo', {

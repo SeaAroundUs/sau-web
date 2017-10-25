@@ -4,6 +4,7 @@ angular.module('sauWebApp').factory('metricLinks', function(externalURLs) {
   return {
     'EEZ area': externalURLs.areaDef + '#_Toc421807899',
     'LME area': externalURLs.areaDef + '#_Toc421807917',
+    //'MEOW area': externalURLs.areaDef + '#_Toc',
     'Shelf Area': externalURLs.areaDef + '#_Toc421807905',
     'Inshore Fishing Area (IFA)': externalURLs.areaDef + '#_Toc421807906',
     'Tropical Coral Reefs': externalURLs.areaDef + '#_Toc421807907',
