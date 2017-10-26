@@ -232,44 +232,6 @@ angular.module('sauWebApp')
         }
       ],
 
-      // LME
-      lme: [
-        {
-          section: 'Reference',
-          links: [
-            {
-              text: 'LME profile (NOAA)',
-              ngUrl: '{{ profile_url }}'
-            }
-          ]
-        },
-        {
-          section: 'Biodiversity',
-          template: 'views/region-data/biodiversity-lme.html'
-        },
-        {
-          section: 'Biodiversity',
-          multiTemplate: 'views/region-data/biodiversity-multi.html'
-        },
-        {
-          section: 'Ecosystems',
-          links: [
-            {
-              text: 'EcoBase',
-              ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_LME={{ id }}'
-            }
-          ]
-        },
-        {
-          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
-          links: [
-            { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status' },
-            { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
-          ]
-        }
-      ],
-
       // MEOW
       meow: [
         {
@@ -304,6 +266,44 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/meow/{{ id }}/stock-status' },
             { text: 'Multinational footprint', ngUrl: '#/meow/{{ id }}?chart=multinational-footprint' },
             { text: 'Marine trophic index', ngUrl: '#/meow/{{ id }}/marine-trophic-index' }
+          ]
+        }
+      ],
+
+      // LME
+      lme: [
+        {
+          section: 'Reference',
+          links: [
+            {
+              text: 'LME profile (NOAA)',
+              ngUrl: '{{ profile_url }}'
+            }
+          ]
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-lme.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'EcoBase',
+              ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_LME={{ id }}'
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
           ]
         }
       ]

@@ -53,6 +53,7 @@ angular.module('sauWebApp')
     return {
       eez: eez,
       lme: lme,
+      meow: meow,
       highseas: highseas,
       global: null,
       rfmo: null,
