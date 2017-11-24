@@ -66,9 +66,13 @@ angular.module('sauWebApp')
                   return html + '<div class="fao-rfb"><a href="' + rfb.url + '" target="_blank">' + rfb.name + '</a></div>'
                 }, '');
 
-              } else if (scope.region.name === 'lme') {
+               else if (scope.region.name === 'lme') {
                 scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
               }
+               else if (scope.region.name === 'meow') {
+                scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
+              }
+             }
               scope.moreData = scope.moreData.map(function(section) {
                 if (section.links && section.links.length) {
                   section.links.forEach(function(link) {
@@ -177,7 +181,7 @@ angular.module('sauWebApp')
               sectionTitle += 'LMEs';
               break;
             case 'meow':
-              sectionTitle += 'MEOWs';
+              sectionTitle += 'MEs';
               break;
           }
 
