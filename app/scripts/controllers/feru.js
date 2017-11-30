@@ -31,9 +31,9 @@ angular.module('sauWebApp')
         selected: {}
       },
       {
-        title: 'MEOW',
+        title: 'ME',
         active: false,
-        longTitle: 'MEOW Values',
+        longTitle: 'ME Values',
         regions: sauAPI.Regions.get({region: 'meow'}),
         dims: dims,
         selected: {}

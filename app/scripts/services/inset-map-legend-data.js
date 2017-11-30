@@ -25,9 +25,9 @@ angular.module('sauWebApp')
     ];
 
     var meow = [
-      { pattern: 'images/legend/Meow.png', label: 'MEOW' },
-      { pattern: 'images/legend/other_meow.png', label: 'Other MEOW' },
-      { pattern: 'images/legend/high_seas.png', label: 'Non-MEOW waters' }
+      { pattern: 'images/legend/Meow.png', label: 'ME' },
+      { pattern: 'images/legend/other_meow.png', label: 'Other ME' },
+      { pattern: 'images/legend/high_seas.png', label: 'Non-ME waters' }
     ];
 
     var highseas = [

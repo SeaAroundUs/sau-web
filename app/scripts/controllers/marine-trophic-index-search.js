@@ -15,8 +15,8 @@
           regions: sauAPI.Regions.get({region: 'lme'})
         },
         {
-          title: 'MEOW',
-          text: 'Select Marine Ecoregions of the World (MEOW)',
+          title: 'ME',
+          text: 'Select Marine Ecoregions of the World (ME)',
           regions: sauAPI.Regions.get({region: 'meow'})
         },
         {

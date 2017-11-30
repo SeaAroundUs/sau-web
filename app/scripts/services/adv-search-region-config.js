@@ -44,9 +44,9 @@ angular.module('sauWebApp')
       },
       meow: {
         graphResultsPath: 'meow',
-        regionListTitle: 'MEOWs',
-        selectedListTitle: 'Selected MEOWs',
-        searchPlaceholder: 'Search MEOWs',
+        regionListTitle: 'MEs',
+        selectedListTitle: 'Selected MEs',
+        searchPlaceholder: 'Search MEs',
         selectionLimit: 10,
         getRegionData: function() {
           return sauAPI.Regions.get({region: 'meow', nospatial: true});
