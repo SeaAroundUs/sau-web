@@ -238,7 +238,7 @@ angular.module('sauWebApp')
           section: 'Reference',
           links: [
             {
-              text: 'MEOW profile (WWF)',
+              text: 'ME profile (WWF)',
               ngUrl: '{{ profile_url }}'
             }
           ]
