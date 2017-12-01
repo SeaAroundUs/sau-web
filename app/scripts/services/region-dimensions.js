@@ -78,7 +78,7 @@ angular.module('sauWebApp')
     };
 
     var meow = {
-      'label': 'MEOW',
+      'label': 'ME',
       'value': 'meow',
       showDimensionLimit: true
     };
