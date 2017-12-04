@@ -44,7 +44,7 @@ angular.module('sauWebApp')
     var gear = {
       label: 'Gear',
       value: 'gear',
-      showDimensionLimit: true
+      showDimensionLimit: false
     };
     //END MOD SORTIZ 11-28-17
     var fishingSector = {
