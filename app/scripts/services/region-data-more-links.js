@@ -227,7 +227,11 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status', subRegion: true },
             { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint', subRegion: true },
             { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
-            { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' }
+            { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' },
+            //BEGIN MOD SORTIZ 11-22-17
+            { text: 'ISSF website', ngUrl: '{{ ohi_link }}' },
+            { text: 'HDI website', ngUrl: '{{ ohi_link }}' }
+            //END MOD SORTIZ 11-22-17
           ]
         }
       ],
