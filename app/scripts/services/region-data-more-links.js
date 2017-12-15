@@ -229,8 +229,8 @@ angular.module('sauWebApp')
             { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
             { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' },
             //BEGIN MOD SORTIZ 11-22-17
-            { text: 'ISSF website', ngUrl: '{{ ohi_link }}' },
-            { text: 'HDI website', ngUrl: '{{ ohi_link }}' }
+            { text: 'ISSF website', ngUrl: '{{ issf_link }}' },
+            { text: 'HDI website', ngUrl: '{{ hdi_link }}' }
             //END MOD SORTIZ 11-22-17
           ]
         }
