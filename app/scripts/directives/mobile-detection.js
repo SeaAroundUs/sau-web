@@ -37,6 +37,7 @@ angular.module('sauWebApp')
   .value('mobileRedirects', {
     '/eez': '/search',
     '/lme': '/search',
+    '/meow': '/search',
     '/rfmo': '/search',
     '/highseas': '/search',
     '/fishing-entity': '/search',

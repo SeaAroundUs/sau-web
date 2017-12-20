@@ -7,7 +7,7 @@ angular.module('sauWebApp')
       {label: 'Commercial Groups', value: 'commercialgroup'},
       {label: 'Functional Groups', value: 'functionalgroup'},
       {label: 'Fishing Country', value: 'country'},
-      // {label: 'Gear', value: 'gear'},
+      {label: 'Gear', value: 'gear'},
       {label: 'Fishing Sector', value: 'sector'},
       {label: 'Catch Type', value: 'catchtype', overrideLabel: 'Type'},
       {label: 'Reporting Status', value: 'reporting-status'}
@@ -29,8 +29,17 @@ angular.module('sauWebApp')
         regions: sauAPI.Regions.get({region: 'lme'}),
         dims: dims,
         selected: {}
+      },
+      {
+        title: 'ME',
+        active: false,
+        longTitle: 'ME Values',
+        regions: sauAPI.Regions.get({region: 'meow'}),
+        dims: dims,
+        selected: {}
       }
-    ];
+    ]
+    ;
 
     $scope.country = {};
 

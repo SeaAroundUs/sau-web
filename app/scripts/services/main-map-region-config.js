@@ -27,6 +27,18 @@ angular.module('sauWebApp')
       getSearchOptions: geoJsonResponseToSearchOptions
     };
 
+    var meowConfig = {
+      path: '/meow',
+      requestData: function() {
+        return sauAPI.Regions.get({region: 'meow'});
+      },
+      getGeoJsonData: function (apiResponse) {
+        return apiResponse.data;
+      },
+      geoJsonStyle: mapConfig.defaultStyle,
+      getSearchOptions: geoJsonResponseToSearchOptions
+    };
+
     var highseasConfig = {
       path: '/highseas',
       requestData: function() {
@@ -131,6 +143,7 @@ angular.module('sauWebApp')
       },
       'eez': eezConfig,
       'lme': lmeConfig,
+      'meow': meowConfig,
       'highseas': highseasConfig,
       'rfmo': rfmoConfig,
       'mariculture': maricultureConfig,

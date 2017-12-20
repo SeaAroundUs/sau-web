@@ -24,6 +24,12 @@ angular.module('sauWebApp')
       { pattern: 'images/legend/high_seas.png', label: 'Non-LME waters' }
     ];
 
+    var meow = [
+      { pattern: 'images/legend/Meow.png', label: 'ME' },
+      { pattern: 'images/legend/other_meow.png', label: 'Other ME' },
+      { pattern: 'images/legend/high_seas.png', label: 'Non-ME waters' }
+    ];
+
     var highseas = [
       { pattern: 'images/legend/eez.png', label: 'High seas' },
       { pattern: 'images/legend/other_eez.png', label: 'Other high seas' },
@@ -47,11 +53,15 @@ angular.module('sauWebApp')
     return {
       eez: eez,
       lme: lme,
+      meow: meow,
       highseas: highseas,
       global: null,
       rfmo: null,
       mariculture: mariculture,
       'fishing-entity': null,
+      //BEGIN MOD SORTIZ 11-22-17
+      'eez-bordering':eez,
+      //END MOD SORTIZ 11-22-17
       fao: fao
     };
   });
