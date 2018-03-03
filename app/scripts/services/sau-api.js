@@ -63,6 +63,7 @@ angular.module('sauWebApp')
       FishingEntities: resourceFactory('fishing-entity/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
+      Gear: resourceFactory('gear/'),
       SpatialCatchData: {
         get: function (params) {
           var url = SAU_CONFIG.apiURL + 'spatial-catch/cells';

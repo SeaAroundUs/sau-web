@@ -17,6 +17,7 @@ angular.module('sauWebApp')
     importantNotes.rfmo = importantNotes.global;
     importantNotes.fao = importantNotes.global;
     importantNotes.lme = importantNotes.global;
+    importantNotes.meow = importantNotes.global;
     importantNotes.eez = importantNotes.global;
     importantNotes.highseas = importantNotes.global;
 
@@ -36,8 +37,10 @@ angular.module('sauWebApp')
         {
           section: 'Other global datasets',
           links: [
-            { text: 'Fuel Consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
-            { text: 'Mesopelagic Biomass', url: '/mesopelagic-biomass/' }
+            { text: 'Fuel consumption', url: '/fuel-consumption-by-marine-fisheries-in-2000/' },
+            { text: 'Mesopelagic biomass', url: '/mesopelagic-biomass/' },
+            { text: 'Zooplankton Map', url: '/zooplankton-map/' },
+            { text: 'Phytoplankton Map', url: '/phytoplankton-map/' }
           ]
         },
         {
@@ -224,7 +227,49 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/eez/{{ id }}/stock-status', subRegion: true },
             { text: 'Multinational footprint', ngUrl: '#/eez/{{ id }}?chart=multinational-footprint', subRegion: true },
             { text: 'Marine trophic index', ngUrl: '#/eez/{{ id }}/marine-trophic-index', subRegion: true },
-            { text: 'Ocean Health Index website', ngUrl: '{{ ohi_link }}' }
+            { text: 'Ocean Health Index', ngUrl: '{{ ohi_link }}' },
+            //BEGIN MOD SORTIZ 02-08-17
+            { text: 'Small-Scale Fisheries Records (ISSF)', ngUrl: '{{ issf_link }}' },
+            { text: 'Human Development Index', ngUrl: '{{ hdi_link }}' }
+            //END MOD SORTIZ 02-08-17
+          ]
+        }
+      ],
+
+      // MEOW
+      meow: [
+        {
+          section: 'Reference',
+          links: [
+            {
+              text: 'ME profile (WWF)',
+              ngUrl: '{{ profile_url }}'
+            }
+          ]
+        },
+        {
+          section: 'Biodiversity',
+          template: 'views/region-data/biodiversity-meow.html'
+        },
+        {
+          section: 'Biodiversity',
+          multiTemplate: 'views/region-data/biodiversity-multi.html'
+        },
+        {
+          section: 'Ecosystems',
+          links: [
+            {
+              text: 'EcoBase',
+              ngUrl: ''
+            }
+          ]
+        },
+        {
+          section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
+          links: [
+            { text: 'Stock status plots', ngUrl: '#/meow/{{ id }}/stock-status' },
+            { text: 'Multinational footprint', ngUrl: '#/meow/{{ id }}?chart=multinational-footprint' },
+            { text: 'Marine trophic index', ngUrl: '#/meow/{{ id }}/marine-trophic-index' }
           ]
         }
       ],

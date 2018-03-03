@@ -11,7 +11,7 @@ angular.module('sauWebApp')
   .factory('createQueryUrl', function () {
 
     var newLayoutRegions = ['fishing-entity', 'rfmo', 'global', 'fao',
-      'eez-bordering', 'taxon', 'eez', 'lme', 'highseas'];
+      'eez-bordering', 'taxon', 'eez', 'lme', 'highseas', 'meow'];
 
     return {
       /*

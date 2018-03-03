@@ -33,6 +33,9 @@ angular.module('sauWebApp')
       } else if ($scope.region.name === 'lme') {
         $scope.fishbaseLink = $scope.feature.data.fishbase_link;
         $scope.sealifebaseLink = $scope.feature.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
+      } else if ($scope.region.name === 'meow') {
+        $scope.fishbaseLink = $scope.feature.data.fishbase_link;
+        $scope.sealifebaseLink = $scope.feature.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
       }
     });
   });

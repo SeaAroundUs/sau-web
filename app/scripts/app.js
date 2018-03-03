@@ -125,6 +125,36 @@ angular
         reloadOnSearch: false
       });
 
+    // MEOW routes
+    $routeProvider
+      .when('/meow', {
+        templateUrl: 'views/map.html',
+        controller: 'MapCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'meow';}}
+      })
+      .when('/meow/:ids', {
+        templateUrl: 'views/region-data/main.html',
+        controller: 'RegionDataCtrl',
+        resolve: {region: function() {return 'meow';}}
+      })
+      .when('/meow/:id/marine-trophic-index', {
+        templateUrl: 'views/marine-trophic-index.html',
+        controller: 'MarineTrophicIndexCtrl',
+        resolve: {region: function() {return 'meow';}}
+      })
+      .when('/meow/:id/stock-status', {
+        templateUrl: 'views/stock-status.html',
+        controller: 'StockStatusCtrl',
+        resolve: {region: function() {return 'meow';}}
+      })
+      .when('/meow/:id/exploited-organisms', {
+        templateUrl: 'views/exploited-organisms.html',
+        controller: 'ExploitedOrganismsCtrl',
+        resolve: {region: function() {return 'meow';}},
+        reloadOnSearch: false
+      });
+
     // RFMO routes
     $routeProvider
       .when('/rfmo', {

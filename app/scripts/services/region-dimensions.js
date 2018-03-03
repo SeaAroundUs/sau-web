@@ -40,13 +40,18 @@ angular.module('sauWebApp')
       value: 'country',
       showDimensionLimit: true
     };
-
+    //BEGIN MOD SORTIZ 11-28-17
+    var gear = {
+      label: 'Gear',
+      value: 'gear',
+      showDimensionLimit: false
+    };
+    //END MOD SORTIZ 11-28-17
     var fishingSector = {
       label: 'Fishing sector',
       value: 'sector',
       showDimensionLimit: false
     };
-
     var catchType = {
       label: 'Catch type',
       value: 'catchtype',
@@ -72,6 +77,12 @@ angular.module('sauWebApp')
       showDimensionLimit: true
     };
 
+    var meow = {
+      'label': 'ME',
+      'value': 'meow',
+      showDimensionLimit: true
+    };
+
     var highseas = {
       'label': 'High Seas',
       'value': 'highseas',
@@ -84,17 +95,28 @@ angular.module('sauWebApp')
       showDimensionLimit: false
     };
     //TODO this is getting cumbersome and deserves a refactor
-    var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus, layer];
-    var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
-    var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
-    var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
-    var maricultureDimensions = [taxon, commercialGroup, functionalGroupMariculture];
-    var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
-    var taxonDimension = [eez, lme, highseas, fishingCountry, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
+    //BEGIN MOD SORTIZ 11-28-17
+    //var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus, layer];
+    //var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    //var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    //var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus];
+    //var maricultureDimensions = [taxon, commercialGroup, functionalGroupMariculture];
+    //var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
+    //var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
+
+    var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus, layer];
+    var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
+    var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
+    var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
+    var maricultureDimensions = [taxon, gear, commercialGroup, functionalGroupMariculture];
+    var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, gear, fishingSector, catchType, reportingStatus];
+    var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, gear, fishingSector, catchType, reportingStatus];
+    //END MOD SORTIZ 11-28-17
 
     return {
       eez: eezDefaultDimensions,
       lme: defaultDimensions,
+      meow: defaultDimensions,
       highseas: defaultDimensions,
       mariculture: maricultureDimensions,
       global: defaultDimensions,

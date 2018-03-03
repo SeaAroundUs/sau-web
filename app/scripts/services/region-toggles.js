@@ -28,6 +28,11 @@
         showFAOEEZLinks: false
       }),
 
+      meow: angular.extend({}, defaultToggles, {
+        showDisclaimer: false,
+        showFAOEEZLinks: false
+      }),
+
       highseas: angular.extend({}, defaultToggles, {
         showFAOEEZLinks: false
       }),

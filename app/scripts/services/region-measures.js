@@ -23,6 +23,7 @@ angular.module('sauWebApp')
     return {
       eez: defaultMeasures,
       lme: defaultMeasures,
+      meow: defaultMeasures,
       highseas: defaultMeasures,
       mariculture: defaultMeasures,
       global: defaultMeasures,

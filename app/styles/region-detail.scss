@@ -33,6 +33,12 @@
         }
     }
 
+    &.meow {
+        .metrics {
+            min-height: 165px;
+        }
+    }
+
     .btn {
       border-radius: 0;
       background-color: $lightBlue;
@@ -66,7 +72,7 @@
     .region-title {
         min-height: 40px;
         margin-top: 8px;
-        text-transform: uppercase;
+	  /*text-transform: uppercase; */
     }
     .hover-region {
         margin: 0px;
