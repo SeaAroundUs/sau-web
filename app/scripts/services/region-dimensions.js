@@ -105,7 +105,7 @@ angular.module('sauWebApp')
     //var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, fishingSector, catchType, reportingStatus];
 
     var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus, layer];
-    var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
+    var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus, layer];
     var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
     var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, gear, fishingSector, catchType, reportingStatus];
     var maricultureDimensions = [taxon, gear, commercialGroup, functionalGroupMariculture];
