@@ -247,6 +247,10 @@ angular.module('sauWebApp')
             }
           ]
         },
+		{
+          section: 'Stock',
+          template: 'views/region-data/stocks-meow.html'
+        },
         {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity-meow.html'

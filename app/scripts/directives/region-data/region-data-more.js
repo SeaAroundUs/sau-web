@@ -71,6 +71,10 @@ angular.module('sauWebApp')
               }
                else if (scope.region.name === 'meow') {
                 scope.data.sealifebaseLink = scope.data.fishbase_link.replace('fishbase.org', 'sealifebase.org');
+				
+				scope.data.meow_pdf = scope.data.meow_pdf.reduce(function(html, pdf) {
+                  return html + '<div class="meow_pdf"><a href="' + pdf.url + '" target="_blank">' + pdf.scientific_name + '</a></div>'
+                }, '');
               }
               scope.moreData = scope.moreData.map(function(section) {
                 if (section.links && section.links.length) {
