@@ -202,7 +202,7 @@ angular.module('sauWebApp')
         },
 		{
           section: 'Marine Ecoregions',
-          Template: 'views/region-data/eez_meow_combo.html'
+          template: 'views/region-data/eez_meow_combo.html'
         },
         {
           section: 'Ecosystems',
