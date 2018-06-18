@@ -200,10 +200,6 @@ angular.module('sauWebApp')
           section: 'Biodiversity',
           multiTemplate: 'views/region-data/biodiversity-multi.html'
         },
-		{
-          section: 'Marine Ecoregions',
-          template: 'views/region-data/eez_meow_combo.html'
-        },
         {
           section: 'Ecosystems',
           links: [
@@ -223,6 +219,10 @@ angular.module('sauWebApp')
         {
           section: 'Governance',
           template: 'views/region-data/eez-governance.html'
+        },
+		{
+          section: 'Marine ecoregions',
+          template: 'views/region-data/eez_meow_combo.html'
         },
         {
           section: 'Indicators (<span id="important-note"><a id="important-link">IMPORTANT NOTE</a></span>)',
