@@ -248,7 +248,7 @@ angular.module('sauWebApp')
           ]
         },
 		{
-          section: 'Stock',
+          section: 'Stock assessments',
           template: 'views/region-data/stocks-meow.html'
         },
         {
