@@ -25,7 +25,7 @@ angular.module('sauWebApp')
     ];
 
     var meow = [
-      { pattern: 'images/legend/Meow.png', label: 'ME' },
+      { pattern: 'images/legend/meow.png', label: 'ME' },
       { pattern: 'images/legend/other_meow.png', label: 'Other ME' },
       { pattern: 'images/legend/high_seas.png', label: 'Non-ME waters' }
     ];

@@ -1,0 +1,11 @@
+<div class="clearfix stocks" ng-controller="StocksTab">
+    <p>
+      Click a link below to open a new window with information from FishBase (fish) or SeaLifeBase
+      (non-fish vertebrates and invertebrates).
+    </p>
+    <div class="col-sm-6">
+        <ul class="organisms">
+            <li><a ng-href="#/{{region.name}}/cmsy/{{formModel.region_id}}" scroll-click="region-title">Stocks</a></li>
+        </ul>
+    </div>
+</div>
