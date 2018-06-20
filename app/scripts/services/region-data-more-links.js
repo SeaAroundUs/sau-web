@@ -252,7 +252,7 @@ angular.module('sauWebApp')
           ]
         },
 		{
-          section: 'EEZ',
+          section: 'EEZs in this ecoregion',
           template: 'views/region-data/meow_eez_combo.html'
         },
 		{
