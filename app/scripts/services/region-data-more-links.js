@@ -204,14 +204,14 @@ angular.module('sauWebApp')
           section: 'Ecosystems',
           links: [
 		    {
-          text: 'EcoBase',
-          ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_EEZ={{ id }}'
-        },
-			  {
-          text: 'Fish parameters',
-          ngUrl: 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code={{ c_code }}' +
+              text: 'EcoBase',
+              ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_EEZ={{ id }}'
+            },
+			{
+              text: 'Fish parameters',
+              ngUrl: 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code={{ c_code }}' +
                 '&sb=1&disabled=1&fsb=0&custom=1'
-         },
+            },
             { text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
 
             { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' }
