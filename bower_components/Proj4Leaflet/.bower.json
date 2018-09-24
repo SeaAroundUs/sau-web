@@ -1,0 +1,41 @@
+{
+  "name": "Proj4Leaflet",
+  "homepage": "https://github.com/kartena/Proj4Leaflet",
+  "authors": [
+    "Per Liedman <per.liedman@kartena.se> (https://github.com/perliedman/)"
+  ],
+  "description": "Smooth Proj4js integration with Leaflet",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "main": [
+    "src/proj4leaflet.js"
+  ],
+  "keywords": [
+    "Leaflet",
+    "Project4"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "lib",
+    "examples",
+    "tests"
+  ],
+  "dependencies": {
+    "proj4": "~2.1.2",
+    "leaflet": "~0.7.2"
+  },
+  "_release": "dbd09c2adc",
+  "_resolution": {
+    "type": "commit",
+    "commit": "dbd09c2adc1f9eacc8dee3192763dd9746dbb842"
+  },
+  "_source": "https://github.com/SeaAroundUs/Proj4Leaflet.git",
+  "_target": "dbd09c2adc1f9eacc8dee3192763dd9746dbb842",
+  "_originalSource": "https://github.com/SeaAroundUs/Proj4Leaflet.git"
+}
