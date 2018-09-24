@@ -203,11 +203,11 @@ angular.module('sauWebApp')
         {
           section: 'Ecosystems',
           links: [
-		    {
+            {
               text: 'EcoBase',
               ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_EEZ={{ id }}'
             },
-			  {
+            {
               text: 'Fish parameters',
               ngUrl: 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code={{ c_code }}' +
                 '&sb=1&disabled=1&fsb=0&custom=1'
@@ -249,6 +249,10 @@ angular.module('sauWebApp')
             {
               text: 'ME profile (WWF)',
               ngUrl: '{{ profile_url }}'
+            },
+            {
+              text: 'Oceana Report',
+              ngUrl: 'https://s3-us-west-2.amazonaws.com/sau-technical-reports/OceanaFinalReport_V7a.pdf'
             }
           ]
         },
