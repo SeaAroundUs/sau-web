@@ -157,6 +157,12 @@ angular.module('sauWebApp')
         },
         */
         {
+          section: 'Ecosystems',
+          links: [
+            { text: 'Models (ECOBASE)', ngUrl: 'http://ecobase.ecopath.org/index.php?action=base&m_FAO={{ id }}#discoverytools' }
+          ]
+        },
+        {
           section: 'Governance',
           links: [
             { text: 'FAO area information', ngUrl: 'http://www.fao.org/fishery/area/Area{{ id }}/en' },
