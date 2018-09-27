@@ -2563,7 +2563,7 @@
 		createFilter: null,
 		highlight: true,
 		openOnFocus: true,
-		maxOptions: 1000,
+		maxOptions: 3000,
 		maxItems: null,
 		hideSelected: null,
 		addPrecedence: false,
