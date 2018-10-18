@@ -2,8 +2,8 @@
 
 angular.module('sauWebApp')
   .provider('toggles', function(SAU_CONFIG) {
-    var disabledOnDev = ['auth'];
-    var disabledOnQA = ['auth'];
+    var disabledOnDev = ['auth', 'taxon-distribution'];
+    var disabledOnQA = ['auth', 'taxon-distribution'];
     var disabledOnStageAndProd = [
       'auth',
       'country-eezs',
