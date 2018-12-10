@@ -1,0 +1,42 @@
+{
+  "name": "d3-grid-map",
+  "description": "Creates a map in a container using d3 for plotting gridded data sets",
+  "main": "d3-grid-map.js",
+  "scripts": [
+    "d3-grid-map.js"
+  ],
+  "keywords": [
+    "d3",
+    "map",
+    "geo",
+    "gridded"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/SeaAroundUs/d3-grid-map.git"
+  },
+  "ignore": [
+    "data",
+    "src",
+    "bower_components",
+    "node_modules"
+  ],
+  "dependencies": {
+    "d3": "~3.4",
+    "topojson": "~1.6",
+    "d3-geo-projection": "~0.2"
+  },
+  "authors": [
+    "Joseph Sheedy <joseph.sheedy@gmail.com>"
+  ],
+  "license": "https://github.com/VulcanTechnologies/d3-grid-map/blob/master/LICENSE",
+  "homepage": "https://github.com/VulcanTechnologies/d3-grid-map",
+  "_release": "f933382812",
+  "_resolution": {
+    "type": "commit",
+    "commit": "f9333828127379046b188a8492530df857a33b6f"
+  },
+  "_source": "https://github.com/VulcanTechnologies/d3-grid-map.git",
+  "_target": "f9333828127379046b188a8492530df857a33b6f",
+  "_originalSource": "https://github.com/VulcanTechnologies/d3-grid-map.git"
+}

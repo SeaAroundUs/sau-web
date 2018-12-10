@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset='utf-8'>
+        <style type="text/css">
+            .map {
+                width: 45%;
+                height: 400px;
+                border: 1px solid black;
+                margin: 10px;
+                float: left;
+                position: relative;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="map" id="map1"></div>
+        <div class="map" id="map2"></div>
+        <div class="map" id="map3"></div>
+        <div class="map" id="map4"></div>
+
+        <script src="bower_components/d3/d3.js"></script>
+        <script src="bower_components/d3-geo-projection/d3.geo.projection.js"></script>
+        <script src="bower_components/topojson/topojson.js"></script>
+
+        <script src="d3-grid-map.js"></script>
+        <script type="text/javascript">
+
+          var w = 720;
+          var h = 360;
+
+          var quantileScale = d3.scale.quantile()
+            .range(["#a50026","#d73027","#f46d43","#fdae61","#fee08b","#d9ef8b","#a6d96a","#66bd63","#1a9850","#006837"]);
+
+          var options = {
+            legend: false,
+            hud: {
+              fontSize: 20,
+              fontColor: 'white',
+              verticalOffset: 5
+            },
+            onCellHover: function(feature) { console.log('hovering over ', feature);}
+          };
+
+          var map1 = new d3.geo.GridMap('#map1', options);
+
+          // register some callbacks on map events
+          map1.dispatch.on('drawStart', function() {console.log('drawing Started'); });
+          map1.dispatch.on('drawEnd', function() {console.log('drawing Ended'); });
+
+          options.longitude = -125
+          options.projection = d3.geo.mercator();
+          options.legend = false;
+          options.scale = 100;
+          var map2 = new d3.geo.GridMap('#map2', options);
+
+          options.latitude = 47;
+          options.scale = 200;
+          options.graticule = new d3.geo.graticule()
+            .minorStep([1,1])
+            .minorExtent([[-180, -90], [180, 90]])();
+          var orthographicProjection = d3.geo.orthographic().clipAngle(90);
+          options.projection = orthographicProjection;
+          var map3 = new d3.geo.GridMap('#map3', options);
+
+          options.projection = d3.geo.gnomonic();
+          var map4 = new d3.geo.GridMap('#map4', options);
+
+          // add a topojson base layer to the maps
+          d3.json('data/countries.topojson', function(error, countries) {
+            map1.addLayer(countries);
+            map2.addLayer(countries);
+            map3.addLayer(countries);
+            map4.addLayer(countries);
+          });
+
+          // add a packed binary data set to a map
+          d3.xhr('data/float32.dat')
+            .responseType('arraybuffer')
+            .get(function(error, xhr) {
+              var data = new Float32Array(xhr.response);
+              // unfortunately d3.scale.domain doesn't support
+              // typed arrays
+              quantileScale.domain(Array.prototype.slice.call(data));
+              var layerOptions = {
+                gridSize: [w, h],
+                zIndex: 3,
+                renderOnAnimate: false,
+                colorScale: quantileScale
+              };
+
+              map1.addLayer(data, layerOptions);
+              map2.addLayer(data, layerOptions);
+
+              layerOptions.colorScale = d3.scale.threshold()
+                .domain([1e-8, 1e-7, 1e-6, 1e-5, 1e-4, 1e-3, 1e-2, 1e-1])
+                .range(['#fff7ec','#fee8c8','#fdd49e','#fdbb84','#fc8d59','#ef6548','#d7301f','#b30000', '#7f0000']);
+              layerOptions.colorScaleDiscrete = true;
+              map3.addLayer(data, layerOptions);
+            });
+
+          // add a geojson dataset to a map
+          d3.json('data/eez.json', function(error, eez) {
+            var layer = map1.addLayer(eez, {
+              strokeColor: 'rgba(0,0,0,1)',
+              fillColor: 'rgba(0,0,0,.2)',
+              zIndex: 9,
+              renderOnAnimate: true
+            });
+          });
+
+          // create some fake gridded data
+          var buf = new ArrayBuffer(w * h *4);
+          var dataFloat32 = new Float32Array(buf);
+          var index = -1;
+          for (var i=w*40; i<(w*h - w*40); i++) {
+            dataFloat32[i] = Math.sin(i/dataFloat32.length * 2 * Math.PI);
+          }
+
+          var fakeGridOptions = {
+            gridSize: [w,h],
+            renderOnAnimate: false,
+            colorScale: d3.scale.linear().domain([0,1]).range(['#000000', '#ffffff'])
+          };
+          // map2.addLayer(dataFloat32, fakeGridOptions);
+
+        </script>
+    </body>
+</html>

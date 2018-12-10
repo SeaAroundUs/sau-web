@@ -1,0 +1,18 @@
+{
+  "name": "d3-geo-projection",
+  "description": "Extended geographic projections for D3.",
+  "main": "d3.geo.projection.js",
+  "license": "BSD-3-Clause",
+  "ignore": [],
+  "homepage": "https://github.com/mbostock-bower/d3-geo-projection-bower",
+  "version": "0.2.16",
+  "_release": "0.2.16",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.16",
+    "commit": "8afc8832987f3b005eca30ab89e0dc0a7edc8b2e"
+  },
+  "_source": "https://github.com/mbostock-bower/d3-geo-projection-bower.git",
+  "_target": "~0.2",
+  "_originalSource": "d3-geo-projection"
+}

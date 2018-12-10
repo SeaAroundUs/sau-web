@@ -1,0 +1,19 @@
+{
+  "name": "rrose",
+  "homepage": "https://github.com/motionsmith/rrose",
+  "version": "0.1.0",
+  "_release": "0.1.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.1.0",
+    "commit": "1005b27af5e284e73d65fcb9ba9459e8d1fd2fc8"
+  },
+  "main": [
+    "rrose-src.js",
+    "leaflet.rrose.css"
+  ],
+  "_source": "https://github.com/motionsmith/rrose.git",
+  "_target": "~0.1.0",
+  "_originalSource": "https://github.com/motionsmith/rrose.git",
+  "_direct": true
+}

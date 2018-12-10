@@ -91,13 +91,16 @@
 		</tr>
 		<!-- <tr ng-show="taxon.distributionMap"> -->
 		<tr>
-			<td class="table-key">Distribution map:</td>
+			<td class="table-key">Distribution:</td>
 			<!--  <td class="table-value">{{taxon.distributionMap}}</td> -->
 			<td class="table-value">
-        <span class="disabled">GIS map; </span>
+		<!--BEGIN SORTIZ 10/18/18-->
+		<!--<span class="disabled">Map; </span>-->
+		<a target="_blank" ng-href="#/spatial-catch?dist={{ taxon.taxon_key }}">Map;</a>
+		<!--END SORTIZ 10/18/18-->
         <span ng-show="taxon.has_habitat_index">
-          <a ng-hide="taxon.showHabitatIndex" ng-click="toggleHabitatIndex()">Show habitat index</a>
-          <a ng-show="taxon.showHabitatIndex" ng-click="toggleHabitatIndex()">Hide habitat index</a>
+          <a ng-hide="taxon.showHabitatIndex" ng-click="toggleHabitatIndex()">Show habitat association</a>
+          <a ng-show="taxon.showHabitatIndex" ng-click="toggleHabitatIndex()">Hide habitat association</a>
         </span>
         <span ng-show="!taxon.has_habitat_index">
           <span class="disabled">Show habitat index</span>

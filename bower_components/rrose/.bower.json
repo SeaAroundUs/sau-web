@@ -1,0 +1,17 @@
+{
+  "name": "rrose",
+  "homepage": "https://github.com/motionsmith/rrose",
+  "_release": "e2aae9b4a3",
+  "_resolution": {
+    "type": "commit",
+    "commit": "e2aae9b4a393f2560697f5d483a8eaed067cebe3"
+  },
+  "main": [
+    "rrose-src.js",
+    "leaflet.rrose.css"
+  ],
+  "_source": "https://github.com/SeaAroundUs/rrose.git",
+  "_target": "e2aae9b4a393f2560697f5d483a8eaed067cebe3",
+  "_originalSource": "https://github.com/SeaAroundUs/rrose.git",
+  "_direct": true
+}

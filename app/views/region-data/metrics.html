@@ -5,7 +5,8 @@
         <a ng-href="{{ metricLinks[metric.title] }}" ng-bind="metric.title" target="_blank"></a>
       </td>
       <td ng-if="!metricLinks[metric.title]">
-        <span ng-bind="metric.title"></span>
+        <!--<span ng-bind="metric.title"></span>-->
+        <span>Area</span>
       </td>
       <td>{{ metric.value | number }} <span ng-bind-html="metric.units"></span></td>
     </tr>
