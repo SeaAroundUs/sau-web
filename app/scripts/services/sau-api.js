@@ -52,6 +52,7 @@ angular.module('sauWebApp')
       ExploitedOrganismsList: resourceFactory('exploited-organisms/'),
       EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),
       Taxa: resourceFactory('taxa/'),
+      MSY: resourceFactory('msy/:region_id'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),

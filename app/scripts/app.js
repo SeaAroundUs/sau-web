@@ -289,6 +289,17 @@ angular
         });
     }
 
+    // MSY routes
+    if (togglesProvider.$get().isEnabled('msy')) {
+      $routeProvider
+        .when('/msy/:ids', {
+          templateUrl: 'views/msy/msy.html',
+          controller: 'MsyCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'msy';}}
+        });
+    }
+
     // FAO routes
     if (togglesProvider.$get().isEnabled('fao')) {
       $routeProvider
