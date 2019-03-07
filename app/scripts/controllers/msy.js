@@ -1,4 +1,8 @@
-angular.module('sauWebApp').controller('MsyCtrl',
+;(function() {
+
+  'use strict';
+
+  angular.module('sauWebApp').controller('MsyCtrl',
   function ($scope, $location, $window, sauAPI, $routeParams) {
     $(function () {
       var msy_arearange = new Array();
@@ -165,3 +169,4 @@ angular.module('sauWebApp').controller('MsyCtrl',
       });
     });
   });
+})();
