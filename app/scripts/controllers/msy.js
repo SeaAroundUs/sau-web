@@ -1,7 +1,5 @@
 ;(function() {
 
-  'use strict';
-
   angular.module('sauWebApp').controller('MsyCtrl',
   function ($scope, $location, $window, sauAPI, $routeParams) {
     $(function () {
