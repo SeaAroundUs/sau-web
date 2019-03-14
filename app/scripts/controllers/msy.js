@@ -1,5 +1,3 @@
-;(function() {
-
   angular.module('sauWebApp').controller('MsyCtrl',
   function ($scope, $location, $window, sauAPI, $routeParams) {
     $(function () {
@@ -17,7 +15,7 @@
         // Populate series
         var msy = data.data[0].data;
         var sciname = data.data[0].scientific_name;
-        for (i = 0; i < msy.length; i++){
+        for (var i = 0; i < msy.length; i++){
           msy_arearange.push([msy[i][0],msy[i][3],msy[i][4]]);
           catch_json.push([msy[i][0],msy[i][1]]);
           msy_catch_json.push([msy[i][0],msy[i][2]]);
@@ -98,9 +96,9 @@
           }
         });
         $(function () {
-          $span = $('h1').find('span')
+          var span = $('h1').find('span')
           $('h1').text('Catch for ' + sciname);
-          $('h1').append($span);
+          $('h1').append(span);
         });
         $('#selCMSY').click(function() {
           var chart = $('#msycontainer').highcharts();
@@ -119,9 +117,9 @@
           chart.series[2].setData(catch_json);
           chart.redraw();
 
-          $span = $('h1').find('span')
+          var span = $('h1').find('span')
           $('h1').text('Catch for ' + sciname);
-          $('h1').append($span);
+          $('h1').append(span);
         });
 
         $('#selBMSY').click(function() {
@@ -139,9 +137,9 @@
           chart.series[1].update({name:'Upper and Lower BMSY'}, false);
           chart.redraw();
 
-          $span = $('h1').find('span')
+          var span = $('h1').find('span')
           $('h1').text('BMSY for ' + sciname);
-          $('h1').append($span);
+          $('h1').append(span);
         });
 
         $('#selFMSY').click(function() {
@@ -167,4 +165,3 @@
       });
     });
   });
-})();
