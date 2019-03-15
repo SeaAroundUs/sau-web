@@ -95,71 +95,77 @@
 				}
           }
         });
+
         $(function () {
           var span = $('h1').find('span')
           $('h1').text('Catch for ' + sciname);
           $('h1').append(span);
         });
-        $('#selCMSY').click(function() {
-          var chart = $('#msycontainer').highcharts();
-          msy_arearange = [];
-          msy_catch_json = [];
-          catch_json = [];
-          for (i = 0; i < msy.length; i++){
-            msy_arearange.push([msy[i][0],msy[i][3],msy[i][4]]);
-            msy_catch_json.push([msy[i][0],msy[i][2]]);
-            catch_json.push([msy[i][0],msy[i][1]]);
+
+        $(".msy").change(function(){
+          var msy_value = $(this).val();
+          switch(msy_value){
+            case "CMSY":
+              var chart = $('#msycontainer').highcharts();
+              msy_arearange = [];
+              msy_catch_json = [];
+              catch_json = [];
+              for (i = 0; i < msy.length; i++){
+                msy_arearange.push([msy[i][0],msy[i][3],msy[i][4]]);
+                msy_catch_json.push([msy[i][0],msy[i][2]]);
+                catch_json.push([msy[i][0],msy[i][1]]);
+              }
+              chart.series[0].setData(msy_catch_json);
+              chart.series[0].update({name:'Catch'}, false);
+              chart.series[1].update({name:'Upper and Lower CMSY'}, false);
+              chart.series[1].setData(msy_arearange);
+              chart.series[2].setData(catch_json);
+              chart.redraw();
+
+              var span = $('h1').find('span')
+              $('h1').text('Catch for ' + sciname);
+              $('h1').append(span);
+            break;
+            case "BMSY":
+              var chart = $('#msycontainer').highcharts();
+              for (i = 0; i < msy.length; i++){
+                bmsy_arearange.push([msy[i][0],msy[i][6],msy[i][7]]);
+                bmsy_catch_json.push([msy[i][0],msy[i][5]]);
+              }
+              chart.series[0].setData(bmsy_catch_json);
+              chart.series[1].setData(bmsy_arearange);
+              chart.series[2].setData();
+              //chart.series[2].remove();
+              chart.series[0].update({name:'BMSY'}, false);
+              chart.series[1].update({name:'Upper and Lower BMSY'}, false);
+              chart.redraw();
+
+              var span = $('h1').find('span')
+              $('h1').text('Biomass for ' + sciname);
+              $('h1').append(span);
+            break;
+            case "FMSY":
+              var chart = $('#msycontainer').highcharts();
+              for (i = 0; i < msy.length; i++){
+                fmsy_arearange.push([msy[i][0],msy[i][9],msy[i][10]]);
+                fmsy_catch_json.push([msy[i][0],msy[i][8]]);
+              }
+              chart.series[0].setData(fmsy_catch_json);
+              chart.series[1].setData(fmsy_arearange);
+              chart.series[2].setData();
+              //chart.series[2].remove();
+              chart.series[0].update({name:'FMSY'}, false);
+              chart.series[1].update({name:'Upper and Lower FMSY'}, false);
+              chart.redraw();
+
+              var span = $('h1').find('span')
+              $('h1').text('FMSY for ' + sciname);
+              $('h1').append(span);
+            break;
+            default:
+              //code
+            break;
           }
-          chart.series[0].setData(msy_catch_json);
-          chart.series[0].update({name:'Catch'}, false);
-          chart.series[1].update({name:'Upper and Lower CMSY'}, false);
-          chart.series[1].setData(msy_arearange);
-          chart.series[2].setData(catch_json);
-          chart.redraw();
-
-          var span = $('h1').find('span')
-          $('h1').text('Catch for ' + sciname);
-          $('h1').append(span);
-        });
-
-        $('#selBMSY').click(function() {
-          var chart = $('#msycontainer').highcharts();
-          for (i = 0; i < msy.length; i++){
-            bmsy_arearange.push([msy[i][0],msy[i][6],msy[i][7]]);
-            bmsy_catch_json.push([msy[i][0],msy[i][5]]);
-          }
-          chart.series[0].setData(bmsy_catch_json);
-          chart.series[1].setData(bmsy_arearange);
-          chart.series[2].setData();
-          //chart.series[2].remove();
-
-          chart.series[0].update({name:'BMSY'}, false);
-          chart.series[1].update({name:'Upper and Lower BMSY'}, false);
-          chart.redraw();
-
-          var span = $('h1').find('span')
-          $('h1').text('BMSY for ' + sciname);
-          $('h1').append(span);
-        });
-
-        $('#selFMSY').click(function() {
-          var chart = $('#msycontainer').highcharts();
-          for (i = 0; i < msy.length; i++){
-            fmsy_arearange.push([msy[i][0],msy[i][9],msy[i][10]]);
-            fmsy_catch_json.push([msy[i][0],msy[i][8]]);
-          }
-          chart.series[0].setData(fmsy_catch_json);
-          chart.series[1].setData(fmsy_arearange);
-          chart.series[2].setData();
-          //chart.series[2].remove();
-
-          chart.series[0].update({name:'FMSY'}, false);
-          chart.series[1].update({name:'Upper and Lower FMSY'}, false);
-          chart.redraw();
-
-          $span = $('h1').find('span')
-          $('h1').text('FMSY for ' + sciname);
-          $('h1').append($span);
         });
 
       });
