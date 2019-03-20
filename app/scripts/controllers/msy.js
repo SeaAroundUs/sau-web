@@ -30,23 +30,27 @@
             title: {
               text: 'Years'
             },
+            startOnTick:true,
             pointStart: 1950,
+            minPadding:0,
             tickInterval: 10
           },
           yAxis: {
             title: {
-              text: "Catch (t x 1000)"
-            }
+              text: "(t x 1000)",
+            },
+			lineWidth: 1,
+			lineColor: '#000000'
           },
           tooltip: {
             crosshairs: true,
             shared: true
           },
           series: [{
-            name: 'Catch',
+            name: 'MSY',
             data: msy_catch_json,
             color: 'black',
-            dashStyle: 'Dash',
+            //dashStyle: 'Dash',
             zIndex: 1,
             marker: {
               enabled: false
@@ -73,6 +77,12 @@
               },
               color: '#20639B',
             }],
+          legend: {
+            layout: 'horizontal',
+            align: 'center',
+            verticalAlign: 'top',
+            itemMarginTop: 0
+          },
           exporting: {
             buttons:{
 //					contextButton: {
@@ -116,10 +126,11 @@
                 catch_json.push([msy[i][0],msy[i][1]]);
               }
               chart.series[0].setData(msy_catch_json);
-              chart.series[0].update({name:'Catch'}, false);
+              chart.series[0].update({name:'MSY'}, false);
               chart.series[1].update({name:'Upper and Lower CMSY'}, false);
               chart.series[1].setData(msy_arearange);
-              chart.series[2].setData(catch_json);
+              chart.addSeries({name: 'Catches', type: 'area',data:catch_json,marker: {enabled: false},color: '#20639B'});
+              //chart.series[2].setData(catch_json);
               chart.redraw();
 
               var span = $('h1').find('span')
@@ -133,16 +144,18 @@
                 bmsy_catch_json.push([msy[i][0],msy[i][5]]);
               }
               chart.series[0].setData(bmsy_catch_json);
-              chart.series[1].setData(bmsy_arearange);
-              chart.series[2].setData();
-              //chart.series[2].remove();
               chart.series[0].update({name:'BMSY'}, false);
+              chart.series[1].setData(bmsy_arearange);
               chart.series[1].update({name:'Upper and Lower BMSY'}, false);
+              //chart.series[2].setData();
+              if (chart.series[2]){
+              chart.series[2].remove();
+             }
               chart.redraw();
 
-              var span = $('h1').find('span')
+              var span2 = $('h1').find('span')
               $('h1').text('Biomass for ' + sciname);
-              $('h1').append(span);
+              $('h1').append(span2);
             break;
             case "FMSY":
               var chart = $('#msycontainer').highcharts();
@@ -151,16 +164,18 @@
                 fmsy_catch_json.push([msy[i][0],msy[i][8]]);
               }
               chart.series[0].setData(fmsy_catch_json);
+              chart.series[0].update({name:'Exploitation'}, false);
               chart.series[1].setData(fmsy_arearange);
-              chart.series[2].setData();
-              //chart.series[2].remove();
-              chart.series[0].update({name:'FMSY'}, false);
-              chart.series[1].update({name:'Upper and Lower FMSY'}, false);
+              chart.series[1].update({name:'Upper and Lower Exploitation'}, false);
+              //chart.series[2].setData();
+              if (chart.series[2]){
+              chart.series[2].remove();
+             }
               chart.redraw();
 
-              var span = $('h1').find('span')
-              $('h1').text('FMSY for ' + sciname);
-              $('h1').append(span);
+              var span3 = $('h1').find('span')
+              $('h1').text('Exploitation for ' + sciname);
+              $('h1').append(span3);
             break;
             default:
               //code
