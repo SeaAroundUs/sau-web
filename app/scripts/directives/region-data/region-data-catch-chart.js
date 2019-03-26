@@ -99,6 +99,15 @@ angular.module('sauWebApp')
       $scope.$watch('reportedLine', updateReportedLine);
       $scope.$watch(function() { return $scope.formModel.managedSpecies; }, updateReportedLine);
 
+	  
+	 /* updates the reported catch line when screen is resized */
+     $(window).resize(function(){
+    $scope.$apply(function(){
+       updateReportedLine();
+    });
+});
+
+/*alert($scope.region.name);*/
 
       /*
        * helper functions
