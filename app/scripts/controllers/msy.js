@@ -8,6 +8,7 @@
       var bmsy_json = new Array();
       var bmsy_arearange = new Array();
       var bmsy_catch_json = new Array();
+      var halfbmsy_catch_json = new Array();
 
       var fmsy_json = new Array();
       var fmsy_arearange = new Array();
@@ -20,9 +21,10 @@
         var cname = data.data[0].common_name;
         var area = data.data[0].meow;
         for (var i = 0; i < msy.length; i++){
-                bmsy_arearange.push([msy[i][0],msy[i][7],msy[i][8]]);
-                bmsy_json.push([msy[i][0],msy[i][5]]);
-                bmsy_catch_json.push([msy[i][0],msy[i][6]]);
+          bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
+          bmsy_json.push([msy[i][0],msy[i][5]]);
+          bmsy_catch_json.push([msy[i][0],msy[i][6]]);
+          halfbmsy_catch_json.push([msy[i][0],msy[i][7]]);
         }
         // draw chart
         $('#msycontainer').highcharts(
@@ -54,7 +56,7 @@
           },
           series: [
           {
-            name: 'Biomass',
+            name: 'BMSY',
             data: bmsy_catch_json,
             color: 'black',
             dashStyle: 'Dash',
@@ -89,9 +91,20 @@
               linkedTo: ':previous',
               fillOpacity: 0.3,
               zIndex: 0,
+              color: '#D3D3D3',
               marker: {
                 enabled: false
               }
+            },
+            {
+              id: 'halfbmsy',
+              name: 'Half BMSY',
+              dashStyle: 'ShortDot',
+              data: halfbmsy_catch_json ,
+              marker: {
+                enabled: false
+              },
+              color: '#ff0000'
             }
             //},
               ],
@@ -125,10 +138,13 @@
           }
         });
 
+
+
         $(function () {
           var span = $('h1').find('span');
-          $('h1').text('Relative biomass of ' + cname + ' ('+sciname +') in ' + area);
+          $('h1').html('Relative biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
           $('h1').append(span);
+          
         });
 
         $(".msy").change(function(){
@@ -148,23 +164,38 @@
               chart.series[0].update({name:'MSY'}, false);
               chart.series[1].setData(catch_json);
               chart.series[1].update({name:'Catch'}, false);
-              chart.series[2].update({name:'Upper and Lower CMSY'}, false);
-              chart.series[2].setData(msy_arearange);
+              //chart.get('upperandlower').setData(msy_arearange);
+              //chart.get('upperandlower').update({name:'Upper and Lower CMSY'}, false);
+              //chart.series[2].setData(msy_arearange);
+              //chart.series[2].update({name:'Upper and Lower CMSY'}, false);
               chart.yAxis[0].axisTitle.attr({useHTML: true, text: 'Catch (t * 10<sup>3</sup>)'});
               //chart.addSeries({name: 'Catches', type: 'line',data:catch_json,marker: {enabled: false},color: '#20639B'});
+              chart.addSeries({id: 'upperandlowermsy', name: 'Upper and Lower CMSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+
+              if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
+                chart.get('catch').remove(false);
+                chart.get('upperandlowermsy').remove(false);
+                chart.get('msyline').remove(false);
+                chart.get('fmsyline').remove(false);
+              }
+              if (chart.get('halfbmsy')){
+                chart.get('halfbmsy').remove(false);
+              }
               chart.redraw();
 
               var span = $('h1').find('span')
-              $('h1').text('Catch of ' + cname + ' ('+sciname +') in ' + area);
+              $('h1').html('Catch of ' + cname + ' ('+sciname.italics() +') in ' + area);
               $('h1').append(span);
+
             break;
             case "BMSY":
               var chart = $('#msycontainer').highcharts();
               bmsy_arearange = [];
               bmsy_catch_json = [];
               bmsy_json = [];
+
               for (i = 0; i < msy.length; i++){
-                bmsy_arearange.push([msy[i][0],msy[i][7],msy[i][8]]);
+                bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
                 bmsy_catch_json.push([msy[i][0],msy[i][6]]);
                 bmsy_json.push([msy[i][0],msy[i][5]]);
               }
@@ -175,14 +206,22 @@
               chart.series[2].update({name:'Upper and Lower BMSY'}, false);
               chart.series[2].setData(bmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: '(B/B<sub>MSY</sub>)'});
-              //chart.series[2].setData();
-              //if (chart.series[2]){
-              //  chart.series[2].remove();
-              //}
+
+              if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
+                chart.get('catch').remove(false);
+                chart.get('msyline').remove(false);
+                chart.get('fmsyline').remove(false);
+              }
+              if (chart.get('upperandlowermsy')){
+                chart.get('upperandlowermsy').remove(false);
+              }
+              if (!chart.get('halfbmsy')){
+                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+              }
               chart.redraw();
 
               var span2 = $('h1').find('span')
-              $('h1').text('Relative biomass of ' + cname + ' ('+sciname +') in ' + area);
+              $('h1').html('Relative biomass of ' + cname + ' ('+sciname.italics() +') in ' + area);
               $('h1').append(span2);
             break;
             case "FMSY":
@@ -191,9 +230,9 @@
               fmsy_catch_json = [];
               fmsy_json = [];
               for (i = 0; i < msy.length; i++){
-                fmsy_arearange.push([msy[i][0],msy[i][11],msy[i][12]]);
-                fmsy_catch_json.push([msy[i][0],msy[i][10]]);
-                fmsy_json.push([msy[i][0],msy[i][9]]);
+                fmsy_arearange.push([msy[i][0],msy[i][12],msy[i][13]]);
+                fmsy_catch_json.push([msy[i][0],msy[i][11]]);
+                fmsy_json.push([msy[i][0],msy[i][10]]);
               }
               chart.series[0].setData(fmsy_catch_json);
               chart.series[0].update({name:'FMSY'}, false);
@@ -203,14 +242,71 @@
               chart.series[2].setData(fmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: '(F/F<sub>MSY</sub>)'});
               //chart.series[2].setData();
-              //if (chart.series[2]){
-              //  chart.series[2].remove();
-              //}
+              if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
+                chart.get('catch').remove(false);
+                chart.get('upperandlowermsy').remove(false);
+                chart.get('msyline').remove(false);
+                chart.get('fmsyline').remove(false);
+              }
+              if (chart.get('upperandlowermsy')){
+                chart.get('upperandlowermsy').remove(false);
+              }
+              if (chart.get('halfbmsy')){
+                chart.get('halfbmsy').remove(false);
+              }
               chart.redraw();
 
               var span3 = $('h1').find('span')
-              $('h1').text('Exploitation rate of ' + cname + ' ('+sciname +') in ' + area);
+              $('h1').html('Exploitation rate of ' + cname + ' ('+sciname.italics() +') in ' + area);
               $('h1').append(span3);
+
+            break;
+            case "ALL":
+              var chart = $('#msycontainer').highcharts();
+              msy_arearange = [];
+              msy_catch_json = [];
+              catch_json = [];
+              bmsy_arearange = [];
+              bmsy_catch_json = [];
+              bmsy_json = [];
+              halfbmsy_catch_json = [];
+              fmsy_arearange = [];
+              fmsy_catch_json = [];
+              fmsy_json = [];
+              for (i = 0; i < msy.length; i++){
+                msy_arearange.push([msy[i][0],msy[i][3],msy[i][4]]);
+                msy_catch_json.push([msy[i][0],msy[i][2]]);
+                catch_json.push([msy[i][0],msy[i][1]]);
+                bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
+                bmsy_json.push([msy[i][0],msy[i][5]]);
+                bmsy_catch_json.push([msy[i][0],msy[i][6]]);
+                halfbmsy_catch_json.push([msy[i][0],msy[i][7]]);
+                fmsy_arearange.push([msy[i][0],msy[i][12],msy[i][13]]);
+                fmsy_catch_json.push([msy[i][0],msy[i][11]]);
+                fmsy_json.push([msy[i][0],msy[i][10]]);
+              }
+              chart.series[0].setData(bmsy_catch_json);
+              chart.series[0].update({name:'BMSY'}, false);
+              chart.yAxis[0].axisTitle.attr({text: ''});
+              chart.series[1].setData(bmsy_json);
+              chart.series[1].update({name:'Biomass'}, false);
+              chart.series[2].update({name:'Upper and Lower BMSY'}, false);
+              chart.series[2].setData(bmsy_arearange);
+
+              if (!chart.get('halfbmsy')){
+                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+              }
+              chart.addSeries({id: 'catch', name: 'Catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
+              if (!chart.get('upperandlowermsy')){
+                chart.addSeries({id: 'upperandlowermsy', name: 'Upper and Lower CMSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              }
+              chart.addSeries({id: 'msyline',name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
+              chart.addSeries({id: 'fmsyline',name: 'Exploitation', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
+              chart.redraw();
+
+              var span4 = $('h1').find('span')
+              $('h1').html('Biomass, Catch and Exploitation rate of ' + cname + ' ('+sciname.italics() +') in ' + area);
+              $('h1').append(span4);
             break;
             default:
               //code
