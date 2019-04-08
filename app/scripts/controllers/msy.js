@@ -44,11 +44,15 @@
           yAxis: {
             title: {
               useHTML: true,
-              text: '(B/B<sub>MSY</sub>)',
+              text: 'Relative biomass (B/B<sub>MSY</sub>)',
+            },
+            labels: {
+              format: '{value:.4f}'
             },
             gridLineWidth: 0,
+            min: 0,
             lineWidth: 1,
-            lineColor: '#000000'
+            lineColor: '#000000',
           },
           tooltip: {
             crosshairs: true,
@@ -56,8 +60,10 @@
           },
           series: [
           {
-            name: 'BMSY',
+            name: 'B/B<sub>MSY</sub>',
             data: bmsy_catch_json,
+            showInLegend: false,
+            enableMouseTracking: false,
             color: 'black',
             dashStyle: 'Dash',
             marker: {
@@ -65,7 +71,7 @@
             }
           },
             {
-              name: 'Biomass',
+              name: 'Relative biomass',
               type: 'line',
               data: bmsy_json,
               marker: {
@@ -84,7 +90,7 @@
 //              }
 //            },
             {
-              name: 'Upper and Lower BMSY',
+              name: 'Conf. interval ',
               data: bmsy_arearange,
               type: 'arearange',
               lineWidth: 0,
@@ -99,6 +105,8 @@
             {
               id: 'halfbmsy',
               name: 'Half BMSY',
+              showInLegend: false,
+              enableMouseTracking: false,
               dashStyle: 'ShortDot',
               data: halfbmsy_catch_json ,
               marker: {
@@ -109,14 +117,20 @@
             //},
               ],
           legend: {
-            enabled: false,
+            enabled: true,
+            useHTML: true,
             layout: 'horizontal',
-            align: 'center',
+            align: 'right',
             verticalAlign: 'top',
             itemMarginTop: 0
           },
+          tooltip: {
+            useHTML: true,
+            shared: true
+          },
           exporting: {
-            buttons:{
+            enabled: false 
+//            buttons:{
 //					contextButton: {
 //                 enabled: true,
 //                  text: '',
@@ -134,11 +148,9 @@
 //							alert('You pressed another button!');
 //						}
 //					}
-				}
+//				}
           }
         });
-
-
 
         $(function () {
           var span = $('h1').find('span');
@@ -162,6 +174,7 @@
               }
               chart.series[0].setData(msy_catch_json);
               chart.series[0].update({name:'MSY'}, false);
+              chart.series[0].update({showInLegend: true,enableMouseTracking: true}),
               chart.series[1].setData(catch_json);
               chart.series[1].update({name:'Catch'}, false);
               //chart.get('upperandlower').setData(msy_arearange);
@@ -170,7 +183,7 @@
               //chart.series[2].update({name:'Upper and Lower CMSY'}, false);
               chart.yAxis[0].axisTitle.attr({useHTML: true, text: 'Catch (t * 10<sup>3</sup>)'});
               //chart.addSeries({name: 'Catches', type: 'line',data:catch_json,marker: {enabled: false},color: '#20639B'});
-              chart.addSeries({id: 'upperandlowermsy', name: 'Upper and Lower CMSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
                 chart.get('catch').remove(false);
@@ -200,12 +213,13 @@
                 bmsy_json.push([msy[i][0],msy[i][5]]);
               }
               chart.series[0].setData(bmsy_catch_json);
-              chart.series[0].update({name:'BMSY'}, false);
+              chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
+              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
               chart.series[1].setData(bmsy_json);
-              chart.series[1].update({name:'Biomass'}, false);
-              chart.series[2].update({name:'Upper and Lower BMSY'}, false);
+              chart.series[1].update({name:'Relative biomass'}, false);
+              chart.series[2].update({name:'Conf. interval'}, false);
               chart.series[2].setData(bmsy_arearange);
-              chart.yAxis[0].axisTitle.attr({text: '(B/B<sub>MSY</sub>)'});
+              chart.yAxis[0].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
@@ -216,7 +230,7 @@
                 chart.get('upperandlowermsy').remove(false);
               }
               if (!chart.get('halfbmsy')){
-                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false, enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
               }
               chart.redraw();
 
@@ -235,12 +249,13 @@
                 fmsy_json.push([msy[i][0],msy[i][10]]);
               }
               chart.series[0].setData(fmsy_catch_json);
-              chart.series[0].update({name:'FMSY'}, false);
+              chart.series[0].update({name:'F/F<sub>MSY</sub>'}, false);
+              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
               chart.series[1].setData(fmsy_json);
-              chart.series[1].update({name:'Exploitation'}, false);
-              chart.series[2].update({name:'Upper and Lower Exploitation'}, false);
+              chart.series[1].update({name:'F/F<sub>MSY</sub>'}, false);
+              chart.series[2].update({name:'Conf. interval'}, false);
               chart.series[2].setData(fmsy_arearange);
-              chart.yAxis[0].axisTitle.attr({text: '(F/F<sub>MSY</sub>)'});
+              chart.yAxis[0].axisTitle.attr({text: 'Exploitation rate (F/F<sub>MSY</sub>)'});
               //chart.series[2].setData();
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
                 chart.get('catch').remove(false);
@@ -287,21 +302,22 @@
               }
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'BMSY'}, false);
+              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
               chart.yAxis[0].axisTitle.attr({text: ''});
               chart.series[1].setData(bmsy_json);
-              chart.series[1].update({name:'Biomass'}, false);
+              chart.series[1].update({name:'Relative biomass'}, false);
               chart.series[2].update({name:'Upper and Lower BMSY'}, false);
               chart.series[2].setData(bmsy_arearange);
 
               if (!chart.get('halfbmsy')){
-                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
               }
-              chart.addSeries({id: 'catch', name: 'Catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
+              chart.addSeries({id: 'catch', name: 'Relative catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
               if (!chart.get('upperandlowermsy')){
-                chart.addSeries({id: 'upperandlowermsy', name: 'Upper and Lower CMSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+                chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
               }
               chart.addSeries({id: 'msyline',name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
-              chart.addSeries({id: 'fmsyline',name: 'Exploitation', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
+              chart.addSeries({id: 'fmsyline',name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
               chart.redraw();
 
               var span4 = $('h1').find('span')
