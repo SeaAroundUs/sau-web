@@ -41,7 +41,7 @@
             minPadding:0,
             tickInterval: 10
           },
-          yAxis: {
+          yAxis: [{
             title: {
               useHTML: true,
               text: 'Relative biomass (B/B<sub>MSY</sub>)',
@@ -54,6 +54,20 @@
             lineWidth: 1,
             lineColor: '#000000',
           },
+          {
+            opposite: true,
+            title: {
+               useHTML: true,
+               text: ''
+            },
+            labels: {
+              format: '{value:.4f}'
+            },
+            gridLineWidth: 0,
+            min: 0,
+            lineWidth: 1,
+    }
+          ],
           tooltip: {
             crosshairs: true,
             shared: true
@@ -65,13 +79,14 @@
             showInLegend: false,
             enableMouseTracking: false,
             color: 'black',
-            dashStyle: 'Dash',
+            dashStyle: 'ShortDot',
             marker: {
               enabled: false
             }
           },
             {
               name: 'Relative biomass',
+              showInLegend: false,
               type: 'line',
               data: bmsy_json,
               marker: {
@@ -129,26 +144,26 @@
             shared: true
           },
           exporting: {
-            enabled: false 
-//            buttons:{
-//					contextButton: {
-//                 enabled: true,
-//                  text: '',
-//                  symbol: undefined
-//              }
-//					customButton: {
-//						text: 'Custom Button',
-//						onclick: function () {
-//							this.setTitle({text: 'Miel'});
-//						}
-//					},
-//				anotherButton: {
-//						text: 'Another Button',
-//						onclick: function () {
-//							alert('You pressed another button!');
-//						}
-//					}
-//				}
+            enabled: false
+            //buttons:{
+            //contextButton: {
+            //enabled: true,
+            //text: '',
+            //symbol: undefined
+            //}
+            //customButton: {
+            //text: 'Custom Button',
+            //onclick: function () {
+            //this.setTitle({text: 'Miel'});
+            //}
+            //},
+            //anotherButton: {
+            //text: 'Another Button',
+            //onclick: function () {
+            //alert('You pressed another button!');
+            //}
+            //}
+            //}
           }
         });
 
@@ -156,7 +171,6 @@
           var span = $('h1').find('span');
           $('h1').html('Relative biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
           $('h1').append(span);
-          
         });
 
         $(".msy").change(function(){
@@ -175,13 +189,16 @@
               chart.series[0].setData(msy_catch_json);
               chart.series[0].update({name:'MSY'}, false);
               chart.series[0].update({showInLegend: true,enableMouseTracking: true}),
+              chart.series[0].update({dashStyle: 'Dash'}, false);
               chart.series[1].setData(catch_json);
               chart.series[1].update({name:'Catch'}, false);
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
               //chart.get('upperandlower').setData(msy_arearange);
               //chart.get('upperandlower').update({name:'Upper and Lower CMSY'}, false);
               //chart.series[2].setData(msy_arearange);
               //chart.series[2].update({name:'Upper and Lower CMSY'}, false);
               chart.yAxis[0].axisTitle.attr({useHTML: true, text: 'Catch (t * 10<sup>3</sup>)'});
+              chart.yAxis[1].update({title: {text: null}});
               //chart.addSeries({name: 'Catches', type: 'line',data:catch_json,marker: {enabled: false},color: '#20639B'});
               chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
 
@@ -215,11 +232,14 @@
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
               chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
+              chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Relative biomass'}, false);
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
               chart.series[2].update({name:'Conf. interval'}, false);
               chart.series[2].setData(bmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
+              chart.yAxis[1].update({title: {text: null}});
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
@@ -251,11 +271,15 @@
               chart.series[0].setData(fmsy_catch_json);
               chart.series[0].update({name:'F/F<sub>MSY</sub>'}, false);
               chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
+              chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(fmsy_json);
               chart.series[1].update({name:'F/F<sub>MSY</sub>'}, false);
+              chart.series[1].update({showInLegend: false,enableMouseTracking: false}),
               chart.series[2].update({name:'Conf. interval'}, false);
               chart.series[2].setData(fmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: 'Exploitation rate (F/F<sub>MSY</sub>)'});
+              chart.yAxis[1].update({title: {text: null}});
+
               //chart.series[2].setData();
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
                 chart.get('catch').remove(false);
@@ -302,22 +326,26 @@
               }
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'BMSY'}, false);
-              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
+              chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.yAxis[0].axisTitle.attr({text: ''});
+              chart.yAxis[1].update({title: {text: 'Catch (t * 10<sup>3</sup>)'}});
+              //chart.yAxis[1].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Relative biomass'}, false);
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
               chart.series[2].update({name:'Upper and Lower BMSY'}, false);
               chart.series[2].setData(bmsy_arearange);
 
               if (!chart.get('halfbmsy')){
                 chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
               }
-              chart.addSeries({id: 'catch', name: 'Relative catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
+              chart.addSeries({id: 'catch', yAxis: 1, name: 'Relative catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
               if (!chart.get('upperandlowermsy')){
-                chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+                chart.addSeries({id: 'upperandlowermsy', yAxis: 1, name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
               }
-              chart.addSeries({id: 'msyline',name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
+              chart.addSeries({id: 'msyline', yAxis: 1, name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
               chart.addSeries({id: 'fmsyline',name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
+
               chart.redraw();
 
               var span4 = $('h1').find('span')
