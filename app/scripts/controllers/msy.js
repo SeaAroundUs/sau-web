@@ -34,10 +34,14 @@
           },
           xAxis: {
             title: {
-              text: 'Years'
+              text: 'Years',
+              style: {
+                fontSize: '18px'
+              }
             },
             startOnTick:true,
             pointStart: 1950,
+            pointEnd: 2014,
             minPadding:0,
             tickInterval: 10
           },
@@ -45,6 +49,9 @@
             title: {
               useHTML: true,
               text: 'Relative biomass (B/B<sub>MSY</sub>)',
+              style: {
+                fontSize: '18px'
+              }
             },
             labels: {
               format: '{value:.4f}'
@@ -57,16 +64,19 @@
           {
             opposite: true,
             title: {
-               useHTML: true,
-               text: ''
+              useHTML: true,
+              text: '',
+              style: {
+                fontSize: '18px'
+              }
             },
             labels: {
               format: '{value:.4f}'
             },
             gridLineWidth: 0,
-            min: 0,
             lineWidth: 1,
-    }
+            lineColor: '#000000',
+          }
           ],
           tooltip: {
             crosshairs: true,
@@ -116,19 +126,19 @@
               marker: {
                 enabled: false
               }
-            },
-            {
-              id: 'halfbmsy',
-              name: 'Half BMSY',
-              showInLegend: false,
-              enableMouseTracking: false,
-              dashStyle: 'ShortDot',
-              data: halfbmsy_catch_json ,
-              marker: {
-                enabled: false
-              },
-              color: '#ff0000'
             }
+//            {
+//              id: 'halfbmsy',
+//              name: 'Half BMSY',
+//              showInLegend: false,
+//              enableMouseTracking: false,
+//              dashStyle: 'ShortDot',
+//              data: halfbmsy_catch_json ,
+//              marker: {
+//                enabled: false
+//              },
+//              color: '#ff0000'
+//            }
             //},
               ],
           legend: {
@@ -249,9 +259,9 @@
               if (chart.get('upperandlowermsy')){
                 chart.get('upperandlowermsy').remove(false);
               }
-              if (!chart.get('halfbmsy')){
-                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false, enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
-              }
+//              if (!chart.get('halfbmsy')){
+//                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false, enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+//              }
               chart.redraw();
 
               var span2 = $('h1').find('span')
@@ -336,9 +346,9 @@
               chart.series[2].update({name:'Upper and Lower BMSY'}, false);
               chart.series[2].setData(bmsy_arearange);
 
-              if (!chart.get('halfbmsy')){
-                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
-              }
+//              if (!chart.get('halfbmsy')){
+//                chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
+//              }
               chart.addSeries({id: 'catch', yAxis: 1, name: 'Relative catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
               if (!chart.get('upperandlowermsy')){
                 chart.addSeries({id: 'upperandlowermsy', yAxis: 1, name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
@@ -347,7 +357,6 @@
               chart.addSeries({id: 'fmsyline',name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
 
               chart.redraw();
-
               var span4 = $('h1').find('span')
               $('h1').html('Biomass, Catch and Exploitation rate of ' + cname + ' ('+sciname.italics() +') in ' + area);
               $('h1').append(span4);
