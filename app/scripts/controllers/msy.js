@@ -115,6 +115,7 @@
 //              }
 //            },
             {
+              id: 'upperandlowerbmsy',
               name: 'Conf. interval ',
               data: bmsy_arearange,
               type: 'arearange',
@@ -122,7 +123,7 @@
               linkedTo: ':previous',
               fillOpacity: 0.3,
               zIndex: 0,
-              color: '#D3D3D3',
+              color: '#b2dcff',
               marker: {
                 enabled: false
               }
@@ -218,8 +219,11 @@
                 chart.get('msyline').remove(false);
                 chart.get('fmsyline').remove(false);
               }
-              if (chart.get('halfbmsy')){
-                chart.get('halfbmsy').remove(false);
+              if (chart.get('upperandlowerbmsy')){
+                chart.get('upperandlowerbmsy').remove(false);
+              }
+              if (chart.get('upperandlowerfmsy')){
+                chart.get('upperandlowerfmsy').remove(false);
               }
               chart.redraw();
 
@@ -246,10 +250,17 @@
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Relative biomass'}, false);
               chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
-              chart.series[2].update({name:'Conf. interval'}, false);
-              chart.series[2].setData(bmsy_arearange);
+//              chart.series[2].update({name:'Conf. interval'}, false);
+//              chart.series[2].setData(bmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
               chart.yAxis[1].update({title: {text: null}});
+
+              if (!chart.get('upperandlowerbmsy')){
+                chart.addSeries({id: 'upperandlowerbmsy', name: 'Conf. interval', type: 'arearange', data: bmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#b2dcff', marker: { enabled: false }}, false);
+              } else {
+                chart.series[2].update({name:'Conf. interval'}, false);
+                chart.series[2].setData(bmsy_arearange);
+              }
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
@@ -259,9 +270,10 @@
               if (chart.get('upperandlowermsy')){
                 chart.get('upperandlowermsy').remove(false);
               }
-              //if (!chart.get('halfbmsy')){
-              //chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false, enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
-              //}
+              if (chart.get('upperandlowerfmsy')){
+                chart.get('upperandlowerfmsy').remove(false);
+              }
+
               chart.redraw();
 
               var span2 = $('h1').find('span')
@@ -285,23 +297,29 @@
               chart.series[1].setData(fmsy_json);
               chart.series[1].update({name:'F/F<sub>MSY</sub>'}, false);
               chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
-              chart.series[2].update({name:'Conf. interval'}, false);
-              chart.series[2].setData(fmsy_arearange);
+//              chart.series[2].update({name:'Conf. interval'}, false);
+//              chart.series[2].setData(fmsy_arearange);
               chart.yAxis[0].axisTitle.attr({text: 'Exploitation rate (F/F<sub>MSY</sub>)'});
               chart.yAxis[1].update({title: {text: null}});
 
+              if (!chart.get('upperandlowerfmsy')){
+                chart.addSeries({id: 'upperandlowerfmsy', name: 'Conf. interval', type: 'arearange', data: fmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#b2dcff', marker: { enabled: false }}, false);
+              } else {
+                chart.get('upperandlowerfmsy').update({name:'Conf. interval', color: '#b2dcff'}, false);
+                chart.get('upperandlowerfmsy').setData(fmsy_arearange);
+              }
+
               //chart.series[2].setData();
-              if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
+              if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
-                chart.get('upperandlowermsy').remove(false);
                 chart.get('msyline').remove(false);
                 chart.get('fmsyline').remove(false);
               }
               if (chart.get('upperandlowermsy')){
                 chart.get('upperandlowermsy').remove(false);
               }
-              if (chart.get('halfbmsy')){
-                chart.get('halfbmsy').remove(false);
+              if (chart.get('upperandlowerbmsy')){
+                chart.get('upperandlowerbmsy').remove(false);
               }
               chart.redraw();
 
@@ -336,25 +354,45 @@
               }
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'BMSY'}, false);
+              chart.series[0].update({showInLegend: false,enableMouseTracking: false});
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.yAxis[0].axisTitle.attr({text: ''});
               chart.yAxis[1].update({title: {text: 'Catch (t * 10<sup>3</sup>)'}});
-              //chart.yAxis[1].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Relative biomass'}, false);
-              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
-              chart.series[2].update({name:'Upper and Lower BMSY'}, false);
-              chart.series[2].setData(bmsy_arearange);
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true});
+//              chart.series[2].update({name:'Conf. interval BMSY',color: '#b2dcff'}, false);
+//              chart.series[2].setData(bmsy_arearange);
 
               //if (!chart.get('halfbmsy')){
               //chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
               //}
-              chart.addSeries({id: 'catch', yAxis: 1, name: 'Catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
-              if (!chart.get('upperandlowermsy')){
-                chart.addSeries({id: 'upperandlowermsy', yAxis: 1, name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+
+              if (!chart.get('upperandlowerbmsy')){
+                chart.addSeries({id: 'upperandlowerbmsy', name: 'Conf. interval BMSY', type: 'arearange', data: bmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#b2dcff', marker: { enabled: false }}, false);
+              } else {
+                chart.get('upperandlowerbmsy').update({name: 'Conf. interval BMSY', type: 'arearange', data: bmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#b2dcff', marker: { enabled: false }}, false);
               }
+
+              chart.addSeries({id: 'catch', yAxis: 1, name: 'Catch', type: 'line', data: catch_json,marker: {enabled: false},color: '#000000'}, false);
+
+              if (chart.get('upperandlowermsy')){
+                chart.get('upperandlowermsy').remove(false);
+              }
+
+              if (!chart.get('upperandlowermsy')){
+                chart.addSeries({id: 'upperandlowermsy', yAxis: 1, name: 'Conf. interval MSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              }
+
               chart.addSeries({id: 'msyline', yAxis: 1, name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
+
               chart.addSeries({id: 'fmsyline',name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#808080'}, true);
+
+              if (!chart.get('upperandlowerfmsy')){
+                chart.addSeries({id: 'upperandlowerfmsy', name: 'Conf. interval FMSY', type: 'arearange', data: fmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              } else {
+                chart.get('upperandlowerfmsy').update({name: 'Conf. interval FMSY', type: 'arearange', data: fmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              }
 
               chart.redraw();
               var span4 = $('h1').find('span')
