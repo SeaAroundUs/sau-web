@@ -8,7 +8,7 @@
       var bmsy_json = new Array();
       var bmsy_arearange = new Array();
       var bmsy_catch_json = new Array();
-      var halfbmsy_catch_json = new Array();
+      //var bmsy_windowline = new Array();
 
       var fmsy_json = new Array();
       var fmsy_arearange = new Array();
@@ -24,7 +24,9 @@
           bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
           bmsy_json.push([msy[i][0],msy[i][5]]);
           bmsy_catch_json.push([msy[i][0],msy[i][6]]);
-          halfbmsy_catch_json.push([msy[i][0],msy[i][7]]);
+          //if (msy[i][15] && msy[i][16]){
+            //bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
+          //}
         }
         // draw chart
         $('#msycontainer').highcharts(
@@ -48,7 +50,8 @@
           yAxis: [{
             title: {
               useHTML: true,
-              text: 'Relative biomass (B/B<sub>MSY</sub>)',
+              //text: 'Relative biomass (B/B<sub>MSY</sub>)',
+              text: 'Biomass (t * 10<sup>3</sup>)',
               style: {
                 fontSize: '18px'
               }
@@ -127,6 +130,14 @@
               marker: {
                 enabled: false
               }
+            //},
+            //{
+              //id: 'bmsywindowline',
+              //type:'columnrange',
+              //pointWidth: 2,
+              //enableMouseTracking: false,
+              //showInLegend: false,
+              //data: bmsy_windowline
             }
 //            {
 //              id: 'halfbmsy',
@@ -225,6 +236,9 @@
               if (chart.get('upperandlowerfmsy')){
                 chart.get('upperandlowerfmsy').remove(false);
               }
+              //if (chart.get('bmsywindowline')){
+                //chart.get('bmsywindowline').remove(false);
+              //}
               chart.redraw();
 
               var span = $('h1').find('span')
@@ -242,6 +256,9 @@
                 bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
                 bmsy_catch_json.push([msy[i][0],msy[i][6]]);
                 bmsy_json.push([msy[i][0],msy[i][5]]);
+                //if (msy[i][15] && msy[i][16]){
+                  //bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
+                //}
               }
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
@@ -252,7 +269,7 @@
               chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
 //              chart.series[2].update({name:'Conf. interval'}, false);
 //              chart.series[2].setData(bmsy_arearange);
-              chart.yAxis[0].axisTitle.attr({text: 'Relative biomass (B/B<sub>MSY</sub>)'});
+              chart.yAxis[0].axisTitle.attr({text: 'Biomass (t * 10<sup>3</sup>)'});
               chart.yAxis[1].update({title: {text: null}});
 
               if (!chart.get('upperandlowerbmsy')){
@@ -261,6 +278,10 @@
                 chart.series[2].update({name:'Conf. interval'}, false);
                 chart.series[2].setData(bmsy_arearange);
               }
+
+              //if (!chart.get('bmsywindowline')){
+                //chart.addSeries({id:'bmsywindowline', type:'columnrange',pointWidth: 2,enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
+              //}
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
@@ -321,6 +342,9 @@
               if (chart.get('upperandlowerbmsy')){
                 chart.get('upperandlowerbmsy').remove(false);
               }
+              //if (chart.get('bmsywindowline')){
+                //chart.get('bmsywindowline').remove(false);
+              //}
               chart.redraw();
 
               var span3 = $('h1').find('span')
@@ -336,7 +360,6 @@
               bmsy_arearange = [];
               bmsy_catch_json = [];
               bmsy_json = [];
-              halfbmsy_catch_json = [];
               fmsy_arearange = [];
               fmsy_catch_json = [];
               fmsy_json = [];
@@ -347,7 +370,6 @@
                 bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
                 bmsy_json.push([msy[i][0],msy[i][5]]);
                 bmsy_catch_json.push([msy[i][0],msy[i][6]]);
-                halfbmsy_catch_json.push([msy[i][0],msy[i][7]]);
                 fmsy_arearange.push([msy[i][0],msy[i][12],msy[i][13]]);
                 fmsy_catch_json.push([msy[i][0],msy[i][11]]);
                 fmsy_json.push([msy[i][0],msy[i][10]]);
@@ -361,8 +383,8 @@
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Relative biomass'}, false);
               chart.series[1].update({showInLegend: true,enableMouseTracking: true});
-//              chart.series[2].update({name:'Conf. interval BMSY',color: '#b2dcff'}, false);
-//              chart.series[2].setData(bmsy_arearange);
+              //chart.series[2].update({name:'Conf. interval BMSY',color: '#b2dcff'}, false);
+              //chart.series[2].setData(bmsy_arearange);
 
               //if (!chart.get('halfbmsy')){
               //chart.addSeries({id: 'halfbmsy',name: 'Half BMSY', dashStyle: 'ShortDot', showInLegend: false,enableMouseTracking: false, data: halfbmsy_catch_json ,marker: {enabled: false}, color: '#ff0000'}, true);
@@ -379,6 +401,10 @@
               if (chart.get('upperandlowermsy')){
                 chart.get('upperandlowermsy').remove(false);
               }
+
+              //if (chart.get('bmsywindowline')){
+                //chart.get('bmsywindowline').remove(false);
+              //}
 
               if (!chart.get('upperandlowermsy')){
                 chart.addSeries({id: 'upperandlowermsy', yAxis: 1, name: 'Conf. interval MSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
@@ -404,6 +430,39 @@
             break;
           }
         });
+
+        //var tdata_score = "";
+        //var year_tab = "";
+        //for (var i = 0; i < msy.length; i++){
+        //  switch (true){
+        //    case (msy[i][17] > '0' && msy[i][17] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
+        //    case (msy[i][17] > '0.26' && msy[i][17] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
+        //    case (msy[i][17] > '0.51' && msy[i][17] <= '0.75'): tdata_score += "<td bgcolor='#6ECBFD'></td>"; break
+        //    case (msy[i][17] > '0.76' && msy[i][17] <= '1'): tdata_score += "<td bgcolor='#3EBBFE'></td>"; break
+        //    case (msy[i][17] > '1.01' && msy[i][17] <= '1.25'): tdata_score += "<td bgcolor='#99FEEF'></td>"; break
+        //    case (msy[i][17] > '1.26' && msy[i][17] <= '1.5'): tdata_score += "<td bgcolor='#5AFCE4'></td>"; break
+        //    case (msy[i][17] > '1.51' && msy[i][17] <= '1.75'): tdata_score += "<td bgcolor='#EDFEE4'></td>"; break
+        //    case (msy[i][17] > '1.76' && msy[i][17] <= '2'): tdata_score += "<td bgcolor='#AFFE87'></td>"; break
+        //    case (msy[i][17] > '2.01' && msy[i][17] <= '2.25'): tdata_score += "<td bgcolor='#F7FF96'></td>"; break
+        //    case (msy[i][17] > '2.26' && msy[i][17] <= '2.5'): tdata_score += "<td bgcolor='#EDFB44'></td>"; break
+        //    case (msy[i][17] > '2.51' && msy[i][17] <= '2.75'): tdata_score += "<td bgcolor='#FFE58B'></td>"; break
+        //    case (msy[i][17] > '2.76' && msy[i][17] <= '3'): tdata_score += "<td bgcolor='#FFC703'></td>"; break
+        //    case (msy[i][17] > '3.01' && msy[i][17] <= '3.25'): tdata_score += "<td bgcolor='#FFA25E'></td>"; break
+        //    case (msy[i][17] > '3.26' && msy[i][17] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
+        //    case (msy[i][17] > '3.51' && msy[i][17] <= '3.75'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
+        //    case (msy[i][17] > '3.76' && msy[i][17] <= '4'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
+        //  }
+        //  if (i % 10 == 0){
+        //    year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
+        //  }
+        //}
+        //
+        //var tab_score = "<table><tr>" + tdata_score + "</tr><tr>"+year_tab+"</tr></table>"
+        //$(function () {
+        //  var span = $('table').find('span');
+        //  $('table').html(tab_score);
+        //  $('table').append(span);
+        //});
 
       });
     });
