@@ -98,7 +98,7 @@
             }
           },
             {
-              name: 'Relative biomass',
+              name: 'Biomass',
               showInLegend: false,
               type: 'line',
               data: bmsy_json,
@@ -191,7 +191,7 @@
 
         $(function () {
           var span = $('h1').find('span');
-          $('h1').html('Relative biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
+          $('h1').html('Biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
           $('h1').append(span);
         });
 
@@ -265,7 +265,7 @@
               chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(bmsy_json);
-              chart.series[1].update({name:'Relative biomass'}, false);
+              chart.series[1].update({name:'Biomass'}, false);
               chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
 //              chart.series[2].update({name:'Conf. interval'}, false);
 //              chart.series[2].setData(bmsy_arearange);
@@ -298,7 +298,7 @@
               chart.redraw();
 
               var span2 = $('h1').find('span')
-              $('h1').html('Relative biomass of ' + cname + ' ('+sciname.italics() +') in ' + area);
+              $('h1').html('Biomass of ' + cname + ' ('+sciname.italics() +') in ' + area);
               $('h1').append(span2);
             break;
             case "FMSY":
@@ -381,7 +381,7 @@
               chart.yAxis[0].axisTitle.attr({text: ''});
               chart.yAxis[1].update({title: {text: 'Catch (t * 10<sup>3</sup>)'}});
               chart.series[1].setData(bmsy_json);
-              chart.series[1].update({name:'Relative biomass'}, false);
+              chart.series[1].update({name:'Biomass'}, false);
               chart.series[1].update({showInLegend: true,enableMouseTracking: true});
               //chart.series[2].update({name:'Conf. interval BMSY',color: '#b2dcff'}, false);
               //chart.series[2].setData(bmsy_arearange);
