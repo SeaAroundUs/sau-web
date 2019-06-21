@@ -56,6 +56,9 @@ angular.module('sauWebApp')
           } else if (region.name === 'fishing-entity') {
             chartTitle = chartTitle.replace(' in the ', '') + ' by the fleets of ' + data.title;
 
+          } else if (region.name === 'fishing-entity-effort') {
+            chartTitle = chartTitle.replace(' in the ', '') + ' by the fleets of ' + data.title;
+
           } else if (region.name === 'country-eezs') {
             chartTitle = chartTitle.replace(' in the ', ' in all the EEZ waters of ') + data.title;
 

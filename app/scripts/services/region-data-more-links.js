@@ -84,6 +84,31 @@ angular.module('sauWebApp')
         }
       ],
 
+
+      // Fishing entity effort links
+      'fishing-entity-effort': [
+        {
+          section: 'Governance',
+          links: [
+            { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
+            { text: 'Fisheries subsidies', ngUrl: '#/subsidy/{{ geo_entity_id }}' },
+            {
+              text: 'Treaties & conventions',
+              ngUrl: 'http://www.fishbase.org/Country/CountryTreatyList.php?' +
+                'Country={{ country_id | fishbaseCountryId }}'
+            },
+            { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
+            { text: 'FAO FIRMS', url: 'http://firms.fao.org/firms/en' },
+            { text: 'External Fishing Access Agreements', ngUrl: '#/fishing-entity/{{ id }}/external-fishing-access/' }
+          ]
+        }, {
+          section: 'Other topics',
+          links: [
+            { ngText: 'View catch allocations on a map for the fleets of {{title}}', ngUrl: '#/spatial-catch?entities={{id}}'}
+          ]
+        }
+      ],
+
       // Country EEZ links
       'country-eezs': [
         {

@@ -62,6 +62,7 @@ angular.module('sauWebApp')
       Expeditions: resourceFactory('expeditions/:subview/:id'),
       UnderReview: resourceFactory('under-review/'),
       FishingEntities: resourceFactory('fishing-entity/'),
+      FishingEffort: resourceFactory('fishing-entity-effort/'),
       CommercialGroups: resourceFactory('commercial-group/'),
       FunctionalGroups: resourceFactory('functional-group/'),
       Gear: resourceFactory('gear/'),

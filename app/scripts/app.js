@@ -267,6 +267,35 @@ angular
         });
     }
 
+    // Fishing Entity Effort routes
+    if (togglesProvider.$get().isEnabled('fishingEntity')) {
+      $routeProvider
+        .when('/fishing-entity-effort', {
+          templateUrl: 'views/map.html',
+          controller: 'MapCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fishing-entity-effort';}}
+        })
+        .when('/fishing-entity-effort/:ids', {
+          templateUrl: 'views/region-data/main.html',
+          controller: 'RegionDataCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'fishing-entity-effort';}}
+        })
+        .when('/fishing-entity-effort/:id/external-fishing-access', {
+          templateUrl: 'views/external-fishing-access.html',
+          controller: 'ExternalFishingAccessCtrl',
+          resolve: {
+            agreements: function ($route, sauAPI) {
+              return sauAPI.AccessAgreementExternal.get({'region_id': $route.current.params.id}).$promise;
+            },
+            region: function ($route, sauAPI) {
+              return sauAPI.Region.get({'region': 'fishing-entity-effort', 'region_id': $route.current.params.id}).$promise;
+            }
+          }
+        });
+    }
+
     // Country EEZs routes
     if (togglesProvider.$get().isEnabled('country-eezs')) {
       $routeProvider
