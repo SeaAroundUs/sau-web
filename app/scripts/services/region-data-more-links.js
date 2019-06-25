@@ -90,7 +90,6 @@ angular.module('sauWebApp')
         }
       ],
 
-
       // Fishing entity effort links
       'fishing-entity-effort': [
         {

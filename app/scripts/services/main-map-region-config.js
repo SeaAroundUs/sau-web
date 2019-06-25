@@ -148,7 +148,7 @@ angular.module('sauWebApp')
       'rfmo': rfmoConfig,
       'mariculture': maricultureConfig,
       'fao': faoConfig,
-      'fishing-entity': fishingCountryConfig
+      'fishing-entity': fishingCountryConfig,
       'fishing-entity-effort': fishingCountryConfig
     };
   });
