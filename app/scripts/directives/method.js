@@ -6,25 +6,25 @@
         switch(scope.anchor) {
           case '13':
             scope.url = '/catch-reconstruction-and-allocation-methods/';
-            break;
+          break;
           case '23':
             scope.url = '/fisheries-subsidies/';
-            break;
+          break;
           case 'estuaries':
             scope.url = '/about-estuaries-database/';
-            break;
+          break;
           case 'multinational-footprint':
             scope.url = '/multinational-footprint-method';
-            break;
+          break;
           case 'marine-trophic-index':
             scope.url = '/mti-fib-rmti/';
-            break;
+          break;
           case 'catch-reconstruction-and-allocation-methods/taxon-distributions':
             scope.url = '/catch-reconstruction-and-allocation-methods/#_Toc421534359';
-            break;
+          break;
           case 'catch-reconstruction-and-allocation-methods/foreign-fishing-access':
             scope.url = '/catch-reconstruction-and-allocation-methods/#_Toc421534365';
-            break;
+          break;
           default:
             scope.url = externalURLs.manual + '#' + scope.anchor;
         }

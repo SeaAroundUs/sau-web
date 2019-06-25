@@ -40,7 +40,7 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.indicatorsGlobal,
             tabs.otherTopics
           ];
-          break;
+        break;
 
         case 'rfmo':
           regionTabs = [
@@ -48,7 +48,7 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.governanceRFMO,
             tabs.indicatorsRFMO
           ];
-          break;
+        break;
 
         case 'lme':
           regionTabs = [
@@ -57,7 +57,7 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.ecosystemsLME,
             tabs.indicatorsLME
           ];
-          break;
+        break;
 
         case 'meow':
           regionTabs = [
@@ -66,7 +66,7 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.ecosystemsMEOW,
             tabs.indicatorsMEOW
           ];
-          break;
+        break;
 
         case 'highseas':
           regionTabs = [
@@ -74,13 +74,13 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.ecosystemsHighSeas,
             tabs.indicatorsHighSeas
           ];
-          break;
+        break;
 
         case 'mariculture':
           regionTabs = [
             tabs.productionInfo
           ];
-          break;
+        break;
 
         case 'eez':
           regionTabs = [
@@ -90,13 +90,13 @@ angular.module('sauWebApp').factory('regionTabs', function() {
             tabs.governance,
             tabs.indicators
           ];
-          break;
+        break;
 
         case 'multi':
           regionTabs = [
             tabs.catchInfoMulti
           ];
-          break;
+        break;
 
         default:
           regionTabs = [];
