@@ -149,5 +149,6 @@ angular.module('sauWebApp')
       'mariculture': maricultureConfig,
       'fao': faoConfig,
       'fishing-entity': fishingCountryConfig
+      'fishing-entity-effort': fishingCountryConfig
     };
   });

@@ -15,6 +15,12 @@ angular.module('sauWebApp')
       {label: 'Value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) by'}
     ];
 
+    var fishingeffortMeasures = [
+      {label: 'Kw', value: 'kw', chartlabel: 'Kw', titleLabel: 'Fishing effort of kw by'},
+      {label: 'Boats', value: 'boats', chartlabel: 'Boats', titleLabel: 'Fishing effort of boats by'},
+      {label: 'CO2', value: 'co2', chartlabel: 'CO2', titleLabel: 'Fishing effort of CO<sup>2</sup> by'}
+    ];
+
     var taxonMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Global catches of'},
       {label: 'Value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) of global catches of'}
@@ -30,6 +36,7 @@ angular.module('sauWebApp')
       rfmo: defaultMeasures,
       fishingCountry: defaultMeasures,
       'fishing-entity': defaultMeasures,
+      'fishing-entity-effort': fishingeffortMeasures,
       'country-eezs': defaultMeasures,
       taxa: taxonMeasures,
       fao: defaultMeasures,

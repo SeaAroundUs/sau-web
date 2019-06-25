@@ -27,6 +27,7 @@ angular.module('sauWebApp')
       rfmo: defaultLimits,
       fishingCountry: defaultLimits,
       'fishing-entity': defaultLimits,
+      'fishing-entity-effort': defaultLimits,
       'country-eezs': defaultLimits,
       taxa: defaultLimits,
       fao: defaultLimits,
