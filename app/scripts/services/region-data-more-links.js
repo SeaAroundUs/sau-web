@@ -63,6 +63,12 @@ angular.module('sauWebApp')
       // Fishing entity links
       'fishing-entity': [
         {
+          section: 'Fishing Effort',
+          links: [
+            { text: 'Fishing effort', ngUrl: '#/fishing-entity-effort/{{ country_id }}' }
+          ]
+        },
+        {
           section: 'Governance',
           links: [
             { text: 'Country profile', ngUrl: '#/country/{{ country_id }}' },
