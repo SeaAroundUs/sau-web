@@ -16,9 +16,9 @@ angular.module('sauWebApp')
     ];
 
     var fishingeffortMeasures = [
-      {label: 'Effort', value: 'effort', chartlabel: 'Effort', titleLabel: 'Fishing effort by'},
-      {label: 'Boats', value: 'boats', chartlabel: 'Boats', titleLabel: 'Number of boats by'},
-      {label: 'CO2', value: 'co2', chartlabel: 'CO2', titleLabel: ' CO<sup>2</sup> emissions by'}
+      {label: 'Fishing effort (kW)', value: 'effort', chartlabel: 'Fishing effort (kW x 1000)', titleLabel: 'Fishing effort (kW) by'},
+      {label: 'Number of boats', value: 'boats', chartlabel: 'Number of boats', titleLabel: 'Number of boats by'},
+      {label: 'Carbon dioxide emissions', value: 'co2', useHTML: true, chartlabel: 'Carbon dioxide emissions (tonnes X 1000)', titleLabel: 'Carbon dioxide emissions by'}
     ];
 
     var taxonMeasures = [

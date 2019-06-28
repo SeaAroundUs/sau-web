@@ -103,16 +103,23 @@ angular.module('sauWebApp')
     };
 
     var sector = {
-      'label': 'Sector type',
+      'label': 'Sector',
       'value': 'sector',
       showDimensionLimit: false
     };
 
     var length_class = {
-      'label': 'Length class',
+      'label': 'Boat Length',
       'value': 'length',
       showDimensionLimit: false
     };
+
+    var fishinggear = {
+      label: 'Fishing Gear',
+      value: 'gear',
+      showDimensionLimit: false
+    };
+
     //TODO this is getting cumbersome and deserves a refactor
     //BEGIN MOD SORTIZ 11-28-17
     //var eezDefaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, fishingSector, catchType, reportingStatus, layer];
@@ -140,7 +147,7 @@ angular.module('sauWebApp')
     var maricultureDimensions = [taxon, gear, endUse, commercialGroup, functionalGroupMariculture];
     var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
     var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
-    var fishingentityeffortDimension = [length_class, sector, gear];
+    var fishingentityeffortDimension = [length_class, sector, fishinggear];
     //END MOD SORTIZ 10-12-18
 
     return {
