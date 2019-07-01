@@ -231,7 +231,7 @@
               chart.series[0].setData(msy_catch_json);
               chart.series[0].update({name:'MSY'}, false);
               chart.series[0].update({showInLegend: true,enableMouseTracking: true}),
-              chart.series[0].update({dashStyle: 'Dash'}, false);
+              chart.series[0].update({dashStyle: 'ShortDash'}, false);
               chart.series[1].setData(catch_json);
               chart.series[1].update({name:'Catch', color: '#20639B'}, false);
               chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
@@ -475,7 +475,7 @@
                 chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval MSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
               }
 
-              chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'Dash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
+              chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'ShortDash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
 
               chart.addSeries({id: 'fmsyline', yAxis: 1, name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#1F9139'}, true);
 
