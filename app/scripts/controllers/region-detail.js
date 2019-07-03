@@ -399,10 +399,10 @@ angular.module('sauWebApp').controller('RegionDetailCtrl',
       switch ($scope.region.name) {
         case 'mariculture':
           chartId = 'mariculture-chart';
-          break;
+        break;
         case 'multi':
           chartId = 'multi-chart';
-          break;
+        break;
         default:
           chartId = 'catch-chart';
       }

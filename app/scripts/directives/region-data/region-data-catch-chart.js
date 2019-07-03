@@ -99,6 +99,15 @@ angular.module('sauWebApp')
       $scope.$watch('reportedLine', updateReportedLine);
       $scope.$watch(function() { return $scope.formModel.managedSpecies; }, updateReportedLine);
 
+	  
+	 /* updates the reported catch line when screen is resized */
+     $(window).resize(function(){
+    $scope.$apply(function(){
+       updateReportedLine();
+    });
+});
+
+/*alert($scope.region.name);*/
 
       /*
        * helper functions
@@ -189,8 +198,16 @@ angular.module('sauWebApp')
         $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
         $scope.options.chart.yAxisTickFormat = function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
-          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-          return $filter('significantDigits')(d, magnitude);
+          //var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          if ($scope.formModel.measure.value === 'tonnage'){
+            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+            return $filter('significantDigits')(d, magnitude);
+          } else if ($scope.formModel.measure.value === 'boats') {
+            return (d);
+          } else {
+            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+            return $filter('significantDigits')(d, magnitude);
+          }
         };
       }
 

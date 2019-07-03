@@ -25,22 +25,22 @@
               } else {
                 $scope.subtemplates[0].class = 'selected';
               }
-              break;
+            break;
             case 'AdvancedSearchCtrl':
               $scope.subtemplates[1].class = 'selected';
-              break;
+            break;
             case 'SpatialCatchMapCtrl':
               $scope.subtemplates[2].class = 'selected';
-              break;
+            break;
             case 'FERUCtrl':
               $scope.subtemplates[toggles.isEnabled('spatial') ? 3 : 2].class = 'selected';
-              break;
+            break;
             case 'TopicBiodiversityCtrl':
               $scope.subtemplates[toggles.isEnabled('spatial') ? 4 : 3].class = 'selected';
-              break;
+            break;
             case 'MarineTrophicIndexSearchCtrl':
               $scope.subtemplates[toggles.isEnabled('spatial') ? 6 : 5].class = 'selected';
-              break;
+            break;
           }
         }
 

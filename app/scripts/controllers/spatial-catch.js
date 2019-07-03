@@ -65,7 +65,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
                 gaAction.push(['single-taxa']);
               }
             }
-            break;
+          break;
           //...Commercial groups
           case 'commercial groups':
             if (query.isFilteredBy('commercialGroups')) {
@@ -78,7 +78,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
                 gaAction.push(['single-commgroup']);
               }
             }
-            break;
+          break;
           //...Functional groups
           case 'functional groups':
             if (query.isFilteredBy('functionalGroups')) {
@@ -91,7 +91,7 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
                 gaAction.push(['single-funcgroup']);
               }
             }
-            break;
+          break;
         }
 
         if ($scope.isAllocationQueryValid($scope.lastQuery)) {
@@ -235,17 +235,17 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           if (query.isFilteredBy('taxa')) {
             hasCatchesByInput = true;
           }
-          break;
+        break;
         case 'commercial groups':
           if (query.isFilteredBy('commercialGroups')) {
             hasCatchesByInput = true;
           }
-          break;
+        break;
         case 'functional groups':
           if (query.isFilteredBy('functionalGroups')) {
             hasCatchesByInput = true;
           }
-          break;
+        break;
       }
 
       return hasFishingCountryInput || hasCatchesByInput;
@@ -448,19 +448,19 @@ angular.module('sauWebApp').controller('SpatialCatchMapCtrl',
           $location.search('taxa', searchValue);
           $location.search('commgroups', null);
           $location.search('funcgroups', null);
-          break;
+        break;
         case 'commercial groups':
           searchValue = ($scope.query.isFilteredBy('commercialGroups')) ? $scope.query.commercialGroups.join(',') : null;
           $location.search('taxa', null);
           $location.search('commgroups', searchValue);
           $location.search('funcgroups', null);
-          break;
+        break;
         case 'functional groups':
           searchValue = ($scope.query.isFilteredBy('functionalGroups')) ? $scope.query.functionalGroups.join(',') : null;
           $location.search('taxa', null);
           $location.search('commgroups', null);
           $location.search('funcgroups', searchValue);
-          break;
+        break;
       }
 
       //Year

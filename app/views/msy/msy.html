@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<style type="text/css">
+table {width: 100%; margin-bottom: 20px}
+table td { font-size: 12px; height: 30px; text-align: center } 
+h3 {text-align: center}
+</style>
+<body>
+<div id="region-data">
+<h1></h1>
+      <!---<div class="download-div">
+        <button class="btn btn-primary download" ng-click="openDownloadDataModal()"
+                ng-show="showDownload" ga-event="downloadModalGA">Download Data</button>
+      </div>-->
+	Dimension <select class="msy" name="msy">
+		<option id="selBMSY" value = "BMSY">Biomass</option>
+	    <option id="selCMSY" value = "CMSY">Catch</option>
+		<option id="selFMSY" value = "FMSY">Exploitation</option>
+		<option id="selALL"  value = "ALL">All</option>
+	</select>
+<br><br>
+    <div id="msycontainer" style="height: 400px"></div>
+<div class="table-responsive">
+<!--<h3>Uncertainty Scores</h3>-->
+<table></table>
+</div>
+</div>
+</body>
+</html>

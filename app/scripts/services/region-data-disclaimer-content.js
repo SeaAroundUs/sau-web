@@ -12,9 +12,15 @@ angular.module('sauWebApp')
       'the .pdf file for the specific EEZ(s) and also examine our ' +
       '<a href="/catch-reconstruction-and-allocation-methods/">methods</a> for data and spatial allocation.</b>';
 
+    var fishingeffortDisclaimer = '<b>Note</b>: The data presented includes reported & reconstructed estimates of fishing effort of the fishing country both in and out of the domestic EEZ (if applicable).';
+
     return {
-      getDisclaimer: function() {
-        return masterDisclaimer;
+      getDisclaimer: function(region) {
+        if (region === 'fishing-entity-effort') {
+          return fishingeffortDisclaimer;
+        } else {
+          return masterDisclaimer;
+        }
       }
     };
   });

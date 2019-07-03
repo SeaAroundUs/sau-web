@@ -8,7 +8,7 @@ angular.module('sauWebApp')
       {label: 'Functional Groups', value: 'functionalgroup'},
       {label: 'Fishing Country', value: 'country'},
       {label: 'Gear', value: 'gear'},
-	  {label: 'End Use', value: 'end_use'},
+      {label: 'End Use', value: 'end_use'},
       {label: 'Fishing Sector', value: 'sector'},
       {label: 'Catch Type', value: 'catchtype', overrideLabel: 'Type'},
       {label: 'Reporting Status', value: 'reporting-status'}

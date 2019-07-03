@@ -52,19 +52,19 @@
           // values for all taxon keys starting with 1 for now"
           case '1':
             $scope.taxon.has_habitat_index = false;
-            break;
+          break;
           case '2':
             $scope.habitatIndexCaveat = habIdxCaveat + 'class';
-            break;
+          break;
           case '3':
             $scope.habitatIndexCaveat = habIdxCaveat + 'order';
-            break;
+          break;
           case '4':
             $scope.habitatIndexCaveat = habIdxCaveat + 'family';
-            break;
+          break;
           case '5':
             $scope.habitatIndexCaveat = habIdxCaveat + 'genus';
-            break;
+          break;
         }
 
         if ($scope.taxon.has_habitat_index) {

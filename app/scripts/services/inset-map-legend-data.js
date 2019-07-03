@@ -59,6 +59,7 @@ angular.module('sauWebApp')
       rfmo: null,
       mariculture: mariculture,
       'fishing-entity': null,
+      'fishing-entity-effort': null,
       //BEGIN MOD SORTIZ 11-22-17
       'eez-bordering':eez,
       //END MOD SORTIZ 11-22-17

@@ -1,12 +1,12 @@
  Invertebrates</br>
  <span ng-repeat="url in data.meow_pdf | filter : {group_type: 'Invertebrates'} | orderBy:'common_name'">
-   <a href= "{{url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
+   <a href= "{{url.graph_url ? url.graph_url : url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
  </span>
  </br>Elasmobranchs</br>
   <span ng-repeat="url in data.meow_pdf | filter : {group_type: 'Elasmobranchs'} | orderBy:'common_name'">
-   <a href= "{{url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
+   <a href= "{{url.graph_url ? url.graph_url : url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
  </span>
   </br>Bony fishes</br>
   <span ng-repeat="url in data.meow_pdf | filter : {group_type: 'Bony fishes'} | orderBy:'common_name'">
-   <a href= "{{url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
+   <a href= "{{url.graph_url ? url.graph_url : url.url}}"><i>{{url.common_name}} ({{url.scientific_name}})</i></a><br>
  </span>

@@ -64,12 +64,14 @@
         <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a><br /></span>
         <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a><br /></span>
 
-        <span ng-show="!reportedLine">
-          <a ng-click="toggleReportedLine()">Show 'Reported catch' line</a><br />
-        </span>
-        <span ng-show="reportedLine">
-          <a ng-click="toggleReportedLine()">Hide 'Reported catch' line</a><br />
-        </span>
+        <div ng-if="region.name !== 'fishing-entity-effort'">
+          <span ng-show="!reportedLine">
+            <a ng-click="toggleReportedLine()">Show 'Reported catch' line</a><br />
+          </span>
+          <span ng-show="reportedLine">
+            <a ng-click="toggleReportedLine()">Hide 'Reported catch' line</a><br />
+          </span>
+        </div>
 
         <method anchor="13"></method><br />
       </div>
