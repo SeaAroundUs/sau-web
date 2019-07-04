@@ -243,7 +243,7 @@
               chart.yAxis[0].axisTitle.attr({useHTML: true, text: 'Catch (t x 1000)'});
               chart.yAxis[1].update({title: {text: null}, lineWidth: 0});
               //chart.addSeries({name: 'Catches', type: 'line',data:catch_json,marker: {enabled: false},color: '#20639B'});
-              chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
+              chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval', type: 'arearange', data: msy_arearange, lineWidth: 0, fillOpacity: 0.3, showInLegend: false, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline') && chart.get('upperandlowermsy')){
                 chart.get('catch').remove(false);
@@ -433,7 +433,7 @@
                 fmsy_json.push([msy[i][0],msy[i][10]]);
               }
               chart.series[0].setData(bmsy_catch_json);
-              chart.series[0].update({name:'BMSY'}, false);
+              chart.series[0].update({name:'B<sub>MSY</sub>'}, false);
               chart.series[0].update({showInLegend: true,enableMouseTracking: false});
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.yAxis[0].update({labels: {allowDecimals: false, format: '{value:.f}'}});
@@ -471,21 +471,21 @@
               //chart.get('bmsywindowline').remove(false);
               //}
 
+              chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'ShortDash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
+
               if (!chart.get('upperandlowermsy')){
                 chart.addSeries({id: 'upperandlowermsy', name: 'Conf. interval MSY', type: 'arearange', data: msy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#D3D3D3', marker: { enabled: false }}, false);
               }
 
-              chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'ShortDash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
-
               chart.addSeries({id: 'fmsyline', yAxis: 1, name: 'F/F<sub>MSY</sub>', type: 'line', data: fmsy_json ,marker: {enabled: false}, color: '#1F9139'}, true);
-
-              chart.addSeries({id: 'fmsycatchline', yAxis: 1, name: 'FMSY', dashStyle: 'ShortDot', data: fmsy_catch_json ,marker: {enabled: false}, color: '#A4A8A5'}, true);
 
               if (!chart.get('upperandlowerfmsy')){
                 chart.addSeries({id: 'upperandlowerfmsy', yAxis: 1, name: 'Conf. interval FMSY', type: 'arearange', data: fmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#67D781', marker: { enabled: false }}, false);
               } else {
                 chart.get('upperandlowerfmsy').update({ yAxis: 1, name: 'Conf. interval FMSY', type: 'arearange', data: fmsy_arearange, lineWidth: 0, linkedTo: ':previous', fillOpacity: 0.3, zIndex: 0, color: '#67D781', marker: { enabled: false }}, false);
               }
+
+              chart.addSeries({id: 'fmsycatchline', yAxis: 1, name: 'F<sub>MSY</sub>', dashStyle: 'ShortDot', data: fmsy_catch_json ,marker: {enabled: false}, color: '#A4A8A5'}, true);
 
               chart.redraw();
               var span4 = $('h1').find('span')
