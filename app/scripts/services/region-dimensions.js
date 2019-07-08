@@ -109,7 +109,7 @@ angular.module('sauWebApp')
     };
 
     var length_class = {
-      'label': 'Boat Length',
+      'label': 'Boat Length Class',
       'value': 'length',
       showDimensionLimit: false
     };
@@ -147,7 +147,7 @@ angular.module('sauWebApp')
     var maricultureDimensions = [taxon, gear, endUse, commercialGroup, functionalGroupMariculture];
     var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
     var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
-    var fishingentityeffortDimension = [length_class, sector, fishinggear];
+    var fishingentityeffortDimension = [sector, fishinggear,length_class];
     //END MOD SORTIZ 10-12-18
 
     return {
