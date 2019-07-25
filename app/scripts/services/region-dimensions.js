@@ -109,13 +109,13 @@ angular.module('sauWebApp')
     };
 
     var length_class = {
-      'label': 'Boat Length Class',
+      'label': 'Boat length class',
       'value': 'length',
       showDimensionLimit: false
     };
 
     var fishinggear = {
-      label: 'Fishing Gear',
+      label: 'Fishing gear',
       value: 'gear',
       showDimensionLimit: false
     };
