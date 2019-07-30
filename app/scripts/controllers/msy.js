@@ -498,55 +498,55 @@
           }
         });
 
-//        var tdata_score = "";
-//        var year_tab = "";
-//        for (var i = 0; i < msy.length; i++){
-//          switch (true){
-//            //case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
-//            //case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
-//            //case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor='#6ECBFD'></td>"; break
-//            //case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor='#3EBBFE'></td>"; break
-//            //case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor='#99FEEF'></td>"; break
-//            //case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor='#5AFCE4'></td>"; break
-//            //case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor='#EDFEE4'></td>"; break
-//            //case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor='#AFFE87'></td>"; break
-//            //case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor='#F7FF96'></td>"; break
-//            //case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor='#EDFB44'></td>"; break
-//            //case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor='#FFE58B'></td>"; break
-//            //case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor='#FFC703'></td>"; break
-//            //case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor='#FFA25E'></td>"; break
-//            //case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
-//            //case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
-//            //case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
+        var tdata_score = "";
+        var year_tab = "";
+        for (var i = 0; i < msy.length; i++){
+        switch (true){
+        //case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
+        //case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
+        //case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor='#6ECBFD'></td>"; break
+        //case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor='#3EBBFE'></td>"; break
+        //case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor='#99FEEF'></td>"; break
+        //case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor='#5AFCE4'></td>"; break
+        //case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor='#EDFEE4'></td>"; break
+        //case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor='#AFFE87'></td>"; break
+        //case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor='#F7FF96'></td>"; break
+        //case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor='#EDFB44'></td>"; break
+        //case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor='#FFE58B'></td>"; break
+        //case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor='#FFC703'></td>"; break
+        //case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor='#FFA25E'></td>"; break
+        //case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
+        //case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
+        //case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
 
-//            case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor ='#FF6C6B'></td>"; break
-//            case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor ='#FE0100'></td>"; break
-//            case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor ='#FFA25E'></td>"; break
-//            case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor ='#FF720B'></td>"; break
-//            case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor ='#FFE58B'></td>"; break
-//            case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor ='#FFC703'></td>"; break
-//            case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor ='#F7FF96'></td>"; break
-//            case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor ='#EDFB44'></td>"; break
-//            case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor ='#EDFEE4'></td>"; break
-//            case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor ='#AFFE87'></td>"; break
-//            case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor ='#99FEEF'></td>"; break
-//            case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor ='#5AFCE4'></td>"; break
-//            case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor ='#6ECBFD'></td>"; break
-//            case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor ='#3EBBFE'></td>"; break
-//            case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor ='#009DF1'></td>"; break
-//            case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor ='#008BD5'></td>"; break
-//          }
-//          if (i % 10 == 0){
-//            year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
-//          }
-//        }
+        case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor ='#FE0100'></td>"; break
+        case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor ='#FF6C6B'></td>"; break
+        case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor ='#FF720B'></td>"; break
+        case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor ='#FFA25E'></td>"; break
+        case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor ='#FFC703'></td>"; break
+        case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor ='#FFE58B'></td>"; break
+        case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor ='#EDFB44'></td>"; break
+        case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor ='#F7FF96'></td>"; break
+        case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor ='#AFFE87'></td>"; break
+        case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor ='#EDFEE4'></td>"; break
+        case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor ='#5AFCE4'></td>"; break
+        case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor ='#99FEEF'></td>"; break
+        case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor ='#3EBBFE'></td>"; break
+        case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor ='#6ECBFD'></td>"; break
+        case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor ='#008BD5'></td>"; break
+        case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor ='#009DF1'></td>"; break
+          }
+          if (i % 10 == 0){
+            year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
+          }
+        }
 
-//        var tab_score = "<table><tr>" + tdata_score + "</tr><tr>"+year_tab+"</tr></table>"
-//        $(function () {
-//          var span = $('table').find('span');
-//          $('table').html(tab_score);
-//          $('table').append(span);
-//        });
+        var tab_score = "<table><tr>" + tdata_score + "</tr><tr>"+year_tab+"</tr></table>"
+        $(function () {
+          var span = $('table').find('span');
+          $('table').html(tab_score);
+          $('table').append(span);
+        });
 
       });
     });
