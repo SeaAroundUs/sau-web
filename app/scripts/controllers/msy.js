@@ -16,6 +16,8 @@
       var fmsy_catch_json = new Array();
       var fmsy_cpue = new Array();
 
+      var ref_data = new Array();
+
       $.getJSON(sauAPI.apiURL + 'msy/' + $routeParams.ids, function(data) {
         // Populate series
         var msy = data.data[0].data;
@@ -187,27 +189,16 @@
           },
           exporting: {
             enabled: false
-            //buttons:{
-            //contextButton: {
-            //enabled: true,
-            //text: '',
-            //symbol: undefined
-            //}
-            //customButton: {
-            //text: 'Custom Button',
-            //onclick: function () {
-            //this.setTitle({text: 'Miel'});
-            //}
-            //},
-            //anotherButton: {
-            //text: 'Another Button',
-            //onclick: function () {
-            //alert('You pressed another button!');
-            //}
-            //}
-            //}
           }
         });
+
+    $.getJSON(sauAPI.apiURL + 'msy/ref/' + $routeParams.ids, function(data) {
+        var ref_cmsy = data.data[0].data;
+        for (var i = 0; i < ref_cmsy.length; i++){
+          ref_data.push([ref_cmsy[i][0]]);
+        }
+    });
+
 
         $(function () {
           var span = $('h1').find('span');
@@ -500,7 +491,9 @@
 
         var tdata_score = "";
         var year_tab = "";
+        var rounded;
         for (var i = 0; i < msy.length; i++){
+        rounded = msy[i][20];
         switch (true){
         //case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
         //case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
@@ -518,36 +511,34 @@
         //case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
         //case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
         //case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
-
-        case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor ='#FE0100'></td>"; break
-        case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor ='#FF6C6B'></td>"; break
-        case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor ='#FF720B'></td>"; break
-        case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor ='#FFA25E'></td>"; break
-        case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor ='#FFC703'></td>"; break
-        case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor ='#FFE58B'></td>"; break
-        case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor ='#EDFB44'></td>"; break
-        case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor ='#F7FF96'></td>"; break
-        case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor ='#AFFE87'></td>"; break
-        case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor ='#EDFEE4'></td>"; break
-        case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor ='#5AFCE4'></td>"; break
-        case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor ='#99FEEF'></td>"; break
-        case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor ='#3EBBFE'></td>"; break
-        case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor ='#6ECBFD'></td>"; break
-        case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor ='#008BD5'></td>"; break
-        case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor ='#009DF1'></td>"; break
-          }
-          if (i % 10 == 0){
-            year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
-          }
+          case (msy[i][20] > '0' && msy[i][20] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded +"</td>";} break
+          case (msy[i][20] >= '0.26' && msy[i][20] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '0.51' && msy[i][20] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '0.76' && msy[i][20] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '1.01' && msy[i][20] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '1.26' && msy[i][20] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '1.51' && msy[i][20] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '1.76' && msy[i][20] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '2.01' && msy[i][20] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '2.26' && msy[i][20] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded +"</td>";} break
+          case (msy[i][20] >= '2.51' && msy[i][20] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '2.76' && msy[i][20] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded +"</td>";} break
+          case (msy[i][20] >= '3.01' && msy[i][20] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded +"</td>";} break
+          case (msy[i][20] >= '3.26' && msy[i][20] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded +"</td>";} break
+          case (msy[i][20] >= '3.51' && msy[i][20] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded +"</td>";}break
+          case (msy[i][20] >= '3.76' && msy[i][20] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded +"</td>";} break
+          default: tdata_score += "<td bgcolor ='#ffffff'>"+ ' '+"</td>"; break
         }
-
-        var tab_score = "<table><tr>" + tdata_score + "</tr><tr>"+year_tab+"</tr></table>"
+           if (i % 10 == 0){
+             year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
+            }
+        }
+        var tab_score = "<table><tr id ='color'>" + tdata_score + "</tr><tr>" + year_tab + "</tr></table>"
         $(function () {
           var span = $('table').find('span');
           $('table').html(tab_score);
           $('table').append(span);
         });
-
       });
     });
   });
