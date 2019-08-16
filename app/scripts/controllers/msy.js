@@ -105,7 +105,7 @@
           {
             name: 'B/B<sub>MSY</sub>',
             data: bmsy_catch_json,
-            showInLegend: false,
+            showInLegend: true,
             enableMouseTracking: false,
             color: 'black',
             dashStyle: 'ShortDot',
@@ -115,7 +115,7 @@
           },
             {
               name: 'Biomass',
-              showInLegend: false,
+              showInLegend: true,
               type: 'line',
               data: bmsy_json,
               marker: {
@@ -194,17 +194,22 @@
 
     $.getJSON(sauAPI.apiURL + 'msy/ref/' + $routeParams.ids, function(data) {
         var ref_cmsy = data.data[0].data;
-        for (var i = 0; i < ref_cmsy.length; i++){
-          ref_data.push([ref_cmsy[i][0]]);
+        for (var i2 = 0; i2 < ref_cmsy.length; i2++){
+          ref_data = ref_data + '</br>' + '<a href = https://sau-cmsy-pdf.s3-us-west-2.amazonaws.com/' +ref_cmsy[i2] + ' target = _blank>' + ref_cmsy[i2] + '</a>';
         }
+        $(function () {
+          var span = $('span#ref').find('#ref');
+          $('span#ref').html('References' + ref_data);
+          $('span#ref').append(span);
+        });
     });
-
 
         $(function () {
           var span = $('h1').find('span');
           $('h1').html('Biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
           $('h1').append(span);
         });
+
 
         $(".msy").change(function(){
           var msy_value = $(this).val();
@@ -283,11 +288,11 @@
               }
               chart.series[0].setData(bmsy_catch_json);
               chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
-              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
+              chart.series[0].update({showInLegend: true,enableMouseTracking: false}),
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(bmsy_json);
               chart.series[1].update({name:'Biomass', color: '#20639B'}, false);
-              chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
 //              chart.series[2].update({name:'Conf. interval'}, false);
 //              chart.series[2].setData(bmsy_arearange);
               chart.yAxis[0].update({labels: {allowDecimals: false, format: '{value:.f}'}});
@@ -511,22 +516,22 @@
         //case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
         //case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
         //case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
-          case (msy[i][20] > '0' && msy[i][20] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded +"</td>";} break
-          case (msy[i][20] >= '0.26' && msy[i][20] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '0.51' && msy[i][20] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '0.76' && msy[i][20] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '1.01' && msy[i][20] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '1.26' && msy[i][20] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '1.51' && msy[i][20] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '1.76' && msy[i][20] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '2.01' && msy[i][20] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '2.26' && msy[i][20] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded +"</td>";} break
-          case (msy[i][20] >= '2.51' && msy[i][20] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '2.76' && msy[i][20] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded +"</td>";} break
-          case (msy[i][20] >= '3.01' && msy[i][20] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded +"</td>";} break
-          case (msy[i][20] >= '3.26' && msy[i][20] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded +"</td>";} break
-          case (msy[i][20] >= '3.51' && msy[i][20] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded +"</td>";}break
-          case (msy[i][20] >= '3.76' && msy[i][20] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded +"</td>";} break
+          case (msy[i][20] > '0' && msy[i][20] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '0.26' && msy[i][20] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '0.51' && msy[i][20] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '0.76' && msy[i][20] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '1.01' && msy[i][20] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '1.26' && msy[i][20] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '1.51' && msy[i][20] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '1.76' && msy[i][20] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '2.01' && msy[i][20] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '2.26' && msy[i][20] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '2.51' && msy[i][20] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '2.76' && msy[i][20] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '3.01' && msy[i][20] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '3.26' && msy[i][20] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded.toFixed(2) +"</td>";} break
+          case (msy[i][20] >= '3.51' && msy[i][20] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded.toFixed(2) +"</td>";}break
+          case (msy[i][20] >= '3.76' && msy[i][20] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded.toFixed(2) +"</td>";} break
           default: tdata_score += "<td bgcolor ='#ffffff'>"+ ' '+"</td>"; break
         }
            if (i % 10 == 0){
