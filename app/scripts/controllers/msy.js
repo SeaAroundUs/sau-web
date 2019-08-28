@@ -1,5 +1,5 @@
   angular.module('sauWebApp').controller('MsyCtrl',
-  function ($scope, $location, $window, sauAPI, $routeParams, $modal,) {
+  function ($scope, $location, $window, sauAPI, $routeParams, $modal) {
     $(function () {
       var msy_arearange = new Array();
       var catch_json = new Array();
