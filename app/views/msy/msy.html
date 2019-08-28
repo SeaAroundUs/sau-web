@@ -1,29 +1,46 @@
 <!DOCTYPE html>
 <html>
 <style type="text/css">
-table {width: 100%; margin-bottom: 20px}
-table td { font-size: 12px; height: 30px; text-align: center } 
-h3 {text-align: center}
+table {margin-left: 80px; width: 92%; margin-bottom: 20px; }
+table td { font-size: 12px; text-align: left; height: 30px; }
+table tr#color {border: 1px solid black;}
+table tr#color td {text-align: center; font-size: 9px; width: 10px;}
+
+table tr#color2 {border: 1px solid black;}
+table tr#color2 td {text-align: center; font-size: 12px; width: 10px;}
+#ref {text-align: left; margin-left: 80px; font-weight:bold; font-size: 16px;}
+#ref a{text-align: left; margin-left: 80px; font-size: 14px;}
+div#score {text-align: center;font-weight:bold; font-size: 16px;}
 </style>
 <body>
 <div id="region-data">
-<h1></h1>
-      <!---<div class="download-div">
-        <button class="btn btn-primary download" ng-click="openDownloadDataModal()"
-                ng-show="showDownload" ga-event="downloadModalGA">Download Data</button>
-      </div>-->
-	Dimension <select class="msy" name="msy">
-		<option id="selBMSY" value = "BMSY">Biomass</option>
-	    <option id="selCMSY" value = "CMSY">Catch</option>
-		<option id="selFMSY" value = "FMSY">Exploitation</option>
-		<option id="selALL"  value = "ALL">All</option>
-	</select>
-<br><br>
-    <div id="msycontainer" style="height: 400px"></div>
-<div class="table-responsive">
-<!--<h3>Uncertainty Scores</h3>-->
-<table></table>
-</div>
+  <div class="title row">
+    <div class="col-md-10">
+      <h1></h1>
+    </div>
+    <div class="col-md-2">
+      <div class="download-div pull-right">
+        <div >
+          <!--<br><button class="btn btn-primary download" ng-click="openDownloadDataModal()">KOBE Plot Download</button>-->
+		 <!--<br><button class="btn btn-primary download" onclick="window.open('<span id='ref'></span>')">KOBE Plot Download</button>-->
+          <br><button class="btn btn-primary download" ng-click="redirect()">KOBE Plot Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    Dimension <select class="msy" name="msy">
+        <option id="selBMSY" value = "BMSY">Biomass</option>
+        <option id="selCMSY" value = "CMSY">Catch</option>
+        <option id="selFMSY" value = "FMSY">Exploitation</option>
+        <option id="selALL"  value = "ALL">All</option>
+    </select>
+<br>
+  <div id="msycontainer" style="height: 400px"></div>
+  <div class="table-responsive">
+    <div id="score">Catch data reliability scores (4=most reliable; 1=least reliable)</div>
+    <table></table>
+    <span id="ref"></span>
+  </div>
 </div>
 </body>
 </html>
