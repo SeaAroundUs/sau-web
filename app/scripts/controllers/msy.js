@@ -1,5 +1,5 @@
   angular.module('sauWebApp').controller('MsyCtrl',
-  function ($scope, $location, $window, sauAPI, $routeParams) {
+  function ($scope, $location, $window, sauAPI, $routeParams, $modal,) {
     $(function () {
       var msy_arearange = new Array();
       var catch_json = new Array();
@@ -9,7 +9,7 @@
       var bmsy_arearange = new Array();
       var bmsy_catch_json = new Array();
       var bmsy_cpue = new Array();
-      //var bmsy_windowline = new Array();
+      var bmsy_windowline = new Array();
 
       var fmsy_json = new Array();
       var fmsy_arearange = new Array();
@@ -17,6 +17,7 @@
       var fmsy_cpue = new Array();
 
       var ref_data = new Array();
+      var kobeplots_name = "";
 
       $.getJSON(sauAPI.apiURL + 'msy/' + $routeParams.ids, function(data) {
         // Populate series
@@ -29,9 +30,9 @@
           bmsy_json.push([msy[i][0],msy[i][5]]);
           bmsy_catch_json.push([msy[i][0],msy[i][6]]);
           bmsy_cpue.push([msy[i][0],msy[i][14]]);
-          //if (msy[i][15] && msy[i][16]){
-          //bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
-          //}
+          if (msy[i][15] && msy[i][16]){
+            bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
+          }
         }
         // draw chart
         $('#msycontainer').highcharts(
@@ -147,17 +148,18 @@
               type: 'scatter',
               marker: {
                 symbol: 'circle'
-              },
+              }
+            },
+            //},
+            {
+              id: 'bmsywindowline',
+              type:'columnrange',
+              pointWidth: 2,
+              enableMouseTracking: false,
+              showInLegend: false,
+              data: bmsy_windowline
             }
-              //},
-            //{
-              //id: 'bmsywindowline',
-              //type:'columnrange',
-              //pointWidth: 2,
-              //enableMouseTracking: false,
-              //showInLegend: false,
-              //data: bmsy_windowline
-//            }
+
 //            {
 //              id: 'halfbmsy',
 //              name: 'Half BMSY',
@@ -192,6 +194,18 @@
           }
         });
 
+    $scope.openDownloadDataModal = function() {
+      $modal.open({
+        templateUrl: 'views/download-data-modal.html',
+        controller: 'DownloadDataModalCtrl',
+        resolve: {
+          dataUrl: function() {
+            return $scope.downloadUrl;
+          }
+        }
+      });
+    };
+
     $.getJSON(sauAPI.apiURL + 'msy/ref/' + $routeParams.ids, function(data) {
         var ref_cmsy = data.data[0].data;
         for (var i2 = 0; i2 < ref_cmsy.length; i2++){
@@ -204,12 +218,18 @@
         });
     });
 
+    $.getJSON(sauAPI.apiURL + 'msy/kobeplots/' + $routeParams.ids, function(data) {
+        kobeplots_name = data.data[0].kobe_name;
+        $scope.redirect= function() {
+          window.open("https://sau-cmsy-kobeplots.s3-us-west-2.amazonaws.com/" + kobeplots_name + "_KOBE.jpg" )
+        };
+    });
+
         $(function () {
           var span = $('h1').find('span');
-          $('h1').html('Biomass of ' + cname + ' ('+sciname.italics()+') in ' + area);
+          $('h1').html('Biomass of ' + cname + ' ('+sciname.italics()+') in ' + area + kobeplots_name );
           $('h1').append(span);
         });
-
 
         $(".msy").change(function(){
           var msy_value = $(this).val();
@@ -260,9 +280,9 @@
               if (chart.get('fcpue')){
                 chart.get('fcpue').remove(false);
               }
-              //if (chart.get('bmsywindowline')){
-              //chart.get('bmsywindowline').remove(false);
-              //}
+              if (chart.get('bmsywindowline')){
+                chart.get('bmsywindowline').remove(false);
+              }
               chart.redraw();
 
               var span = $('h1').find('span')
@@ -313,9 +333,9 @@
                 chart.get('bcpue').setData(bmsy_cpue);
               }
 
-              //if (!chart.get('bmsywindowline')){
-              //chart.addSeries({id:'bmsywindowline', type:'columnrange',pointWidth: 2,enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
-              //}
+              if (!chart.get('bmsywindowline')){
+              chart.addSeries({id:'bmsywindowline', type:'columnrange',pointWidth: 2,enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
+              }
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
                 chart.get('catch').remove(false);
@@ -396,9 +416,9 @@
                 chart.get('bcpue').remove(false);
               }
 
-              //if (chart.get('bmsywindowline')){
-              //chart.get('bmsywindowline').remove(false);
-              //}
+              if (chart.get('bmsywindowline')){
+              chart.get('bmsywindowline').remove(false);
+              }
               chart.redraw();
 
               var span3 = $('h1').find('span')
@@ -463,9 +483,9 @@
                 chart.get('fcpue').remove(false);
               }
 
-              //if (chart.get('bmsywindowline')){
-              //chart.get('bmsywindowline').remove(false);
-              //}
+              if (chart.get('bmsywindowline')){
+              chart.get('bmsywindowline').remove(false);
+              }
 
               chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'ShortDash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
 

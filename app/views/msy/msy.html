@@ -14,24 +14,33 @@ div#score {text-align: center;font-weight:bold; font-size: 16px;}
 </style>
 <body>
 <div id="region-data">
-<h1></h1>
-      <!---<div class="download-div">
-        <button class="btn btn-primary download" ng-click="openDownloadDataModal()"
-                ng-show="showDownload" ga-event="downloadModalGA">Download Data</button>
-      </div>-->
-	Dimension <select class="msy" name="msy">
-		<option id="selBMSY" value = "BMSY">Biomass</option>
-	    <option id="selCMSY" value = "CMSY">Catch</option>
-		<option id="selFMSY" value = "FMSY">Exploitation</option>
-		<option id="selALL"  value = "ALL">All</option>
-	</select>
-<br><br>
-    <div id="msycontainer" style="height: 400px"></div>
-<div class="table-responsive">
-<span id="ref"></span>
-<div id="score">Uncertainty scores</div>
-<table></table>
-</div>
+  <div class="title row">
+    <div class="col-md-10">
+      <h1></h1>
+    </div>
+    <div class="col-md-2">
+      <div class="download-div pull-right">
+        <div >
+          <!--<br><button class="btn btn-primary download" ng-click="openDownloadDataModal()">KOBE Plot Download</button>-->
+		 <!--<br><button class="btn btn-primary download" onclick="window.open('<span id='ref'></span>')">KOBE Plot Download</button>-->
+          <br><button class="btn btn-primary download" ng-click="redirect()">KOBE Plot Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    Dimension <select class="msy" name="msy">
+        <option id="selBMSY" value = "BMSY">Biomass</option>
+        <option id="selCMSY" value = "CMSY">Catch</option>
+        <option id="selFMSY" value = "FMSY">Exploitation</option>
+        <option id="selALL"  value = "ALL">All</option>
+    </select>
+<br>
+  <div id="msycontainer" style="height: 400px"></div>
+  <div class="table-responsive">
+    <div id="score">Catch data reliability scores (4=most reliable; 1=least reliable)</div>
+    <table></table>
+    <span id="ref"></span>
+  </div>
 </div>
 </body>
 </html>
