@@ -194,14 +194,22 @@
           }
         });
 
+
         $scope.openDownloadDataModal = function() {
+          var params = [
+            sauAPI.apiURL,
+            'msy/',
+            $routeParams.ids,
+            '?format=csv',
+            '&msy_id=',
+            $routeParams.ids
+          ];
+
           $modal.open({
             templateUrl: 'views/download-data-modal.html',
             controller: 'DownloadDataModalCtrl',
             resolve: {
-              dataUrl: function() {
-                return $scope.downloadUrl;
-              }
+              dataUrl: function() { return params.join(''); }
             }
           });
         };
@@ -307,7 +315,7 @@
                 //}
               }
               chart.series[0].setData(bmsy_catch_json);
-              chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
+              chart.series[0].update({name:'B<sub>MSY</sub>'}, false);
               chart.series[0].update({showInLegend: true,enableMouseTracking: false}),
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(bmsy_json);
@@ -520,22 +528,6 @@
         for (var i = 0; i < msy.length; i++){
           rounded = msy[i][22];
           switch (true){
-        //case (msy[i][22] > '0' && msy[i][22] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
-        //case (msy[i][22] > '0.26' && msy[i][22] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
-        //case (msy[i][22] > '0.51' && msy[i][22] <= '0.75'): tdata_score += "<td bgcolor='#6ECBFD'></td>"; break
-        //case (msy[i][22] > '0.76' && msy[i][22] <= '1'): tdata_score += "<td bgcolor='#3EBBFE'></td>"; break
-        //case (msy[i][22] > '1.01' && msy[i][22] <= '1.25'): tdata_score += "<td bgcolor='#99FEEF'></td>"; break
-        //case (msy[i][22] > '1.26' && msy[i][22] <= '1.5'): tdata_score += "<td bgcolor='#5AFCE4'></td>"; break
-        //case (msy[i][22] > '1.51' && msy[i][22] <= '1.75'): tdata_score += "<td bgcolor='#EDFEE4'></td>"; break
-        //case (msy[i][22] > '1.76' && msy[i][22] <= '2'): tdata_score += "<td bgcolor='#AFFE87'></td>"; break
-        //case (msy[i][22] > '2.01' && msy[i][22] <= '2.25'): tdata_score += "<td bgcolor='#F7FF96'></td>"; break
-        //case (msy[i][22] > '2.26' && msy[i][22] <= '2.5'): tdata_score += "<td bgcolor='#EDFB44'></td>"; break
-        //case (msy[i][22] > '2.51' && msy[i][22] <= '2.75'): tdata_score += "<td bgcolor='#FFE58B'></td>"; break
-        //case (msy[i][22] > '2.76' && msy[i][22] <= '3'): tdata_score += "<td bgcolor='#FFC703'></td>"; break
-        //case (msy[i][22] > '3.01' && msy[i][22] <= '3.25'): tdata_score += "<td bgcolor='#FFA25E'></td>"; break
-        //case (msy[i][22] > '3.26' && msy[i][22] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
-        //case (msy[i][22] > '3.51' && msy[i][22] <= '3.75'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
-        //case (msy[i][22] > '3.76' && msy[i][22] <= '4'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
             case (msy[i][22] > '0' && msy[i][22] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded.toFixed(2) +"</td>";} break
             case (msy[i][22] >= '0.26' && msy[i][22] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded.toFixed(2) +"</td>";} break
             case (msy[i][22] >= '0.51' && msy[i][22] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded.toFixed(2) +"</td>";} break
