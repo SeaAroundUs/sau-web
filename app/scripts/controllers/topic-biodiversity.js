@@ -62,6 +62,33 @@
       }
     });
 
+    $(function () {
+var datatree = [
+    {
+        name: 'Gadiformes',
+        children: [
+            { name: 'Gadiformes nei' },
+            { name: 'Gadidae ',
+               children: [
+                { name: 'Gadidae nei' },
+                { name: 'Gadus' },
+                { name: 'Gadus morhua' },
+                { name: 'Gadus ogac', 
+                 children: [
+                   { name: 'Gadidae nei' },
+                   { name: 'Gadus' }
+                 ]
+               }
+               ]
+            }
+        ]
+    }
+];
+      $('#tree1').tree({
+        data: datatree
+      });
+    });
+
   });
 
 })();

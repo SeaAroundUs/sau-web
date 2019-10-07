@@ -412,6 +412,11 @@ angular
         controller: 'TopicBiodiversityCtrl',
         reloadOnSearch: false
       })
+      .when('/topic/biodiversity/tree', {
+        templateUrl: 'views/topic-biodiversity-tree.html',
+        controller: 'TopicBiodiversityCtrl',
+        reloadOnSearch: false
+      })
       .when('/feru', {
         templateUrl: 'views/feru.html',
         controller: 'FERUCtrl'

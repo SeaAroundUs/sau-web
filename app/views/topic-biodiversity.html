@@ -19,8 +19,10 @@
             <select ng-model="selectedSubregion" ng-options="region.title for region in subregions | orderBy: 'title'"></select>
         </span>
     </div>
+    <h3>Tree</h3>
+    <a href = '#/topic/biodiversity/tree' target = '_blank'>Biodiversity Tree</a>
 
-    <h3>Filter by Taxon</h3>
+     <h3>Filter by Taxon</h3>
 
     <sau-taxon-grid region-name="regionName" region-id="regionId"></sau-taxon-grid>
 
