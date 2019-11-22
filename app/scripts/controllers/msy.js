@@ -1,5 +1,5 @@
   angular.module('sauWebApp').controller('MsyCtrl',
-  function ($scope, $location, $window, sauAPI, $routeParams, $modal) {
+	function ($scope, $location, $window, sauAPI, $routeParams, $modal) {
     $(function () {
       var msy_arearange = new Array();
       var catch_json = new Array();
@@ -9,6 +9,7 @@
       var bmsy_arearange = new Array();
       var bmsy_catch_json = new Array();
       var bmsy_cpue = new Array();
+      var bmsy_cpue_range = new Array();
       var bmsy_windowline = new Array();
 
       var fmsy_json = new Array();
@@ -30,6 +31,7 @@
           bmsy_json.push([msy[i][0],msy[i][5]]);
           bmsy_catch_json.push([msy[i][0],msy[i][6]]);
           bmsy_cpue.push([msy[i][0],msy[i][16]]);
+          bmsy_cpue_range.push([msy[i][0],msy[i][17],msy[i][18]]);
           if (msy[i][14] && msy[i][15]){
             bmsy_windowline.push({ x:msy[i][0], low:msy[i][14], high:msy[i][15], color:'black'});
           }
@@ -147,19 +149,32 @@
               color: 'red',
               type: 'scatter',
               marker: {
-                symbol: 'circle'
+                symbol: 'circle',
+                radius: 3
               }
+            },
+            {
+              id: 'bcpue_range',
+              name: 'Biomass Range CPUE',
+              showInLegend: false,
+              enableMouseTracking: false,
+              data: bmsy_cpue_range,
+              color: 'red',
+              type: 'errorbar',
+              stemWidth: 1,
+              whiskerLength: 10
             },
             //},
             {
               id: 'bmsywindowline',
-              type:'columnrange',
+              type: 'errorbar',
+              stemWidth: 1,
+              whiskerLength: 5,
               pointWidth: 2,
               enableMouseTracking: false,
               showInLegend: false,
               data: bmsy_windowline
             }
-
 //            {
 //              id: 'halfbmsy',
 //              name: 'Half BMSY',
@@ -194,7 +209,6 @@
           }
         });
 
-
         $scope.openDownloadDataModal = function() {
           var params = [
             sauAPI.apiURL,
@@ -226,12 +240,12 @@
           });
         });
 
-        $.getJSON(sauAPI.apiURL + 'msy/kobeplots/' + $routeParams.ids, function(data) {
-          kobeplots_name = data.data[0].kobe_name;
-          $scope.redirect= function() {
-            window.open("https://sau-cmsy-kobeplots.s3-us-west-2.amazonaws.com/" + kobeplots_name + "_KOBE.jpg" )
-          };
-        });
+        //$.getJSON(sauAPI.apiURL + 'msy/kobeplots/' + $routeParams.ids, function(data) {
+        //  kobeplots_name = data.data[0].kobe_name;
+        //  $scope.redirect= function() {
+        //    window.open("https://sau-cmsy-kobeplots.s3-us-west-2.amazonaws.com/" + kobeplots_name + "_KOBE.jpg" )
+        //  };
+        //});
 
         $(function () {
           var span = $('h1').find('span');
@@ -285,6 +299,9 @@
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
               }
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
+              }
               if (chart.get('fcpue')){
                 chart.get('fcpue').remove(false);
               }
@@ -335,14 +352,19 @@
               }
 
               if (!chart.get('bcpue')){
-                chart.addSeries({id: 'bcpue',name: 'Biomass CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue, color: 'red',type: 'scatter', marker: { symbol: 'circle'}}, false);
+                chart.addSeries({id: 'bcpue',name: 'Biomass CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue, color: 'red',type: 'scatter', marker: { symbol: 'circle', radius: 3}}, false);
               } else {
                 chart.get('bcpue').update({name:'Biomass CPUE'}, false);
                 chart.get('bcpue').setData(bmsy_cpue);
               }
+              if (!chart.get('bcpue_range')){
+                chart.addSeries({id: 'bcpue_range',name: 'Biomass Range CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue_range, color: 'red',type: 'errorbar', whiskerLength: 10, stemWidth: 1}, false);
+              } else {
+                chart.get('bcpue_range').setData(bmsy_cpue_range);
+              }
 
               if (!chart.get('bmsywindowline')){
-                chart.addSeries({id:'bmsywindowline', type:'columnrange',pointWidth: 2,enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
+                chart.addSeries({id:'bmsywindowline', type:'errorbar',whiskerLength: 5, stemWidth: 1, pointWidth: 2, enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
               }
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
@@ -377,7 +399,7 @@
                 fmsy_arearange.push([msy[i][0],msy[i][12],msy[i][13]]);
                 fmsy_catch_json.push([msy[i][0],msy[i][11]]);
                 fmsy_json.push([msy[i][0],msy[i][10]]);
-                fmsy_cpue.push([msy[i][0],msy[i][17]]);
+                fmsy_cpue.push([msy[i][0],msy[i][19]]);
               }
               chart.series[0].setData(fmsy_catch_json);
               chart.series[0].update({name:'F<sub>MSY</sub>'}, false);
@@ -423,7 +445,9 @@
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
               }
-
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
+              }
               if (chart.get('bmsywindowline')){
                 chart.get('bmsywindowline').remove(false);
               }
@@ -486,6 +510,9 @@
               }
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
+              }
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
               }
               if (chart.get('fcpue')){
                 chart.get('fcpue').remove(false);
