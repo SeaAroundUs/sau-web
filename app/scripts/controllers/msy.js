@@ -1,5 +1,5 @@
   angular.module('sauWebApp').controller('MsyCtrl',
-  function ($scope, $location, $window, sauAPI, $routeParams, $modal) {
+	function ($scope, $location, $window, sauAPI, $routeParams, $modal) {
     $(function () {
       var msy_arearange = new Array();
       var catch_json = new Array();
@@ -9,6 +9,7 @@
       var bmsy_arearange = new Array();
       var bmsy_catch_json = new Array();
       var bmsy_cpue = new Array();
+      var bmsy_cpue_range = new Array();
       var bmsy_windowline = new Array();
 
       var fmsy_json = new Array();
@@ -29,9 +30,10 @@
           bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
           bmsy_json.push([msy[i][0],msy[i][5]]);
           bmsy_catch_json.push([msy[i][0],msy[i][6]]);
-          bmsy_cpue.push([msy[i][0],msy[i][14]]);
-          if (msy[i][15] && msy[i][16]){
-            bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
+          bmsy_cpue.push([msy[i][0],msy[i][16]]);
+          bmsy_cpue_range.push([msy[i][0],msy[i][17],msy[i][18]]);
+          if (msy[i][14] && msy[i][15]){
+            bmsy_windowline.push({ x:msy[i][0], low:msy[i][14], high:msy[i][15], color:'black'});
           }
         }
         // draw chart
@@ -104,7 +106,7 @@
           },
           series: [
           {
-            name: 'B/B<sub>MSY</sub>',
+            name: 'B<sub>MSY</sub>',
             data: bmsy_catch_json,
             showInLegend: true,
             enableMouseTracking: false,
@@ -147,19 +149,32 @@
               color: 'red',
               type: 'scatter',
               marker: {
-                symbol: 'circle'
+                symbol: 'circle',
+                radius: 3
               }
+            },
+            {
+              id: 'bcpue_range',
+              name: 'Biomass Range CPUE',
+              showInLegend: false,
+              enableMouseTracking: false,
+              data: bmsy_cpue_range,
+              color: 'red',
+              type: 'errorbar',
+              stemWidth: 1,
+              whiskerLength: 10
             },
             //},
             {
               id: 'bmsywindowline',
-              type:'columnrange',
+              type: 'errorbar',
+              stemWidth: 1,
+              whiskerLength: 5,
               pointWidth: 2,
               enableMouseTracking: false,
               showInLegend: false,
               data: bmsy_windowline
             }
-
 //            {
 //              id: 'halfbmsy',
 //              name: 'Half BMSY',
@@ -194,36 +209,43 @@
           }
         });
 
-    $scope.openDownloadDataModal = function() {
-      $modal.open({
-        templateUrl: 'views/download-data-modal.html',
-        controller: 'DownloadDataModalCtrl',
-        resolve: {
-          dataUrl: function() {
-            return $scope.downloadUrl;
-          }
-        }
-      });
-    };
+        $scope.openDownloadDataModal = function() {
+          var params = [
+            sauAPI.apiURL,
+            'msy/',
+            $routeParams.ids,
+            '?format=csv',
+            '&msy_id=',
+            $routeParams.ids
+          ];
 
-    $.getJSON(sauAPI.apiURL + 'msy/ref/' + $routeParams.ids, function(data) {
-        var ref_cmsy = data.data[0].data;
-        for (var i2 = 0; i2 < ref_cmsy.length; i2++){
-          ref_data = ref_data + '</br>' + '<a href = https://sau-cmsy-pdf.s3-us-west-2.amazonaws.com/' +ref_cmsy[i2] + ' target = _blank>' + ref_cmsy[i2] + '</a>';
-        }
-        $(function () {
-          var span = $('span#ref').find('#ref');
-          $('span#ref').html('References' + ref_data);
-          $('span#ref').append(span);
-        });
-    });
-
-    $.getJSON(sauAPI.apiURL + 'msy/kobeplots/' + $routeParams.ids, function(data) {
-        kobeplots_name = data.data[0].kobe_name;
-        $scope.redirect= function() {
-          window.open("https://sau-cmsy-kobeplots.s3-us-west-2.amazonaws.com/" + kobeplots_name + "_KOBE.jpg" )
+          $modal.open({
+            templateUrl: 'views/download-data-modal.html',
+            controller: 'DownloadDataModalCtrl',
+            resolve: {
+              dataUrl: function() { return params.join(''); }
+            }
+          });
         };
-    });
+
+        $.getJSON(sauAPI.apiURL + 'msy/ref/' + $routeParams.ids, function(data) {
+          var ref_cmsy = data.data[0].data;
+          for (var i2 = 0; i2 < ref_cmsy.length; i2++){
+            ref_data = ref_data + '</br>' + '<a href = https://sau-cmsy-pdf.s3-us-west-2.amazonaws.com/' +ref_cmsy[i2] + ' target = _blank>' + ref_cmsy[i2] + '</a>';
+          }
+          $(function () {
+            var span = $('span#ref').find('#ref');
+            $('span#ref').html('References' + ref_data);
+            $('span#ref').append(span);
+          });
+        });
+
+        //$.getJSON(sauAPI.apiURL + 'msy/kobeplots/' + $routeParams.ids, function(data) {
+        //  kobeplots_name = data.data[0].kobe_name;
+        //  $scope.redirect= function() {
+        //    window.open("https://sau-cmsy-kobeplots.s3-us-west-2.amazonaws.com/" + kobeplots_name + "_KOBE.jpg" )
+        //  };
+        //});
 
         $(function () {
           var span = $('h1').find('span');
@@ -277,6 +299,9 @@
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
               }
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
+              }
               if (chart.get('fcpue')){
                 chart.get('fcpue').remove(false);
               }
@@ -301,13 +326,13 @@
                 bmsy_arearange.push([msy[i][0],msy[i][8],msy[i][9]]);
                 bmsy_catch_json.push([msy[i][0],msy[i][6]]);
                 bmsy_json.push([msy[i][0],msy[i][5]]);
-                bmsy_cpue.push([msy[i][0],msy[i][14]]);
+                bmsy_cpue.push([msy[i][0],msy[i][16]]);
                 //if (msy[i][15] && msy[i][16]){
                 //bmsy_windowline.push({ x:msy[i][0], low:msy[i][15], high:msy[i][16], color:'black'});
                 //}
               }
               chart.series[0].setData(bmsy_catch_json);
-              chart.series[0].update({name:'B/B<sub>MSY</sub>'}, false);
+              chart.series[0].update({name:'B<sub>MSY</sub>'}, false);
               chart.series[0].update({showInLegend: true,enableMouseTracking: false}),
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(bmsy_json);
@@ -327,14 +352,19 @@
               }
 
               if (!chart.get('bcpue')){
-                chart.addSeries({id: 'bcpue',name: 'Biomass CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue, color: 'red',type: 'scatter', marker: { symbol: 'circle'}}, false);
+                chart.addSeries({id: 'bcpue',name: 'Biomass CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue, color: 'red',type: 'scatter', marker: { symbol: 'circle', radius: 3}}, false);
               } else {
                 chart.get('bcpue').update({name:'Biomass CPUE'}, false);
                 chart.get('bcpue').setData(bmsy_cpue);
               }
+              if (!chart.get('bcpue_range')){
+                chart.addSeries({id: 'bcpue_range',name: 'Biomass Range CPUE', showInLegend: false, enableMouseTracking: false, data: bmsy_cpue_range, color: 'red',type: 'errorbar', whiskerLength: 10, stemWidth: 1}, false);
+              } else {
+                chart.get('bcpue_range').setData(bmsy_cpue_range);
+              }
 
               if (!chart.get('bmsywindowline')){
-              chart.addSeries({id:'bmsywindowline', type:'columnrange',pointWidth: 2,enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
+                chart.addSeries({id:'bmsywindowline', type:'errorbar',whiskerLength: 5, stemWidth: 1, pointWidth: 2, enableMouseTracking: false, showInLegend: false,data: bmsy_windowline}, false);
               }
 
               if (chart.get('catch') && chart.get('msyline') && chart.get('fmsyline')){
@@ -369,15 +399,15 @@
                 fmsy_arearange.push([msy[i][0],msy[i][12],msy[i][13]]);
                 fmsy_catch_json.push([msy[i][0],msy[i][11]]);
                 fmsy_json.push([msy[i][0],msy[i][10]]);
-                fmsy_cpue.push([msy[i][0],msy[i][17]]);
+                fmsy_cpue.push([msy[i][0],msy[i][19]]);
               }
               chart.series[0].setData(fmsy_catch_json);
-              chart.series[0].update({name:'FMSY'}, false);
-              chart.series[0].update({showInLegend: false,enableMouseTracking: false}),
+              chart.series[0].update({name:'F<sub>MSY</sub>'}, false);
+              chart.series[0].update({showInLegend: true,enableMouseTracking: false}),
               chart.series[0].update({dashStyle: 'ShortDot'}, false);
               chart.series[1].setData(fmsy_json);
               chart.series[1].update({name:'F/F<sub>MSY</sub>', color: '#1F9139'}, false);
-              chart.series[1].update({showInLegend: false,enableMouseTracking: true}),
+              chart.series[1].update({showInLegend: true,enableMouseTracking: true}),
               chart.yAxis[0].update({labels: {allowDecimals: true, format: '{value:.1f}'}});
               chart.yAxis[0].axisTitle.attr({text: 'Exploitation rate (F/F<sub>MSY</sub>)'});
               chart.yAxis[1].update({title: {text: null}, lineWidth: 0, });
@@ -415,9 +445,11 @@
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
               }
-
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
+              }
               if (chart.get('bmsywindowline')){
-              chart.get('bmsywindowline').remove(false);
+                chart.get('bmsywindowline').remove(false);
               }
               chart.redraw();
 
@@ -479,12 +511,15 @@
               if (chart.get('bcpue')){
                 chart.get('bcpue').remove(false);
               }
+              if (chart.get('bcpue_range')){
+                chart.get('bcpue_range').remove(false);
+              }
               if (chart.get('fcpue')){
                 chart.get('fcpue').remove(false);
               }
 
               if (chart.get('bmsywindowline')){
-              chart.get('bmsywindowline').remove(false);
+                chart.get('bmsywindowline').remove(false);
               }
 
               chart.addSeries({id: 'msyline', name: 'MSY', dashStyle: 'ShortDash', data: msy_catch_json ,marker: {enabled: false}, color: '#000000'}, true);
@@ -518,45 +553,29 @@
         var year_tab = "";
         var rounded;
         for (var i = 0; i < msy.length; i++){
-        rounded = msy[i][20];
-        switch (true){
-        //case (msy[i][20] > '0' && msy[i][20] <= '0.25'): tdata_score += "<td bgcolor='#009DF1'></td>"; break
-        //case (msy[i][20] > '0.26' && msy[i][20] <= '0.5'): tdata_score += "<td bgcolor='#008BD5'></td>"; break
-        //case (msy[i][20] > '0.51' && msy[i][20] <= '0.75'): tdata_score += "<td bgcolor='#6ECBFD'></td>"; break
-        //case (msy[i][20] > '0.76' && msy[i][20] <= '1'): tdata_score += "<td bgcolor='#3EBBFE'></td>"; break
-        //case (msy[i][20] > '1.01' && msy[i][20] <= '1.25'): tdata_score += "<td bgcolor='#99FEEF'></td>"; break
-        //case (msy[i][20] > '1.26' && msy[i][20] <= '1.5'): tdata_score += "<td bgcolor='#5AFCE4'></td>"; break
-        //case (msy[i][20] > '1.51' && msy[i][20] <= '1.75'): tdata_score += "<td bgcolor='#EDFEE4'></td>"; break
-        //case (msy[i][20] > '1.76' && msy[i][20] <= '2'): tdata_score += "<td bgcolor='#AFFE87'></td>"; break
-        //case (msy[i][20] > '2.01' && msy[i][20] <= '2.25'): tdata_score += "<td bgcolor='#F7FF96'></td>"; break
-        //case (msy[i][20] > '2.26' && msy[i][20] <= '2.5'): tdata_score += "<td bgcolor='#EDFB44'></td>"; break
-        //case (msy[i][20] > '2.51' && msy[i][20] <= '2.75'): tdata_score += "<td bgcolor='#FFE58B'></td>"; break
-        //case (msy[i][20] > '2.76' && msy[i][20] <= '3'): tdata_score += "<td bgcolor='#FFC703'></td>"; break
-        //case (msy[i][20] > '3.01' && msy[i][20] <= '3.25'): tdata_score += "<td bgcolor='#FFA25E'></td>"; break
-        //case (msy[i][20] > '3.26' && msy[i][20] <= '3.5'): tdata_score += "<td bgcolor='#FF720B'></td>"; break
-        //case (msy[i][20] > '3.51' && msy[i][20] <= '3.75'): tdata_score += "<td bgcolor='#FE0100'></td>"; break
-        //case (msy[i][20] > '3.76' && msy[i][20] <= '4'): tdata_score += "<td bgcolor='#FF6C6B'></td>"; break
-          case (msy[i][20] > '0' && msy[i][20] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '0.26' && msy[i][20] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '0.51' && msy[i][20] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '0.76' && msy[i][20] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '1.01' && msy[i][20] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '1.26' && msy[i][20] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '1.51' && msy[i][20] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '1.76' && msy[i][20] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '2.01' && msy[i][20] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '2.26' && msy[i][20] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '2.51' && msy[i][20] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '2.76' && msy[i][20] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '3.01' && msy[i][20] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '3.26' && msy[i][20] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded.toFixed(2) +"</td>";} break
-          case (msy[i][20] >= '3.51' && msy[i][20] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded.toFixed(2) +"</td>";}break
-          case (msy[i][20] >= '3.76' && msy[i][20] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded.toFixed(2) +"</td>";} break
-          default: tdata_score += "<td bgcolor ='#ffffff'>"+ ' '+"</td>"; break
-        }
-           if (i % 10 == 0){
-             year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
-            }
+          rounded = msy[i][22];
+          switch (true){
+            case (msy[i][22] > '0' && msy[i][22] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '0.26' && msy[i][22] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '0.51' && msy[i][22] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '0.76' && msy[i][22] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '1.01' && msy[i][22] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '1.26' && msy[i][22] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '1.51' && msy[i][22] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '1.76' && msy[i][22] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '2.01' && msy[i][22] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '2.26' && msy[i][22] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '2.51' && msy[i][22] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '2.76' && msy[i][22] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '3.01' && msy[i][22] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '3.26' && msy[i][22] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded.toFixed(2) +"</td>";} break
+            case (msy[i][22] >= '3.51' && msy[i][22] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded.toFixed(2) +"</td>";}break
+            case (msy[i][22] >= '3.76' && msy[i][22] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded.toFixed(2) +"</td>";} break
+            default: tdata_score += "<td bgcolor ='#ffffff'>"+ ' '+"</td>"; break
+          }
+          if (i % 10 == 0){
+            year_tab += "<td colspan='10'>" + msy[i][0] + "</td>";
+          }
         }
         var tab_score = "<table><tr id ='color'>" + tdata_score + "</tr><tr>" + year_tab + "</tr></table>"
         $(function () {
