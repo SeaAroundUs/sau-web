@@ -329,6 +329,17 @@ angular
         });
     }
 
+    // Ecosystems routes
+    if (togglesProvider.$get().isEnabled('ecosystems')) {
+      $routeProvider
+        .when('/ecosystems/:ids', {
+          templateUrl: 'views/ecosystems/ecosystems.html',
+          controller: 'EcosystemsCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'ecosystems';}}
+        });
+    }
+
     // FAO routes
     if (togglesProvider.$get().isEnabled('fao')) {
       $routeProvider
