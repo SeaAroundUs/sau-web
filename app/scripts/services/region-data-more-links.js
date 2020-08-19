@@ -31,7 +31,8 @@ angular.module('sauWebApp')
             {
               text: 'Marine protected areas',
               url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'
-            }
+            },
+            { text: 'Catch by Ecosystem', ngUrl: '#/ecosystems/9999' }
           ]
         },
         {
