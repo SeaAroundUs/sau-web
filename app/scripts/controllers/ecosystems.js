@@ -7,9 +7,37 @@
           var ecosystems = data.data[0].data;
           var ecocount = data.data;
           var eez_name = data.data[0].eez_name;
-          area_color = ['#003f5c','#374c80','#7a5195','#bc5090','#ef5675','#ff764a']
+          area_color = ['#FFFF00','#F08080','#b5651d','#008000','#000000','#00BFFF','#32CD32','#696969','#87CEFA']
           for (var i = 0; i < ecocount.length; i++){
-            eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, color: area_color[i], marker:{enabled: false}});
+            switch (data.data[i].eco_name) {
+              case 'Estuaries':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:9, color: area_color[0], marker:{enabled: false}});
+              break;
+              case 'Coral reefs':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:8, color: area_color[1], marker:{enabled: false}});
+              break;
+              case 'Remaining inshore area':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:7, color: area_color[2], marker:{enabled: false}});
+              break;
+              case 'Fronts in EEZ':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:6, color: area_color[3], marker:{enabled: false}});
+              break;
+              case 'Seamounts in EEZ':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:5, color: area_color[4], marker:{enabled: false}});
+              break;
+              case 'Remaining EEZ area':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:4, color: area_color[5], marker:{enabled: false}});
+              break;
+              case 'Fronts in high seas':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:3, color: area_color[6], marker:{enabled: false}});
+              break;
+              case 'Seamounts in high seas':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:2, color: area_color[7], marker:{enabled: false}});
+              break;
+              case 'Remaining high seas area':
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:1, color: area_color[5], marker:{enabled: false}});
+              break;
+            }
           }
           $('#ecosystemscontainer').highcharts(
           {
@@ -18,6 +46,10 @@
           },
           chart: {
             type: 'area'
+          },
+          dataSorting: {
+            enabled: true,
+            sortKey: 'custom.value'
           },
           xAxis: {
             lineWidth: 1,
