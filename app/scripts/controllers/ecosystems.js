@@ -11,31 +11,31 @@
           for (var i = 0; i < ecocount.length; i++){
             switch (data.data[i].eco_name) {
               case 'Estuaries':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:9, color: area_color[0], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:9, legendIndex: 1, color: area_color[0], marker:{enabled: false}});
               break;
               case 'Coral reefs':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:8, color: area_color[1], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:8, legendIndex: 2, color: area_color[1], marker:{enabled: false}});
               break;
               case 'Remaining inshore area':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:7, color: area_color[2], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:7, legendIndex: 3, color: area_color[2], marker:{enabled: false}});
               break;
               case 'Fronts in EEZ':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:6, color: area_color[3], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:6, legendIndex: 4, color: area_color[3], marker:{enabled: false}});
               break;
               case 'Seamounts in EEZ':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:5, color: area_color[4], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:5, legendIndex: 5, color: area_color[4], marker:{enabled: false}});
               break;
               case 'Remaining EEZ area':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:4, color: area_color[5], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:4, legendIndex: 6, color: area_color[5], marker:{enabled: false}});
               break;
               case 'Fronts in high seas':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:3, color: area_color[6], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:3, legendIndex: 7, color: area_color[6], marker:{enabled: false}});
               break;
               case 'Seamounts in high seas':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:2, color: area_color[7], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:2, legendIndex: 8, color: area_color[7], marker:{enabled: false}});
               break;
               case 'Remaining high seas area':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:1, color: area_color[5], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:1, legendIndex: 9, color: area_color[5], marker:{enabled: false}});
               break;
             }
           }
@@ -89,6 +89,11 @@
             itemMarginTop: 0,
             itemStyle: {
               fontSize:'15px'
+            }
+          },
+          plotOptions: {
+            series: {
+              stacking: 'normal'
             }
           },
           series: eco_range
