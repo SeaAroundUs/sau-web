@@ -62,7 +62,7 @@
           yAxis: {
             title: {
               useHTML: true,
-              text: 'Catch',
+              text: 'Catch (tonnes)',
               style: {
                 fontSize: '18px'
               }
