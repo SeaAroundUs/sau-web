@@ -53,6 +53,7 @@ angular.module('sauWebApp')
       EEZVsHighSeasData: resourceFactory('global/eez-vs-high-seas/'),
       Taxa: resourceFactory('taxa/'),
       MSY: resourceFactory('msy/:region_id'),
+      Ecosystems: resourceFactory('ecosystems/:region_id'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),

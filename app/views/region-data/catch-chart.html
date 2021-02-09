@@ -79,6 +79,8 @@
 
     <div>
       <nvd3 options="options" data="data" api="api" ng-class="formModel.dimension.value"></nvd3>
+      <div ng-if ="(region.name == 'eez' && region.id != null) || (region.name == 'lme' && region.id != null) || (region.name == 'meow' && region.id != null) || region.name == 'rfmo'" id="score">Catch data reliability scores (4=most reliable; 1=least reliable)</div>
+        <table id="catchscore"></table>
     </div>
   </div>
 </div>

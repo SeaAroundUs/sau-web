@@ -21,6 +21,44 @@ angular.module('sauWebApp')
         year: null
       };
 
+      $.getJSON(sauAPI.apiURL + $scope.region.name + '/reliability-score/'+ $scope.region.id, function(data) {
+        var catchscore = data.data[0].data;
+        var tdata_score = "";
+        var year_tab = "";
+        var rounded;
+        for (var i = 0; i < catchscore.length; i++){
+          rounded = catchscore[i][1];
+          switch (true){
+            case (catchscore[i][1] > '0' && catchscore[i][22] <= '0.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FE0100'></td>"; } else { tdata_score += "<td bgcolor ='#FE0100'>" +rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '0.26' && catchscore[i][22] <= '0.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF6C6B'></td>";} else {tdata_score += "<td bgcolor ='#FF6C6B'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '0.51' && catchscore[i][1] <= '0.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FF720B'></td>";} else {tdata_score += "<td bgcolor ='#FF720B'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '0.76' && catchscore[i][1] <= '1'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFA25E'></td>";} else {tdata_score += "<td bgcolor ='#FFA25E'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '1.01' && catchscore[i][1] <= '1.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFC703'></td>";} else {tdata_score += "<td bgcolor ='#FFC703'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '1.26' && catchscore[i][1] <= '1.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#FFE58B'></td>";} else {tdata_score += "<td bgcolor ='#FFE58B'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '1.51' && catchscore[i][1] <= '1.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFB44'></td>";} else {tdata_score += "<td bgcolor ='#EDFB44'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '1.76' && catchscore[i][1] <= '2'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#F7FF96'></td>";} else {tdata_score += "<td bgcolor ='#F7FF96'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '2.01' && catchscore[i][1] <= '2.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#AFFE87'></td>";} else {tdata_score += "<td bgcolor ='#AFFE87'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '2.26' && catchscore[i][1] <= '2.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#EDFEE4'></td>";} else {tdata_score += "<td bgcolor ='#EDFEE4'>" +rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '2.51' && catchscore[i][1] <= '2.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#5AFCE4'></td>";} else {tdata_score += "<td bgcolor ='#5AFCE4'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '2.76' && catchscore[i][1] <= '3'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#99FEEF'></td>";} else {tdata_score += "<td bgcolor ='#99FEEF'>" +rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '3.01' && catchscore[i][1] <= '3.25'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#6ECBFD'></td>";} else {tdata_score += "<td bgcolor ='#6ECBFD'>" +rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '3.26' && catchscore[i][1] <= '3.5'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#3EBBFE'></td>";} else {tdata_score += "<td bgcolor ='#3EBBFE'>" + rounded.toFixed(2) +"</td>";} break
+            case (catchscore[i][1] >= '3.51' && catchscore[i][1] <= '3.75'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#009DF1'></td>";} else {tdata_score += "<td bgcolor ='#009DF1'>" + rounded.toFixed(2) +"</td>";}break
+            case (catchscore[i][1] >= '3.76' && catchscore[i][1] <= '4'): if (i % 4 != 0) { tdata_score += "<td bgcolor ='#008BD5'></td>";} else {tdata_score += "<td bgcolor ='#008BD5'>" + rounded.toFixed(2) +"</td>";} break
+            default: tdata_score += "<td bgcolor ='#ffffff'>"+ ' '+"</td>"; break
+          }
+          if (i % 10 == 0){
+            year_tab += "<td colspan='10'>" + catchscore[i][0] + "</td>";
+          }
+        }
+        var tab_score = "<table><tr id ='color'>" + tdata_score + "</tr><tr>" + year_tab + "</tr></table>"
+        $(function () {
+          var span = $('table#catchscore').find('#catchscore');
+          $('table#catchscore').html(tab_score);
+          $('table#catchscore').append(span);
+        });
+      });
+
       // init chart model from URL and defaults
       $scope.formModel = getFormModel();
 

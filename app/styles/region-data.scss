@@ -61,4 +61,15 @@
       left: 120px;
     }
   }
+  div#score {
+    text-align: center;font-weight:bold; font-size: 16px;
+  }
+  
+table#catchscore {margin-left: 60px; width: 93%;}
+table#catchscore td { font-size: 12px; text-align: left; height: 30px; }
+table#catchscore tr#color {border: 1px solid black;}
+table#catchscore tr#color td {text-align: center; font-size: 9px; width: 10px;}
+
+table#catchscore tr#color2 {border: 1px solid black;}
+table#catchscore tr#color2 td {text-align: center; font-size: 12px; width: 10px;}
 }
