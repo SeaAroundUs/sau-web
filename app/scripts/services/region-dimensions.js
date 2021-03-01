@@ -144,7 +144,7 @@ angular.module('sauWebApp')
     var defaultDimensions = [taxon, commercialGroup, functionalGroup, fishingCountry, gear, endUse, fishingSector, catchType, reportingStatus, layer];
     var expandedDefaults = [eez, highseas, taxon, commercialGroup, functionalGroup, fishingCountry, gear, endUse, fishingSector, catchType, reportingStatus];
     var eezBorderingDimensions = [eez, taxon, commercialGroup, functionalGroup, fishingCountry, gear, endUse, fishingSector, catchType, reportingStatus];
-    var maricultureDimensions = [taxon, gear, endUse, commercialGroup, functionalGroupMariculture];
+    var maricultureDimensions = [taxon, commercialGroup, functionalGroupMariculture];
     var fishingEntityDimensions = [eez, highseas, taxon, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
     var taxonDimension = [eez, lme, meow, highseas, fishingCountry, commercialGroup, functionalGroup, gear, endUse, fishingSector, catchType, reportingStatus];
     var fishingentityeffortDimension = [sector, fishinggear,length_class];
