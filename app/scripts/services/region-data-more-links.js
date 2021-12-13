@@ -45,6 +45,12 @@ angular.module('sauWebApp')
           ]
         },
         {
+          section: 'Marine Protected Areas',
+          links: [
+          { text: 'Global MPA map', ngUrl: '#/mpa' }
+          ]
+        },
+        {
           section: 'Governance',
           links: [
             { text: 'FAO Fisheries & Aquaculture Dept.', url: 'http://www.fao.org/fishery/en' },
@@ -253,6 +259,12 @@ angular.module('sauWebApp')
 
             { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' },
             { text: 'Catch by Ecosystem', ngUrl: '#/ecosystems/{{ id }}' }
+          ]
+        },
+        {
+          section: 'Marine Protected Areas',
+          links: [
+          { text: 'MPA Details', ngUrl: '#/mpa/{{ id }}' }
           ]
         },
         {

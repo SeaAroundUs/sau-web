@@ -1,0 +1,56 @@
+<div class="content-container" id="mpa">
+    <h1><span ng-bind="mpaname"></span></h1>
+    <div class="col-md-5" id="map-container">
+        <leaflet id="mpamap" layers="layers" geojson="geojson" center="center" defaults="defaults"></leaflet>
+    </div>
+    <div id="mpa-detail">
+        <p><span ng-bind-html="mpa_p1"></span></p>
+        <p><span ng-bind-html="mpa_p2"></span></p>
+        <p><span ng-bind-html="mpa_p3"></span><span ng-show="other_eez != null && mpa_p3 != null && mpa_p4 == null"><a href="#/mpa/{{other_eez}}"> Link</a></span></p>
+        <p><span ng-bind-html="mpa_p4"></span><span ng-show="other_eez != null && mpa_p4 != null && mpa_p5 == null"><a href="#/mpa/{{other_eez}}"> Link</a></span></p>
+        <p><span ng-bind-html="mpa_p5"></span><span ng-show="other_eez != null && mpa_p4 != null && mpa_p5 != null && mpa_p6 == null"><a href="#/mpa/{{other_eez}}"> Link</a></span></p>
+        <p><span ng-bind-html="mpa_p6"></span><span ng-show="other_eez != null && mpa_p5 != null && mpa_p6 != null && mpa_p7 == null"><a href="#/mpa/{{other_eez}}"> Link</a></span></p>
+        <p><span ng-bind-html="mpa_p7"></span><span ng-show="other_eez != null && mpa_p5 != null && mpa_p6 != null && mpa_p7 != null"><a href="#/mpa/{{other_eez}}"> Link</a></span></p>
+        <p ng-hide="other_eez != null">These responses are handled with utmost confidentiality, in accordance with UBC’s ethic guidelines (Ethics ID Number: H19-03029; see <a href=""><i>XXXXX</i></a> for more information on the methodology). </p>
+        <div ng-if="mpafl !== undefined">
+            <table ng-if="mpafl.length != 0" id="mpa-fl">
+                <tr>
+                    <td colspan="6"><b>Most frequent fishing level provided</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align:left"><b>MPA Name</b></td>
+                    <td><b>Academic</b></td>
+                    <td><b>Fishers</b></td>
+                    <td><b>Government</b></td>
+                    <td><b>Journalist</b></td>
+                    <td><b>NGO</b></td>
+                </tr>
+                <tr ng-repeat="x in mpafl">
+                    <td style="text-align:left">{{x.mpa_name}}</td>
+                    <td>{{x.acad}}</td>
+                    <td>{{x.fish}}</td>
+                    <td>{{x.gov}}</td>
+                    <td>{{x.jou}}</td>
+                    <td>{{x.ngo}}</td>
+                </tr>
+                <tr>
+                    <td colspan="6"><b>1 = no fishing, 2 = light fishing, 3 = moderate fishing, 4 = very intense fishing</b></td>
+                </tr>
+            </table>
+        </div>
+        <h1 ng-if="acad.length != 0 || gov.length != 0 || jour.length != 0 || ngo.length != 0">Quote(s)</h1>
+        <div ng-repeat="y in mpanames">
+            <h3><u>{{y.mpa_name}}</u></h3>
+            <h3 ng-if="(acad | filter:y.mpa_name:true).length != 0">Academic</h3>
+            <p ng-repeat="x in acad | filter:y.mpa_name:true" ng-bind-html="x[1]">{{x[1]}}</p>
+            <h3 ng-if="(gov | filter:y.mpa_name:true).length != 0">Government</h3>
+            <p ng-repeat="x in gov | filter:y.mpa_name:true" ng-bind-html="x[1]"> {{x[1]}}</p>
+            <h3 ng-if="(jour | filter:y.mpa_name:true).length != 0">Journalist</h3>
+            <p ng-repeat="x in jour | filter:y.mpa_name:true" ng-bind-html="x[1]">{{x[1]}}</p>
+            <h3 ng-if="(ngo | filter:y.mpa_name:true).length != 0">NGO</h3>
+            <p ng-repeat="x in ngo | filter:y.mpa_name:true" ng-bind-html="x[1]">{{x[1]}}</p>
+        </div>
+        <h1 ng-if="mparef !== undefined">References</h1>
+        <p ng-repeat="x in mparef">{{x.author}} {{x.year}}. {{x.title}} {{x.source}} <a href="{{x.url}}">{{x.url}}</a></p>
+    </div>
+</div>
