@@ -48,6 +48,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "preinstall": "npm install -g phantomjs"
     "test": "grunt test"
   }
 }
