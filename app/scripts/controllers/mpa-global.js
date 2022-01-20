@@ -93,15 +93,6 @@
               pointToLayer: function(feature, latlng) {
                 if (feature.properties.point_cat === 'less than 100') {
                   return L.circleMarker(latlng, {
-                    radius: 5,
-                    fillColor: "#FFFF00",
-                    color: "#000",
-                    fillOpacity: 1,
-                    stroke: true
-                  });
-
-                } else if (feature.properties.point_cat === 'between 100 and 1000') {
-                  return L.circleMarker(latlng, {
                     radius: 6,
                     fillColor: "#FF6700",
                     color: "#000",
@@ -109,9 +100,18 @@
                     stroke: true
                   });
 
-                } else {
+                } else if (feature.properties.point_cat === 'between 100 and 1000') {
                   return L.circleMarker(latlng, {
                     radius: 7,
+                    fillColor: "#FFFF00",
+                    color: "#000",
+                    fillOpacity: 1,
+                    stroke: true
+                  });
+
+                } else {
+                  return L.circleMarker(latlng, {
+                    radius: 8,
                     fillColor: "#0f0",
                     color: "#000",
                     fillOpacity: 1,

@@ -38,14 +38,14 @@
         });
         for (var i=0; i < $scope.geojson.data.features.length; i++){
           if ($scope.geojson.data.features[i].properties.point_cat == 'less than 100') {
-            $scope.geojson.data.features[i].fillColor = '#FFFF00';
-            $scope.geojson.data.features[i].radius = 5;
-          } else if ($scope.geojson.data.features[i].properties.point_cat == 'between 100 and 1000') {
             $scope.geojson.data.features[i].fillColor = '#FF6700';
             $scope.geojson.data.features[i].radius = 6;
+          } else if ($scope.geojson.data.features[i].properties.point_cat == 'between 100 and 1000') {
+            $scope.geojson.data.features[i].fillColor = '#FFFF00';
+            $scope.geojson.data.features[i].radius = 7;
           } else {
             $scope.geojson.data.features[i].fillColor = '#0f0';
-            $scope.geojson.data.features[i].radius = 7;
+            $scope.geojson.data.features[i].radius = 8;
           }
         }
       });
@@ -58,6 +58,7 @@
         $scope.mpa_p4 = MPAData.data[0].mpa_p4;
         $scope.mpa_p5 = MPAData.data[0].mpa_p5;
         $scope.mpa_p6 = MPAData.data[0].mpa_p6;
+        $scope.mpa_p7 = MPAData.data[0].mpa_p7;
         $scope.other_eez = MPAData.data[0].other_eez;
       });
       var MPAQuoteData = sauAPI.MPAQuoteData.get({region: region, region_id: id}, function() {
