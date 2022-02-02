@@ -130,12 +130,6 @@
         L.esri.basemapLayer('Oceans').addTo(map);
         L.esri.basemapLayer('OceansLabels').addTo(map);
       });
-      $scope.changeRegion = function(region) {
-        $scope.region.name = region;
-        $scope.regionConfig = mainMapRegionConfig.getConfig(region);
-        $location.path($scope.regionConfig.path, false);
-        getFeatures();
-      };
 
       angular.extend($scope, {
         center: {

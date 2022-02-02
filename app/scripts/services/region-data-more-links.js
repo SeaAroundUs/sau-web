@@ -28,10 +28,7 @@ angular.module('sauWebApp')
           section: 'Ecosystems',
           links: [
             { text: 'Large seamounts', url: '/large-seamount-areas/' },
-            {
-              text: 'Marine protected areas',
-              url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'
-            },
+            //{ text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf'},
             { text: 'Catch by Ecosystem', ngUrl: '#/ecosystems/9999' }
           ]
         },
@@ -255,7 +252,7 @@ angular.module('sauWebApp')
               ngUrl: 'http://www.fishbase.org/report/KeyFactsMatrixList.php?c_code={{ c_code }}' +
                 '&sb=1&disabled=1&fsb=0&custom=1'
             },
-            { text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
+            //{ text: 'Marine protected areas', url: '/doc/PageContent/GlobalMpaWorldMap/mpaglobal_worldmap.pdf' },
 
             { text: 'Estuaries', ngUrl: '#/eez/{{ id }}/estuaries' },
             { text: 'Catch by Ecosystem', ngUrl: '#/ecosystems/{{ id }}' }

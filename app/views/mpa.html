@@ -50,6 +50,7 @@
             <h3 ng-if="(ngo | filter:y.mpa_name:true).length != 0">NGO</h3>
             <p ng-repeat="x in ngo | filter:y.mpa_name:true" ng-bind-html="x[1]">{{x[1]}}</p>
         </div>
+        Disclaimer: Please note, we did not include quotes from stakeholder groups that did not provide additional information aside from the fishing intensity level.
         <h1 ng-if="mparef !== undefined">References</h1>
         <p ng-repeat="x in mparef">{{x.author}} {{x.year}}. {{x.title}} {{x.source}} <a href="{{x.url}}">{{x.url}}</a></p>
     </div>
