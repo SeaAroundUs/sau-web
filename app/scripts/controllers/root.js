@@ -91,7 +91,7 @@
         {'name': 'Mapped Data', 'url': '#/spatial-catch'},
         {'name': 'Fisheries Economics', 'url': '#/feru'},
         {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
-        {'name': 'MPA', 'url': '#/mpa'},
+        {'name': 'MPAs', 'url': '#/mpa'},
         {'name': 'Mariculture', 'url': '#/mariculture'},
         {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
       ];
