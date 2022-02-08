@@ -296,6 +296,22 @@ angular
         });
     }
 
+    // MPA routes
+    if (togglesProvider.$get().isEnabled('mpa')) {
+      $routeProvider
+        .when('/mpa', {
+          templateUrl: 'views/mpa-global.html',
+          controller: 'MPAGlobalCtrl',
+          reloadOnSearch: false,
+          resolve: {region: function() {return 'eez';}}
+        })
+        .when('/mpa/:id', {
+          templateUrl: 'views/mpa.html',
+          controller: 'MPACtrl',
+          resolve: {region: function() {return 'eez';}}
+        });
+    }
+
     // Country EEZs routes
     if (togglesProvider.$get().isEnabled('country-eezs')) {
       $routeProvider

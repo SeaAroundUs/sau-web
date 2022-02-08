@@ -7,7 +7,7 @@
           var ecosystems = data.data[0].data;
           var ecocount = data.data;
           var eez_name = data.data[0].eez_name;
-          area_color = ['#FFFF00','#F08080','#b5651d','#008000','#000000','#00BFFF','#32CD32','#696969','#87CEFA']
+          area_color = ['#FFFF00','#F08080','#b5651d','#008000','#000000','#00BFFF','#32CD32','#696969','#FFA500']
           for (var i = 0; i < ecocount.length; i++){
             switch (data.data[i].eco_name) {
               case 'Estuaries':
@@ -35,7 +35,7 @@
                 eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:2, legendIndex: 8, color: area_color[7], marker:{enabled: false}});
               break;
               case 'Remaining high seas area':
-                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:1, legendIndex: 9, color: area_color[5], marker:{enabled: false}});
+                eco_range.push({name:data.data[i].eco_name, data: data.data[i].data, index:1, legendIndex: 9, color: area_color[8], marker:{enabled: false}});
               break;
             }
           }
@@ -100,7 +100,11 @@
         });
           $(function () {
             var span = $('h1').find('span');
-            $('h1').html('Ecosystems of ' + eez_name);
+            if ($routeParams.ids == 9999) {
+              $('h1').html('Catches by Ecosystems in ' + eez_name + ' Seas');
+            } else {
+              $('h1').html('Catches by Ecosystems in ' + eez_name + ' EEZ');
+            }
             $('h1').append(span);
           });
         });

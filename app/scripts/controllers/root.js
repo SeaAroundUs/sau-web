@@ -21,7 +21,7 @@
           switch (location.$$route.controller) {
             case 'MapCtrl':
               if (location.locals && location.locals.region === 'mariculture') {
-                $scope.subtemplates[toggles.isEnabled('spatial') ? 5 : 4].class = 'selected';
+                $scope.subtemplates[toggles.isEnabled('spatial') ? 6 : 5].class = 'selected';
               } else {
                 $scope.subtemplates[0].class = 'selected';
               }
@@ -38,8 +38,11 @@
             case 'TopicBiodiversityCtrl':
               $scope.subtemplates[toggles.isEnabled('spatial') ? 4 : 3].class = 'selected';
             break;
+            case 'MPAGlobalCtrl':
+              $scope.subtemplates[5].class = 'selected';
+            break;
             case 'MarineTrophicIndexSearchCtrl':
-              $scope.subtemplates[toggles.isEnabled('spatial') ? 6 : 5].class = 'selected';
+              $scope.subtemplates[toggles.isEnabled('spatial') ? 7 : 6].class = 'selected';
             break;
           }
         }
@@ -88,6 +91,7 @@
         {'name': 'Mapped Data', 'url': '#/spatial-catch'},
         {'name': 'Fisheries Economics', 'url': '#/feru'},
         {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
+        {'name': 'MPAs', 'url': '#/mpa'},
         {'name': 'Mariculture', 'url': '#/mariculture'},
         {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
       ];

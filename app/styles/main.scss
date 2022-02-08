@@ -121,8 +121,8 @@ label {
       height: 40px;
       margin-top: 7px;
       margin-bottom: 7px;
-      padding-right: 20px;
-      padding-left: 20px;
+      padding-right: 15px;
+      padding-left: 15px;
       background-color: rgba(0,0,0,0);
       // border-radius: 2px;
       padding-top: 10px;
@@ -291,6 +291,47 @@ label {
       }
     }
   }
+}
+
+.content-container#mpa {
+  padding: 0px 40px 20px;
+
+  #map-container {
+    font-size: 14pt;
+    padding: 0px 15px 0px 0px;
+  }
+  #mpamap {
+    width: 100%;
+    height: 380px;
+  }
+
+  #mpa-detail {
+    padding: 0 10px 0 10px;
+    #mpa-fl {
+      margin: auto;
+    }
+    #mpa-fl td, tr{
+      border: 1px solid black;
+      padding: 0 10px 0 10px;
+      text-align: center;
+    }
+  }
+}
+
+.content-container#mpa-global {
+  padding: 0px;
+  #map-global-container {
+    font-size: 14pt;
+  }
+  #mpaglobalmap {
+    width: 100%;
+    height: 724px;
+  }
+}
+
+#search-mpanote {
+  text-align: center;
+  background-color: #F4BC59;
 }
 
 .disclaimer {
