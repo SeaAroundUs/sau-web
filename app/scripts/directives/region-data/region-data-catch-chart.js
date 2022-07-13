@@ -237,15 +237,29 @@ angular.module('sauWebApp')
         $scope.options.chart.yAxisTickFormat = function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
           //var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          //Begin MOD SORTIZ 07-13-2022
+          //if ($scope.formModel.measure.value === 'tonnage'){
+          //  var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          //  return $filter('significantDigits')(d, magnitude);
+          //} else if ($scope.formModel.measure.value === 'boats') {
+          //  return (d);
+          //} else {
+          //  var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          //  return $filter('significantDigits')(d, magnitude);
+          //}
+          var magnitude;
           if ($scope.formModel.measure.value === 'tonnage'){
-            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+            magnitude = 3;
             return $filter('significantDigits')(d, magnitude);
+          } else if ($scope.formModel.measure.value === 'omega'){
+            return (d);
           } else if ($scope.formModel.measure.value === 'boats') {
             return (d);
           } else {
-            var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+            magnitude = 6;
             return $filter('significantDigits')(d, magnitude);
           }
+          //End MOD SORTIZ 07-13-2022
         };
       }
 
