@@ -251,13 +251,11 @@ angular.module('sauWebApp')
           if ($scope.formModel.measure.value === 'tonnage'){
             magnitude = 3;
             return $filter('significantDigits')(d, magnitude);
-          } else if ($scope.formModel.measure.value === 'omega'){
-            return (d);
-          } else if ($scope.formModel.measure.value === 'boats') {
-            return (d);
-          } else {
+          } else if ($scope.formModel.measure.value === 'value'){
             magnitude = 6;
             return $filter('significantDigits')(d, magnitude);
+          } else {
+            return (d);
           }
           //End MOD SORTIZ 07-13-2022
         };
