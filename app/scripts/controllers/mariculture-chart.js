@@ -39,11 +39,20 @@ angular.module('sauWebApp').controller('MaricultureChartCtrl',
           if ($scope.formModel.measure.value === 'tonnage'){
             magnitude = 3;
             return $filter('significantDigits')(d, magnitude);
-          } else if ($scope.formModel.measure.value === 'value'){
+          } else if (($scope.formModel.measure.value === 'omega') || ($scope.formModel.measure.value === 'protein')){
+            magnitude = 3;
+            return $filter('significantDigits')(d, magnitude);
+          } else if (($scope.formModel.measure.value === 'calcium') || ($scope.formModel.measure.value === 'iron') || ($scope.formModel.measure.value === 'zinc')){
+            magnitude = 5 ;
+            return $filter('significantDigits')(d, magnitude);
+          } else if (($scope.formModel.measure.value === 'selenium') || ($scope.formModel.measure.value === 'vita')){
+            magnitude = 7;
+            return $filter('significantDigits')(d, magnitude);
+          } else if ($scope.formModel.measure.value === 'boats'){
+            return (d);
+          } else {
             magnitude = 6;
             return $filter('significantDigits')(d, magnitude);
-          } else {
-            return (d);
           }
           //End MOD SORTIZ 07-13-2022
         },

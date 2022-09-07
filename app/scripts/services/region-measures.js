@@ -13,8 +13,8 @@ angular.module('sauWebApp')
     var defaultMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
       {label: 'Value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) by'},
-      {label: 'Calcium', value: 'calcium', chartlabel: 'Calcium concentration (mg/100g)', titleLabel: 'Calcium concentration by'},
-      {label: 'Omega-3', value: 'omega', chartlabel: 'Omega-3 concentration (g/100g)', titleLabel: 'Omega-3 concentration by'}
+      {label: 'Calcium', value: 'calcium', chartlabel: 'Calcium concentration of the catch (mg; 10^5)', titleLabel: 'Calcium concentration by'},
+      {label: 'Omega-3', value: 'omega', chartlabel: 'Omega-3 concentration of the catch (g; 10^3)', titleLabel: 'Omega-3 concentration by'}
     ];
     /*{label: 'Iron', value: 'iron', chartlabel: 'Iron (mg/100g)', titleLabel: 'Iron concentration (t * 1000) by'},
     {label: 'Selenium', value: 'selenium', chartlabel: 'Selenium (μg/100g)', titleLabel: 'Selenium concentration (t * 1000) by'},
