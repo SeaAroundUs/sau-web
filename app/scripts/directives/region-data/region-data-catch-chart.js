@@ -251,14 +251,13 @@ angular.module('sauWebApp')
           if ($scope.formModel.measure.value === 'tonnage'){
             magnitude = 3;
             return $filter('significantDigits')(d, magnitude);
-          } else if (($scope.formModel.measure.value === 'omega') || ($scope.formModel.measure.value === 'protein')){
-            magnitude = 3;
+          } else if (($scope.formModel.measure.value === 'omega')){
+            return (d);
+          } else if (($scope.formModel.measure.value === 'calcium')){
+            magnitude = 3 ;
             return $filter('significantDigits')(d, magnitude);
-          } else if (($scope.formModel.measure.value === 'calcium') || ($scope.formModel.measure.value === 'iron') || ($scope.formModel.measure.value === 'zinc')){
-            magnitude = 5 ;
-            return $filter('significantDigits')(d, magnitude);
-          } else if (($scope.formModel.measure.value === 'selenium') || ($scope.formModel.measure.value === 'vita')){
-            magnitude = 7;
+          } else if (($scope.formModel.measure.value === 'iron') || ($scope.formModel.measure.value === 'selenium') || ($scope.formModel.measure.value === 'zinc') || ($scope.formModel.measure.value === 'vita') || ($scope.formModel.measure.value === 'protein')){
+            magnitude = 7 ;
             return $filter('significantDigits')(d, magnitude);
           } else if ($scope.formModel.measure.value === 'boats'){
             return (d);
