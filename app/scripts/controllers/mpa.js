@@ -85,7 +85,6 @@
       });
       var MPANamesData = sauAPI.MPANamesData.get({region: region, region_id: id}, function() {
         $scope.mpanames = MPANamesData.data;
-        console.log($scope.mpanames)
       });
       var MPAFLData = sauAPI.MPAFLData.get({region: region, region_id: id}, function() {
         $scope.mpafl = MPAFLData.data;
