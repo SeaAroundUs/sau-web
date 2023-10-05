@@ -11,7 +11,7 @@ angular.module('sauWebApp')
     $scope.noData = false;
     $scope.rmtiAPI = null;
     $scope.selectedTL = [];
-    $scope.mintl = [{label: "All", label_value: ">=2", min: 2, max: 6},
+    $scope.mintl = [{label: "No exclusion", label_value: ">=2", min: 2, max: 2},
     {label: "Omnivores, herbivores, & detritivores", label_value: "2-2.99", min: 2, max: 2.99},
     {label: "Mid-level carnivores", label_value: "3-3.99", min: 3, max: 3.99}];
 
@@ -276,7 +276,7 @@ angular.module('sauWebApp')
         $scope.iceCover = true;
 
       } else {
-        var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: 2, tl_max: 6}, function() {
+        var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: 2, tl_max: 2}, function() {
           $scope.speciesListAll = species.data;
           console.log($scope.speciesListAll);
         });
