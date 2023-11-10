@@ -10,10 +10,54 @@ angular.module('sauWebApp')
     $scope.regionType = region;
     $scope.noData = false;
     $scope.rmtiAPI = null;
-    $scope.selectedTL = [];
-    $scope.mintl = [{label: "No exclusion", label_value: ">=2", min: 2, max: 2},
-    {label: "Omnivores, herbivores, & detritivores", label_value: "2-2.99", min: 2, max: 2.99},
-    {label: "Mid-level carnivores", label_value: "3-3.99", min: 3, max: 3.99}];
+    $scope.tlmin;
+    $scope.tlmax;
+    $scope.init_tlmin = 2.00;
+    $scope.init_tlmax = 2.00;
+    $scope.tl_control = true;
+
+    $scope.setMin = function(value){
+      if(value < 2){
+        $scope.tlmin = 2.00;
+      }
+
+      if(value > 5){
+        $scope.tlmin = 5.00;
+      }
+
+      if (($scope.tlmax - $scope.tlmin) < 1 ){
+        $scope.tlmax = ((parseFloat($scope.tlmin)) + 1);
+        $scope.tlmax = parseFloat($scope.tlmax).toFixed(2);
+      }
+
+      $scope.tlmin = parseFloat($scope.tlmin).toFixed(2);
+    }
+
+    $scope.setMax = function(value){
+      if(value < 2){
+        $scope.tlmax = 2.00;
+      }
+
+      if(value > 5){
+        $scope.tlmax = 5.00;
+      }
+
+      if (($scope.tlmax - $scope.tlmin) < 1 ){
+        $scope.tlmax = ((parseFloat($scope.tlmin)) + 1);
+      }
+
+      $scope.tlmax = parseFloat($scope.tlmax).toFixed(2);
+    }
+
+    $scope.setTlcontrol = function(value) {
+      if ((!$scope.tlmin) || (!$scope.tlmax)){
+        $scope.tl_control = false;
+      } else if (($scope.tlmin === '') && ($scope.tlmax === '')) {
+        $scope.tl_control = true;
+      } else {
+        $scope.tl_control = true;
+      }
+    }
 
     if ($routeParams.subRegion && region === 'global') {
       $scope.subregion = parseInt($routeParams.subRegion) === 1 ?
@@ -38,17 +82,20 @@ angular.module('sauWebApp')
 
     $scope.fib = {
       year: null,
-      transferEfficiency: 0.1
+      transferEfficiency: 0.10
     };
 
     $scope.transferEfficiencyBounds = function() {
       var floatTE = parseFloat($scope.fib.transferEfficiency);
-      if (floatTE < 0.1) {
-        $scope.fib.transferEfficiency = 0.1;
-      } else if (floatTE > 0.3) {
-        $scope.fib.transferEfficiency = 0.3;
+      if (floatTE < 0.05) {
+        $scope.fib.transferEfficiency = 0.05;
+      } else if (floatTE > 0.25) {
+        $scope.fib.transferEfficiency = 0.25;
       }
+      $scope.fib.transferEfficiency = parseFloat($scope.fib.transferEfficiency).toFixed(2);
     };
+
+    $scope.fib.transferEfficiency = parseFloat($scope.fib.transferEfficiency).toFixed(2);
 
     var rmtiTooltip = function(key,x,y,e) {
       var s = '<h2>' + e.point[0] + '</h2>' +
@@ -138,6 +185,8 @@ angular.module('sauWebApp')
       $scope.fib.year = $scope.fib.year || $scope.years[0];
 
       $scope.rmtiData = [];
+      var rmtiData1 = [];
+      var rmtiData2 = [];
       var linecolor = ['#3243b3','#55bbf5', '#f8692a'];
       var counter_color = -1;
       angular.forEach($scope.data, function(time_series) {
@@ -210,15 +259,27 @@ angular.module('sauWebApp')
         region: region
       };
 
-      var postData = {
-        region_id: id,
-        reference_year: $scope.fib.year,
-        transfer_efficiency: $scope.fib.transferEfficiency,
-        exclude: excludedTaxons,
-        sub_area_id: $routeParams.subRegion || null,
-        tl_min: $scope.selectedTL.min,
-        tl_max: $scope.selectedTL.max
-      };
+      if ((!$scope.tlmin) && (!$scope.tlmax)) {
+        var postData = {
+          region_id: id,
+          reference_year: $scope.fib.year,
+          transfer_efficiency: $scope.fib.transferEfficiency,
+          exclude: excludedTaxons,
+          sub_area_id: $routeParams.subRegion || null,
+          tl_min: $scope.init_tlmin,
+          tl_max: $scope.init_tlmax
+        };
+      } else {
+        var postData = {
+          region_id: id,
+          reference_year: $scope.fib.year,
+          transfer_efficiency: $scope.fib.transferEfficiency,
+          exclude: excludedTaxons,
+          sub_area_id: $routeParams.subRegion || null,
+          tl_min: $scope.tlmin,
+          tl_max: $scope.tlmax
+        };
+      }
 
       sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {
         $scope.noData = true;
@@ -227,13 +288,19 @@ angular.module('sauWebApp')
 
     //compute data with exclusions from species table
     $scope.compute_init = function() {
-      console.log($scope.selectedTL.min);
-      console.log($scope.selectedTL.max);
-      var species_compute = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: $scope.selectedTL.min, tl_max: $scope.selectedTL.max}, function() {
-        if (species_compute.data.length != 0) {
-          $scope.speciesListAll = species_compute.data;
-        }
-      });
+      if ((!$scope.tlmin) && (!$scope.tlmax)) {
+        var species_compute = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: $scope.init_tlmin, tl_max: $scope.init_tlmax}, function() {
+          if (species_compute.data.length != 0) {
+            $scope.speciesListAll = species_compute.data;
+          }
+        });
+      } else {
+        var species_compute = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: $scope.tlmin, tl_max: $scope.tlmax}, function() {
+          if (species_compute.data.length != 0) {
+            $scope.speciesListAll = species_compute.data;
+          }
+        });
+      }
 
       var excludedTaxons = $scope.speciesListAll
       .filter(function(o) { return o.excluded; })
@@ -245,15 +312,27 @@ angular.module('sauWebApp')
         region: region
       };
 
-      var postData = {
-        region_id: id,
-        reference_year: $scope.fib.year,
-        transfer_efficiency: $scope.fib.transferEfficiency,
-        exclude: excludedTaxons,
-        sub_area_id: $routeParams.subRegion || null,
-        tl_min: $scope.selectedTL.min,
-        tl_max: $scope.selectedTL.max
-      };
+      if ((!$scope.tlmin) && (!$scope.tlmax)) {
+        var postData = {
+          region_id: id,
+          reference_year: $scope.fib.year,
+          transfer_efficiency: $scope.fib.transferEfficiency,
+          exclude: excludedTaxons,
+          sub_area_id: $routeParams.subRegion || null,
+          tl_min: $scope.init_tlmin,
+          tl_max: $scope.init_tlmax
+        };
+      } else {
+        var postData = {
+          region_id: id,
+          reference_year: $scope.fib.year,
+          transfer_efficiency: $scope.fib.transferEfficiency,
+          exclude: excludedTaxons,
+          sub_area_id: $routeParams.subRegion || null,
+          tl_min: $scope.tlmin,
+          tl_max: $scope.tlmax
+        };
+      }
 
       sauAPI.MarineTrophicIndexData.post(params, postData, displayCharts, function() {
         $scope.noData = true;
@@ -278,7 +357,6 @@ angular.module('sauWebApp')
       } else {
         var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: 2, tl_max: 2}, function() {
           $scope.speciesListAll = species.data;
-          console.log($scope.speciesListAll);
         });
 
         $q.all([species.$promise]).then(function() {

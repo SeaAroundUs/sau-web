@@ -104,11 +104,19 @@
       <label for="fibYear">Reference year:</label>
       <select id="fibYear" ng-model="fib.year" ng-options="year for year in years"></select>
       -->
-      <label for="minTL">Lowest TL considered: </label>
-      <select id="minTL" class="mintl-select" ng-model="selectedTL" ng-init ="selectedTL = mintl[0]" ng-options="( x.label +' ('+ x.label_value +')' ) for x in mintl "></select>
+      <!--<label for="minTL">Lowest TL considered: </label>
+      <select id="minTL" class="mintl-select" ng-model="selectedTL" ng-init ="selectedTL = mintl[0]" ng-options="( x.label +' ('+ x.label_value +')' ) for x in mintl "></select>-->
+      <form name="myForm">
+      <label for="minTL">Min TL:</label>
+      <!--<input id="minTL" ng-model="tlmin" type="text" step="0.01" ng-change="setMin(tlmin)"/>-->
+      <input id="minTL" ng-model="tlmin" type="text" ng-blur="setMin(tlmin)" ng-change="setTlcontrol(tlmin)" placeholder="2.00"/>
+      <label for="maxTL">Max TL:</label>
+      <input id="maxTL" ng-model="tlmax" type="text" ng-blur="setMax(tlmax)" ng-change="setTlcontrol(tlmax)" placeholder="5.00"/>
       <label for="fibTransferEfficiency">Transfer efficiency:</label>
       <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text"/>
-       <button class="btn btn-primary" ng-click="compute_init()">redraw graph</button>
+      <button class="btn btn-primary" ng-click="compute_init()" ng-disabled="!tl_control">redraw graph</button><br>
+      <span id="tl_control" ng-show="!tl_control">Min. TL may be higher than 2.00 and Max. TL lower than 5.00<br></span>
+    </form>
     </div>
   <hr />
 
