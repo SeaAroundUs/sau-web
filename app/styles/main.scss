@@ -337,6 +337,7 @@ label {
 .disclaimer {
   font-size: 12px;
   line-height: 16px;
+  padding: 5px 0;
 }
 .external-links {
   a:first-child {
@@ -585,9 +586,9 @@ then just wrap your html in "saustrap", then use any of these styles. */
   margin-top: 20px;
 
   #mobile-nav-toggle {
-    background-color: #0077BC;
+    background-color: $headerBackgroundColor;
     padding: 10px 10px 10px 10px;
-    border-bottom: 1px solid #0075BB;
+    border-bottom: 1px solid $headerBackgroundColor;
     color: white;
     text-decoration: none;
     text-transform: uppercase;
@@ -599,7 +600,7 @@ then just wrap your html in "saustrap", then use any of these styles. */
   }
 
   #mobile-nav-menu {
-    background-color: #0077BC;
+    background-color: $headerBackgroundColor;
     padding-bottom: 5px;
 
     li {

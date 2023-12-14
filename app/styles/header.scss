@@ -14,9 +14,10 @@
 
   #logos {
     img {
-      padding: 0 0 0 2em;
+      /*padding: 0 0 0 2em;
+      padding-right: 33px;*/
+      padding: 0 32px 0 32px;
       max-width: 92%;
-      padding-right: 33px;
     }
   }
 
@@ -98,3 +99,17 @@
     }
   }
 }
+
+@media only screen and (max-width: 600px) {
+  #header #logos img {
+    padding: 0 10px;
+  }
+  .pull-left {
+    width: 260px;
+  }
+
+  .pull-right {
+    width: 60px;
+  }
+
+} 

@@ -81,8 +81,8 @@ module.exports = function (grunt) {
       prod: {
         constants: {
           SAU_CONFIG: {
-            apiURL: 'http://api.seaaroundus.org/api/v1/',
-            authURL: 'http://api.seaaroundus.org/account/',
+            apiURL: 'https://api.seaaroundus.org/api/v1/',
+            authURL: 'https://api.seaaroundus.org/account/',
             buildNumber: buildNumber,
             env: 'prod'
           }
