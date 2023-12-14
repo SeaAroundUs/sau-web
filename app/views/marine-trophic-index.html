@@ -1,13 +1,22 @@
+<!--Begin MOD-->
+<!--Have to import the ajax library specifically on this page for it not to break the other graph formats-->
+<!--at the same time being able to use multichart-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.2/nv.d3.min.js"></script>
+<!--End MOD-->
+
 <div class="container" id="marine-trophic-index">
-    <h1>Region-based MTI: Using the MTI to unmask fisheries expansion</h1>
+    <h1>Regional MTI: Using the MTI to unmask fisheries expansion</h1>
     <p>The Marine Trophic Index (MTI), which tracks the mean trophic level of fishery catches from an ecosystem, adequately tracks changes in mean trophic level of an ensemble of exploited species in response to fishing pressure. However, one of the disadvantages of this indicator is that declines in trophic level can be masked by geographic expansion and/or the development of offshore fisheries, where higher trophic levels of newly accessed resources can overwhelm fishing-down effects closer inshore.</p>
 
-    <p>Here, we show that the MTI should not be used without accounting for changes in the spatial and bathymetric reach of the fishing fleet, and we develop a new index that accounts for the potential geographic expansion of fisheries, called the region-based MTI (RMTI). To calculate the RMTI, the potential catch that can be obtained given the observed trophic structure of the actual catch is used to assess the fisheries in an initial (usually coastal) region. Actual catch exceeding potential catch, indicates exploitation of a new fishing region. The MTI of the new region can then be calculated and subsequent regions are determined in a sequential manner. This method improves upon the use of the Fishing-in-Balance (FiB) index in conjunction with the original MTI calculated over the whole time series because assumptions of fleet and stock stationarity over the entire time series and geographic area are removed. We illustrate the utility of the RMTI with simulated examples and actual data, and generalize these results. For more information and tools, refer to the <a href="/regional-mti-tools/">Region-based MTI tools page</a> or <a target="_blank" href="http://www.fishingdown.org">www.fishingdown.org</a>.
+    <p>Here, we show that the MTI should not be used without accounting for changes in the spatial and bathymetric reach of the fishing fleet, and we develop a new index that accounts for the potential geographic expansion of fisheries, called the region-based or 'regional' MTI (RMTI). To calculate the RMTI, the potential catch that can be obtained given the observed trophic structure of the actual catch is used to assess the fisheries in an initial (usually coastal) region. Actual catch exceeding potential catch, indicates exploitation of a new fishing region. The MTI of the new region can then be calculated and subsequent regions are determined in a sequential manner. This method improves upon the use of the Fishing-in-Balance (FiB) index in conjunction with the original MTI calculated over the whole time series because assumptions of fleet and stock stationarity over the entire time series and geographic area are removed. We illustrate the utility of the RMTI with simulated examples and actual data, and generalize these results. 
     </p>
+    <p>In August 2023, the routines that generate the graphs in this page were improved. Thus, users can now choose the lowest trophic level that is to be considered in the MTI, RMTI, and FiB computations, which will allow users to eliminate the effects of strongly fluctuating, large biomass of low-trophic level fish, e.g., sardine or anchovy.</p>
+    <p>For more information and tools, refer to the <a href="/regional-mti-tools/">Region-based MTI tools page</a> or <a target="_blank" href="http://www.fishingdown.org">www.fishingdown.org</a>.</p>
     </p>
     <div class="title row">
       <h2 id="mti-title" class="pull-left">
-        Region-based Marine Trophic Index of the catch in the waters of
+        Mean trophic level (Marine Trophic Index or MTI) and FiB index trends in
         <span ng-bind="region.data.title"></span>
         <span ng-show="regionType === 'global'">the Global Ocean</span>
         {{ withExclusions? " with exclusions" : "" }}
@@ -34,18 +43,18 @@
   </div>
 
   <div ng-hide="noData || iceCover">
-
+    <div class="label_offshore" ng-show="showShore">Offshore</div>
     <nvd3 options='rmtiOptions' data='rmtiData' api='rmtiAPI'></nvd3>
-
+    <div class="label_onshore" ng-show="showShore">Inshore</div>
 
     <div id="charts">
 
       <div id="chart-headers">
         <div class="header">
-          <h2>Marine Trophic Index</h2>
+          <h2>Marine Trophic Index (MTI)</h2>
         </div>
         <div class="header">
-          <h2>Fishing in Balance Index</h2>
+          <h2>Fishing-in-Balance Index (FiB)</h2>
           <div class="menu pull-right">
           <!--BEGIN MOD SORTIZ 11-22-17 -->		  
             <!--<button class="btn btn-primary pull-right" ng-click="openDownloadDataModal()"
@@ -62,8 +71,8 @@
         </div>
       </div>
 
-      <line-chart-with-regression years="mtlYears" chartdata="mean_trophic_level" ylabel="Trophic level of the catch"></line-chart-with-regression>
-      <line-chart-with-regression years="fibYears" chartdata="fib_index" ylabel="Fishing-in-balance index"></line-chart-with-regression>
+      <line-chart-with-regression years="mtlYears" chartdata="mean_trophic_level" ylabel="MTI"></line-chart-with-regression>
+      <line-chart-with-regression years="fibYears" chartdata="fib_index" ylabel="FiB Index"></line-chart-with-regression>
 
       <br />
 
@@ -90,14 +99,24 @@
     </div>
 
     <div id="fib-inputs">
-      <h3>FiB index inputs</h3>
+      <!--<h3>RMTI and FiB index inputs</h3>-->
       <!--
       <label for="fibYear">Reference year:</label>
       <select id="fibYear" ng-model="fib.year" ng-options="year for year in years"></select>
       -->
+      <!--<label for="minTL">Lowest TL considered: </label>
+      <select id="minTL" class="mintl-select" ng-model="selectedTL" ng-init ="selectedTL = mintl[0]" ng-options="( x.label +' ('+ x.label_value +')' ) for x in mintl "></select>-->
+      <form name="myForm">
+      <label for="minTL">Min TL:</label>
+      <!--<input id="minTL" ng-model="tlmin" type="text" step="0.01" ng-change="setMin(tlmin)"/>-->
+      <input id="minTL" ng-model="tlmin" type="text" ng-blur="setMin(tlmin)" ng-change="setTlcontrol(tlmin)" placeholder="2.00"/>
+      <label for="maxTL">Max TL:</label>
+      <input id="maxTL" ng-model="tlmax" type="text" ng-blur="setMax(tlmax)" ng-change="setTlcontrol(tlmax)" placeholder="5.00"/>
       <label for="fibTransferEfficiency">Transfer efficiency:</label>
-      <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text" />
-      <button class="btn btn-primary" ng-click="compute()">redraw graph</button>
+      <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text"/>
+      <button class="btn btn-primary" ng-click="compute_init()" ng-disabled="!tl_control">redraw graph</button><br>
+      <span id="tl_control" ng-show="!tl_control">Min. TL may be higher than 2.00 and Max. TL lower than 5.00<br></span>
+    </form>
     </div>
   <hr />
 
@@ -118,7 +137,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr ng-repeat="species in speciesList | orderBy: '-trophic_level'">
+      <tr ng-repeat="species in speciesListAll | orderBy: '-trophic_level'">
         <td class="exclude"><input type="checkbox" ng-value="species.taxon_key" ng-model="species.excluded" /></td>
         <td ng-bind="species.trophic_level | number"></td>
         <td ng-bind="species.sl_max"></td>

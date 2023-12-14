@@ -15,7 +15,8 @@
           (opt.label === undefined || typeof opt.label === 'string') &&
           (opt.value === undefined || (typeof opt.value === 'number' && opt.value > 0))) {
 
-          return ga('send', 'event', opt.category, opt.action, opt.label, opt.value);
+          //return ga('send', 'event', opt.category, opt.action, opt.label, opt.value);
+          return gtag('event', 'event', {'category' : 'opt.category'}, {'action' : 'opt.action'}, {'label' : 'opt.label'}, {'value' : 'opt.value'});
 
         } else {
           console.log('illegal GA arguments');

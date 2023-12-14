@@ -12,7 +12,14 @@ angular.module('sauWebApp')
 
     var defaultMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Catches by'},
-      {label: 'Value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) by'}
+      {label: 'Value', value: 'value', chartlabel: 'Real 2019 value (million US$)', titleLabel: 'Real 2019 value (US$) by'},
+      {label: 'Calcium', value: 'calcium', chartlabel: 'Calcium concentration of the catch (mg; 10^3)', titleLabel: 'Calcium concentration by'},
+      {label: 'Iron', value: 'iron', chartlabel: 'Iron concentration of the catch (mg; 10^7)', titleLabel: 'Iron concentration by'},
+      {label: 'Selenium', value: 'selenium', chartlabel: 'Selenium concentration of the catch (μg; 10^7)', titleLabel: 'Selenium concentration by'},
+      {label: 'Zinc', value: 'zinc', chartlabel: 'Zinc concentration of the catch (mg; 10^7)', titleLabel: 'Zinc concentration by'},
+      {label: 'Vitamin A', value: 'vita', chartlabel: 'Vitamin A concentration of the catch (μg; 10^7)', titleLabel: 'Vitamin A concentration by'},
+      {label: 'Omega-3', value: 'omega', chartlabel: 'Omega-3 concentration of the catch (g)', titleLabel: 'Omega-3 concentration by'},
+      {label: 'Protein', value: 'protein', chartlabel: 'Protein concentration of the catch (g; 10^7)', titleLabel: 'Protein concentration by'}
     ];
 
     var fishingeffortMeasures = [
@@ -23,7 +30,7 @@ angular.module('sauWebApp')
 
     var taxonMeasures = [
       {label: 'Tonnage', value: 'tonnage', chartlabel: 'Catch (t x 1000)', titleLabel: 'Global catches of'},
-      {label: 'Value', value: 'value', chartlabel: 'Real 2010 value (million US$)', titleLabel: 'Real 2010 value (US$) of global catches of'}
+      {label: 'Value', value: 'value', chartlabel: 'Real 2019 value (million US$)', titleLabel: 'Real 2019 value (US$) of global catches of'}
     ];
 
     return {

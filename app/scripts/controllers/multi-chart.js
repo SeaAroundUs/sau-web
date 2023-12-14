@@ -28,8 +28,20 @@ angular.module('sauWebApp').controller('MultiChartCtrl',
         },
         yAxisTickFormat: function(d) {
           //Make values "in thousands" or "in millions" depending on the measure.
-          var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-          return $filter('significantDigits')(d, magnitude);
+          //Begin MOD SORTIZ 07-13-2022
+          //var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+          //return $filter('significantDigits')(d, magnitude);
+          var magnitude;
+          if ($scope.formModel.measure.value === 'tonnage'){
+            magnitude = 3;
+            return $filter('significantDigits')(d, magnitude);
+          } else if ($scope.formModel.measure.value === 'omega'){
+            return (d);
+          } else {
+            magnitude = 6;
+            return $filter('significantDigits')(d, magnitude);
+          }
+          //End MOD SORTIZ 07-13-2022
         },
         cData: ['Stacked','Stream','Expanded'],
         legend: {
@@ -211,8 +223,29 @@ angular.module('sauWebApp').controller('MultiChartCtrl',
       $scope.options.chart.yAxis.axisLabel = $scope.formModel.measure.chartlabel;
       $scope.options.chart.yAxisTickFormat = function(d) {
         //Make values "in thousands" or "in millions" depending on the measure.
-        var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
-        return $filter('significantDigits')(d, magnitude);
+        //Begin MOD SORTIZ 07-13-2022
+        //var magnitude = $scope.formModel.measure.value === 'tonnage' ? 3 : '6';
+        //return $filter('significantDigits')(d, magnitude);
+        var magnitude;
+        if ($scope.formModel.measure.value === 'tonnage'){
+          magnitude = 3;
+          return $filter('significantDigits')(d, magnitude);
+        } else if (($scope.formModel.measure.value === 'omega') || ($scope.formModel.measure.value === 'protein')){
+          magnitude = 3;
+          return $filter('significantDigits')(d, magnitude);
+        } else if (($scope.formModel.measure.value === 'calcium') || ($scope.formModel.measure.value === 'iron') || ($scope.formModel.measure.value === 'zinc')){
+          magnitude = 5 ;
+          return $filter('significantDigits')(d, magnitude);
+        } else if (($scope.formModel.measure.value === 'selenium') || ($scope.formModel.measure.value === 'vita')){
+          magnitude = 7;
+          return $filter('significantDigits')(d, magnitude);
+        } else if ($scope.formModel.measure.value === 'boats'){
+          return (d);
+        } else {
+          magnitude = 6;
+          return $filter('significantDigits')(d, magnitude);
+        }
+        //End MOD SORTIZ 07-13-2022
       };
     }
 
