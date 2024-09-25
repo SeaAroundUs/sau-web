@@ -109,9 +109,9 @@
       <form name="myForm">
       <label for="minTL">Min TL:</label>
       <!--<input id="minTL" ng-model="tlmin" type="text" step="0.01" ng-change="setMin(tlmin)"/>-->
-      <input id="minTL" ng-model="tlmin" type="text" ng-blur="setMin(tlmin)" ng-change="setTlcontrol(tlmin)" placeholder="2.00"/>
+      <input id="minTL" ng-model="tlmin" type="text" ng-blur="setMin(tlmin)" ng-change="setTlcontrol(tlmin)"/>
       <label for="maxTL">Max TL:</label>
-      <input id="maxTL" ng-model="tlmax" type="text" ng-blur="setMax(tlmax)" ng-change="setTlcontrol(tlmax)" placeholder="5.00"/>
+      <input id="maxTL" ng-model="tlmax" type="text" ng-blur="setMax(tlmax)" ng-change="setTlcontrol(tlmax)"/>
       <label for="fibTransferEfficiency">Transfer efficiency:</label>
       <input id="fibTransferEfficiency" ng-model="fib.transferEfficiency" ng-blur="transferEfficiencyBounds()" type="text"/>
       <button class="btn btn-primary" ng-click="compute_init()" ng-disabled="!tl_control">redraw graph</button><br>

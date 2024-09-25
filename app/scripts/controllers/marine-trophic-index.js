@@ -10,10 +10,10 @@ angular.module('sauWebApp')
     $scope.regionType = region;
     $scope.noData = false;
     $scope.rmtiAPI = null;
-    $scope.tlmin;
-    $scope.tlmax;
+    $scope.tlmin = 2.00;
+    $scope.tlmax = 5.00;
     $scope.init_tlmin = 2.00;
-    $scope.init_tlmax = 2.00;
+    $scope.init_tlmax = 5.00;
     $scope.tl_control = true;
 
     $scope.setMin = function(value){
@@ -27,11 +27,10 @@ angular.module('sauWebApp')
 
       if (($scope.tlmax - $scope.tlmin) < 1 ){
         $scope.tlmax = ((parseFloat($scope.tlmin)) + 1);
-        $scope.tlmax = parseFloat($scope.tlmax).toFixed(2);
       }
-
       $scope.tlmin = parseFloat($scope.tlmin).toFixed(2);
     }
+    $scope.tlmin = parseFloat($scope.tlmin).toFixed(2);
 
     $scope.setMax = function(value){
       if(value < 2){
@@ -45,19 +44,19 @@ angular.module('sauWebApp')
       if (($scope.tlmax - $scope.tlmin) < 1 ){
         $scope.tlmax = ((parseFloat($scope.tlmin)) + 1);
       }
-
       $scope.tlmax = parseFloat($scope.tlmax).toFixed(2);
     }
+    $scope.tlmax = parseFloat($scope.tlmax).toFixed(2);
 
-    $scope.setTlcontrol = function(value) {
-      if ((!$scope.tlmin) || (!$scope.tlmax)){
-        $scope.tl_control = false;
-      } else if (($scope.tlmin === '') && ($scope.tlmax === '')) {
-        $scope.tl_control = true;
-      } else {
-        $scope.tl_control = true;
-      }
-    }
+    //$scope.setTlcontrol = function(value) {
+    //  if ((!$scope.tlmin) || (!$scope.tlmax)){
+    //    $scope.tl_control = false;
+    //  } else if (($scope.tlmin === '') && ($scope.tlmax === '')) {
+    //    $scope.tl_control = true;
+    //  } else {
+    //    $scope.tl_control = true;
+    //  }
+    //}
 
     if ($routeParams.subRegion && region === 'global') {
       $scope.subregion = parseInt($routeParams.subRegion) === 1 ?
@@ -154,7 +153,7 @@ angular.module('sauWebApp')
           dataUrl: function () {
             return sauAPI.apiURL + region + '/marine-trophic-index/?format=csv&region_id=' + id +
               '&transfer_efficiency=' + $scope.fib.transferEfficiency + '&sub_area_id=' +
-              ($routeParams.subRegion || '');
+              ($routeParams.subRegion || '') + '&tl_min=' + $scope.tlmin + '&tl_max=' + $scope.tlmax;
           }
         }
       });
@@ -355,7 +354,7 @@ angular.module('sauWebApp')
         $scope.iceCover = true;
 
       } else {
-        var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: 2, tl_max: 2}, function() {
+        var species = sauAPI.MarineTrophicIndexData.get({region: region, region_id: id, species_list: true, tl_min: 2, tl_max: 5}, function() {
           $scope.speciesListAll = species.data;
         });
 

@@ -299,7 +299,7 @@ angular.module('sauWebApp')
               ngUrl: '{{ profile_url }}'
             },
             {
-              text: 'Oceana Report',
+              text: 'CMSY Report',
               ngUrl: 'https://s3-us-west-2.amazonaws.com/sau-technical-reports/OceanaFinalReport_V7a.pdf'
             }
           ]
@@ -345,7 +345,7 @@ angular.module('sauWebApp')
           section: 'Reference',
           links: [
             {
-              text: 'LME profile (NOAA)',
+              text: 'Sherman K and Hempel G, editors (2008)',
               ngUrl: '{{ profile_url }}'
             }
           ]

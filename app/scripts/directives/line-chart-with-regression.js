@@ -41,10 +41,11 @@ angular.module('sauWebApp')
         yAxis: {
           showMaxMin: false,
           tickFormat: function(d){
-            return d3.format(',.2s')(d);
+            return d3.format(',.2f')(d);
           },
           axisLabel: $scope.ylabel
         },
+        yDomain:[0,5],
         tooltipContent:function(key, x){
           var index = $scope.years.indexOf(x);
           return x + ':' + $scope.chartdata[0].values[index][1];
