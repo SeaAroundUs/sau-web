@@ -6,11 +6,20 @@
     "url": "git://github.com/SeaAroundUs/sau-web.git"
   },
   "dependencies": {
+    "bower": "^1.8.14",
+    "grunt-cli": "^1.5.0",
     "grunt-ng-constant": "1.1.0",
-    "wiredep": "2.2.2"
+    "imagemin": "^7.0.1",
+    "imagemin-gifsicle": "^4.2.0",
+    "imagemin-jpegtran": "^7.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^10.0.0",
+    "node": "^10.24.1",
+    "wiredep": "2.2.2",
+    "yo": "^5.0.0"
   },
   "devDependencies": {
-    "grunt": "^0.4.1",
+    "grunt": "^0.4.5",
     "grunt-autoprefixer": "^0.7.3",
     "grunt-aws-s3": "^0.11.0",
     "grunt-concurrent": "^0.5.0",
@@ -37,11 +46,11 @@
     "grunt-wiredep": "^1.7.0",
     "jasmine-core": "^2.1.3",
     "jshint-stylish": "^0.2.0",
-    "karma": "^0.12.31",
+    "karma": "^0.12.37",
     "karma-jasmine": "^0.3.5",
-    "phantomjs": "1.9.8",
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^0.4.0",
+    "phantomjs": "1.9.8",
     "protractor": "^2.0.0",
     "time-grunt": "^0.3.1"
   },
@@ -50,5 +59,16 @@
   },
   "scripts": {
     "test": "grunt test"
-  }
+  },
+  "description": "sau-web\r =======",
+  "main": "Gruntfile.js",
+  "directories": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SeaAroundUs/sau-web/issues"
+  },
+  "homepage": "https://github.com/SeaAroundUs/sau-web#readme"
 }
