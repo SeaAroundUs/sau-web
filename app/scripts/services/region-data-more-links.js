@@ -261,7 +261,7 @@ angular.module('sauWebApp')
         {
           section: 'Marine Protected Areas',
           links: [
-          { text: 'ProtectedSeas', ngUrl: '{{ ps_link }}' },
+          { text: 'ProtectedSeas Navigator Report', ngUrl: '{{ ps_link }}' },
           { text: 'MPA details', ngUrl: '#/mpa/{{ id }}' }
           ]
         },

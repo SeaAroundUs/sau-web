@@ -1,0 +1,52 @@
+<div ng-controller="FreshwaterCtrl" class="content-container form-inline" id="freshwater">
+    <div ng-show="noData" class="chart-container no-data">
+        <p>No data is available for this selection</p>
+    </div>
+    <div ng-show="noFisheriesData" class="chart-container no-data">
+        <p>{{country_name}} has no freshwater fisheries</p>
+    </div>
+
+    <div ng-hide="noData || noFisheriesData">
+        <h1>{{chartTitle}}</span></h1>
+        <div id="region-data-catch-chart">
+            <div class="chart-container">
+                <div class="clearfix">
+                    <div class="form-group" ng-show="sub_entity">
+                        <label for="province">State/Province</label>
+                        <select class="form-control" ng-model="formModel.sub_entity" ng-options="opt as opt.sub_entity_name for opt in sub_entity"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dimension">Dimension</label>
+                        <select class="form-control" ng-model="formModel.dimension" ng-options="opt as opt.label for opt in dimensions"></select>
+                    </div>
+                    <div class="form-group" ng-show="formModel.dimension.value == 'taxon'">
+                        <label for="limit">Limit</label>
+                        <select class="form-control" ng-model="formModel.limit" ng-options="opt as opt.label for opt in limits"></select>
+                    </div>
+                    <div class="pull-right header-links">
+                        <span ng-show="formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show common names</a></span>
+                        <span ng-show="!formModel.useScientificName && showLegendLabelToggle"><a ng-click="toggleTaxonNames()">Show scientific names</a></span>
+                    </div>
+                </div>
+            </div>
+                <div id="freshwater_chart">
+                    <nvd3 options='freshwaterOptions' data='data' api='freshwaterAPI' on-ready='onReady' ></nvd3>
+                </div>
+        </div>
+        <div style="padding: 0 40px">
+            <div>
+                <p style="white-space: pre-line" ng-bind-html="trustAsHtml(country_text)"></p>
+            </div>
+            <p ng-show="underreporting_factor">
+                The "underreporting factor" is {{underreporting_factor}}. The FAO catch will be split into its component taxonomic group in the future update of this database.
+            </p>
+            <h2>References</h2>
+            <div id="freshwater_ref">
+                <p ng-show="!sub_entity">Smith, M.R.X. 2023. Estimating the inland fisheries catch (1950-2019) of data-sparse countries and territories, with emphasis on Africa. MSc Thesis, University of British Columbia, Vancouver, 143 p (<a href="https://open.library.ubc.ca/soa/cIRcle/collections/ubctheses/24/items/1.0437330" target="_blank">https://open.library.ubc.ca/soa/cIRcle/collections/ubctheses/24/items/1.0437330</a>).</p>
+                <div ng-repeat="ref in references">
+                    <p ng-bind-html="trustAsHtml(ref)"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

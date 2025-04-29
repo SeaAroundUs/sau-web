@@ -356,6 +356,23 @@ angular
         });
     }
 
+    // Freshwater routes
+    if (togglesProvider.$get().isEnabled('freshwater')) {
+      $routeProvider
+      .when('/freshwater', {
+        templateUrl: 'views/freshwater-map.html',
+        controller: 'FreshwaterMapCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'freshwater';}}
+      })
+      .when('/freshwater/:ids', {
+        templateUrl: 'views/freshwater.html',
+        controller: 'FreshwaterCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'freshwater';}}
+      });
+    }
+
     // FAO routes
     if (togglesProvider.$get().isEnabled('fao')) {
       $routeProvider

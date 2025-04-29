@@ -126,6 +126,26 @@ angular.module('sauWebApp')
       }
     };
 
+    var freshwaterConfig = {
+      path: '/freshwater',
+      requestData: function() {
+        return sauAPI.Regions.get({region: 'freshwater'});
+      },
+      getGeoJsonData: function (apiResponse) {
+        return apiResponse.data;
+      },
+      geoJsonStyle: mapConfig.defaultStyle,
+      getSearchOptions: function (apiResponse) {
+        var searchOptions = [];
+        for (var i = 0;i < apiResponse.data.features.length; i++) {
+          var freshwater = apiResponse.data.features[i];
+          searchOptions.push({value: freshwater.properties.region_id, entity_id:freshwater.properties.freshwater_entity_id, sub_entity_id:freshwater.properties.sub_entity_id, label: freshwater.properties.title});
+        }
+
+        return searchOptions;
+      }
+    };
+
     function geoJsonResponseToSearchOptions (apiResponse) {
       var searchOptions = [];
 
@@ -149,6 +169,7 @@ angular.module('sauWebApp')
       'mariculture': maricultureConfig,
       'fao': faoConfig,
       'fishing-entity': fishingCountryConfig,
-      'fishing-entity-effort': fishingCountryConfig
+      'fishing-entity-effort': fishingCountryConfig,
+      'freshwater': freshwaterConfig
     };
   });

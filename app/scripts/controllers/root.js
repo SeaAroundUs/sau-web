@@ -21,7 +21,7 @@
           switch (location.$$route.controller) {
             case 'MapCtrl':
               if (location.locals && location.locals.region === 'mariculture') {
-                $scope.subtemplates[toggles.isEnabled('spatial') ? 6 : 5].class = 'selected';
+                $scope.subtemplates[toggles.isEnabled('spatial') ? 7 : 6].class = 'selected';
               } else {
                 $scope.subtemplates[0].class = 'selected';
               }
@@ -41,8 +41,11 @@
             case 'MPAGlobalCtrl':
               $scope.subtemplates[5].class = 'selected';
             break;
+            case 'FreshwaterMapCtrl':
+              $scope.subtemplates[6].class = 'selected';
+            break;
             case 'MarineTrophicIndexSearchCtrl':
-              $scope.subtemplates[toggles.isEnabled('spatial') ? 7 : 6].class = 'selected';
+              $scope.subtemplates[toggles.isEnabled('spatial') ? 8 : 7].class = 'selected';
             break;
           }
         }
@@ -79,9 +82,13 @@
         {'name': 'Getting started', 'url': '/tools-guide/'},
         {'name': 'Publications', 'url': '/articles/'},
         {'name': 'News', 'url': '/about/'},
+        {'name': 'People', 'url': '/people-2/'},
+        {'name': 'Board', 'url': '/advisory-board/'},
+        {'name': 'Indian Ocean', 'url': '//seaaroundus-io.org'},
         {'name': 'Projects', 'url': '/information-by-topic/'},
         {'name': 'Partners', 'url': '/collaborations/'},
-        {'name': 'Help', 'url': '/faq/'}
+        {'name': 'Donate', 'url': '/donate/'},
+        {'name': 'About', 'url': '/about-2/'}
       ];
       $scope.template = $scope.templates[0];
 
@@ -92,6 +99,7 @@
         {'name': 'Fisheries Economics', 'url': '#/feru'},
         {'name': 'Biodiversity', 'url': '#/topic/biodiversity'},
         {'name': 'MPAs', 'url': '#/mpa'},
+        {'name': 'Freshwater', 'url': '#/freshwater'},
         {'name': 'Mariculture', 'url': '#/mariculture'},
         {'name': 'Marine Trophic Index', 'url': '#/marine-trophic-index'}
       ];

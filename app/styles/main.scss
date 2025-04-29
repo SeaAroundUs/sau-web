@@ -643,3 +643,33 @@ then just wrap your html in "saustrap", then use any of these styles. */
     }
   }
 }
+
+#freshwater {
+  padding: 0 40px 20px 40px;
+}
+
+#freshwater h1 {
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+#freshwater_chart .nv-area {
+  fill-opacity: 1 !important;
+}
+
+#freshwater_ref p {
+  text-indent: -1.5em;
+  padding-left: 1.5em;
+}
+
+.content-container#freshwatermap{
+  padding: 0px;
+  #freshwatermap {
+    width: 100%;
+    height: 724px;
+  }
+}
+
+#freshwater_chart .nvd3 .nv-axis.nv-x path.domain {
+  stroke-opacity: 1;
+}

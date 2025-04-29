@@ -23,6 +23,7 @@ angular.module('sauWebApp')
       meow: defaultLimits,
       highseas: defaultLimits,
       mariculture: defaultLimits,
+      freshwater: defaultLimits,
       global: defaultLimits,
       rfmo: defaultLimits,
       fishingCountry: defaultLimits,
