@@ -44,7 +44,8 @@
     "karma-phantomjs-launcher": "^0.1.4",
     "load-grunt-tasks": "^0.4.0",
     "protractor": "^2.0.0",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "natives": "1.1.6"
   },
   "engines": {
     "node":">=6"
