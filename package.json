@@ -6,6 +6,7 @@
     "url": "git://github.com/SeaAroundUs/sau-web.git"
   },
   "dependencies": {
+    "bower": "^1.8.14",
     "grunt-ng-constant": "1.1.0",
     "wiredep": "2.2.2"
   },
