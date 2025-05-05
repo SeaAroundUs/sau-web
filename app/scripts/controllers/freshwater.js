@@ -27,6 +27,7 @@ angular.module('sauWebApp')
         //$scope.$on('$locationChangeSuccess', function() {
         //  $scope.formModel.sub_entity.sub_entity_id = $location.search().sub_entity_id;
         //});
+
       }
 
       $scope.$watch('formModel', onFormModelChange, true);
@@ -70,8 +71,10 @@ angular.module('sauWebApp')
               return $filter('significantDigits')(d, magnitude);
             }
           },
+          callback: window.highlightPoints
         }
       }
+
       function onFormModelChange() {
         updateData();
         updateChartTitle();
@@ -116,12 +119,25 @@ angular.module('sauWebApp')
             $scope.data = catch_data[0];
           }
 
-          $timeout(legendChange);
+          //$timeout(legendChange);
+
+          // Call highlightPoints after chart data is loaded
+          $timeout(function () {
+            legendChange();
+            if ($scope.formModel.dimension.value === 'reporting-status' && typeof $scope.freshwaterAPI.getScope === 'function') {
+              var chart = $scope.freshwaterAPI.getScope().chart;
+              if (chart) {
+                window.highlightPoints(chart);
+              }
+            }
+          }); // Delay to ensure chart is rendered
+
           $scope.showLegendLabelToggle = $scope.formModel.dimension.value === 'taxon';
 
           if ($scope.formModel.useScientificName) {
             sauChartUtils.toggleTaxonNames($scope);
           }
+
         });
 
         if ($scope.formModel.sub_entity.sub_entity_id) {
@@ -148,7 +164,6 @@ angular.module('sauWebApp')
                 var cleanedText = country_info.data[0].country_territory_text.replace(/;/g, '');
                 var linkifiedctext = cleanedText.replace(
                   /https?:\/\/[^\s]+/g, function(url) {
-                    //return `<a href="${url}" target="_blank">${url}</a>;`;
                     return '<a href="' + url + '" target="_blank">' + url + '</a>';
                   }
                 );
@@ -159,7 +174,6 @@ angular.module('sauWebApp')
                   var doi_str = country_info.data[0].references.replace("doi: ", "http://doi.org/");
                   var linkifiedContent = doi_str.replace(
                     /https?:\/\/[^\s]+/g, function(url) {
-                      //return `<a href="${url}" target="_blank">${url}</a>`;
                       return '<a href="' + url + '" target="_blank">' + url + '</a>';
                     }
                   );
@@ -171,7 +185,7 @@ angular.module('sauWebApp')
 
                 $scope.noData = false;
                 $scope.noFisheriesData = false;
-
+                legendChange();
                 updateChartTitle();
 
               } else {
@@ -241,11 +255,12 @@ angular.module('sauWebApp')
       function updateChart() {
         if ( $scope.formModel.dimension.value == 'reporting-status') {
           $scope.freshwaterOptions.chart.type = 'lineChart';
-          $scope.freshwaterOptions.chart.callback = highlightPoints;
+          $scope.freshwaterOptions.chart.callback = window.highlightPoints;
         } else {
           $scope.freshwaterOptions.chart.type = 'stackedAreaChart';
           $scope.freshwaterOptions.chart.showControls = false;
           $scope.freshwaterOptions.chart.useInteractiveGuideline = true;
+          $scope.freshwaterOptions.chart.callback = [];
         }
 
         $scope.freshwaterOptions.chart.yAxisTickFormat = function(d) {
@@ -271,7 +286,7 @@ angular.module('sauWebApp')
         return dimension;
       }
 
-      function highlightPoints(chart) {
+      window.highlightPoints = function(chart) {
         d3.select('.nv-groups')
             .selectAll("circle.myPoint")
             .remove();
@@ -291,12 +306,22 @@ angular.module('sauWebApp')
       function legendChange() {
         if ($scope.formModel.dimension.value == 'reporting-status') {
           var count = d3.selectAll('.nv-series').size();
-          d3.selectAll('.nv-legend-symbol')
-            .filter(function(d, i){ return i == count-1})
-            .remove();
+          console.log(count);
+          //d3.selectAll('.nv-legend-symbol')
+          //  .filter(function(d, i){ return i == count-1})
+          //  .remove();
 
-          d3.selectAll('.recon_legend')
-              .remove();
+          d3.selectAll('.nv-legend-symbol')
+            .filter(function(d, i) { return i === count - 1; })
+            .each(function() {
+              if (this.parentNode) {
+                this.parentNode.removeChild(this);
+              }
+            });
+
+          console.log(d3.selectAll('.nv-legend-symbol'))
+          //d3.selectAll('.recon_legend')
+          //    .remove();
 
           var legendrecon = d3.selectAll('.nv-series')
                               .filter(function(d, i){ return i == count-1});
@@ -308,7 +333,6 @@ angular.module('sauWebApp')
           .attr("y2", "0")
           .attr("stroke", "black")
           .attr("stroke-width", "2");
-
         }
       }
 
@@ -325,7 +349,7 @@ angular.module('sauWebApp')
       $(window).on("resize",function(){
         $scope.$apply(function(){
           if (peak != 'null' && typeof $scope.freshwaterAPI.getScope === 'function') {
-            highlightPoints($scope.freshwaterAPI.getScope().chart);
+            window.highlightPoints($scope.freshwaterAPI.getScope().chart);
           }
         });
       });
