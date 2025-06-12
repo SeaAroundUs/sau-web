@@ -233,6 +233,12 @@ angular.module('sauWebApp')
       // EEZ
       eez: [
         {
+          section: 'Preliminary Reconstruction Results (1950 - 2022)',
+          links: [
+          { text: 'EEZ graph', ngUrl: '{{ recon_graph }}' }
+          ]
+        },
+        {
           section: 'Biodiversity',
           template: 'views/region-data/biodiversity.html'
         },
