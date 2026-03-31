@@ -11,7 +11,7 @@
   angular.module('sauWebApp').factory('ga', function() {
     return {
       sendEvent: function(opt) {
-        if (opt && typeof opt.category === 'string' && typeof opt.action === 'string' &&
+        /*if (opt && typeof opt.category === 'string' && typeof opt.action === 'string' &&
           (opt.label === undefined || typeof opt.label === 'string') &&
           (opt.value === undefined || (typeof opt.value === 'number' && opt.value > 0))) {
 
@@ -21,6 +21,20 @@
         } else {
           console.log('illegal GA arguments');
           console.log(opt);
+        }*/
+        if (opt && typeof opt.category === 'string' && typeof opt.action === 'string') {
+          if (typeof gtag === 'function') {
+            gtag('event', opt.action, {
+              event_category: opt.category,
+              event_label: opt.label || '',
+              value: opt.value || ''
+            });
+          } else {
+            console.warn('gtag() not found');
+          }
+
+        } else {
+          console.log('illegal GA arguments:', opt);
         }
       }
     };

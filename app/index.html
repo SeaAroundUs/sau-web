@@ -4,6 +4,14 @@
     <meta charset="utf-8">
     <title>Sea Around Us | Fisheries, Ecosystems and Biodiversity</title>
 
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-T4XGTKKD');</script>
+    <!-- End Google Tag Manager -->
+
     <!-- opengraph (facebook) meta -->
     <meta property="og:title" content="Sea Around Us | Fisheries, Ecosystems and Biodiversity" />
     <meta property="og:description" content="The Sea Around Us Project investigates the impact of fisheries on the world&#039;s marine ecosystems. This is achieved by using a Geographic Information System" />
@@ -95,7 +103,13 @@
     </script>
 
   </head>
+
   <body ng-app="sauWebApp" ng-controller="RootCtrl">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-T4XGTKKD"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 
     <!-- slow client detection -->
     <script type="text/javascript">
@@ -185,9 +199,9 @@
               <a href="/citation-policy/">Citation Policy</a>
               <a href="/privacy-policy/">Privacy Policy</a>
               <a href="/terms-and-conditions/">Terms and Conditions</a>
-              <a href="https://github.com/seaaroundus/" target="_blank" ga-event="{category: 'GitHub', action: 'Footer link'}">
+              <!--<a href="https://github.com/seaaroundus/" target="_blank" ga-event="{category: 'GitHub', action: 'Footer link'}">
                 View code on GitHub <img src="images/gh.png" />
-              </a>
+              </a>-->
               <script type="text/javascript">
                adroll_adv_id = "FNI67PPWGFBM3PUIDMRBLV";
                adroll_pix_id = "R7IT22OF4VCY7OIAVRF3OE";
@@ -212,6 +226,14 @@
               {window.attachEvent('onload', _onload)}
               }());
                </script>
+            </div>
+            <div id="socials" class="pull-right">
+                <a href="https://www.facebook.com/sea.aroundus.7" target="_blank"><img src="images/fb_small.png"/></a>
+                <a href="https://x.com/SeaAroundUs" target="_blank"><img src="images/twitter_small.png"/></a>
+                <a href="https://www.instagram.com/theseaaroundus/" target="_blank"><img src="images/ig_small.png"/></a>
+                <a href="https://bsky.app/profile/seaaroundus.org" target="_blank"><img src="images/bluesky_small.png"/></a>
+                <a href="https://www.youtube.com/@seaaroundus9877" target="_blank"><img src="images/yt_small.png"/></a>
+                <a href="https://github.com/seaaroundus/" target="_blank" ga-event="{category: 'GitHub', action: 'Footer link'}"><img src="images/gh.png" /></a>
             </div>
           </div>
         </div>
@@ -331,6 +353,7 @@
     <script src="scripts/controllers/mpa-global.js"></script>
     <script src="scripts/controllers/freshwater.js"></script>
     <script src="scripts/controllers/freshwater-map.js"></script>
+    <script src="scripts/controllers/mean-temperature-catch.js"></script>
 
     <script src="scripts/directives/line-chart-with-regression.js"></script>
     <script src="scripts/directives/ng-right-click-disable.js"></script>
@@ -415,10 +438,10 @@
     <script src="scripts/services/spatial-catch-themes.js"></script>
     <!-- endbuild -->
 
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="scripts/highcharts/jquery-3.1.1.min.js"></script>
+    <script src="scripts/highcharts/highcharts.js"></script>
+    <script src="scripts/highcharts/highcharts-more.js"></script>
+    <script src="scripts/highcharts/exporting.js"></script>
   
     <!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-61452144-2"></script>
     <script>

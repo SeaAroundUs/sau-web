@@ -44,6 +44,17 @@
     padding-left: 12px;
     padding-right: 12px;
   }
+
+  #socials {
+    span, a {
+      display: inline-block;
+    }
+
+    a {
+      margin-right: 5px;
+    }
+
+  }
 }
 
 .browsehappy {
@@ -673,3 +684,46 @@ then just wrap your html in "saustrap", then use any of these styles. */
 #freshwater_chart .nvd3 .nv-axis.nv-x path.domain {
   stroke-opacity: 1;
 }
+
+#mtc {
+  padding: 0 10%;
+}
+
+#mtc h1 {
+  margin: 40px 0 10px;
+}
+
+#mtc_chart {
+  border: 2px solid black;
+}
+
+#mtc-chart .nvd3 .nv-axis.nv-x path.domain {
+  stroke-opacity: 1;
+}
+
+#mtc .chart-container{
+  padding: 10px;
+}
+
+#mtc #equation {
+  font-size: 24px;
+  text-align: center;
+}
+
+@media only screen and (max-width: 950px) {
+
+  #footer{
+    line-height: 40px;
+    text-align: center;
+    padding: 20px;
+
+    .pull-left {
+      width: 100%;
+    }
+
+    .pull-right {
+      width: 100%;
+    }
+  }
+
+} 

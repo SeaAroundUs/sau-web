@@ -512,6 +512,17 @@ angular
         });
     }
 
+    // Mean Temperature Catch routes
+    if (togglesProvider.$get().isEnabled('mtc')) {
+      $routeProvider
+      .when('/mtc/:id', {
+        templateUrl: 'views/mean-temperature-catch.html',
+        controller: 'MeanTemperatureCatchCtrl',
+        reloadOnSearch: false,
+        resolve: {region_id: function() {return 'mtc';}}
+      });
+    }
+
     // user auth routes
     if (togglesProvider.$get().isEnabled('auth')) {
       $routeProvider

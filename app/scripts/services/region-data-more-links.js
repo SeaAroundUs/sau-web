@@ -289,7 +289,8 @@ angular.module('sauWebApp')
             { text: 'Ocean Health Index', ngUrl: '{{ ohi_link }}' },
             //BEGIN MOD SORTIZ 02-08-17
             { text: 'Small-Scale Fisheries Records (ISSF)', ngUrl: '{{ issf_link }}' },
-            { text: 'Human Development Index', ngUrl: '{{ hdi_link }}' }
+            { text: 'Human Development Index', ngUrl: '{{ hdi_link }}' },
+            { text: 'Mean temperature of the catch', ngUrl: '#/mtc/{{ id }}' }
             //END MOD SORTIZ 02-08-17
           ]
         }
