@@ -1,10 +1,10 @@
 <div class="container" id="mtc">
     <span ng-hide="mtcStatus === false">
-        <h1>Mean temperature of the catch of {{mtc.eez}}</h1>
+        <h1>Mean temperature of the catch of {{mtc.name}}</h1>
         <nvd3 id="mtc-chart" options="mtcGraph" data="mtcGraph.data" api="api"></nvd3>
     </span>
     <div class="chart-container">
-        <p>The mean temperature of the catch (<i>MTC</i>) in a given region, which is an indicator of the poleward shifts of a number (<i>n</i>) of exploited populations of fish and invertebrates (<i>i</i>), is computed for a given year (<i>MTCyr</i>) as from their (stable) temperature preference (<i>Ti</i>)</p>
+        <p>The mean temperature of the catch (<i>MTC</i>) in a given region, {{given_region}} which is an indicator of the poleward shifts of a number (<i>n</i>) of exploited populations of fish and invertebrates (<i>i</i>), is computed for a given year (<i>MTCyr</i>) as from their (stable) temperature preference (<i>Ti</i>)</p>
         <p id="equation">
             <math>
               <msub>
@@ -34,8 +34,8 @@
             </math>
         </p>
         <span ng-show="mtc.show_spc === true || mtc.show_gen_spc === true">
-            <p>where <i>Ciyr</i> is the catch of <i>i</i> in that region in year <i>yr</i>, with (<i>Ti</i>) estimated from FishBase (<a href="https://www.fishbase.org" target="_blank">www.fishbase.org</a>). The <i>MTC</i> tends to increase when, for example, in the EEZ of a given country, the distribution of the local species shifts poleward (Northward or Southward, depending on which hemisphere one is) and is replaced by species from lower latitudes, which have higher preferred temperatures (Cheung <i>et al.</i> 2013. <i>Nature</i> 497: 365-368).</p>
-            <p>The year from which this replacement begins to be noticeable in the waters of {{mtc.eez}} is {{bp_year}} (see figure), but this estimate is tentative and may improve as to catch reconstructions are updated.</p>
+            <p>where <i>Ciyr</i> is the catch of <i>i</i> in that {{region_name}} in year <i>yr</i>, with (<i>Ti</i>) estimated from FishBase (<a href="https://www.fishbase.org" target="_blank">www.fishbase.org</a>). The <i>MTC</i> tends to increase when, for example, in a given {{region_name}}, the distribution of the local species shifts poleward (Northward or Southward, depending on which hemisphere one is) and is replaced by species from lower latitudes, which have higher preferred temperatures (Cheung <i>et al.</i> 2013. <i>Nature</i> 497: 365-368).</p>
+            <p>The year from which this replacement begins to be noticeable in the waters of the {{mtc.name}} is {{bp_year}} (see figure), but this estimate is tentative and may improve as to catch reconstructions are updated.</p>
 
             <span ng-show="mtc.show_spc === false && mtc.show_gen_spc === true">
                 <p>For this EEZ, <i>i</i> and <i>Ti</i> apply to genera, with <i>Ti</i> computed as the mean preferred temperature of the species of each genus computed from the preferred temperatures of the species of that genus in FishBase (<a href="https://www.fishbase.org" target="_blank">www.fishbase.org</a>). This procedure was applied to this EEZ either because the catch (or the bulk thereof) was reported at the level of genera, or because the <i>MTC</i> signal was clearer at the level of genera than at the level of species.</p>
@@ -44,10 +44,10 @@
 
         <span ng-show="mtc.show_spc === true || mtc.show_gen_spc === true">
 
-            <p>Some fish and invertebrate species may shift away from the EEZs of tropical countries, but species with higher temperature preferences do not replace them. Hence, the <i>MTC</i> of tropical countries and territories is not expected to increase, and their <i>MTC</i> time series are not shown.</p>
+            <p>Some fish and invertebrate species may shift away from tropical {{region_name}}, but species with higher temperature preferences do not replace them. Hence, the <i>MTC</i> of tropical {{region_name}} is not expected to increase, and their <i>MTC</i> time series are not shown.</p>
 
             <span ng-hide="mtc.rmv_pts != null">
-                <p>Also not shown are <i>MTC</i> time series of non-tropical countries or territories whose catch statistics are too scattered to generate the typical warming signal, i.e., two partial <i>MTC</i> series with the later one exhibiting an ascending slope steeper than the earlier one.</p>
+                <p>Also not shown are <i>MTC</i> time series of non-tropical {{region_name}} whose catch statistics are too scattered to generate the typical warming signal, i.e., two partial <i>MTC</i> series with the later one exhibiting an ascending slope steeper than the earlier one.</p>
             </span>
 
             <span ng-show="mtc.rmv_pts.length > 0">
@@ -57,17 +57,17 @@
         </span>
         <!--Show if -->
         <span ng-show="mtcGraph.data.length === 0 || mtcStatus === false">
-            <p>where <i>Ciyr</i> is the catch of <i>i</i> in that region in year <i>yr</i>, with (<i>Ti</i>) estimated from FishBase (<a href="https://www.fishbase.org" target="_blank">www.fishbase.org</a>). The <i>MTC</i> tends to increase    when, for example, in the EEZ of a given country, the distribution of the local species shifts poleward (Northward or Southward, depending on which hemisphere one is) and is replaced by species from lower latitudes, which have higher preferred temperatures (Cheung <i>et al.</i> 2013. <i>Nature</i> 497: 365-368).</p>
+            <p>where <i>Ciyr</i> is the catch of <i>i</i> in that {{region_name}} in year <i>yr</i>, with (<i>Ti</i>) estimated from FishBase (<a href="https://www.fishbase.org" target="_blank">www.fishbase.org</a>). The <i>MTC</i> tends to increase    when, for example, in a given {{region_name}}, the distribution of the local species shifts poleward (Northward or Southward, depending on which hemisphere one is) and is replaced by species from lower latitudes, which have higher preferred temperatures (Cheung <i>et al.</i> 2013. <i>Nature</i> 497: 365-368).</p>
             <p>However, the typical warming <i>MTC</i> signal, i.e., two partial <i>MTC</i> series with the later one exhibiting an ascending slope steeper than the earlier one does not occur in the following  two cases:</p>
 
             <p>
                 <ol>
-                    <li>Some fish and invertebrate species may shift away from the EEZs of tropical countries, but species with higher temperature preferences do not replace them. Hence, the  <i>MTC</i> of tropical countries and territories is not expected to increase, and their <i>MTC</i> time series are not shown.</li>
-                    <li>Some non-tropical countries or territories have catch statistics that are too uncertain and which generate a scatter of <i>MTCyr</i> values with no coherent trend.</li>
+                    <li>Some fish and invertebrate species may shift away from tropical {{region_name}}, but species with higher temperature preferences do not replace them. Hence, the  <i>MTC</i> of tropical {{region_name}} is not expected to increase, and their <i>MTC</i> time series are not shown.</li>
+                    <li>Some non-tropical {{region_name}} have catch statistics that are too uncertain and which generate a scatter of <i>MTCyr</i> values with no coherent trend.</li>
                 </ol>
             </p>
 
-            <p>We will endeavor, in the next years, to improve the taxonomic resolution of the catch statistics for the EEZ of the countries and territories in (2) such their <i>MTC</i> trends can be displayed. For the time being, they can’t. </p> 
+            <p>We will endeavor, in the next years, to improve the taxonomic resolution of the catch statistics for the {{region_name}} in (2) such their <i>MTC</i> trends can be displayed. For the time being, they can’t. </p> 
         </span>
     </div>
 

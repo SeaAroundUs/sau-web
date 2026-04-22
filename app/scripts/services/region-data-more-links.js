@@ -290,7 +290,7 @@ angular.module('sauWebApp')
             //BEGIN MOD SORTIZ 02-08-17
             { text: 'Small-Scale Fisheries Records (ISSF)', ngUrl: '{{ issf_link }}' },
             { text: 'Human Development Index', ngUrl: '{{ hdi_link }}' },
-            { text: 'Mean temperature of the catch', ngUrl: '#/mtc/{{ id }}' }
+            { text: 'Mean temperature of the catch', ngUrl: '#/eez/mtc/{{ id }}' }
             //END MOD SORTIZ 02-08-17
           ]
         }
@@ -342,6 +342,7 @@ angular.module('sauWebApp')
             { text: 'Stock status plots', ngUrl: '#/meow/{{ id }}/stock-status' },
             { text: 'Multinational footprint', ngUrl: '#/meow/{{ id }}?chart=multinational-footprint' },
             { text: 'Marine trophic index', ngUrl: '#/meow/{{ id }}/marine-trophic-index' }
+            //{ text: 'Mean temperature of the catch', ngUrl: '#/me/mtc/{{ id }}' }
           ]
         }
       ],
@@ -379,7 +380,8 @@ angular.module('sauWebApp')
           links: [
             { text: 'Stock status plots', ngUrl: '#/lme/{{ id }}/stock-status' },
             { text: 'Multinational footprint', ngUrl: '#/lme/{{ id }}?chart=multinational-footprint' },
-            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' }
+            { text: 'Marine trophic index', ngUrl: '#/lme/{{ id }}/marine-trophic-index' },
+            { text: 'Mean temperature of the catch', ngUrl: '#/lme/mtc/{{ id }}' }
           ]
         }
       ]

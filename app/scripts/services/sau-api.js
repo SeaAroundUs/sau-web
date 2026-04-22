@@ -64,7 +64,7 @@ angular.module('sauWebApp')
       MPAFLData: resourceFactory('mpa/fl/:region_id'),
       MPARefData: resourceFactory('mpa/ref/:region_id'),
       MPAPointsData: resourceFactory(':region/mpa/'),
-      MeanTemperatureCatchData: resourceFactory('mtc/:id'),
+      MeanTemperatureCatchData: resourceFactory(':region/mtc/:id'),
       Taxon: resourceFactory('taxa/:taxon_key'),
       TaxonLevels: resourceFactory('taxon-level/'),
       TaxonGroups: resourceFactory('taxon-group/'),

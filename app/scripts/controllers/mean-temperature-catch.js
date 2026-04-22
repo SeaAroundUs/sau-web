@@ -4,7 +4,7 @@
 /* global d3 */
 
 angular.module('sauWebApp').controller('MeanTemperatureCatchCtrl',
-    function ($scope, $routeParams, $q, sauAPI, $timeout, spinnerState, ga, $location) {
+    function ($scope, $routeParams, $q, sauAPI, $timeout, spinnerState, ga, $location, region) {
       spinnerState.loading = true;
 
       // Tooltip for the graph
@@ -43,9 +43,22 @@ angular.module('sauWebApp').controller('MeanTemperatureCatchCtrl',
       };
 
       if (!$scope.mtc) {
-        sauAPI.MeanTemperatureCatchData.get({ id: $routeParams.id }).$promise
+        sauAPI.MeanTemperatureCatchData.get({ region: region, id: $routeParams.id }).$promise
           .then(function(response) {
             $scope.mtc = response.data[0];
+
+            //console.log(region);
+
+            if ( region == 'eez' ) {
+              $scope.region_name = 'EEZ'
+              $scope.given_region = 'eg., an Exclusive Economic Zone (or EEZ),'
+            } else if ( region == 'lme' ) {
+              $scope.region_name = 'LME'
+              $scope.given_region = 'eg., a Large Marine Ecosystem (or LME),'
+            } else if ( region == 'me' ) {
+              $scope.region_name = 'MEOW'
+              $scope.given_region = 'eg., Marine Ecoregions Of the World (or MEOW),'
+            }
 
             var scatterData = [];
             var lineData = [];

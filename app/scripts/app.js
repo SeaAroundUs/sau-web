@@ -515,11 +515,23 @@ angular
     // Mean Temperature Catch routes
     if (togglesProvider.$get().isEnabled('mtc')) {
       $routeProvider
-      .when('/mtc/:id', {
+      .when('/eez/mtc/:id', {
         templateUrl: 'views/mean-temperature-catch.html',
         controller: 'MeanTemperatureCatchCtrl',
         reloadOnSearch: false,
-        resolve: {region_id: function() {return 'mtc';}}
+        resolve: {region: function() {return 'eez';}}
+      })
+      .when('/lme/mtc/:id', {
+        templateUrl: 'views/mean-temperature-catch.html',
+        controller: 'MeanTemperatureCatchCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'lme';}}
+      })
+      .when('/me/mtc/:id', {
+        templateUrl: 'views/mean-temperature-catch.html',
+        controller: 'MeanTemperatureCatchCtrl',
+        reloadOnSearch: false,
+        resolve: {region: function() {return 'me';}}
       });
     }
 
